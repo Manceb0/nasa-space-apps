@@ -54,8 +54,8 @@ function clearMaps() { while (maps.length) { const m = maps.pop()!; m.stop(); m.
 
 function baseMap(el: HTMLElement, center: [number, number], zoom: number): L.Map {
   const m = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false }).setView(center, zoom);
-  L.tileLayer("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg", {
-    maxNativeZoom: 8, maxZoom: 10, attribution: "NASA GIBS · Blue Marble",
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    maxZoom: 16, attribution: "Imagen: Esri, Maxar, Earthstar Geographics",
   }).addTo(m);
   maps.push(m);
   return m;
@@ -144,7 +144,6 @@ async function viewInvestigate() {
   const y1 = s.anual.anios[s.anual.anios.length - 1];
   const stressHigh = STRESS_HIGH.has(state.variable);
   const droughts = [...(ph?.sequias.find((d) => d.region === state.region)?.eventos ?? [])].reverse();
-  const tab = (k: string) => `<button class="tab ${k === state.variable ? "on" : ""}" data-var="${k}" role="tab" aria-selected="${k === state.variable}">${esc(shortName(k))}</button>`;
 
   view.innerHTML = `
     <div class="con-head">
@@ -153,14 +152,12 @@ async function viewInvestigate() {
         <h1>${esc(rmeta.nombre)}</h1>
         <p class="con-sub">${esc(vmeta.nombre)} · ${y0}–${y1} · ${esc(vmeta.fuente)}</p>
       </div>
-      <div class="tabs" role="tablist" aria-label="${esc(t.whereH)}">
-        ${Object.keys(index.regiones).map((k) => `<button class="tab ${k === state.region ? "on" : ""}" data-reg="${k}" role="tab" aria-selected="${k === state.region}">${esc(regionMeta(index, k).nombre)}</button>`).join("")}
+      <div class="rb-ctrl pills">
+        ${pillSelect("inv-var", t.whatQ.replace(/[¿?]/g, ""), "", `<optgroup label="${esc(t.groupClimate)}">${climate.map((k) => `<option value="${k}" ${k === state.variable ? "selected" : ""}>${esc(shortName(k))}</option>`).join("")}</optgroup><optgroup label="${esc(t.groupVegShort)}">${veg.map((k) => `<option value="${k}" ${k === state.variable ? "selected" : ""}>${esc(shortName(k))}</option>`).join("")}</optgroup>`)}
+        ${pillSelect("inv-reg", t.whereH, PIN, Object.keys(index.regiones).map((k) => `<option value="${k}" ${k === state.region ? "selected" : ""}>${esc(regionMeta(index, k).nombre)}</option>`).join(""))}
       </div>
     </div>
-    <div class="vtabs" role="tablist" aria-label="${esc(t.whatQ)}">
-      <span class="vt-group">${esc(t.groupClimate)}</span>${climate.map(tab).join("")}
-      <span class="vt-group">${esc(t.groupVegShort)}</span>${veg.map(tab).join("")}
-    </div>
+
 
     <div class="console">
       <section class="pnl map-pnl" aria-label="${esc(t.mapLabel)}">
@@ -216,6 +213,8 @@ async function viewInvestigate() {
       </div>
     </section>` : ""}`;
 
+  document.getElementById("inv-var")!.addEventListener("change", (e) => { state.variable = (e.target as HTMLSelectElement).value; resetInvestigation(); route(false); });
+  document.getElementById("inv-reg")!.addEventListener("change", (e) => { state.region = (e.target as HTMLSelectElement).value; resetInvestigation(); route(false); });
   view.querySelectorAll<HTMLButtonElement>("[data-var]").forEach((b) => b.addEventListener("click", () => {
     state.variable = b.dataset.var!; resetInvestigation(); route(false);
   }));
@@ -537,6 +536,15 @@ function renderEvidence(s: Series) {
 
 let rbStage: Stage | null = null;
 let rbPlayed = false;
+const CHEV = '<svg class="pill-chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const PIN = '<svg class="pill-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 1 0-9 0C3.5 9.8 8 14 8 14z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="6.5" r="1.6" fill="currentColor"/></svg>';
+const pillSelect = (id: string, label: string, icon: string, opts: string) =>
+  `<label class="pill-select">${icon}<span class="pill-lab">${label}</span><select id="${id}" aria-label="${label}">${opts}</select>${CHEV}</label>`;
+const MODE_ICON: Record<string, string> = {
+  "3d": '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 8.5c2.5-4 5-4 7.5 0s5 4 7.5 0M2.5 13c2.5-4 5-4 7.5 0s5 4 7.5 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  "2d": '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3.5v13h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 12l3-3.5 3 2 4-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  map: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 17s5.5-5 5.5-9a5.5 5.5 0 1 0-11 0c0 4 5.5 9 5.5 9z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="8" r="2" fill="currentColor"/></svg>',
+};
 const TIP_SIDE = (id: string): { direction: L.Direction; offset: [number, number] } =>
   id === "montecristimontesecoa" ? { direction: "left", offset: [-10, 0] }
   : id === "montecristimontesecob" ? { direction: "top", offset: [0, -10] }
@@ -577,16 +585,12 @@ async function viewRibbon() {
           <p class="rb-q">${esc(LL("¿Vuelve el verdor antes que la función? Cada cinta es una sequía. Sus bordes son el verdor y la función; la superficie entre ellos es la brecha, del color de la señal que va delante.",
             "Does greenness come back before function? Each ribbon is a drought. Its edges are greenness and function; the surface between them is the gap, coloured by whichever signal leads."))}</p>
         </div>
-        <div class="rb-ctrl">
-          <div class="seg rb-modes" role="radiogroup" aria-label="${esc(LL("Forma de ver", "View"))}">
-            ${([["3d", LL("Cintas 3D", "3D ribbons")], ["2d", LL("Brecha 2D", "2D gap")], ["map", LL("Lugares", "Sites")]] as const).map(([m, lab]) => `<button data-rbmode="${m}" class="${rb.mode === m ? "on" : ""}" role="radio" aria-checked="${rb.mode === m}">${esc(lab)}</button>`).join("")}
+        <div class="rb-ctrl pills">
+          <div class="icon-seg" role="radiogroup" aria-label="${esc(LL("Forma de ver", "View"))}">
+            ${([["3d", LL("Cintas 3D", "3D ribbons")], ["2d", LL("Brecha 2D", "2D gap")], ["map", LL("Lugares", "Sites")]] as const).map(([m, lab]) => `<button data-rbmode="${m}" class="${rb.mode === m ? "on" : ""}" role="radio" aria-checked="${rb.mode === m}" title="${esc(lab)}" aria-label="${esc(lab)}">${MODE_ICON[m]}<span>${esc(lab)}</span></button>`).join("")}
           </div>
-          <div class="tabs" role="tablist" aria-label="${esc(LL("Lugar", "Site"))}">
-            ${ids.map((id) => `<button class="tab ${id === rb.id ? "on" : ""}" data-rbid="${id}" role="tab" aria-selected="${id === rb.id}">${esc(NAMES[id])}</button>`).join("")}
-          </div>
-          <div class="tabs" role="tablist" aria-label="${esc(LL("Señal de función", "Function signal"))}">
-            ${fns.map((f) => `<button class="tab ${f === rb.fn ? "on" : ""}" data-rbfn="${f}" role="tab" aria-selected="${f === rb.fn}">${esc(fnName(f))}</button>`).join("")}
-          </div>
+          ${pillSelect("rb-site", LL("Lugar", "Site"), PIN, ids.map((id) => `<option value="${id}" ${id === rb.id ? "selected" : ""}>${esc(NAMES[id])}</option>`).join(""))}
+          ${pillSelect("rb-fn", LL("Función", "Function"), "", fns.map((f) => `<option value="${f}" ${f === rb.fn ? "selected" : ""}>${esc(fnName(f))}</option>`).join(""))}
         </div>
       </div>
 
@@ -608,9 +612,13 @@ async function viewRibbon() {
       <p class="meta">${esc(LL("Eje horizontal: días desde el inicio de cada sequía (−90 a 540). Altura: z. ", "Horizontal axis: days since each drought began (−90 to 540). Height: z. "))}${esc(LL("Arrastra para girar. Toca una fecha a la izquierda de una cinta, o elige abajo, para ver esa sequía con sus valores exactos.",
         "Drag to rotate. Tap a date at the left of a ribbon, or choose below, to see that drought with its exact values."))}</p>
 
-      <div class="rb-lanes" role="tablist" aria-label="${esc(LL("Sequías", "Droughts"))}">
-        ${lanes.map((l, i) => `<button class="tab ${i === rb.lane ? "on" : ""}" data-lane="${i}" role="tab" aria-selected="${i === rb.lane}"><i class="dot" style="background:${verdictColor(l.audit.veredicto)}"></i>${l.label}</button>`).join("")}
+      <div class="rb-time" role="group" aria-label="${esc(LL("Sequías en el tiempo", "Droughts over time"))}">
+        <div class="rb-time-track">
+          ${[2001, 2005, 2009, 2013, 2017, 2021, 2025].map((y) => `<span class="rb-year" style="left:${(100 * (y - 2001)) / 24}%">${y}</span>`).join("")}
+          ${lanes.map((l, i) => { const d = new Date(`${l.audit.evento_inicio.slice(0, 10)}T00:00:00`); const x = (100 * (d.getFullYear() - 2001 + d.getMonth() / 12)) / 24; return `<button class="rb-ev ${i === rb.lane ? "on" : ""}" data-lane="${i}" style="left:${x.toFixed(2)}%" aria-pressed="${i === rb.lane}" title="${l.label} · ${esc(t.verdictName[l.audit.veredicto] ?? l.audit.veredicto)}"><i style="background:${verdictColor(l.audit.veredicto)}"></i><span>${l.label}</span></button>`; }).join("")}
+        </div>
       </div>
+
 
       </div>
       <aside class="rb-panel">
@@ -648,11 +656,16 @@ async function viewRibbon() {
       .addTo(map);
   }
   const wide = innerWidth > 1100;
-  map.fitBounds(L.latLngBounds(sites.map((q) => [q.lat, q.lon] as [number, number])), {
-    paddingTopLeft: wide ? [rb.mode === "map" ? 120 : 520, 300] : [40, 40],
-    paddingBottomRight: wide ? [480, 220] : [40, 40], maxZoom: 9, animate: false,
-  });
   const here = sites.find((q) => q.id === rb.id);
+  if (rb.mode === "map" || !here) {
+    map.fitBounds(L.latLngBounds(sites.map((q) => [q.lat, q.lon] as [number, number])), {
+      paddingTopLeft: wide ? [120, 300] : [40, 40], paddingBottomRight: wide ? [480, 220] : [40, 40], maxZoom: 10, animate: false,
+    });
+  } else {
+    map.setView([here.lat, here.lon], wide ? 11 : 10, { animate: false });
+    const sz = map.getSize();
+    map.panBy([sz.x * (wide ? 0.22 : 0), -sz.y * (wide ? 0.1 : 0)], { animate: false });
+  }
   const anchor = () => { if (here && rbStage) { const c = map.latLngToContainerPoint([here.lat, here.lon]); rbStage.setAnchor(rb.mode === "3d" ? [c.x, c.y] : null); } };
   map.on("move zoom resize", anchor);
   anchor();
@@ -711,7 +724,7 @@ async function viewRibbon() {
   const pickLane = (i: number) => {
     rb.lane = i;
     rbStage?.select(i);
-    view.querySelectorAll<HTMLButtonElement>("[data-lane]").forEach((b) => { const on = Number(b.dataset.lane) === i; b.classList.toggle("on", on); b.setAttribute("aria-selected", String(on)); });
+    view.querySelectorAll<HTMLButtonElement>("[data-lane]").forEach((b) => { const on = Number(b.dataset.lane) === i; b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
     renderDetail();
   };
   renderDetail();
@@ -722,8 +735,8 @@ async function viewRibbon() {
     rbStage!.play();
   });
   view.querySelectorAll<HTMLButtonElement>("[data-lane]").forEach((b) => b.addEventListener("click", () => pickLane(Number(b.dataset.lane))));
-  view.querySelectorAll<HTMLButtonElement>("[data-rbid]").forEach((b) => b.addEventListener("click", () => { rb.id = b.dataset.rbid!; rb.lane = -1; viewRibbon(); }));
-  view.querySelectorAll<HTMLButtonElement>("[data-rbfn]").forEach((b) => b.addEventListener("click", () => { rb.fn = b.dataset.rbfn as Fn; viewRibbon(); }));
+  document.getElementById("rb-site")!.addEventListener("change", (e) => { rb.id = (e.target as HTMLSelectElement).value; rb.lane = -1; viewRibbon(); });
+  document.getElementById("rb-fn")!.addEventListener("change", (e) => { rb.fn = (e.target as HTMLSelectElement).value as Fn; viewRibbon(); });
 }
 
 /* ───────────── Auditoría de recuperación (Recovery Integrity) ───────────── */
