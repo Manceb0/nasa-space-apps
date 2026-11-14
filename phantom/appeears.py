@@ -18,6 +18,7 @@ PRODUCTS = {
     "MOD11A2": {"period_days": 8},
     "MOD17A2HGF": {"period_days": 8},
     "MCD12Q1": {"period_days": 365},
+    "MOD09A1": {"period_days": 8},
 }
 
 # IGBP (LC_Type1) aceptadas como vegetación natural: bosques 1-5, matorral 6-7, sabanas 8-9.
@@ -28,7 +29,7 @@ LC_RELIABLE_UNTIL = 2021  # aviso de NASA sobre MCD12Q1 posterior a 2021
 def find_product_files(folder: str | Path) -> dict[str, Path]:
     out = {}
     for p in Path(folder).rglob("*.csv"):
-        m = re.search(r"(MOD13Q1|MOD11A2|MOD17A2HGF|MCD12Q1)-(\d{3})-results\.csv$", p.name)
+        m = re.search(r"(MOD13Q1|MOD11A2|MOD17A2HGF|MCD12Q1|MOD09A1)-(\d{3})-results\.csv$", p.name)
         if m:
             out[m.group(1)] = p
     return out
@@ -136,6 +137,26 @@ def landcover_stability(lc: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def state_clear(state: pd.Series) -> pd.Series:
+    """sur_refl_state_500m de MOD09A1: despejado (bits 0-1 = 00), sin sombra (bit 2), sin nube interna (bit 10)
+    y no adyacente a nube (bit 13)."""
+    q = pd.to_numeric(state, errors="coerce").fillna(65535).astype(int).to_numpy()
+    ok = ((q & 0b11) == 0) & (((q >> 2) & 1) == 0) & (((q >> 10) & 1) == 0) & (((q >> 13) & 1) == 0)
+    return pd.Series(ok, index=state.index)
+
+
+def read_mod09(path: Path, log: list) -> pd.DataFrame:
+    """NDII = (NIR − SWIR1) / (NIR + SWIR1) con las bandas 2 (841–876 nm) y 6 (1628–1652 nm): agua del dosel."""
+    df = pd.read_csv(path)
+    out = _base(df)
+    b2 = scale_if_raw(df[_layer_column(df, "sur_refl_b02")], 1e-4, 1.5, log, "sur_refl_b02")
+    b6 = scale_if_raw(df[_layer_column(df, "sur_refl_b06")], 1e-4, 1.5, log, "sur_refl_b06")
+    ok = state_clear(df[_layer_column(df, "sur_refl_state_500m")]) & b2.between(0, 1) & b6.between(0, 1) & ((b2 + b6) > 0)
+    out["ndii"] = ((b2 - b6) / (b2 + b6)).where(ok)
+    log.append(f"MOD09A1: {int(ok.sum())} de {len(df)} observaciones despejadas (sur_refl_state_500m)")
+    return out
+
+
 def load_point_sample(folder: str | Path, strict_vi: bool = False) -> tuple[dict[str, pd.DataFrame], list[str]]:
     files = find_product_files(folder)
     log: list[str] = [f"archivos encontrados: {', '.join(f'{k}={v.name}' for k, v in files.items()) or 'ninguno'}"]
@@ -148,4 +169,6 @@ def load_point_sample(folder: str | Path, strict_vi: bool = False) -> tuple[dict
         data["MOD17A2HGF"] = read_mod17(files["MOD17A2HGF"], log)
     if "MCD12Q1" in files:
         data["MCD12Q1"] = read_mcd12(files["MCD12Q1"], log)
+    if "MOD09A1" in files:
+        data["MOD09A1"] = read_mod09(files["MOD09A1"], log)
     return data, log

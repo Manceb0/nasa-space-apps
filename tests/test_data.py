@@ -126,3 +126,14 @@ def test_benjamini_hochberg():
     q = stats.benjamini_hochberg([0.01, 0.04, None, 0.03, 0.5])
     assert q[2] is None
     assert all(a is None or a >= p for a, p in zip(q, [0.01, 0.04, None, 0.03, 0.5]) if p is not None)
+
+
+
+def test_mod09_ndii_and_cloud_filter(tmp_path):
+    # estado 0 = despejado; 0b01 = nube; 0b100 = sombra; 1<<13 = junto a nube (DATOS SINTÉTICOS)
+    state = [0] * 26 + [0b01, 0b100, 1 << 13, 0]
+    appeears_csv(tmp_path, "MOD09A1", {"sur_refl_b02": [3000] * 30, "sur_refl_b06": [2000] * 29 + [-28672],
+                                       "sur_refl_state_500m": state, "sur_refl_qc_500m": [0] * 30}, period=8)
+    out = appeears.read_mod09(tmp_path / "prueba-MOD09A1-061-results.csv", [])
+    assert out["ndii"].iloc[0] == pytest.approx((0.3 - 0.2) / (0.3 + 0.2))
+    assert out["ndii"].notna().sum() == 26  # nube, sombra, adyacente y relleno fuera

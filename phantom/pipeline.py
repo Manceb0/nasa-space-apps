@@ -123,6 +123,10 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
             "lst_menos_aire": recovery.robust_seasonal_z(t["fecha"], t["lst_c"].to_numpy() - t_air.to_numpy(), 8,
                                                          invert=True),
         }
+        if "MOD09A1" in data:  # agua del dosel (NDII), observada, independiente del verdor
+            w = data["MOD09A1"][data["MOD09A1"]["id"] == pid].sort_values("fecha")
+            if w["ndii"].notna().sum() > 50:
+                funcs["ndii_agua"] = recovery.robust_seasonal_z(w["fecha"], w["ndii"], 8)
         # Series z (las mismas que usa el cálculo de recuperación) para la doble línea de la web
         zseries[pid] = {name: {"fechas": [d.strftime("%Y-%m-%d") for d in z.dropna().index],
                                "z": [round(float(v), 2) for v in z.dropna()]}

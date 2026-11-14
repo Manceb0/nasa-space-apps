@@ -22,9 +22,10 @@ from .recovery import recovery_time
 
 GREEN = "ndvi"
 GREEN_ALT = "evi"
-FUNCTIONS = ("gpp_modelo", "lst_menos_aire")
+FUNCTIONS = ("gpp_modelo", "lst_menos_aire", "ndii_agua")
+OBSERVED_FUNCTIONS = ("lst_menos_aire", "ndii_agua")  # medidas por el satélite, no salidas de un modelo
 PRECISION_DAYS = 32          # dos compuestos de 16 días
-PERIOD_DAYS = {"ndvi": 16, "evi": 16, "gpp_modelo": 8, "lst_menos_aire": 8}
+PERIOD_DAYS = {"ndvi": 16, "evi": 16, "gpp_modelo": 8, "lst_menos_aire": 8, "ndii_agua": 8}
 MIN_COVERAGE = 0.5            # fracción mínima de observaciones esperadas en la ventana de impacto
 IMPACT_WINDOW_DAYS = 120
 THRESHOLDS = (-1.5, -1.0, -0.5)
@@ -46,7 +47,7 @@ def _classify(rec: dict, collision: bool) -> str:
     if not g.impactado:
         # El verdor no cayó. Si la señal térmica (independiente del verdor) cayó, es estrés que el verdor no muestra.
         # Si solo cayó la GPP, puede ser el clima del reanálisis que usa el modelo MOD17, no la planta.
-        if "lst_menos_aire" in rec and rec["lst_menos_aire"].impactado:
+        if any(k in rec and rec[k].impactado for k in OBSERVED_FUNCTIONS):
             return "estres_invisible"
         return "solo_modelo" if funcs else "sin_impacto"
     if g.censurado:

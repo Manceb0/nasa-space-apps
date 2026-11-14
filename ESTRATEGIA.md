@@ -22,6 +22,7 @@
 | Pasada de diseño (taste-skill, app) | **Hecha** | Inspector 0 FAIL en las 3 pantallas; lint 0 FAIL; crítica en `DISENO.md` |
 | **Recovery Integrity**: auditoría de la afirmación "se recuperó" | **Implementado con datos reales** | `phantom/audit.py`, 37 pruebas; 31 sequías con impacto: 0 fantasma, 1 estrés invisible (térmico), 5 solo en el modelo GPP, 3 interrumpidas, 13 inconclusas, 7 consistentes |
 | Auditoría por capítulos (Descubrimiento, Evidencia, Comparación, Veredicto) | **Implementado** | Afirmación auditada paso a paso; brecha fantasma, histéresis, libro de auditorías, cuadrantes, mapa de calor y tendencias por lugar |
+| Agua del dosel (NDII, MOD09A1) como quinta señal | **Código listo y probado; datos pedidos** (`6aacfca4…`) | Lector, filtro de nubes, auditoría y web; se activa solo al llegar el CSV |
 | Investigación profunda que verifica el informe (7) | **Hecha** | `../reports/Auditoría Recovery Integrity.md`: 7 correcciones de citas y premios |
 | Atlas de impacto (mapa de discordancia) | **Pendiente** | Pedido de área `eec5627a…` enviado; sin datos no hay mapa |
 | URL pública | **Retirada a pedido del equipo** (14-nov, noche). Proyecto de Vercel `earth-system-detective` sin despliegues; las URL dan 404 | Publicar de nuevo solo con aprobación: `cd web && npx vercel@latest deploy --prod` |

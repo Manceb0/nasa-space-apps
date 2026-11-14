@@ -52,6 +52,12 @@ def test_pipeline_end_to_end_with_synthetic_modis(tmp_path):
         "QC_Day": lambda d: np.zeros(d.size, dtype=int),
     })
     _write(ad, "MCD12Q1", 365, {"LC_Type1": lambda d: np.full(d.size, 7)})
+    _write(ad, "MOD09A1", 8, {
+        "sur_refl_b02": lambda d: np.round(np.full(d.size, 0.30) * 1e4),
+        "sur_refl_b06": lambda d: np.round((seasonal(d, 0.18, 0.02, 0.003) + dip(d, "2015-05-01", "2016-03-01", 0.05)) * 1e4),
+        "sur_refl_state_500m": lambda d: np.zeros(d.size, dtype=int),
+        "sur_refl_qc_500m": lambda d: np.zeros(d.size, dtype=int),
+    })
 
     pipeline.main(["--root", str(root)])
 
@@ -63,5 +69,7 @@ def test_pipeline_end_to_end_with_synthetic_modis(tmp_path):
     assert ev2015.loc["gpp_modelo", "dt_dias"] > 32  # GPP sintético vuelve ~2.5 meses después
     assert ev2015.loc["lst_menos_aire", "dt_dias"] > 0
     assert (root / "results" / "tendencias.csv").exists()
+    aud = json.loads((root / "results" / "auditorias.json").read_text(encoding="utf-8"))
+    assert any("ndii_agua_impactado" in x for x in aud)  # el NDII llega a la auditoría
     assert any(p.name.startswith("fig3_evento_") for p in (root / "figures").iterdir())
     assert "Recuperación verde vs. función" in (root / "RESULTS.md").read_text(encoding="utf-8")

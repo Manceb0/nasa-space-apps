@@ -1,0 +1,22 @@
+{
+  "task_type": "point",
+  "task_name": "phantom-rd-ndii-v1",
+  "params": {
+    "dates": [
+      { "startDate": "01-01-2001", "endDate": "12-31-2024" }
+    ],
+    "layers": [
+      { "product": "MOD09A1.061", "layer": "sur_refl_b02" },
+      { "product": "MOD09A1.061", "layer": "sur_refl_b06" },
+      { "product": "MOD09A1.061", "layer": "sur_refl_state_500m" },
+      { "product": "MOD09A1.061", "layer": "sur_refl_qc_500m" }
+    ],
+    "coordinates": [
+      { "id": "montecristi_monte_seco_a", "category": "noroeste", "latitude": 19.87, "longitude": -71.50 },
+      { "id": "montecristi_monte_seco_b", "category": "noroeste", "latitude": 19.86, "longitude": -71.46 },
+      { "id": "sierra_montecristi", "category": "noroeste", "latitude": 19.80, "longitude": -71.42 },
+      { "id": "jaragua_comparacion_seco", "category": "comparacion", "latitude": 17.74, "longitude": -71.45 },
+      { "id": "cordillera_comparacion_humedo", "category": "comparacion", "latitude": 19.03, "longitude": -70.84 }
+    ]
+  }
+}

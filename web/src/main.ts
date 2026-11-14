@@ -22,7 +22,7 @@ interface State {
   raw: boolean;
   heatVar: string;
   mapVar: string;
-  fn: "gpp_modelo" | "lst_menos_aire";
+  fn: "gpp_modelo" | "lst_menos_aire" | "ndii_agua";
   audit: { id: string; ev: string } | null;
   audited: boolean;
 }
@@ -395,6 +395,7 @@ async function viewCases() {
         <div class="seg" role="radiogroup" aria-label="${esc(t.cSignal)}">
           <button data-fn="lst_menos_aire" class="${state.fn === "lst_menos_aire" ? "on" : ""}">${esc(t.sigLst)}</button>
           <button data-fn="gpp_modelo" class="${state.fn === "gpp_modelo" ? "on" : ""}">${esc(t.sigGpp)}</button>
+          ${pts && Object.values(pts.z).some((z) => z.ndii_agua) ? `<button data-fn="ndii_agua" class="${state.fn === "ndii_agua" ? "on" : ""}">${esc(t.sigNdii)}</button>` : ""}
         </div>
       </div>
       <div class="grid">
@@ -511,13 +512,14 @@ async function viewCases() {
       const r = a[`${k}_recupera`] as string | null;
       return r ? { cls: "ok", txt: t.resYes(r, a[`${k}_dias`] as number) } : { cls: "bad", txt: t.resNo };
     };
-    const covs = ["ndvi", "gpp_modelo", "lst_menos_aire"].map((k) => (a[`${k}_cobertura`] as number) ?? 0);
+    const covs = ["ndvi", "gpp_modelo", "lst_menos_aire", "ndii_agua"].filter((k) => `${k}_cobertura` in a).map((k) => (a[`${k}_cobertura`] as number) ?? 0);
     const stableN = Math.round(a.estabilidad * a.combinaciones);
     const items = [
       { l: t.chkGreen, ...sig("ndvi") },
       { l: t.chkEvi, ...sig("evi") },
       { l: t.chkGpp, ...sig("gpp_modelo") },
       { l: t.chkLst, ...sig("lst_menos_aire") },
+      ...("ndii_agua_impactado" in a ? [{ l: t.chkNdii, ...sig("ndii_agua") }] : []),
       a.colision ? { l: t.chkNext, cls: "bad", txt: t.resNextBad } : { l: t.chkNext, cls: "ok", txt: t.resNextOk },
       { l: t.chkStable, cls: a.estabilidad >= 0.6 ? "ok" : "bad", txt: t.resStable(stableN, a.combinaciones) },
       { l: t.chkQc, cls: a.calidad_ok ? "ok" : "bad", txt: t.resQc(Math.min(...covs)) },
@@ -532,9 +534,10 @@ async function viewCases() {
 
   const renderEvidenceCh = () => {
     const a = current();
-    document.querySelectorAll(".fname").forEach((e) => { e.textContent = state.fn === "gpp_modelo" ? t.sigGpp : t.sigLst; });
+    const fname = { gpp_modelo: t.sigGpp, lst_menos_aire: t.sigLst, ndii_agua: t.sigNdii }[state.fn];
+    document.querySelectorAll(".fname").forEach((e) => { e.textContent = fname; });
     const z = pts?.z[a.id];
-    if (!z) return;
+    if (!z || !z[state.fn]) return;
     const common = { green: z.ndvi, func: z[state.fn], start: a.evento_inicio, end: a.evento_fin, stop: a.fin_ventana };
     draw("dual", (w) => dualTimeline({ ...common, greenRec: a.ndvi_recupera as string | null, funcRec: a[`${state.fn}_recupera`] as string | null, threshold: -1, width: w }));
     draw("gap", (w) => gapIndex({ ...common, width: w }));

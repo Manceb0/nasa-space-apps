@@ -119,3 +119,15 @@ Se recortó a 2012–2021 para que AppEEARS tenga más opciones de entregarlo an
 sequías de 2015 y 2019–2020 con 10 años de referencia: es el mínimo para la regla de 8 años por época
 del año. Las superficies se calcularán solo con píxeles válidos y estables; si el pedido no llega a
 tiempo, el atlas no se publica.
+
+### Pedido de agua del dosel (NDII)
+
+| Versión | Fecha | ID de AppEEARS | Contenido |
+|---|---|---|---|
+| ndii-v1 | 2026-11-14 | `6aacfca4-1303-4c60-9acb-7227f2329744` | MOD09A1.061 (500 m, 8 días): `sur_refl_b02` (NIR), `sur_refl_b06` (SWIR 1,6 µm), `sur_refl_state_500m`, `sur_refl_qc_500m`; mismos 5 puntos; 2001–2024. Archivo: `appeears/phantom-rd-ndii.json` |
+
+Para qué sirve:
+- **NDII = (b2 − b6) / (b2 + b6)** mide el agua del dosel. Es la señal que, según Yan et al. 2025 (*Nature Plants*), se recupera más tarde que el verdor.
+- **Filtro:** despejado (bits 0-1 = 00), sin sombra (bit 2), sin nube interna (bit 10) y no adyacente a nube (bit 13).
+- **Cuenta como señal observada,** igual que la térmica. Si cae y el verdor no, es "estrés invisible".
+- **Integración automática:** al poner el CSV en `data/appeears/`, el pipeline lo incorpora sin cambios de código (`phantom/appeears.py:read_mod09`).
