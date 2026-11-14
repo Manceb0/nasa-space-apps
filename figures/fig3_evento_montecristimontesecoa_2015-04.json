@@ -1,0 +1,27 @@
+{
+  "archivos": [
+    "fig3_evento_montecristimontesecoa_2015-04.pdf",
+    "fig3_evento_montecristimontesecoa_2015-04.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    110.0
+  ],
+  "punto": "montecristimontesecoa",
+  "evento": [
+    "2015-04-01 00:00:00",
+    "2015-11-30 00:00:00"
+  ],
+  "fin_ventana": "2016-11-29 00:00:00",
+  "transformaciones": [
+    "z robusto por época del año (mediana, 1.4826 MAD), >= 8 años por época",
+    "LST - T2M MERRA-2 del mes, invertido (negativo = dosel más caliente)",
+    "línea = mediana móvil de 3 observaciones válidas"
+  ],
+  "umbral_recuperacion": -1.0,
+  "recuperaciones": {
+    "ndvi": "2016-02-18 00:00:00",
+    "gpp_modelo": "2016-02-10 00:00:00",
+    "lst_menos_aire": "2016-01-25 00:00:00"
+  }
+}

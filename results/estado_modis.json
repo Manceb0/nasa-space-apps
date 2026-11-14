@@ -1,12 +1,124 @@
 {
-  "estado": "pendiente",
-  "faltan": [
-    "MOD11A2",
-    "MOD13Q1",
-    "MOD17A2HGF"
-  ],
+  "estado": "procesado",
   "registro": [
-    "archivos encontrados: ninguno"
+    "archivos encontrados: MCD12Q1=phantom-rd-puntos-v2-MCD12Q1-061-results.csv, MOD11A2=phantom-rd-puntos-v2-MOD11A2-061-results.csv, MOD13Q1=phantom-rd-puntos-v2-MOD13Q1-061-results.csv, MOD17A2HGF=phantom-rd-puntos-v2-MOD17A2HGF-061-results.csv",
+    "NDVI: valores ya escalados (máx |x| = 0.9607); sin cambio",
+    "EVI: valores ya escalados (máx |x| = 0.7579); sin cambio",
+    "MOD13Q1: 2701 de 2765 observaciones pasan calidad (pixel_reliability en {0,1})",
+    "LST_Day_1km: valores ya escalados (máx |x| = 315.12); sin cambio",
+    "MOD11A2: 5310 de 5510 observaciones pasan calidad (QC_Day)",
+    "Gpp_500m: valores ya escalados (máx |x| = 0.1181); sin cambio",
+    "MOD17A2HGF: 5525 de 5525 observaciones válidas",
+    "cordilleracomparacionhumedo: sin región climática; se omite del análisis por eventos"
   ],
-  "nota": "Sin resultados MODIS: no se calculó ninguna recuperación."
+  "cobertura_suelo": [
+    {
+      "id": "cordilleracomparacionhumedo",
+      "clases_2001_2021": [
+        2
+      ],
+      "estable": true,
+      "natural": true,
+      "usar": true
+    },
+    {
+      "id": "jaraguacomparacionseco",
+      "clases_2001_2021": [
+        2
+      ],
+      "estable": true,
+      "natural": true,
+      "usar": true
+    },
+    {
+      "id": "montecristimontesecoa",
+      "clases_2001_2021": [
+        2,
+        9
+      ],
+      "estable": false,
+      "natural": true,
+      "usar": true
+    },
+    {
+      "id": "montecristimontesecob",
+      "clases_2001_2021": [
+        9
+      ],
+      "estable": true,
+      "natural": true,
+      "usar": true
+    },
+    {
+      "id": "sierramontecristi",
+      "clases_2001_2021": [
+        8,
+        9
+      ],
+      "estable": false,
+      "natural": true,
+      "usar": true
+    }
+  ],
+  "n_filas_evento": 108,
+  "estados": {
+    "sin_impacto": 53,
+    "ambos_recuperados": 24,
+    "sin_impacto_funcion": 18,
+    "sin_impacto_verde": 7,
+    "ambos_censurados": 4,
+    "verde_censurado": 2
+  },
+  "etiquetas": {
+    "SIN DATOS SUFICIENTES": 84,
+    "SENSIBLE A SUPUESTOS": 20,
+    "ROBUSTO": 4
+  },
+  "n_pruebas_estadisticas": 18,
+  "dt_por_funcion": {
+    "gpp_modelo": {
+      "n": 11,
+      "media": -22.363636363636363,
+      "ic95": [
+        -65.45454545454545,
+        14.545454545454545
+      ]
+    },
+    "lst_menos_aire": {
+      "n": 13,
+      "media": -31.846153846153847,
+      "ic95": [
+        -60.46153846153846,
+        -11.692307692307692
+      ]
+    }
+  },
+  "figuras": [
+    "fig3_evento_jaraguacomparacionseco_2004-12.pdf",
+    "fig3_evento_jaraguacomparacionseco_2004-12.png",
+    "fig3_evento_jaraguacomparacionseco_2015-05.pdf",
+    "fig3_evento_jaraguacomparacionseco_2015-05.png",
+    "fig3_evento_jaraguacomparacionseco_2023-01.pdf",
+    "fig3_evento_jaraguacomparacionseco_2023-01.png",
+    "fig3_evento_montecristimontesecoa_2015-04.pdf",
+    "fig3_evento_montecristimontesecoa_2015-04.png",
+    "fig3_evento_montecristimontesecoa_2020-04.pdf",
+    "fig3_evento_montecristimontesecoa_2020-04.png",
+    "fig3_evento_montecristimontesecoa_2022-12.pdf",
+    "fig3_evento_montecristimontesecoa_2022-12.png",
+    "fig3_evento_montecristimontesecob_2015-04.pdf",
+    "fig3_evento_montecristimontesecob_2015-04.png",
+    "fig3_evento_montecristimontesecob_2020-04.pdf",
+    "fig3_evento_montecristimontesecob_2020-04.png",
+    "fig3_evento_montecristimontesecob_2022-12.pdf",
+    "fig3_evento_montecristimontesecob_2022-12.png",
+    "fig3_evento_sierramontecristi_2015-04.pdf",
+    "fig3_evento_sierramontecristi_2015-04.png",
+    "fig3_evento_sierramontecristi_2020-04.pdf",
+    "fig3_evento_sierramontecristi_2020-04.png",
+    "fig3_evento_sierramontecristi_2022-12.pdf",
+    "fig3_evento_sierramontecristi_2022-12.png",
+    "fig4_sensibilidad_dt.pdf",
+    "fig4_sensibilidad_dt.png"
+  ]
 }

@@ -1,6 +1,8 @@
 # ESTRATEGIA: auditoría del brief maestro (documentos A–G)
 
-## Estado de cada capacidad (actualizado: sábado 14, tarde)
+## Estado de cada capacidad (actualizado: sábado 14, tarde-noche)
+
+**Instrucción del equipo:** por ahora todo en local; no se publica nada sin aprobación.
 
 | Capacidad | Estado | Evidencia |
 |---|---|---|
@@ -11,12 +13,14 @@
 | Corrección por autocorrelación (Mann-Kendall AR(1)) | **Implementado y validado** | Prueba sintética: menos falsos positivos que Mann-Kendall simple |
 | Corrección por comparaciones múltiples (BH) | **Implementado** | q sobre las 8 series, visible en la evidencia y en el pasaporte |
 | Pasaporte de la evidencia | **Implementado** | Fuente, producto, caja, archivo, verificación, método, URL para reproducir en Giovanni |
-| Expediente PHANTOM con resultados | **Provisional**: interfaz lista, probada solo con datos SINTÉTICOS (`?prueba=1`, aviso rojo) | Esperando AppEEARS (puntos ~40 %) |
-| Challenge the Evidence (18 combinaciones) | **Provisional**: igual que arriba | Lee `sensibilidad.csv` real cuando exista |
-| Expediente Recovery Collision | **Provisional**: regla programada y probada | Esperando AppEEARS |
+| Expediente PHANTOM con resultados | **Implementado con datos MODIS reales (puntos)** | 108 filas evento × punto × señal; resumen generado desde los datos |
+| Challenge the Evidence (18 combinaciones) | **Implementado con datos reales** | `results/sensibilidad.csv`; arranca en el caso robusto Jaragua 2015 |
+| Expediente Recovery Collision | **Implementado con datos reales** | 3 colisiones en 54 sequías evaluadas (punto × evento) |
+| Variables MODIS en el detective (NDVI, LST, GPP) | **Implementado y validado** | Promedio de anomalías de los puntos de cada zona; 14 series en total con BH |
+| Módulo de idiomas español / inglés | **Implementado**, probado en local | Selector en la barra, recordado en el navegador; `?lang=es` o `?lang=en` |
 | Atlas de impacto (mapa de discordancia) | **Pendiente** | Pedido de área `eec5627a…` enviado; sin datos no hay mapa |
-| URL pública | **Implementado y verificado** | https://earth-system-detective.vercel.app: página y datos responden 200 sin inicio de sesión; el archivo sintético no existe allí (404) |
-| Versión en inglés para el jurado global | **Pendiente: decisión del equipo** | — |
+| URL pública | **Existe una versión anterior publicada** (solo español, sin MODIS) en https://earth-system-detective.vercel.app; el equipo pidió no publicar todavía | Decidir si se baja o se deja |
+
 
 Stellar Horizons · 14 de noviembre de 2026, sábado por la tarde · cierre: domingo 15, 11:59 p. m. (hora RD)
 
@@ -230,4 +234,9 @@ Lo que nunca se recorta: tendencia + significancia + definiciones (el reto) y la
 | 14-nov | Mann-Kendall corregido por autocorrelación AR(1) para el veredicto | MK simple | Lag-1 anual de 0,5–0,6 en 6 de 8 series; la prueba sintética muestra más falsos positivos con MK simple | — | — |
 | 14-nov | "Cambiar el intervalo" lee 120 ventanas precalculadas | Reimplementar la estadística en TypeScript | Una sola fuente de verdad (Python, probada) | — | — |
 | 14-nov | Mapa base NASA GIBS Blue Marble | OSM o Esri | Es de la NASA, sin clave y con uso claro | — | — |
+| 14-nov | **Resultado PHANTOM (puntos): hipótesis no respaldada en general** | — | De 24 comparaciones con ambas recuperaciones, 19 dentro de ±32 días, 4 con la función antes y 1 después; único robusto a favor: GPP en Jaragua 2015 (+104 d) | Que el pedido de área (más píxeles) muestre otra cosa | Esperar el área; presentarlo como hallazgo honesto |
+| 14-nov | **Hallazgo de tendencia:** Montecristi pierde verdor (NDVI p = 0,010), se calienta en superficie (+1,16 °C/década, p = 0,037), baja GPP y baja la lluvia; Jaragua estable | — | Mann-Kendall corregido por AR(1), sin ventanas que engañen en Montecristi; q = 0,13 con 14 pruebas | Sesgo de muestreo de días despejados en LST; deriva de Terra (sesgaría hacia frío) | Contrastar con Aqua (MYD) si da tiempo |
+| 14-nov | Regla de cobertura: se excluye solo por clase no natural (no por cambio bosque/sabana) | Excluir por cualquier cambio (regla escrita) | Ningún punto pasó a cultivo o urbano; la confusión bosque/sabana es común en MCD12Q1 | — | Documentado en `appeears/METODO.md` |
+| 14-nov | Variables MODIS en el detective, agregadas por zona como media de anomalías | Una serie por punto | Responde "dónde" sin fingir región; el mapa muestra los puntos | — | — |
+| 14-nov | Español e inglés | Solo español | El jurado global evalúa en inglés | — | — |
 | pendiente | Confirmar sede (Santo Domingo o Santiago) y si hay pitch | — | El brief y el reporte anterior no coinciden | — | **Equipo** |

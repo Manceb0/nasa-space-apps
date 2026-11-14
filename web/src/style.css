@@ -164,3 +164,15 @@ td { padding: 10px 12px; border-top: 1px solid var(--surface2); }
 }
 
 .test-banner { margin-top: 24px; padding: 18px 24px; border-radius: var(--radius); background: #b3261e; color: #fff; font-weight: 700; font-size: 20px; }
+
+.lang { border: 0; border-radius: 999px; padding: 8px 16px; background: var(--surface2); font-size: 14px; white-space: nowrap; transition: background .2s; }
+.lang:hover { background: #26343a; }
+@media (max-width: 1100px) { .lang { margin-left: auto; } }
+
+.pick h3.group { font-size: 15px; color: var(--muted); font-weight: 500; margin: 18px 0 10px; }
+.pick h2 + h3.group { margin-top: 0; }
+.results .verdict { margin-top: 18px; font-size: clamp(22px, 2.4vw, 32px); max-width: 34ch; }
+.results .explain { margin-top: 16px; }
+.results .small { margin-top: 10px; }
+.results h3 { margin-top: 40px; }
+.results .table-wrap + .small { margin-top: 12px; }

@@ -1,6 +1,6 @@
 # RESULTS
 
-Generado por `phantom.pipeline` el 2026-11-14 17:19 UTC. Este archivo se reescribe en cada corrida; no editarlo a mano.
+Generado por `phantom.pipeline` el 2026-11-14 18:05 UTC. Este archivo se reescribe en cada corrida; no editarlo a mano.
 
 ## 1. Datos climáticos (Giovanni)
 
@@ -52,23 +52,46 @@ Catálogo completo con los tres criterios: `results/sequias_catalogo.csv`. Figur
 
 ## 3. Recuperación verde vs. función (MODIS)
 
-**Pendiente.** Sin resultados MODIS: no se calculó ninguna recuperación. Faltan: MOD11A2, MOD13Q1, MOD17A2HGF.
+- Filas evento × punto × señal: 108
+- Estados: {'sin_impacto': 53, 'ambos_recuperados': 24, 'sin_impacto_funcion': 18, 'sin_impacto_verde': 7, 'ambos_censurados': 4, 'verde_censurado': 2}
+- Etiquetas de robustez: {'SIN DATOS SUFICIENTES': 84, 'SENSIBLE A SUPUESTOS': 20, 'ROBUSTO': 4}
+- Pruebas estadísticas hechas (para leer los p con cuidado): 18
 
-No hay ningún resultado sobre la brecha todavía.
+Δt medio (días, función − verde, solo eventos con ambas recuperaciones):
+
+- `gpp_modelo`: n = 11, media = -22 días, IC95 bootstrap = [-65, 15]
+- `lst_menos_aire`: n = 13, media = -32 días, IC95 bootstrap = [-60, -12]
+
+De 24 comparaciones con ambas recuperaciones: 19 dentro de ±32 días (precisión del método), 4 con la función antes que el verdor y 1 después.
+Robustos (≥ 80 % de las combinaciones con el mismo signo y |mediana| > 32 días): jaraguacomparacionseco 2015-05 gpp_modelo Δt = 104; montecristimontesecob 2013-11 lst_menos_aire Δt = -8; montecristimontesecob 2020-04 lst_menos_aire Δt = -8; sierramontecristi 2022-12 lst_menos_aire Δt = -88.
+
+Casos donde la función toca fondo después de que el verdor ya se recuperó (otra caída, no una recuperación tardía): jaraguacomparacionseco 2004-12 gpp_modelo; jaraguacomparacionseco 2015-05 gpp_modelo; jaraguacomparacionseco 2017-08 gpp_modelo; jaraguacomparacionseco 2020-05 gpp_modelo; sierramontecristi 2021-11 lst_menos_aire.
+
+**Lectura:** en estos puntos la hipótesis de PHANTOM (la función se recupera *después* del verdor) no se sostiene. El único caso robusto en esa dirección (GPP, un modelo, en Jaragua 2015) es una caída de GPP que empieza después de que el NDVI ya se había recuperado: no es una recuperación tardía. El IC bootstrap trata cada comparación como independiente, pero no lo son (los puntos de Montecristi comparten sequías); es optimista.
+
+Detalle: `results/recuperacion_eventos.csv`, `results/sensibilidad.csv`, `results/tendencias.csv`.
+
+Cinco puntos son una exploración. Estos números no describen bosques completos.
 
 ## 4. Tendencias 2001–2024 (herramienta de detective)
 
-Anomalía anual (se quita el ciclo estacional). Pendiente Theil-Sen por década con IC 95 %; p de Mann-Kendall corregido por autocorrelación AR(1); q de Benjamini-Hochberg sobre las 8 series.
+Anomalía anual (se quita el ciclo estacional). Pendiente Theil-Sen por década con IC 95 %; p de Mann-Kendall corregido por autocorrelación AR(1); q de Benjamini-Hochberg sobre las 14 series. Las series MODIS son la media de anomalías de los puntos de cada zona (años con 9 meses o más).
 
 | Serie | Pendiente / década | IC 95 % | p corregido (p simple) | q | Veredicto | Ventanas que engañan |
 |---|---|---|---|---|---|---|
-| Lluvia · Montecristi | -14.023 mm/mes | [-29.060, -1.155] | 0.031 (0.031) | 0.247 | baja | — |
+| Lluvia · Montecristi | -14.023 mm/mes | [-29.060, -1.155] | 0.031 (0.031) | 0.128 | baja | — |
 | Lluvia · Jaragua | -2.315 mm/mes | [-17.203, +11.108] | 0.867 (0.823) | 0.867 | sin_evidencia | 2005–2021, 2005–2022, 2007–2021 |
-| Temperatura del aire · Montecristi | +0.162 °C | [-0.003, +0.347] | 0.234 (0.063) | 0.371 | sin_evidencia | 2008–2024, 2009–2024, 2008–2023 |
-| Temperatura del aire · Jaragua | +0.127 °C | [-0.031, +0.315] | 0.325 (0.130) | 0.372 | sin_evidencia | 2011–2023, 2008–2023, 2012–2023 |
-| Humedad del suelo · Montecristi | -0.987 kg/m² | [-1.884, +0.272] | 0.279 (0.130) | 0.371 | sin_evidencia | 2005–2022, 2005–2021, 2006–2021 |
-| Humedad del suelo · Jaragua | -1.204 kg/m² | [-2.133, +0.029] | 0.184 (0.063) | 0.367 | sin_evidencia | 2005–2016, 2005–2015, 2005–2020 |
-| Agua para las raíces · Montecristi | -17.518 kg/m² | [-35.488, +0.098] | 0.150 (0.050) | 0.367 | sin_evidencia | 2004–2022, 2004–2021, 2005–2022 |
-| Agua para las raíces · Jaragua | -22.846 kg/m² | [-42.010, -4.252] | 0.132 (0.021) | 0.367 | sin_evidencia | 2004–2023, 2004–2020, 2004–2022 |
+| Temperatura del aire · Montecristi | +0.162 °C | [-0.003, +0.347] | 0.234 (0.063) | 0.364 | sin_evidencia | 2008–2024, 2009–2024, 2008–2023 |
+| Temperatura del aire · Jaragua | +0.127 °C | [-0.031, +0.315] | 0.325 (0.130) | 0.414 | sin_evidencia | 2011–2023, 2008–2023, 2012–2023 |
+| Humedad del suelo · Montecristi | -0.987 kg/m² | [-1.884, +0.272] | 0.279 (0.130) | 0.390 | sin_evidencia | 2005–2022, 2005–2021, 2006–2021 |
+| Humedad del suelo · Jaragua | -1.204 kg/m² | [-2.133, +0.029] | 0.184 (0.063) | 0.321 | sin_evidencia | 2005–2016, 2005–2015, 2005–2020 |
+| Agua para las raíces · Montecristi | -17.518 kg/m² | [-35.488, +0.098] | 0.150 (0.050) | 0.300 | sin_evidencia | 2004–2022, 2004–2021, 2005–2022 |
+| Agua para las raíces · Jaragua | -22.846 kg/m² | [-42.010, -4.252] | 0.132 (0.021) | 0.300 | sin_evidencia | 2004–2023, 2004–2020, 2004–2022 |
+| Verdor de la vegetación · Montecristi | -0.067 NDVI | [-0.102, -0.029] | 0.010 (0.002) | 0.128 | baja | — |
+| Verdor de la vegetación · Jaragua | +0.003 NDVI | [-0.005, +0.009] | 0.556 (0.472) | 0.605 | sin_evidencia | — |
+| Temperatura de la superficie · Montecristi | +1.161 °C | [+0.484, +2.024] | 0.037 (0.004) | 0.128 | sube | — |
+| Temperatura de la superficie · Jaragua | -0.123 °C | [-0.316, +0.034] | 0.119 (0.097) | 0.300 | sin_evidencia | 2005–2024 |
+| Productividad estimada · Montecristi | -0.626 gC/m²/día | [-1.083, -0.193] | 0.023 (0.003) | 0.128 | baja | — |
+| Productividad estimada · Jaragua | +0.063 gC/m²/día | [-0.182, +0.262] | 0.562 (0.535) | 0.605 | sin_evidencia | 2005–2022, 2003–2022, 2005–2021 |
 
-Lectura: con la corrección por autocorrelación solo la lluvia de Montecristi queda significativa (p < 0,05), y deja de serlo al corregir por haber probado 8 series (q ≥ 0,05). "Sin evidencia" no significa "sin cambio": los IC muestran qué cambios siguen siendo posibles.
+Lectura: con p corregido < 0,05 e IC sin el cero: Lluvia · Montecristi (baja), Verdor de la vegetación · Montecristi (baja), Temperatura de la superficie · Montecristi (sube), Productividad estimada · Montecristi (baja). Al corregir por las 14 pruebas (q < 0,05) se mantienen: ninguna. "Sin evidencia" no significa "sin cambio": los IC muestran qué cambios siguen siendo posibles.

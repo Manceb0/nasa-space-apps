@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from . import drought, giovanni, stats, trends
+from . import appeears, drought, giovanni, modis_series, stats, trends
 
 VARIABLES = {
     "imerg_precip": {
@@ -59,6 +59,45 @@ VARIABLES = {
     },
 }
 
+MODIS_META = {
+    "modis_ndvi": {
+        "nombre": "Verdor de la vegetación",
+        "pregunta": "¿el bosque está más o menos verde?",
+        "definicion": "NDVI: compara la luz roja y la infrarroja que refleja la vegetación. Más alto = hojas más verdes y densas. Lo mide el satélite Terra (MODIS) cada 16 días a 250 m.",
+        "unidad": "NDVI",
+        "unidad_larga": "índice NDVI (de −1 a 1; la vegetación sana suele estar entre 0,3 y 0,9)",
+        "fuente": "NASA LP DAAC MOD13Q1 v6.1 (Terra MODIS), 250 m, 16 días",
+        "producto": "MOD13Q1.061 _250m_16_days_NDVI (calidad: pixel_reliability 0–1)",
+        "tipo": "observación satelital",
+        "aviso": "Son puntos de monte seco revisados en imagen satelital (3 en Montecristi, 1 en Jaragua), no la región completa.",
+    },
+    "modis_lst": {
+        "nombre": "Temperatura de la superficie",
+        "pregunta": "¿se está calentando el suelo y el dosel?",
+        "definicion": "La temperatura de la superficie de día (hojas, suelo) medida en el infrarrojo térmico por Terra (MODIS), cada 8 días a 1 km. No es la temperatura del aire.",
+        "unidad": "°C",
+        "unidad_larga": "grados Celsius de la superficie",
+        "fuente": "NASA LP DAAC MOD11A2 v6.1 (Terra MODIS), 1 km, 8 días",
+        "producto": "MOD11A2.061 LST_Day_1km (calidad: QC_Day bueno, o error ≤ 2 K)",
+        "tipo": "observación satelital",
+        "aviso": "Solo cuenta días despejados. Desde 2020 el satélite Terra pasa más temprano, lo que tiende a dar superficies algo más frías en los últimos años (NASA). Son puntos, no la región completa.",
+    },
+    "modis_gpp": {
+        "nombre": "Productividad estimada",
+        "pregunta": "¿las plantas fijan más o menos carbono?",
+        "definicion": "GPP: cuánto carbono fijan las plantas por fotosíntesis. MODIS lo calcula con un modelo que usa el verdor y el clima; no es una medición directa.",
+        "unidad": "gC/m²/día",
+        "unidad_larga": "gramos de carbono por metro cuadrado por día",
+        "fuente": "NASA LP DAAC MOD17A2HGF v6.1 (Terra MODIS), 500 m, 8 días",
+        "producto": "MOD17A2HGF.061 Gpp_500m (acumulado de 8 días convertido a tasa diaria)",
+        "tipo": "modelo con datos satelitales",
+        "aviso": "GPP usa en parte el mismo verdor (FPAR) y meteorología de reanálisis: no confirma al NDVI de forma independiente. Son puntos, no la región completa.",
+    },
+}
+
+GIOVANNI_VARS = list(VARIABLES)
+VARIABLES = {**VARIABLES, **MODIS_META}
+
 REGIONS = {
     "noroeste": {"nombre": "Montecristi", "zona": "Línea Noroeste",
                  "descripcion": "Lomas de bosque seco y matorral en el extremo noroeste, cerca de la frontera con Haití.",
@@ -102,38 +141,68 @@ def _write(path: Path, obj) -> None:
     path.write_text(json.dumps(_clean(obj), ensure_ascii=False, separators=(",", ":")), encoding="utf-8", newline="\n")
 
 
+def _region_of(pid: str) -> str | None:
+    # AppEEARS quita los guiones bajos de los ID: "montecristimontesecoa"
+    if pid.startswith("montecristi") or pid.startswith("sierra"):
+        return "noroeste"
+    if pid.startswith("jaragua"):
+        return "jaragua"
+    return None
+
+
+def _modis_series(root: Path) -> list[tuple]:
+    """(clave, variable, zona, serie mensual, pasaporte, meses mínimos por año) para NDVI, LST y GPP."""
+    adir = root / "data" / "appeears"
+    data, _ = appeears.load_point_sample(adir)
+    files = appeears.find_product_files(adir)
+    out = []
+    for var, spec in modis_series.MODIS_VARS.items():
+        df = data.get(spec["producto"])
+        if df is None:
+            continue
+        monthly = modis_series.monthly_point(df, spec["col"], spec["escala"])
+        coords = df.groupby("id")[["lat", "lon"]].first()
+        for reg in REGIONS:
+            ids = [c for c in monthly.columns if _region_of(c) == reg]
+            if not ids:
+                continue
+            s = modis_series.region_series(monthly, ids).rename(var)
+            cov = modis_series.coverage(monthly, ids)
+            passport = {
+                "fuente": VARIABLES[var]["fuente"],
+                "producto": VARIABLES[var]["producto"],
+                "herramienta": "NASA AppEEARS, Point Sample (pedido 9490ce7b-3268-46aa-84a6-bbe8a3b648ed)",
+                "caja_pedida": None, "caja_datos": None,
+                "puntos": [[float(coords.loc[i, "lat"]), float(coords.loc[i, "lon"]), i] for i in ids],
+                "url_reproducir": None,
+                "archivo": f"data/appeears/{files[spec['producto']].name}",
+                "reconstruido": False,
+                "verificacion": (f"CSV de AppEEARS sin cambios; solo observaciones que pasan el filtro de calidad. "
+                                 f"Meses con dato: {cov['meses_con_dato']} de {cov['meses_totales']}."),
+                "metodo": ("Media mensual de observaciones válidas por punto; la zona es la media de las anomalías "
+                           "de sus puntos. Anomalía anual con al menos 9 meses. Theil-Sen con IC 95 %; "
+                           "Mann-Kendall corregido por empates y autocorrelación AR(1); BH sobre todas las series."),
+                "codigo": "phantom/modis_series.py · phantom/trends.py · phantom/stats.py",
+                "descargado": "2026-11-14",
+                "cobertura": cov,
+            }
+            out.append((f"{var}_{reg}", var, reg, s, passport, 9))
+    return out
+
+
 def export(root: Path, results: Path, out: Path) -> dict:
     series = giovanni.load_folder(root / "data" / "giovanni")
-    index = {"generado": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
-             "variables": VARIABLES, "regiones": REGIONS, "series": []}
-    analyses = {}
-    for var in VARIABLES:
+    entries = []
+    for var in GIOVANNI_VARS:
         for reg in REGIONS:
-            key = f"{var}_{reg}"
-            gs = series[key]
-            a = trends.analyze(gs.values)
-            analyses[key] = (gs, a)
-
-    # Corrección por comparaciones múltiples sobre las 8 pruebas de serie completa
-    keys = list(analyses)
-    q = stats.benjamini_hochberg([analyses[k][1]["completa"].get("p_mk") for k in keys])
-    for k, qq in zip(keys, q):
-        analyses[k][1]["completa"]["q_bh"] = qq
-
-    for key, (gs, a) in analyses.items():
-        var, reg = key.rsplit("_", 1)
-        s = gs.values
-        doc = {
-            "id": key, "variable": var, "region": reg,
-            "meses": [d.strftime("%Y-%m") for d in s.index],
-            "valores": [None if pd.isna(v) else float(v) for v in s],
-            **a,
-            "pasaporte": {
+            gs = series[f"{var}_{reg}"]
+            passport = {
                 "fuente": VARIABLES[var]["fuente"],
                 "producto": VARIABLES[var]["producto"],
                 "herramienta": "NASA Giovanni, Time Series Area-Averaged",
                 "caja_pedida": _box(gs.meta.get("User Bounding Box")),
                 "caja_datos": _box(gs.meta.get("Data Bounding Box")),
+                "puntos": None,
                 "url_reproducir": gs.meta.get("URL to Reproduce Results"),
                 "archivo": f"data/giovanni/{gs.path.name}",
                 "reconstruido": gs.reconstructed,
@@ -142,10 +211,31 @@ def export(root: Path, results: Path, out: Path) -> dict:
                                 "CSV descargado de Giovanni sin cambios",
                 "metodo": ("Anomalía = valor − media del mismo mes (2001–2024). Media anual de anomalías "
                            "(solo años con 12 meses). Pendiente Theil-Sen con IC 95 %; prueba de Mann-Kendall "
-                           "con corrección por empates; q de Benjamini-Hochberg sobre las 8 series."),
+                           "con corrección por empates y autocorrelación AR(1); q de Benjamini-Hochberg sobre todas las series."),
                 "codigo": "phantom/trends.py · phantom/stats.py",
                 "descargado": "2026-11-14",
-            },
+            }
+            entries.append((f"{var}_{reg}", var, reg, gs.values, passport, 12))
+    entries += _modis_series(root)
+
+    present_vars = {e[1] for e in entries}
+    index = {"generado": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+             "variables": {k: v for k, v in VARIABLES.items() if k in present_vars},
+             "regiones": REGIONS, "series": []}
+    analyses = [(e, trends.analyze(e[3], e[5])) for e in entries]
+
+    # Corrección por comparaciones múltiples sobre todas las pruebas de serie completa
+    q = stats.benjamini_hochberg([a["completa"].get("p_mk") for _, a in analyses])
+    for (_, a), qq in zip(analyses, q):
+        a["completa"]["q_bh"] = qq
+
+    for (key, var, reg, s, passport, _), a in analyses:
+        doc = {
+            "id": key, "variable": var, "region": reg,
+            "meses": [d.strftime("%Y-%m") for d in s.index],
+            "valores": [None if pd.isna(v) else float(v) for v in s],
+            **a,
+            "pasaporte": passport,
         }
         _write(out / "series" / f"{key}.json", doc)
         index["series"].append({"id": key, "variable": var, "region": reg,

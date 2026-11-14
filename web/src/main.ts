@@ -3,9 +3,10 @@ import "./style.css";
 import L from "leaflet";
 import { evidenceChart, rawChart, sensitivityStrip, spiChart, windowMatrix } from "./charts";
 import { load, type Index, type Phantom, type SensRow, type Series, type Window } from "./data";
+import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
 import {
-  VERDICT_SHORT, digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
-  trapText, verdictExplain, verdictSentence, windowLabel, type Prediction,
+  digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, robustLabel, seasonLesson, stateLabel,
+  trapText, verdictExplain, verdictSentence, verdictShort, windowLabel, type Prediction,
 } from "./text";
 
 const app = document.getElementById("app")!;
@@ -20,81 +21,101 @@ interface State {
 }
 const state: State = { variable: "imerg_precip", region: "noroeste", prediction: null, revealed: false, window: null, raw: false };
 
+// Modo de prueba local: ?prueba=1 lee un archivo SINTÉTICO que solo existe en la máquina de desarrollo.
+const TEST_MODE = new URLSearchParams(location.search).get("prueba") === "1";
+
 let index: Index;
 let map: L.Map | null = null;
-let mapLayers: L.Layer[] = [];
+
+const POINT_NAMES: Record<string, string> = {
+  montecristimontesecoa: "Montecristi A", montecristimontesecob: "Montecristi B", sierramontecristi: "Sierra de Montecristi",
+  jaraguacomparacionseco: "Jaragua", cordilleracomparacionhumedo: "Cordillera Central",
+};
+const pointName = (id: string) => POINT_NAMES[id.replace(/_/g, "")] ?? id;
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 
 function shell(): void {
+  const t = T();
+  document.title = t.title;
   app.innerHTML = `
     <header class="bar">
-      <a class="brand" href="#investigar" aria-label="Detective del Sistema Tierra, inicio">
+      <a class="brand" href="#investigar" aria-label="${esc(t.brand)}">
         <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="#e3a33b"/><path d="M3 20c6-9 20-15 26-8" stroke="#e9edee" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
-        <span>Detective del Sistema Tierra</span>
+        <span>${esc(t.brand)}</span>
       </a>
       <nav>
-        <a href="#investigar" data-nav="investigar">Investigar</a>
-        <a href="#expedientes" data-nav="expedientes">Expedientes</a>
-        <a href="#metodo" data-nav="metodo">Cómo funciona</a>
+        <a href="#investigar" data-nav="investigar">${esc(t.navInvestigate)}</a>
+        <a href="#expedientes" data-nav="expedientes">${esc(t.navCases)}</a>
+        <a href="#metodo" data-nav="metodo">${esc(t.navMethod)}</a>
       </nav>
-      <span class="team">Stellar Horizons · NASA Space Apps 2026</span>
+      <span class="team">${esc(t.team)}</span>
+      <button class="lang" id="lang" aria-label="${esc(t.langSwitchLabel)}" lang="${getLang() === "es" ? "en" : "es"}">${esc(t.langSwitch)}</button>
     </header>
     <main id="view"></main>
-    <footer class="foot">
-      <p>Datos: NASA GPM IMERG, MERRA-2 y GLDAS vía Giovanni; MODIS vía AppEEARS; mapa base NASA GIBS Blue Marble. Hecho en República Dominicana por Stellar Horizons. Código y método abiertos.</p>
-    </footer>`;
+    <footer class="foot"><p>${esc(t.footer)}</p></footer>`;
+  document.getElementById("lang")!.addEventListener("click", () => {
+    setLang(getLang() === "es" ? "en" : "es");
+    shell();
+    route(false);
+  });
 }
 
-function setNav(route: string) {
-  document.querySelectorAll<HTMLAnchorElement>("[data-nav]").forEach((a) => a.classList.toggle("on", a.dataset.nav === route));
+function setNav(r: string) {
+  document.querySelectorAll<HTMLAnchorElement>("[data-nav]").forEach((a) => a.classList.toggle("on", a.dataset.nav === r));
 }
 
 /* ───────────── Investigar ───────────── */
 
 async function viewInvestigate() {
+  const t = T();
   const view = document.getElementById("view")!;
-  const vmeta = index.variables[state.variable];
-  const rmeta = index.regiones[state.region];
+  const vmeta = varMeta(index, state.variable);
+  const rmeta = regionMeta(index, state.region);
+  const predLabel: Record<Prediction, string> = { sube: t.predUp, baja: t.predDown, nada: t.predNone };
   view.innerHTML = `
     <section class="intro">
-      <h1>Elige qué investigar. Predice. Comprueba.</h1>
-      <p class="lede">Datos reales de la NASA sobre dos zonas de bosque seco de República Dominicana, de 2001 a 2024. Antes de ver la respuesta, di qué crees que pasó.</p>
+      <h1>${esc(t.h1)}</h1>
+      <p class="lede">${esc(t.lede)}</p>
     </section>
 
     <section class="pick">
       <div class="pick-left">
-        <h2>¿Qué quieres investigar?</h2>
-        <div class="choices" role="radiogroup" aria-label="Variable">
-          ${Object.entries(index.variables).map(([k, v]) => `
+        <h2>${esc(t.whatQ)}</h2>
+        ${[[t.groupClimate, Object.keys(index.variables).filter((k) => !k.startsWith("modis_"))],
+           [t.groupVeg, Object.keys(index.variables).filter((k) => k.startsWith("modis_"))]]
+          .filter(([, ks]) => (ks as string[]).length).map(([title, ks]) => `
+        <h3 class="group">${esc(title as string)}</h3>
+        <div class="choices" role="radiogroup" aria-label="${esc(title as string)}">
+          ${(ks as string[]).map((k) => { const v = varMeta(index, k); return `
             <button class="choice ${k === state.variable ? "on" : ""}" data-var="${k}" role="radio" aria-checked="${k === state.variable}">
               <strong>${esc(v.nombre)}</strong><span>${esc(v.pregunta)}</span>
-            </button>`).join("")}
-        </div>
-        <p class="def">${esc(vmeta.definicion)} Se mide en ${esc(vmeta.unidad_larga)}. <span class="kind">Tipo de dato: ${esc(vmeta.tipo)}.</span></p>
-        <h2>¿Dónde?</h2>
-        <div class="choices two" role="radiogroup" aria-label="Zona">
-          ${Object.entries(index.regiones).map(([k, r]) => `
+            </button>`; }).join("")}
+        </div>`).join("")}
+        <p class="def">${esc(vmeta.definicion)} ${esc(t.measuredIn)} ${esc(vmeta.unidad_larga)}. <span class="kind">${esc(t.dataType)}: ${esc(vmeta.tipo)}.</span>${vmeta.aviso ? ` ${esc(vmeta.aviso)}` : ""}</p>
+        <h2>${esc(t.whereQ)}</h2>
+        <div class="choices two" role="radiogroup" aria-label="${esc(t.whereQ)}">
+          ${Object.keys(index.regiones).map((k) => { const r = regionMeta(index, k); return `
             <button class="choice ${k === state.region ? "on" : ""}" data-reg="${k}" role="radio" aria-checked="${k === state.region}">
               <strong>${esc(r.nombre)}</strong><span>${esc(r.zona)}</span>
-            </button>`).join("")}
+            </button>`; }).join("")}
         </div>
         <p class="def">${esc(rmeta.descripcion)}</p>
       </div>
       <figure class="pick-map">
-        <div id="map" aria-label="Mapa de la zona elegida"></div>
+        <div id="map" aria-label="${esc(t.mapLabel)}"></div>
         <figcaption id="mapcap"></figcaption>
       </figure>
     </section>
 
     <section class="predict" id="predict">
-      <h2>Tu hipótesis</h2>
-      <p class="q">Desde 2001, ${esc(vmeta.nombre.toLowerCase())} en ${esc(rmeta.nombre)}…</p>
+      <h2>${esc(t.hypothesis)}</h2>
+      <p class="q">${esc(t.since2001(vmeta.nombre.charAt(0).toLowerCase() + vmeta.nombre.slice(1), rmeta.nombre))}</p>
       <div class="answers">
         ${(["sube", "baja", "nada"] as Prediction[]).map((p) => `
-          <button class="answer ${state.prediction === p ? "on" : ""}" data-pred="${p}">${{ sube: "ha aumentado", baja: "ha disminuido", nada: "no cambió de forma clara" }[p]}</button>`).join("")}
+          <button class="answer ${state.prediction === p ? "on" : ""}" data-pred="${p}">${esc(predLabel[p])}</button>`).join("")}
       </div>
-      <button class="reveal" id="reveal" ${state.prediction ? "" : "disabled"}>Revelar la evidencia</button>
+      <button class="reveal" id="reveal" ${state.prediction ? "" : "disabled"}>${esc(t.reveal)}</button>
     </section>
 
     <div id="evidence"></div>`;
@@ -124,97 +145,104 @@ function resetInvestigation() {
 }
 
 function drawMap(s: Series) {
+  const t = T();
   const el = document.getElementById("map");
   if (!el) return;
   if (map) { map.remove(); map = null; }
   const r = index.regiones[s.region];
   map = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false }).setView(r.centro, 8);
-  const zoomTo = s.pasaporte.caja_pedida;
   L.tileLayer("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg", {
     maxNativeZoom: 8, maxZoom: 10, attribution: "NASA GIBS · Blue Marble",
   }).addTo(map);
-  mapLayers = [];
   const p = s.pasaporte;
   const toBounds = (b: number[]) => L.latLngBounds([b[1], b[0]], [b[3], b[2]]);
-  if (p.caja_pedida) mapLayers.push(L.rectangle(toBounds(p.caja_pedida), { color: "#e9edee", weight: 1.5, dashArray: "4 4", fill: false }).addTo(map));
-  let note = "Línea discontinua: zona pedida.";
+  if (p.caja_pedida) L.rectangle(toBounds(p.caja_pedida), { color: "#e9edee", weight: 1.5, dashArray: "4 4", fill: false }).addTo(map);
+  let note = t.mapDashed;
   if (p.caja_datos) {
     const [w, so, e, n] = p.caja_datos;
     if (w === e && so === n) {
-      mapLayers.push(L.circleMarker([so, w], { radius: 7, color: "#e3a33b", weight: 2, fillOpacity: 0.6 }).addTo(map));
-      note += " Punto ámbar: centro de la única celda del modelo que usa Giovanni (queda fuera de la zona).";
+      L.circleMarker([so, w], { radius: 7, color: "#e3a33b", weight: 2, fillOpacity: 0.6 }).addTo(map);
+      note += t.mapPoint;
     } else {
-      mapLayers.push(L.rectangle(toBounds(p.caja_datos), { color: "#e3a33b", weight: 2, fillOpacity: 0.12 }).addTo(map));
-      note += " Recuadro ámbar: celdas de datos que promedia Giovanni.";
+      L.rectangle(toBounds(p.caja_datos), { color: "#e3a33b", weight: 2, fillOpacity: 0.12 }).addTo(map);
+      note += t.mapBox;
     }
   }
-  if (zoomTo) map.fitBounds(toBounds(zoomTo).pad(1.6), { maxZoom: 9 });
+  if (p.puntos && p.puntos.length) {
+    const pts = p.puntos.map(([lat, lon]) => L.latLng(lat, lon));
+    p.puntos.forEach(([lat, lon, id]) => L.circleMarker([lat, lon], { radius: 7, color: "#e3a33b", weight: 2, fillOpacity: 0.7 })
+      .bindTooltip(pointName(id)).addTo(map!));
+    note = t.mapPoints;
+    map.fitBounds(L.latLngBounds(pts).pad(pts.length > 1 ? 1.2 : 0), { maxZoom: 9 });
+    if (pts.length === 1) map.setView(pts[0], 9);
+  } else if (p.caja_pedida) map.fitBounds(toBounds(p.caja_pedida).pad(1.6), { maxZoom: 9 });
   document.getElementById("mapcap")!.textContent = note;
 }
 
 async function renderEvidence(scroll: boolean) {
+  const t = T();
   const host = document.getElementById("evidence")!;
   const s = await load<Series>(`series/${state.variable}_${state.region}.json`);
-  const meta = index.variables[state.variable];
-  const rname = index.regiones[state.region].nombre;
+  const meta = varMeta(index, state.variable);
+  const rname = regionMeta(index, state.region).nombre;
   const full = s.completa;
   const years = s.anual.anios;
-  const span = `${years[0]} y ${years[years.length - 1]}`;
+  const y0 = years[0];
+  const y1 = years[years.length - 1];
   const fb = predictionFeedback(state.prediction ?? "nada", full);
   const mt = multipleTestingNote(full, index.series.length);
   const d = digitsFor(meta);
+  const pp = s.pasaporte;
   host.innerHTML = `
     <section class="evidence">
       <p class="feedback ${fb.ok === true ? "yes" : fb.ok === false ? "no" : "maybe"}">${esc(fb.text)}</p>
-      <h2 class="verdict">${esc(verdictSentence(meta, rname, full, span))}</h2>
+      <h2 class="verdict">${esc(verdictSentence(meta, rname, full, y0, y1))}</h2>
       <p class="explain">${esc(verdictExplain(meta, full))}</p>
       ${mt ? `<p class="warn">${esc(mt)}</p>` : ""}
       <div class="facts">
-        <p><span class="big">${fmtSigned(full.pendiente_decada, d)}</span> ${esc(meta.unidad)} por década <em>pendiente Theil-Sen</em></p>
-        <p><span class="big">${fmtSigned(full.ic95_decada[0], d)} a ${fmtSigned(full.ic95_decada[1], d)}</span> <em>rango probable (IC 95 %)</em></p>
-        <p><span class="big">${fmtP(full.p_mk)}</span> <em>p de Mann-Kendall, corregido porque los años se parecen entre sí</em></p>
-        <p><span class="big">${full.n}</span> <em>años completos</em></p>
+        <p><span class="big">${fmtSigned(full.pendiente_decada, d)}</span> ${esc(meta.unidad)} ${esc(t.factPerDecade)} <em>${esc(t.factSlope)}</em></p>
+        <p><span class="big">${fmtSigned(full.ic95_decada[0], d)} – ${fmtSigned(full.ic95_decada[1], d)}</span> <em>${esc(t.factRange)}</em></p>
+        <p><span class="big">${fmtP(full.p_mk)}</span> <em>${esc(t.factP)}</em></p>
+        <p><span class="big">${full.n}</span> <em>${esc(t.factYears)}</em></p>
       </div>
       <div class="chart-head">
-        <h3>${state.raw ? "Los datos tal como llegan" : "Cada año comparado con lo normal"}</h3>
-        <button class="toggle" id="rawtoggle">${state.raw ? "Ver sin la estación" : "Ver los datos crudos"}</button>
+        <h3>${esc(state.raw ? t.chartRaw : t.chartAnom)}</h3>
+        <button class="toggle" id="rawtoggle">${esc(state.raw ? t.btnAnom : t.btnRaw)}</button>
       </div>
       <div id="chart" class="chart"></div>
-      <p class="caption">${state.raw
-        ? esc(seasonLesson(meta, s.amplitud_estacional, full, full.n))
-        : "Cada punto es un año: cuánto se separó, en promedio, de lo normal para cada mes. La recta ámbar es la tendencia (Theil-Sen); la franja, las pendientes compatibles con los datos."}</p>
+      <p class="caption">${esc(state.raw ? seasonLesson(meta, s.amplitud_estacional, full, full.n) : t.captionAnom)}</p>
     </section>
 
     <section class="challenge">
-      <h2>¿Y si miras otro intervalo?</h2>
-      <p class="lede small">Cada cuadro es un intervalo de 10 años o más: la fila dice el año en que empieza y la columna, el año en que termina. Ámbar intenso: mirando solo esos años concluirías una tendencia significativa (▲ sube, ▼ baja). Ámbar tenue: un indicio. Gris: nada claro. Toca cualquiera y compara.</p>
+      <h2>${esc(t.otherWindow)}</h2>
+      <p class="lede small">${esc(t.windowLede)}</p>
       <div class="challenge-grid">
         <div id="matrix"></div>
         <div class="challenge-side">
           <div id="wininfo"></div>
           ${s.ventanas_que_enganan.length ? `
-            <h3>Intervalos que engañan</h3>
+            <h3>${esc(t.trapsTitle)}</h3>
             <div class="traps">${s.ventanas_que_enganan.map((w, i) => `<button class="trap" data-trap="${i}">${windowLabel(w)}</button>`).join("")}</div>
-            <p class="small">Escoger el intervalo que confirma lo que uno quiere ver es uno de los errores más comunes en ciencia. Por eso aquí se ven todos.</p>` : `
-            <p class="small">Ningún intervalo de 10 años o más contradice la serie completa: la conclusión no depende de qué años mires.</p>`}
+            <p class="small">${esc(t.trapsNote)}</p>` : `
+            <p class="small">${esc(t.noTraps)}</p>`}
         </div>
       </div>
     </section>
 
     <details class="passport">
-      <summary>Pasaporte de la evidencia</summary>
+      <summary>${esc(t.passport)}</summary>
       <dl>
-        <dt>Fuente</dt><dd>${esc(s.pasaporte.fuente)}</dd>
-        <dt>Variable</dt><dd>${esc(s.pasaporte.producto)}</dd>
-        <dt>Herramienta</dt><dd>${esc(s.pasaporte.herramienta)}</dd>
-        <dt>Zona pedida</dt><dd>${s.pasaporte.caja_pedida ? s.pasaporte.caja_pedida.join(", ") : "—"} (oeste, sur, este, norte)</dd>
-        <dt>Datos usados</dt><dd>${s.pasaporte.caja_datos ? s.pasaporte.caja_datos.join(", ") : "—"}</dd>
-        <dt>Archivo</dt><dd>${esc(s.pasaporte.archivo)} · ${esc(s.pasaporte.verificacion)}</dd>
-        <dt>Método</dt><dd>${esc(s.pasaporte.metodo)}</dd>
-        <dt>Autocorrelación</dt><dd>lag 1 anual = ${full.autocorr_lag1 === null ? "—" : fmt(full.autocorr_lag1, 2)}; la varianza de Mann-Kendall se multiplicó por ${fmt(full.factor_varianza_ar1, 2)} (p sin corregir: ${fmtP(full.p_mk_simple)})</dd>
-        <dt>Comparaciones múltiples</dt><dd>q de Benjamini-Hochberg sobre ${index.series.length} series = ${full.q_bh === undefined ? "—" : fmtP(full.q_bh)}</dd>
-        <dt>Código</dt><dd>${esc(s.pasaporte.codigo)}</dd>
-        <dt>Reproducir</dt><dd>${s.pasaporte.url_reproducir ? `<a href="${esc(s.pasaporte.url_reproducir)}" target="_blank" rel="noopener">Abrir la misma consulta en Giovanni</a>` : "—"}</dd>
+        <dt>${esc(t.pSource)}</dt><dd>${esc(pp.fuente)}</dd>
+        <dt>${esc(t.pVariable)}</dt><dd>${esc(pp.producto)}</dd>
+        <dt>${esc(t.pTool)}</dt><dd>${esc(pp.herramienta)}</dd>
+        <dt>${esc(t.pBox)}</dt><dd>${pp.caja_pedida ? pp.caja_pedida.join(", ") : "—"} ${esc(t.pBoxNote)}</dd>
+        <dt>${esc(t.pData)}</dt><dd>${pp.puntos ? pp.puntos.map(([la, lo, id]) => `${pointName(id)} (${la}, ${lo})`).join(" · ") : pp.caja_datos ? pp.caja_datos.join(", ") : "—"}</dd>
+        <dt>${esc(t.pFile)}</dt><dd>${esc(pp.archivo)} · ${esc(pp.puntos ? t.pVerifyModis : pp.reconstruido ? t.pVerifyRecon : t.pVerifyOrig)}</dd>
+        <dt>${esc(t.pMethod)}</dt><dd>${esc(pp.puntos ? t.pMethodModis : t.pMethodText)}</dd>
+        <dt>${esc(t.pAutocorr)}</dt><dd>${esc(t.pAutocorrText(full.autocorr_lag1 === null ? "—" : fmt(full.autocorr_lag1, 2), fmt(full.factor_varianza_ar1, 2), fmtP(full.p_mk_simple)))}</dd>
+        <dt>${esc(t.pMulti)}</dt><dd>${esc(t.pMultiText(index.series.length, full.q_bh === undefined ? "—" : fmtP(full.q_bh)))}</dd>
+        <dt>${esc(t.pCode)}</dt><dd>${esc(pp.codigo)}</dd>
+        <dt>${esc(t.pRepro)}</dt><dd>${pp.url_reproducir ? `<a href="${esc(pp.url_reproducir)}" target="_blank" rel="noopener">${esc(t.pOpenGiovanni)}</a>` : "—"}</dd>
       </dl>
     </details>`;
 
@@ -231,15 +259,15 @@ async function renderEvidence(scroll: boolean) {
     const el = document.getElementById("wininfo")!;
     const w = state.window;
     if (!w) {
-      el.innerHTML = `<p class="wtitle">Serie completa ${years[0]}–${years[years.length - 1]}</p><p>${VERDICT_SHORT[full.veredicto]}. Toca un cuadro para ver otro intervalo.</p>`;
+      el.innerHTML = `<p class="wtitle">${esc(t.fullSeries(y0, y1))}</p><p>${esc(verdictShort(full.veredicto))}. ${esc(t.tapCell)}</p>`;
       return;
     }
-    const isTrap = s.ventanas_que_enganan.some((t) => t.inicio === w.inicio && t.fin === w.fin);
+    const isTrap = s.ventanas_que_enganan.some((x) => x.inicio === w.inicio && x.fin === w.fin);
     el.innerHTML = `
-      <p class="wtitle">${windowLabel(w)} · ${w.fin - w.inicio + 1} años</p>
-      <p><strong>${VERDICT_SHORT[w.veredicto]}</strong>: ${fmtSigned(w.pendiente_decada, d)} ${esc(meta.unidad)} por década (rango ${fmtSigned(w.ic95_decada[0], d)} a ${fmtSigned(w.ic95_decada[1], d)}), p = ${fmtP(w.p_mk)}.</p>
+      <p class="wtitle">${windowLabel(w)} · ${w.fin - w.inicio + 1} ${esc(t.years)}</p>
+      <p><strong>${esc(verdictShort(w.veredicto))}</strong>: ${fmtSigned(w.pendiente_decada, d)} ${esc(meta.unidad)} ${esc(t.factPerDecade)} (${esc(t.range)} ${fmtSigned(w.ic95_decada[0], d)} – ${fmtSigned(w.ic95_decada[1], d)}), p = ${fmtP(w.p_mk)}.</p>
       ${isTrap ? `<p class="warn">${esc(trapText(w, full, meta))}</p>` : ""}
-      <button class="toggle" id="clearwin">Volver a la serie completa</button>`;
+      <button class="toggle" id="clearwin">${esc(t.backFull)}</button>`;
     document.getElementById("clearwin")?.addEventListener("click", () => pick(null));
   };
   const matrixEl = document.getElementById("matrix")!;
@@ -262,49 +290,47 @@ async function renderEvidence(scroll: boolean) {
 
 /* ───────────── Expedientes ───────────── */
 
-// Modo de prueba local: ?prueba=1 lee un archivo SINTÉTICO que solo existe en la máquina de desarrollo.
-const TEST_MODE = new URLSearchParams(location.search).get("prueba") === "1";
-
 async function viewCases() {
+  const t = T();
   const view = document.getElementById("view")!;
   const ph = await load<Phantom>(TEST_MODE ? "phantom-SINTETICO-prueba.json" : "phantom.json");
   const done = ph.estado_modis === "procesado" && ph.eventos.length > 0;
   view.innerHTML = `
-    ${TEST_MODE ? `<p class="test-banner">DATOS SINTÉTICOS DE PRUEBA. Nada de esta página es un resultado real.</p>` : ""}
+    ${TEST_MODE ? `<p class="test-banner">${esc(t.testBanner)}</p>` : ""}
     <section class="intro">
-      <h1>Expediente PHANTOM: ¿verde es recuperado?</h1>
-      <p class="lede">Después de una sequía, el bosque puede volver a verse verde antes de volver a funcionar como antes. Este expediente compara cuándo se recupera el verdor (NDVI) y cuándo se recuperan dos señales de funcionamiento: la productividad estimada (GPP, un modelo) y la temperatura de las hojas frente a la del aire.</p>
+      <h1>${esc(t.caseH1)}</h1>
+      <p class="lede">${esc(t.caseLede)}</p>
     </section>
 
     <section class="case-status">
-      <h2>${done ? (TEST_MODE ? "Resultados de prueba (sintéticos)" : "Resultados con datos MODIS reales") : "Estado: esperando los datos MODIS"}</h2>
-      ${done ? "" : `<p>Los datos de vegetación se pidieron a NASA AppEEARS el 14 de noviembre: un pedido por puntos (5 lugares revisados en imagen satelital, 2001–2024) y uno por área (2 zonas, 2012–2021). Mientras no lleguen, este expediente <strong>no muestra ningún resultado</strong> sobre la brecha. Lo que sí es real desde ya: las sequías que vamos a estudiar.</p>`}
+      <h2>${esc(done ? (TEST_MODE ? t.caseResultsTest : t.caseResultsReal) : t.caseWaiting)}</h2>
+      ${done ? `<p>${esc(TEST_MODE ? "" : t.caseRealNote)}</p>` : `<p>${t.caseWaitingText}</p>`}
     </section>
 
     <section class="droughts">
-      <h2>Las sequías del expediente</h2>
-      <p class="small">SPI-3: lluvia de 3 meses comparada con lo normal para esa época (IMERG V07). Las franjas son las sequías que usamos: SPI-3 por debajo de −1 durante 2 meses o más.</p>
+      <h2>${esc(t.droughtsH)}</h2>
+      <p class="small">${esc(t.droughtsNote)}</p>
       ${ph.sequias.map((d, i) => `
-        <h3>${esc(index.regiones[d.region].nombre)}</h3>
+        <h3>${esc(regionMeta(index, d.region).nombre)}</h3>
         <div class="chart" id="spi${i}"></div>`).join("")}
     </section>
 
     ${done ? phantomResults(ph) : ""}
 
     <section class="method-box">
-      <h2>Cómo se decide "recuperado"</h2>
-      <p>Cada señal se compara con lo normal para esa época del año (mediana de los años disponibles). Una señal está <strong>impactada</strong> si pasa 3 observaciones seguidas muy por debajo de lo normal (z &lt; −1,5). Se <strong>recupera</strong> cuando vuelve a menos de una desviación de lo normal (z ≥ −1) y se queda ahí 3 observaciones seguidas. Si la siguiente sequía llega antes, el evento queda <strong>censurado</strong>: no inventamos cuánto habría tardado.</p>
-      <p>Δt = día en que se recupera la función − día en que se recupera el verdor. Con compuestos de 8 y 16 días, una diferencia menor de 32 días no se distingue de cero.</p>
-      <h3>Lo que este expediente no afirma</h3>
-      <p>No mide la salud completa del ecosistema. GPP sale de un modelo que usa en parte el mismo verdor, así que no es independiente; por eso añadimos la señal térmica. Cinco puntos son una exploración, no la superficie afectada de una región.</p>
+      <h2>${esc(t.howH)}</h2>
+      <p>${t.howP1}</p>
+      <p>${esc(t.howP2)}</p>
+      <h3>${esc(t.notClaimH)}</h3>
+      <p>${esc(t.notClaim)}</p>
     </section>
 
     <section class="intro">
-      <h1>Expediente 2: ¿llega la siguiente sequía antes de recuperarse?</h1>
-      <p class="lede">Una colisión ocurre cuando empieza una nueva sequía mientras el verdor todavía está por debajo de lo normal tras la anterior.</p>
+      <h1>${esc(t.case2H)}</h1>
+      <p class="lede">${esc(t.case2Lede)}</p>
       ${ph.colisiones
-        ? `<p class="verdict">${ph.colisiones.colisiones} colisiones en ${ph.colisiones.eventos_evaluados} sequías evaluadas (punto × evento).</p>`
-        : `<p>Pendiente de los mismos datos MODIS. La regla ya está programada y probada.</p>`}
+        ? `<p class="verdict">${esc(t.case2Count(ph.colisiones.colisiones, ph.colisiones.eventos_evaluados))}</p>`
+        : `<p>${esc(t.case2Pending)}</p>`}
     </section>`;
 
   ph.sequias.forEach((d, i) => {
@@ -315,33 +341,51 @@ async function viewCases() {
 }
 
 function phantomResults(ph: Phantom): string {
+  const t = T();
   const ids = [...new Set(ph.eventos.map((e) => e.id))];
-  const rows = ph.eventos.map((e) => `
+  const informative = ph.eventos.filter((e) => e.estado !== "sin_impacto");
+  const both = ph.eventos.filter((e) => e.estado === "ambos_recuperados" && e.dt_dias !== null);
+  const after = both.filter((e) => (e.dt_dias as number) > 32);
+  const before = both.filter((e) => (e.dt_dias as number) < -32);
+  const within = both.length - after.length - before.length;
+  // Una caída de la función que empieza cuando el verdor ya se recuperó no es "recuperación tardía"
+  const robustAfter = after.filter((e) => e.rob_etiqueta === "ROBUSTO" && !e.funcion_cae_despues_del_verde);
+  const lateDips = after.filter((e) => e.funcion_cae_despues_del_verde);
+  const robustBefore = before.filter((e) => e.rob_etiqueta === "ROBUSTO")
+    .concat(both.filter((e) => e.rob_etiqueta === "ROBUSTO" && (e.rob_dt_mediana ?? 0) < -32 && !before.includes(e)));
+  const supported = after.length > before.length && robustAfter.length > 0;
+  const rows = informative.map((e) => `
     <tr>
-      <td>${esc(e.id)}</td><td>${esc(e.evento_inicio.slice(0, 7))}</td>
-      <td>${e.funcion === "gpp_modelo" ? "GPP (modelo)" : "Hojas vs. aire"}</td>
-      <td>${esc(e.estado.replace(/_/g, " "))}</td>
+      <td>${esc(pointName(e.id))}</td><td>${esc(e.evento_inicio.slice(0, 7))}</td>
+      <td>${esc(e.funcion === "gpp_modelo" ? t.sigGpp : t.sigLst)}</td>
+      <td>${esc(stateLabel(e.estado))}</td>
       <td class="num">${e.dt_dias === null ? "—" : (e.dt_es_cota_inferior ? "≥ " : "") + fmt(e.dt_dias, 0)}</td>
-      <td>${esc(e.rob_etiqueta)}</td>
+      <td>${esc(robustLabel(e.rob_etiqueta))}</td>
     </tr>`).join("");
   return `
     <section class="results">
-      <h2>Brecha por sequía y punto</h2>
+      <h2>${esc(supported ? t.phantomYesH : t.phantomNoH)}</h2>
+      <p class="verdict">${esc(t.phantomSummary(both.length, within, before.length, after.length))}</p>
+      <p class="explain">${esc(t.phantomRobust(robustAfter.map((e) => `${pointName(e.id)} ${e.evento_inicio.slice(0, 4)} (${e.funcion === "gpp_modelo" ? t.sigGpp : t.sigLst}, +${fmt(e.dt_dias as number, 0)} ${t.days})`), robustBefore.length))}</p>
+      ${lateDips.length ? `<p class="warn">${esc(t.phantomLateDip(lateDips.map((e) => `${pointName(e.id)} ${e.evento_inicio.slice(0, 4)} (${e.funcion === "gpp_modelo" ? t.sigGpp : t.sigLst}, +${fmt(e.dt_dias as number, 0)} ${t.days})`)))}</p>` : ""}
+      <p class="small">${esc(t.phantomCaveat)}</p>
+      <h3>${esc(t.gapTableH)}</h3>
       <div class="table-wrap"><table>
-        <thead><tr><th>Punto</th><th>Sequía</th><th>Señal de función</th><th>Estado</th><th class="num">Δt (días)</th><th>Robustez</th></tr></thead>
+        <thead><tr><th>${esc(t.thPoint)}</th><th>${esc(t.thDrought)}</th><th>${esc(t.thSignal)}</th><th>${esc(t.thState)}</th><th class="num">${esc(t.thDt)}</th><th>${esc(t.thRobust)}</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
+      <p class="small">${esc(t.hiddenRows(ph.eventos.length - informative.length))}</p>
     </section>
     <section class="challenge">
-      <h2>Cuestiona el hallazgo</h2>
-      <p class="lede small">Cambia los supuestos. Las 18 combinaciones están <strong>precalculadas por el mismo código</strong> del análisis (phantom/recovery.py); aquí eliges cuál ver y compruebas si la conclusión se mantiene.</p>
+      <h2>${esc(t.challengeH)}</h2>
+      <p class="lede small">${t.challengeLede}</p>
       <div class="controls">
-        <label>Punto <select id="c-id">${ids.map((i) => `<option>${esc(i)}</option>`).join("")}</select></label>
-        <label>Sequía <select id="c-ev"></select></label>
-        <label>Señal <select id="c-fn"><option value="gpp_modelo">GPP (modelo)</option><option value="lst_menos_aire">Hojas vs. aire</option></select></label>
-        <label>Verdor <select id="c-gr"><option value="ndvi">NDVI</option><option value="evi">EVI</option></select></label>
-        <label>Umbral <select id="c-th"><option>-1.5</option><option selected>-1</option><option>-0.5</option></select></label>
-        <label>Persistencia <select id="c-pe"><option>2</option><option selected>3</option><option>4</option></select></label>
+        <label>${esc(t.cPoint)} <select id="c-id">${ids.map((i) => `<option value="${esc(i)}">${esc(pointName(i))}</option>`).join("")}</select></label>
+        <label>${esc(t.cDrought)} <select id="c-ev"></select></label>
+        <label>${esc(t.cSignal)} <select id="c-fn"><option value="gpp_modelo">${esc(t.sigGpp)}</option><option value="lst_menos_aire">${esc(t.sigLst)}</option></select></label>
+        <label>${esc(t.cGreen)} <select id="c-gr"><option value="ndvi">NDVI</option><option value="evi">EVI</option></select></label>
+        <label>${esc(t.cThreshold)} <select id="c-th"><option>-1.5</option><option selected>-1</option><option>-0.5</option></select></label>
+        <label>${esc(t.cPersist)} <select id="c-pe"><option>2</option><option selected>3</option><option>4</option></select></label>
       </div>
       <div id="c-out"></div>
       <div id="c-strip" class="chart"></div>
@@ -349,7 +393,8 @@ function phantomResults(ph: Phantom): string {
 }
 
 function wirePhantom(ph: Phantom) {
-  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const t = T();
+  const $ = <E extends HTMLElement>(id: string) => document.getElementById(id) as E;
   const fillEvents = () => {
     const id = $<HTMLSelectElement>("c-id").value;
     const evs = [...new Set(ph.eventos.filter((e) => e.id === id).map((e) => e.evento_inicio))];
@@ -366,71 +411,73 @@ function wirePhantom(ph: Phantom) {
     const valid = rows.filter((r) => r.estado === "ambos_recuperados" && r.dt_dias !== null);
     const pos = valid.filter((r) => (r.dt_dias as number) > 32).length;
     const neg = valid.filter((r) => (r.dt_dias as number) < -32).length;
-    $("c-out").innerHTML = `
-      <p class="verdict">${chosen ? (chosen.dt_dias === null ? `Con estos supuestos: ${esc(chosen.estado.replace(/_/g, " "))}.` : `Con estos supuestos: Δt = ${fmt(chosen.dt_dias, 0)} días.`) : "Combinación no disponible."}</p>
-      <p>De ${rows.length} combinaciones, ${valid.length} tienen ambas recuperaciones: ${pos} dan la función más de 32 días después del verdor, ${neg} más de 32 días antes, y ${valid.length - pos - neg} quedan dentro de la precisión del método.</p>`;
+    const head = chosen
+      ? (chosen.dt_dias === null ? `${t.cWith} ${stateLabel(chosen.estado)}.` : `${t.cWith} Δt = ${fmt(chosen.dt_dias, 0)} ${t.days}.`)
+      : t.cNA;
+    $("c-out").innerHTML = `<p class="verdict">${esc(head)}</p><p>${esc(t.cSummary(rows.length, valid.length, pos, neg, valid.length - pos - neg))}</p>`;
     const strip = $("c-strip");
     strip.innerHTML = "";
     strip.append(sensitivityStrip(rows, chosen ?? null, strip.clientWidth || 800));
   };
   $("c-id").addEventListener("change", () => { fillEvents(); update(); });
   ["c-ev", "c-fn", "c-gr", "c-th", "c-pe"].forEach((i) => $(i).addEventListener("change", update));
-  fillEvents();
+  // Empieza en un caso con ambas recuperaciones (el robusto de mayor |Δt| si existe), no en uno vacío
+  const start = [...ph.eventos].filter((e) => e.estado === "ambos_recuperados")
+    .sort((x, y) => Number(y.rob_etiqueta === "ROBUSTO") - Number(x.rob_etiqueta === "ROBUSTO")
+      || Math.abs(y.dt_dias ?? 0) - Math.abs(x.dt_dias ?? 0))[0];
+  if (start) {
+    $<HTMLSelectElement>("c-id").value = start.id;
+    fillEvents();
+    $<HTMLSelectElement>("c-ev").value = start.evento_inicio;
+    $<HTMLSelectElement>("c-fn").value = start.funcion;
+  } else fillEvents();
   update();
 }
 
 /* ───────────── Cómo funciona ───────────── */
 
 function viewMethod() {
+  const t = T();
   const view = document.getElementById("view")!;
-  const terms: [string, string][] = [
-    ["Variable", "Lo que se mide: lluvia, temperatura, humedad. Cada una tiene una unidad y una fuente."],
-    ["Estacionalidad", "El ciclo que se repite cada año: la temporada de lluvias, el verano. Es mucho más grande que una tendencia de décadas, así que hay que quitarla primero."],
-    ["Anomalía", "Cuánto se separa un mes de su promedio para ese mismo mes. Junio se compara con los otros junios, no con enero."],
-    ["Tendencia", "Hacia dónde se mueve la serie con los años. Usamos la pendiente de Theil-Sen: la mediana de las pendientes entre todos los pares de años, que no se deja arrastrar por un año extremo."],
-    ["Significancia", "Si no hubiera ninguna tendencia real, ¿qué tan raro sería ver un patrón así de ordenado? Eso es el valor p de la prueba de Mann-Kendall. Menos de 0,05 se suele llamar significativo."],
-    ["Autocorrelación", "Cuando un año se parece al anterior, los datos tienen menos información de la que aparentan. Corregimos la prueba por eso; si no, encontraría tendencias donde no las hay."],
-    ["Intervalo de confianza", "El rango de pendientes compatibles con los datos. Si incluye el cero, no podemos decir hacia dónde va."],
-    ["Muchas pruebas", "Si pruebas muchas series, alguna saldrá significativa por azar. El valor q (Benjamini-Hochberg) corrige por eso."],
-    ["Sin evidencia no es sin cambio", "Que una tendencia no sea significativa solo dice que estos datos no alcanzan para afirmarla. A veces solo hacen falta más años."],
-  ];
   view.innerHTML = `
     <section class="intro">
-      <h1>Cómo piensa un detective de datos</h1>
-      <p class="lede">Ningún número de esta herramienta está escrito a mano: todos salen del mismo código abierto que corre sobre los datos de la NASA. Estas son las ideas que usa.</p>
+      <h1>${esc(t.methodH1)}</h1>
+      <p class="lede">${esc(t.methodLede)}</p>
     </section>
-    <section class="glossary"><dl>${terms.map(([t, d]) => `<dt>${t}</dt><dd>${d}</dd>`).join("")}</dl></section>
+    <section class="glossary"><dl>${t.glossary.map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl></section>
     <section class="intro">
-      <h2>Límites que hay que conocer</h2>
-      <p>MERRA-2 y GLDAS son modelos, no mediciones directas, y sus celdas son más grandes que las zonas. GLDAS usa la lluvia como dato de entrada: si coincide con IMERG, no es una confirmación independiente. Con 24 años, una tendencia pequeña puede existir sin ser detectable.</p>
-      <p class="small">Datos actualizados: ${esc(index.generado)}. Método completo: METHODOLOGY.md en el repositorio.</p>
+      <h2>${esc(t.limitsH)}</h2>
+      <p>${esc(t.limits)}</p>
+      <p class="small">${esc(t.updated(index.generado))}</p>
     </section>`;
 }
 
 /* ───────────── Router ───────────── */
 
-async function route() {
+async function route(scrollTop = true) {
   const r = (location.hash.replace("#", "") || "investigar") as "investigar" | "expedientes" | "metodo";
   setNav(r);
-  if (map && r !== "investigar") { map.remove(); map = null; }
+  if (map) { map.remove(); map = null; }
   try {
     if (r === "expedientes") await viewCases();
     else if (r === "metodo") viewMethod();
     else await viewInvestigate();
   } catch (e) {
-    document.getElementById("view")!.innerHTML = `<section class="intro"><h2>No se pudieron cargar los datos</h2><p>${esc(String(e))}</p></section>`;
+    document.getElementById("view")!.innerHTML = `<section class="intro"><h2>${esc(T().loadError)}</h2><p>${esc(String(e))}</p></section>`;
   }
-  window.scrollTo({ top: 0 });
+  if (scrollTop) window.scrollTo({ top: 0 });
 }
 
 async function start() {
   shell();
   index = await load<Index>("index.json");
-  window.addEventListener("hashchange", route);
-  let t: number | undefined;
+  window.addEventListener("hashchange", () => route());
+  let timer: number | undefined;
   window.addEventListener("resize", () => {
-    clearTimeout(t);
-    t = window.setTimeout(() => { if (state.revealed && (location.hash === "" || location.hash === "#investigar")) renderEvidence(false); }, 200);
+    clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      if (state.revealed && (location.hash === "" || location.hash === "#investigar")) renderEvidence(false);
+    }, 200);
   });
   await route();
 }

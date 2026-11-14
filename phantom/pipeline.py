@@ -144,6 +144,10 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
                              "ventana_cortada_por_siguiente_sequia": bool(cut_by_next),
                              # Recovery Collision: el verdor seguía bajo su banda cuando empezó la siguiente sequía
                              "colision_verde": bool(cut_by_next and green_hit and prim["verde_recuperacion"] is None),
+                             # La función toca fondo DESPUÉS de que el verdor ya se recuperó: es otra caída, no una recuperación tardía
+                             "funcion_cae_despues_del_verde": bool(prim["verde_recuperacion"] is not None
+                                                                   and prim["funcion_minimo"] is not None
+                                                                   and prim["funcion_minimo"] > prim["verde_recuperacion"]),
                              **prim, **{f"rob_{k}": val for k, val in rob.items()}})
             if e["severidad"] <= ev["severidad"].nsmallest(3).max():
                 stem = figdir / f"fig3_evento_{pid}_{e['inicio']:%Y-%m}"
@@ -237,7 +241,28 @@ def write_results_md(md_path: Path, out: Path, validation_path: Path, modis: dic
                   f"- Pruebas estadísticas hechas (para leer los p con cuidado): {modis['n_pruebas_estadisticas']}",
                   "", "Δt medio (días, función − verde, solo eventos con ambas recuperaciones):", ""]
         for f, d in modis["dt_por_funcion"].items():
-            lines.append(f"- `{f}`: n = {d['n']}, media = {d['media']}, IC95 bootstrap = {d['ic95']}")
+            ic = f"[{d['ic95'][0]:.0f}, {d['ic95'][1]:.0f}]" if d.get("ic95") else "—"
+            media = f"{d['media']:.0f}" if d.get("media") is not None else "—"
+            lines.append(f"- `{f}`: n = {d['n']}, media = {media} días, IC95 bootstrap = {ic}")
+        rec = pd.read_csv(out / "recuperacion_eventos.csv")
+        both = rec[rec["estado"] == "ambos_recuperados"]
+        after, before = int((both["dt_dias"] > 32).sum()), int((both["dt_dias"] < -32).sum())
+        lines += ["",
+                  f"De {len(both)} comparaciones con ambas recuperaciones: {len(both) - after - before} dentro de ±32 días "
+                  f"(precisión del método), {before} con la función antes que el verdor y {after} después.",
+                  "Robustos (≥ 80 % de las combinaciones con el mismo signo y |mediana| > 32 días): " +
+                  "; ".join(f"{r.id} {str(r.evento_inicio)[:7]} {r.funcion} Δt = {r.dt_dias:.0f}"
+                            for r in rec[rec["rob_etiqueta"] == "ROBUSTO"].itertuples()) + ".",
+                  "",
+                  "Casos donde la función toca fondo después de que el verdor ya se recuperó (otra caída, no una "
+                  "recuperación tardía): " + ("; ".join(f"{r.id} {str(r.evento_inicio)[:7]} {r.funcion}" for r in
+                  rec[rec.get("funcion_cae_despues_del_verde", False) == True].itertuples()) or "ninguno") + ".",
+                  "",
+                  "**Lectura:** en estos puntos la hipótesis de PHANTOM (la función se recupera *después* del verdor) "
+                  "no se sostiene. El único caso robusto en esa dirección (GPP, un modelo, en Jaragua 2015) es una caída "
+                  "de GPP que empieza después de que el NDVI ya se había recuperado: no es una recuperación tardía. "
+                  "El IC bootstrap trata cada comparación como independiente, pero no lo son (los puntos de Montecristi "
+                  "comparten sequías); es optimista."]
         lines += ["", "Detalle: `results/recuperacion_eventos.csv`, `results/sensibilidad.csv`, "
                   "`results/tendencias.csv`.", "",
                   "Cinco puntos son una exploración. Estos números no describen bosques completos."]
@@ -250,21 +275,28 @@ def append_trends_md(md_path: Path, web_data: Path) -> None:
     idx = json.loads((web_data / "index.json").read_text(encoding="utf-8"))
     lines = ["", "## 4. Tendencias 2001–2024 (herramienta de detective)", "",
              "Anomalía anual (se quita el ciclo estacional). Pendiente Theil-Sen por década con IC 95 %; p de "
-             "Mann-Kendall corregido por autocorrelación AR(1); q de Benjamini-Hochberg sobre las 8 series.", "",
+             f"Mann-Kendall corregido por autocorrelación AR(1); q de Benjamini-Hochberg sobre las {len(idx['series'])} series. "
+             "Las series MODIS son la media de anomalías de los puntos de cada zona (años con 9 meses o más).", "",
              "| Serie | Pendiente / década | IC 95 % | p corregido (p simple) | q | Veredicto | Ventanas que engañan |",
              "|---|---|---|---|---|---|---|"]
+    sig, qs = [], []
     for item in idx["series"]:
         d = json.loads((web_data / "series" / f"{item['id']}.json").read_text(encoding="utf-8"))
         c = d["completa"]
+        if c["veredicto"] in ("sube", "baja"):
+            sig.append(f"{idx['variables'][d['variable']]['nombre']} · {idx['regiones'][d['region']]['nombre']} ({c['veredicto']})")
+            qs.append(c["q_bh"])
         unit = idx["variables"][d["variable"]]["unidad"]
         traps = ", ".join(f"{w['inicio']}–{w['fin']}" for w in d["ventanas_que_enganan"]) or "—"
         lines.append(
             f"| {idx['variables'][d['variable']]['nombre']} · {idx['regiones'][d['region']]['nombre']} | "
             f"{c['pendiente_decada']:+.3f} {unit} | [{c['ic95_decada'][0]:+.3f}, {c['ic95_decada'][1]:+.3f}] | "
             f"{c['p_mk']:.3f} ({c['p_mk_simple']:.3f}) | {c['q_bh']:.3f} | {c['veredicto']} | {traps} |")
-    lines += ["", "Lectura: con la corrección por autocorrelación solo la lluvia de Montecristi queda significativa "
-              "(p < 0,05), y deja de serlo al corregir por haber probado 8 series (q ≥ 0,05). \"Sin evidencia\" no "
-              "significa \"sin cambio\": los IC muestran qué cambios siguen siendo posibles."]
+    survive = [s for s, q in zip(sig, qs) if q < 0.05]
+    lines += ["",
+              f"Lectura: con p corregido < 0,05 e IC sin el cero: {', '.join(sig) or 'ninguna'}. "
+              f"Al corregir por las {len(idx['series'])} pruebas (q < 0,05) se mantienen: {', '.join(survive) or 'ninguna'}. "
+              "\"Sin evidencia\" no significa \"sin cambio\": los IC muestran qué cambios siguen siendo posibles."]
     with md_path.open("a", encoding="utf-8", newline=LF) as fh:
         fh.write(LF.join(lines) + LF)
 

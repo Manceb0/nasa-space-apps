@@ -1,0 +1,27 @@
+{
+  "archivos": [
+    "fig3_evento_jaraguacomparacionseco_2015-05.pdf",
+    "fig3_evento_jaraguacomparacionseco_2015-05.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    110.0
+  ],
+  "punto": "jaraguacomparacionseco",
+  "evento": [
+    "2015-05-01 00:00:00",
+    "2015-11-30 00:00:00"
+  ],
+  "fin_ventana": "2016-11-29 00:00:00",
+  "transformaciones": [
+    "z robusto por época del año (mediana, 1.4826 MAD), >= 8 años por época",
+    "LST - T2M MERRA-2 del mes, invertido (negativo = dosel más caliente)",
+    "línea = mediana móvil de 3 observaciones válidas"
+  ],
+  "umbral_recuperacion": -1.0,
+  "recuperaciones": {
+    "ndvi": "2015-09-14 00:00:00",
+    "gpp_modelo": "2015-12-27 00:00:00",
+    "lst_menos_aire": null
+  }
+}

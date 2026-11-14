@@ -20,10 +20,12 @@ def monthly_anomaly(s: pd.Series) -> tuple[pd.Series, pd.Series]:
     return anom, clim
 
 
-def annual_anomaly(anom: pd.Series) -> pd.DataFrame:
+def annual_anomaly(anom: pd.Series, min_months: int = 12) -> pd.DataFrame:
+    """Media anual de anomalías. Un año cuenta solo si tiene al menos `min_months` meses con dato
+    (12 para Giovanni, que no tiene huecos; 9 para MODIS, donde las nubes dejan meses vacíos)."""
     g = anom.groupby(anom.index.year)
     df = pd.DataFrame({"anom": g.mean(), "meses_validos": g.count()})
-    return df[df["meses_validos"] == 12]
+    return df[df["meses_validos"] >= min_months]
 
 
 def trend(years: np.ndarray, values: np.ndarray) -> dict:
@@ -79,9 +81,9 @@ def misleading_windows(ws: list[dict], full_verdict: str, k: int = 3) -> list[di
     return cands[:k]
 
 
-def analyze(s: pd.Series) -> dict:
+def analyze(s: pd.Series, min_months: int = 12) -> dict:
     anom, clim = monthly_anomaly(s)
-    annual = annual_anomaly(anom)
+    annual = annual_anomaly(anom, min_months)
     full = trend(annual.index.to_numpy(dtype=float), annual["anom"].to_numpy())
     full["veredicto"] = verdict(full)
     ws = windows(annual)
@@ -94,5 +96,6 @@ def analyze(s: pd.Series) -> dict:
         "completa": full,
         "ventanas": ws,
         "ventanas_que_enganan": misleading_windows(ws, full["veredicto"]),
-        "autocorr_lag1_mensual": stats.lag1_autocorr(anom.to_numpy()),
+        "autocorr_lag1_mensual": stats.lag1_autocorr(anom.dropna().to_numpy()),
+        "min_meses_por_anio": min_months,
     }

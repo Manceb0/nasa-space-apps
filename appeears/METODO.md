@@ -87,6 +87,28 @@ Descargar: https://appeears.earthdatacloud.nasa.gov/download/9490ce7b-3268-46aa-
 
 **Todavía no hay ningún resultado científico.** Este pedido solo trae los datos.
 
+**Estado del pedido de puntos:** terminado y descargado el 2026-11-14 (zip con 4 CSV de resultados, metadatos,
+`request.json` y `granule-list.txt`) en `data/appeears/`. Notas de lectura:
+- AppEEARS entrega los valores **ya escalados**. El lector lo detecta y no vuelve a escalar (queda en `results/estado_modis.json`).
+- AppEEARS **quita los guiones bajos** de los ID (`montecristi_monte_seco_a` → `montecristimontesecoa`).
+- Pasan calidad: MOD13Q1 2701 de 2765; MOD11A2 5310 de 5510; MOD17A2HGF 5525 de 5525.
+
+**Cobertura del suelo (MCD12Q1, 2001–2021), y una corrección a la regla de arriba:**
+
+| Punto | Clases IGBP | Lectura |
+|---|---|---|
+| Montecristi A | 2 (bosque perenne de hoja ancha) y 9 (sabana) | Cambia entre clases naturales |
+| Montecristi B | 9 (sabana) | Estable |
+| Sierra de Montecristi | 8 (sabana arbolada) y 9 (sabana) | Cambia entre clases naturales |
+| Jaragua | 2 | Estable |
+| Cordillera | 2 | Estable |
+
+La regla escrita decía "si cambia de clase, se excluye". El código aplicó otra: se excluye si aparece alguna
+clase no natural. Ningún punto pasó a cultivo ni a zona urbana. Los cambios bosque/sabana/sabana arbolada
+son frecuentes en MCD12Q1 en bosques secos y pueden ser confusión de la clasificación o degradación real.
+**Decisión:** los puntos se conservan y se marcan como "inestables". El paso de bosque a sabana en Montecristi A
+es coherente con la bajada del NDVI, pero no se presenta como prueba de degradación.
+
 ### Pedido de área (para el atlas)
 
 | Versión | Fecha | ID de AppEEARS | Contenido |

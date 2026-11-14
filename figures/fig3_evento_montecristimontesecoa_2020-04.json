@@ -1,0 +1,27 @@
+{
+  "archivos": [
+    "fig3_evento_montecristimontesecoa_2020-04.pdf",
+    "fig3_evento_montecristimontesecoa_2020-04.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    110.0
+  ],
+  "punto": "montecristimontesecoa",
+  "evento": [
+    "2020-04-01 00:00:00",
+    "2020-07-31 00:00:00"
+  ],
+  "fin_ventana": "2021-07-31 00:00:00",
+  "transformaciones": [
+    "z robusto por época del año (mediana, 1.4826 MAD), >= 8 años por época",
+    "LST - T2M MERRA-2 del mes, invertido (negativo = dosel más caliente)",
+    "línea = mediana móvil de 3 observaciones válidas"
+  ],
+  "umbral_recuperacion": -1.0,
+  "recuperaciones": {
+    "ndvi": "2021-03-22 00:00:00",
+    "gpp_modelo": "2020-09-05 00:00:00",
+    "lst_menos_aire": "2020-09-29 00:00:00"
+  }
+}

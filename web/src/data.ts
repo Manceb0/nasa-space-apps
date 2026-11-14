@@ -68,6 +68,7 @@ export interface Series {
     herramienta: string;
     caja_pedida: [number, number, number, number] | null;
     caja_datos: [number, number, number, number] | null;
+    puntos?: [number, number, string][] | null;
     url_reproducir: string | null;
     archivo: string;
     reconstruido: boolean;
@@ -99,6 +100,7 @@ export interface PhantomEventRow {
   verde_recuperacion: string | null;
   funcion_recuperacion: string | null;
   colision_verde?: boolean;
+  funcion_cae_despues_del_verde?: boolean;
   rob_etiqueta: string;
   rob_n_validas: number;
   rob_dt_mediana: number | null;

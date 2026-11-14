@@ -1,6 +1,7 @@
 import * as Plot from "@observablehq/plot";
 import type { Phantom, SensRow, Series, Trend, Window } from "./data";
 import { fmt } from "./text";
+import { T } from "./i18n";
 
 export const C = {
   ground: "#0d1316",
@@ -56,7 +57,7 @@ export function evidenceChart(s: Series, unit: string, win: Window | null, width
     width,
     height: Math.max(260, Math.min(360, width * 0.42)),
     x: { label: null, tickFormat: (d: number) => String(d), ticks: 8 },
-    y: { label: `Diferencia con lo normal (${unit})`, labelAnchor: "top", grid: true, nice: true },
+    y: { label: T().axisAnom(unit), labelAnchor: "top", grid: true, nice: true },
     marks: [
       Plot.ruleY([0], { stroke: C.muted, strokeOpacity: 0.5 }),
       Plot.areaY(fan(active, a0, a1), { x: "x", y1: "y1", y2: "y2", fill: C.data, fillOpacity: 0.16 }),
@@ -68,7 +69,7 @@ export function evidenceChart(s: Series, unit: string, win: Window | null, width
         stroke: (d: { x: number }) => (inWin(d.x) ? C.data : C.muted),
         strokeWidth: 1.5,
         tip: true,
-        title: (d: { x: number; y: number }) => `${d.x}: ${fmt(d.y, 2)} ${unit} respecto a lo normal`,
+        title: (d: { x: number; y: number }) => T().tipYear(d.x, fmt(d.y, 2), unit),
       }),
     ],
   });
@@ -86,7 +87,7 @@ export function rawChart(s: Series, unit: string, width: number): SVGSVGElement 
     width,
     height: Math.max(240, Math.min(320, width * 0.36)),
     x: { label: null, type: "utc" },
-    y: { label: `Valor mensual (${unit})`, labelAnchor: "top", grid: true, nice: true },
+    y: { label: T().axisRaw(unit), labelAnchor: "top", grid: true, nice: true },
     marks: [
       Plot.line(rows, { x: "date", y: "clim", stroke: C.muted, strokeWidth: 1, strokeDasharray: "3,3" }),
       Plot.line(rows, { x: "date", y: "v", stroke: C.data, strokeWidth: 1.2 }),
@@ -112,7 +113,7 @@ export function windowMatrix(s: Series, selected: Window | null, onPick: (w: Win
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
   svg.setAttribute("class", "matrix");
   svg.setAttribute("role", "group");
-  svg.setAttribute("aria-label", "Mapa de ventanas: filas = año de inicio, columnas = año de fin");
+  svg.setAttribute("aria-label", T().matrixAria);
   const traps = new Set(s.ventanas_que_enganan.map((w) => `${w.inicio}-${w.fin}`));
   for (const w of s.ventanas) {
     const col = w.fin - firstEnd;
@@ -121,7 +122,7 @@ export function windowMatrix(s: Series, selected: Window | null, onPick: (w: Win
     g.setAttribute("class", "mcell");
     g.setAttribute("tabindex", "0");
     g.setAttribute("role", "button");
-    g.setAttribute("aria-label", `${w.inicio} a ${w.fin}: ${w.veredicto.replace("_", " ")}`);
+    g.setAttribute("aria-label", `${w.inicio}–${w.fin}: ${w.veredicto.replace("_", " ")}`);
     const r = document.createElementNS(ns, "rect");
     r.setAttribute("x", String(pad.l + col * cell + 1));
     r.setAttribute("y", String(pad.t + row * cell + 1));
@@ -169,7 +170,7 @@ export function windowMatrix(s: Series, selected: Window | null, onPick: (w: Win
     label(pad.l + i * cell + cell / 2, pad.t + n * cell + 16, String(firstEnd + i));
     label(pad.l - 6, pad.t + i * cell + cell / 2 + 4, String(y0 + i), "end");
   }
-  label(pad.l + (n * cell) / 2, H - 4, "año en que termina el intervalo →");
+  label(pad.l + (n * cell) / 2, H - 4, T().matrixAxis);
   label(pad.l - 6, pad.t - 0, "", "end");
   return svg;
 }
@@ -203,7 +204,7 @@ export function sensitivityStrip(rows: SensRow[], chosen: SensRow | null, width:
     width,
     height: 150,
     marginLeft: 16,
-    x: { label: "Δt = función − verdor (días)", grid: true, nice: true },
+    x: { label: T().axisDt, grid: true, nice: true },
     y: { axis: null },
     marks: [
       Plot.rectX([0], { x1: -32, x2: 32, y1: 0, y2: 1, fill: C.surface2 }),

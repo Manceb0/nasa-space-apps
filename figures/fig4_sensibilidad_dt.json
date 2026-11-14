@@ -1,0 +1,13 @@
+{
+  "archivos": [
+    "fig4_sensibilidad_dt.pdf",
+    "fig4_sensibilidad_dt.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    259.0
+  ],
+  "datos": "results/sensibilidad.csv",
+  "combinaciones": "verdor {NDVI, EVI} × umbral {−1.5, −1, −0.5} × persistencia {2, 3, 4}",
+  "nota": "solo combinaciones donde ambas señales se recuperaron; desplazamiento vertical pequeño para separar puntos (semilla 0)"
+}
