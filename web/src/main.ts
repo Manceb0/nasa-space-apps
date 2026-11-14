@@ -553,7 +553,7 @@ const TIP_SIDE = (id: string): { direction: L.Direction; offset: [number, number
   : id === "montecristimontesecob" ? { direction: "top", offset: [0, -10] }
   : id === "sierramontecristi" ? { direction: "bottom", offset: [0, 10] }
   : { direction: "right", offset: [10, 0] };
-const rb = { id: "sierramontecristi", fn: "gpp_modelo" as Fn, lane: -1, mode: "3d" as "3d" | "2d" | "map" };
+const rb = { id: "sierramontecristi", fn: "gpp_modelo" as Fn, lane: -1, mode: (innerWidth < 640 ? "2d" : "3d") as "3d" | "2d" | "map" };
 const LL = (es: string, en: string) => (getLang() === "es" ? es : en);
 
 async function viewRibbon() {
@@ -723,8 +723,8 @@ async function viewRibbon() {
         <dt>${esc(LL("Se mantiene al cambiar la definición", "Holds when the definition changes"))}</dt><dd class="num">${comb} ${esc(LL("de", "of"))} ${a.combinaciones}</dd>
         <dt>${esc(LL("Observaciones válidas", "Valid observations"))}</dt><dd class="num">${Math.round(100 * ((a.ndvi_cobertura as number) ?? 0))} %</dd>
       </dl>
-      <p class="meta">${esc(LL("En esta ficha los días se cuentan desde el fin de la sequía (negativo: volvió antes de que terminara); en las gráficas, desde su inicio.", "In this card days count from the end of the drought (negative: back before it ended); in the charts, from its start."))} ${esc(LL("z: desviación robusta de lo normal para esa época del año (mediana y MAD, 8 años o más), suavizada con mediana de 3. Impacto: z < −1,5 durante 3 observaciones; recuperado: z ≥ −1 durante 3. La GPP es salida del modelo MOD17 y usa el mismo FPAR que el verdor: no es una medición independiente.",
-        "z: robust departure from normal for that time of year (median and MAD, 8+ years), smoothed with a median of 3. Impact: z < −1.5 for 3 observations; recovered: z ≥ −1 for 3. GPP is MOD17 model output and uses the same FPAR as greenness: it is not an independent measurement."))}</p>`;
+      <details class="rb-how"><summary>${esc(LL("Cómo se calcula", "How it is computed"))}</summary><p class="meta">${esc(LL("En esta ficha los días se cuentan desde el fin de la sequía (negativo: volvió antes de que terminara); en las gráficas, desde su inicio.", "In this card days count from the end of the drought (negative: back before it ended); in the charts, from its start."))} ${esc(LL("z: desviación robusta de lo normal para esa época del año (mediana y MAD, 8 años o más), suavizada con mediana de 3. Impacto: z < −1,5 durante 3 observaciones; recuperado: z ≥ −1 durante 3. La GPP es salida del modelo MOD17 y usa el mismo FPAR que el verdor: no es una medición independiente.",
+        "z: robust departure from normal for that time of year (median and MAD, 8+ years), smoothed with a median of 3. Impact: z < −1.5 for 3 observations; recovered: z ≥ −1 for 3. GPP is MOD17 model output and uses the same FPAR as greenness: it is not an independent measurement."))}</p></details>`;
   };
   const pickLane = (i: number) => {
     rb.lane = i;
@@ -736,7 +736,7 @@ async function viewRibbon() {
 
   playBtn.addEventListener("click", () => {
     if (rbStage!.playing()) { rbStage!.stop(); return; }
-    playBtn.textContent = LL("❚❚ Detener", "❚❚ Stop");
+    playBtn.textContent = LL("Detener", "Stop");
     rbStage!.play();
   });
   view.querySelectorAll<HTMLButtonElement>("[data-lane]").forEach((b) => b.addEventListener("click", () => pickLane(Number(b.dataset.lane))));

@@ -44,7 +44,7 @@
 .pill-nav__slot[data-hover] .pill-nav__face-alt { transform: translateY(0); transition-duration: 0.5s; }
 .pill-nav__fill { position: absolute; top: 100%; left: 50%; z-index: -1; width: var(--pn-fill, 200%); height: var(--pn-fill, 200%);
   margin: calc(var(--pn-fill, 200%) / -2) 0 0 calc(var(--pn-fill, 200%) / -2); border-radius: 50%; background: var(--pn-pill);
-  transform: scale(0); transition: transform 0.36s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; }
+  transform: scale(0); transition: transform 0.36s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; } /* taste-skill-ignore: círculo de relleno del hover de PillNav, no una entrada */
 .pill-nav__slot[data-hover] .pill-nav__fill { transform: scale(1); transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
 .pill-nav__dot { position: absolute; bottom: calc((var(--pn-inner) - var(--pn-font)) / 4 - 2px); left: 0; width: 4px; height: 4px; margin-left: -2px; border-radius: 999px;
   background: var(--pn-dot); opacity: 0; pointer-events: none; transition: transform 0.6s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.3s ease; }

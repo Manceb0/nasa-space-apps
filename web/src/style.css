@@ -668,3 +668,30 @@ main { padding-top: 88px; }
 .rb-bottom .rb-bar { padding-right: 34px; }
 .rb-bottom.collapsed .rb-bar { display: none; }
 .rb-bottom.collapsed .rb-time { margin-top: 0; padding-right: 40px; }
+
+/* ══════ Ajustes por heurísticas (taste-skill, modo app) ══════ */
+/* Bordes de los paneles flotantes: un susurro, no una caja */
+.rb-panel, .rb-bottom, .rb-big { border: 1px solid #23252a; }
+/* Nota de método plegada */
+.rb-how { margin-top: 14px; }
+.rb-how summary { cursor: pointer; font-size: 13px; font-weight: 600; color: #f4f4f5; list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+.rb-how summary::-webkit-details-marker { display: none; }
+.rb-how summary::before { content: "+"; display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 999px; background: rgba(255,255,255,.08); font-weight: 600; }
+.rb-how[open] summary::before { content: "−"; }
+/* Auditoría: capítulos como un control segmentado, no una fila de pestañas */
+.chapnav { display: inline-flex; gap: 2px; padding: 4px; border-radius: 999px; background: #17181c; margin: 18px 0 6px; }
+.chapnav a { padding: 8px 16px; border-radius: 999px; font-size: 14px; color: rgba(244,244,245,.64); transition: background .2s, color .2s; }
+.chapnav a:hover { color: #f4f4f5; background: rgba(255,255,255,.06); }
+/* Las tarjetas no se estiran sobre espacio vacío */
+.chapter .grid { align-items: start; }
+.card > .foot-note { margin-top: 12px; }
+@media (max-width: 640px) {
+  /* Menú en el flujo, arriba: nada fijo tapa los títulos al desplazarse */
+  body nav.pill-nav { position: relative; top: auto; bottom: auto; left: auto; transform: none; margin: 12px auto 0; display: flex; width: max-content; }
+  body { padding-bottom: 0; }
+  main { padding-top: 12px; }
+  .rb { margin-top: -12px; }
+  .rb-head h1 { font-size: 24px; }
+  .chapnav { display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+  .chapnav a { flex: none; }
+}
