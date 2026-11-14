@@ -1,0 +1,18 @@
+{
+  "archivos": [
+    "hr1_climatologia_resolucion_nativa.pdf",
+    "hr1_climatologia_resolucion_nativa.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    118.0
+  ],
+  "fuentes": [
+    "CHIRPS v2.0",
+    "IMERG V07",
+    "TerraClimate v1.1",
+    "SMAP L4 V008"
+  ],
+  "limites": "Límites: geoBoundaries DOM ADM0 (CC BY 4.0) y ADM1 (dominio público, Natural Earth)",
+  "nota": "*TerraClimate: rejilla 1/24°, pero anomalías mensuales de ERA5 (~0.25°) y capacidad de agua del suelo de 0.5°. Cada panel en su rejilla nativa, sin interpolar."
+}

@@ -1,0 +1,9 @@
+capa,resolucion_nativa,celdas_RD,criterio
+CHIRPS v2.0 mensual,0.05°,1649,celdas 0.05° con ≥50 % de área en RD y dato en todos los meses
+TerraClimate v1.1,1/24° (~4.6 km),2384,centro de celda dentro de RD
+IMERG V07 (NASA),0.1°,413,centro dentro de RD
+SMAP L4 V008 (NASA),9 km EASE-2,590,centro dentro de RD
+SoilGrids 2.0 (pedido a 0.0025°),0.00250°,657832,≈ área RD / área de píxel
+Copernicus DEM GLO-90,0.00083°,5920492,≈ área RD / área de píxel
+ESA WorldCover 2021 (vista 1/8),0.00067°,9250769,≈ área RD / área de píxel
+(referencia) área RD en la máscara,—,48232,km² (Σ área de celda × fracción en RD)

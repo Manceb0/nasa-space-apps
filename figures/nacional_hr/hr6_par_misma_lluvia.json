@@ -1,0 +1,13 @@
+{
+  "archivos": [
+    "hr6_par_misma_lluvia.pdf",
+    "hr6_par_misma_lluvia.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    135.0
+  ],
+  "metodo": "earthmemory/hr/pair.py",
+  "limites": "Límites: geoBoundaries DOM ADM0 (CC BY 4.0) y ADM1 (dominio público, Natural Earth)",
+  "nota": "Asociación: la diferencia de eficiencia acompaña a diferencias de suelo/terreno; no demuestra que las cause."
+}

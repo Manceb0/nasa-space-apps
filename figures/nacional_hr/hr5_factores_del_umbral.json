@@ -1,0 +1,11 @@
+{
+  "archivos": [
+    "hr5_factores_del_umbral.pdf",
+    "hr5_factores_del_umbral.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    82.0
+  ],
+  "metodo": "ridge estandarizado; λ por VC; VC externa dejando fuera bloques de 0.5°; IC por bootstrap de bloques espaciales (500)"
+}

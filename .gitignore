@@ -12,3 +12,7 @@ out/
 .secrets/
 # recortes crudos de Earthdata (reproducibles desde data/nacional/MANIFEST.json con el token)
 data/nacional/gesdisc/
+
+# Datos crudos de alta resolución (se regeneran con: docker compose run --rm alta_resolucion)
+data/nacional_hr/*
+!data/nacional_hr/MANIFEST.json

@@ -1,0 +1,12 @@
+{
+  "archivos": [
+    "hr4_quiebres.pdf",
+    "hr4_quiebres.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    125.0
+  ],
+  "metodo": "Pettitt sobre anomalías mensuales; fila 1: p asintótica (supone independencia) + BH; panel d: p por bootstrap de bloques circulares de 12 meses (999, mismos índices para todas las celdas)",
+  "limites": "Límites: geoBoundaries DOM ADM0 (CC BY 4.0) y ADM1 (dominio público, Natural Earth)"
+}

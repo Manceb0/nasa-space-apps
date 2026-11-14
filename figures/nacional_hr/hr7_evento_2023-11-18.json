@@ -1,0 +1,13 @@
+{
+  "archivos": [
+    "hr7_evento_2023-11-18.pdf",
+    "hr7_evento_2023-11-18.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    108.0
+  ],
+  "estacion": "ONAMET Arroyo Hondo Viejo, 431 mm el 18-nov-2023 (preliminar, según prensa: Acento)",
+  "posicion_estacion": "aproximada (barrio Arroyo Hondo Viejo, ±2 km); no son coordenadas oficiales",
+  "limites": "Límites: geoBoundaries DOM ADM0 (CC BY 4.0) y ADM1 (dominio público, Natural Earth)"
+}

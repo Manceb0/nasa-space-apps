@@ -1,0 +1,13 @@
+{
+  "archivos": [
+    "hr3b_curvas_por_paisaje.pdf",
+    "hr3b_curvas_por_paisaje.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    72.0
+  ],
+  "leyenda": "θ = umbral común del grupo; banda = IC 95 % bootstrap; n.s. = el IC del cambio de pendiente incluye 0",
+  "metodo": "thresholds.pooled_curve: umbral común por grupo, efectos fijos celda×mes, bootstrap de bloques de tiempo compartidos (IC 95 %, banda)",
+  "datos": "CHIRPS + TerraClimate (0.05°); CHIRPS + SMAP L4 (9 km, 2015-2024)"
+}

@@ -1,0 +1,13 @@
+{
+  "archivos": [
+    "hr3_umbrales.pdf",
+    "hr3_umbrales.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    120.0
+  ],
+  "metodo": "earthmemory/hr/thresholds.py: M0 lineal vs M1 segmentada; sup-F con bootstrap de residuos en bloques circulares de 12 meses (499); BH-FDR; sostenido = q<0.05 y ΔBIC>2",
+  "datos": "CHIRPS 0.05° (lluvia) y TerraClimate soil (1/24° → 0.05°), 2001-2024",
+  "limites": "Límites: geoBoundaries DOM ADM0 (CC BY 4.0) y ADM1 (dominio público, Natural Earth)"
+}

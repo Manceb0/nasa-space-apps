@@ -1,0 +1,17 @@
+{
+  "archivos": [
+    "hr2_factores_estaticos.pdf",
+    "hr2_factores_estaticos.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    112.0
+  ],
+  "fuentes": [
+    "SoilGrids 2.0",
+    "Copernicus DEM GLO-90",
+    "ESA WorldCover 2021 v200"
+  ],
+  "remuestreo": "media ponderada por área (continuos); fracción de clase (WorldCover)",
+  "limites": "Límites: geoBoundaries DOM ADM0 (CC BY 4.0) y ADM1 (dominio público, Natural Earth)"
+}
