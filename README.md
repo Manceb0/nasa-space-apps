@@ -2,7 +2,8 @@
 
 **Se ve verde, pero ¿ya funciona?**
 
-Herramienta en línea: **https://earth-system-detective.vercel.app**
+Por ahora se prueba en local (`cd web && npm run preview`, puerto 4180). Hay una versión anterior publicada
+(solo español, sin datos MODIS) en https://earth-system-detective.vercel.app; no se actualiza sin aprobación del equipo.
 
 Stellar Horizons · NASA Space Apps 2026 · Santiago, República Dominicana
 
