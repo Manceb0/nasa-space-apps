@@ -15,7 +15,7 @@
 | Challenge the Evidence (18 combinaciones) | **Provisional**: igual que arriba | Lee `sensibilidad.csv` real cuando exista |
 | Expediente Recovery Collision | **Provisional**: regla programada y probada | Esperando AppEEARS |
 | Atlas de impacto (mapa de discordancia) | **Pendiente** | Pedido de área `eec5627a…` enviado; sin datos no hay mapa |
-| URL pública | **Pendiente** | Vercel pide iniciar sesión de nuevo (token vencido); el repo de GitHub no existe todavía |
+| URL pública | **Implementado y verificado** | https://earth-system-detective.vercel.app: página y datos responden 200 sin inicio de sesión; el archivo sintético no existe allí (404) |
 | Versión en inglés para el jurado global | **Pendiente: decisión del equipo** | — |
 
 Stellar Horizons · 14 de noviembre de 2026, sábado por la tarde · cierre: domingo 15, 11:59 p. m. (hora RD)

@@ -2,6 +2,8 @@
 
 **Se ve verde, pero ¿ya funciona?**
 
+Herramienta en línea: **https://earth-system-detective.vercel.app**
+
 Stellar Horizons · NASA Space Apps 2026 · Santiago, República Dominicana
 
 Después de una sequía, ¿la vegetación vuelve a verse normal antes de volver a funcionar normal?
@@ -101,3 +103,5 @@ cd web && npm install && npm run build
 
 El sitio queda en `web/dist/`. Para verlo en local: `npm run preview` (puerto 4180).
 `?prueba=1` carga un archivo SINTÉTICO que solo existe en la máquina de desarrollo y lo marca con un aviso rojo.
+
+Publicación: `cd web && npx vercel@latest deploy --prod` (proyecto de Vercel `earth-system-detective`).
