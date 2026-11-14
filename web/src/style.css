@@ -590,3 +590,16 @@ main { max-width: 1480px; padding: 24px 32px 64px; }
   .rb-scene { height: 380px; margin: 0 -16px; }
 }
 .rb[data-mode="2d"] .rb-2d-h, .rb[data-mode="2d"] #rb-2d { display: none; }
+
+/* Menú PillNav: flota arriba; ya no hay riel lateral */
+body { padding-left: 0; }
+main { padding-top: 88px; }
+.rb { margin-top: -88px; }
+.rb-top { top: 92px; }
+.rb-panel { top: 84px; }
+@media (max-width: 1100px) { .rb { margin-top: -88px; padding-top: 72px; } .rb-top { top: auto; } .rb-panel { top: auto; } }
+@media (max-width: 640px) {
+  body { padding-bottom: 76px; }
+  main { padding-top: 16px; }
+  .rb { margin-top: -16px; padding-top: 0; }
+}

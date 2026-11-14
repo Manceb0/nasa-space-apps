@@ -6,6 +6,7 @@ import {
 } from "./charts";
 import { load, type Audit, type Index, type Phantom, type Puntos, type Series, type Window } from "./data";
 import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
+import { pillNav, wirePillNav } from "./pillnav";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
@@ -60,7 +61,7 @@ function baseMap(el: HTMLElement, center: [number, number], zoom: number): L.Map
   return m;
 }
 
-const ICON: Record<string, string> = {
+export const ICON: Record<string, string> = {
   investigar: '<path d="M2.75 5.25l4.75-2 5 2 4.75-2v11.5l-4.75 2-5-2-4.75 2z"/><path d="M7.5 3.25v11.5M12.5 5.25v11.5"/>',
   expedientes: '<path d="M3.5 5.5l1.5 1.5 2.5-2.5M3.5 11.5l1.5 1.5 2.5-2.5"/><path d="M10.5 6h6M10.5 12h6M3.5 16.5h13"/>',
   ribbon: '<path d="M2.5 8c2.5-4 5-4 7.5 0s5 4 7.5 0"/><path d="M2.5 13c2.5-4 5-4 7.5 0s5 4 7.5 0"/><path d="M2.5 8v5M17.5 8v5"/>',
@@ -70,21 +71,21 @@ const ICON: Record<string, string> = {
 function shell(): void {
   const t = T();
   document.title = t.title;
-  const item = (r: "investigar" | "ribbon" | "expedientes" | "metodo", label: string) =>
-    `<a class="rail-i" href="#${r}" data-nav="${r}" title="${esc(label)}" aria-label="${esc(label)}"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${ICON[r]}</svg><span>${esc(label)}</span></a>`;
   app.innerHTML = `
-    <nav class="rail" aria-label="${esc(t.brand)}">
-      <a class="rail-mark" href="#investigar" title="Stellar Horizons · ${esc(t.brand)}" aria-label="Stellar Horizons · ${esc(t.brand)}">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="${AMBER}"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
-      </a>
-      ${item("investigar", t.navInvestigate)}
-      ${item("ribbon", "Recovery Ribbon")}
-      ${item("expedientes", t.navAudit)}
-      ${item("metodo", t.navMethod)}
-      <button class="rail-lang" id="lang" aria-label="${esc(t.langSwitchLabel)}" title="${esc(t.langSwitchLabel)}" lang="${getLang() === "es" ? "en" : "es"}">${getLang() === "es" ? "EN" : "ES"}</button>
-    </nav>
+    ${pillNav({
+      logo: `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="${AMBER}"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`,
+      logoAlt: `Stellar Horizons · ${esc(t.brand)}`, logoHref: "#investigar", ariaLabel: esc(t.brand),
+      items: [
+        { key: "investigar", href: "#investigar", label: esc(t.navInvestigate), short: esc(t.navInvestigate) },
+        { key: "ribbon", href: "#ribbon", label: "Recovery Ribbon", short: "Ribbon" },
+        { key: "expedientes", href: "#expedientes", label: esc(t.navAudit), short: esc(t.navAudit) },
+        { key: "metodo", href: "#metodo", label: esc(t.navMethod), short: getLang() === "es" ? "Método" : "Method" },
+      ],
+      extra: `<button class="pill-nav__lang pill-nav__surface" id="lang" aria-label="${esc(t.langSwitchLabel)}" title="${esc(t.langSwitchLabel)}" lang="${getLang() === "es" ? "en" : "es"}">${getLang() === "es" ? "EN" : "ES"}<span class="pill-nav__rim"></span></button>`,
+    })}
     <main id="view"></main>
     <footer class="foot"><p>${esc(t.team)} · ${esc(t.footer)}</p></footer>`;
+  pnav = wirePillNav(app);
   document.getElementById("lang")!.addEventListener("click", () => {
     setLang(getLang() === "es" ? "en" : "es");
     shell();
@@ -92,7 +93,9 @@ function shell(): void {
   });
 }
 
+let pnav: { setActive: (k: string) => void } | null = null;
 function setNav(r: string) {
+  pnav?.setActive(r);
   document.querySelectorAll<HTMLAnchorElement>("[data-nav]").forEach((a) => a.classList.toggle("on", a.dataset.nav === r));
 }
 
