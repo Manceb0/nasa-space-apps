@@ -1,0 +1,12 @@
+{
+  "estado": "pendiente",
+  "faltan": [
+    "MOD11A2",
+    "MOD13Q1",
+    "MOD17A2HGF"
+  ],
+  "registro": [
+    "archivos encontrados: ninguno"
+  ],
+  "nota": "Sin resultados MODIS: no se calculó ninguna recuperación."
+}

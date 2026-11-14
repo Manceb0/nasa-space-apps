@@ -179,3 +179,17 @@ La humedad del suelo se analiza con el mismo método (0-10 cm y zona radicular).
 3. **Celdas sin datos en GLDAS en la costa.** Ver "Cajas usadas". Por eso las series de GLDAS no cubren exactamente las mismas cajas que IMERG.
 4. **MERRA-2 usa una sola celda por región.** Su centro cae fuera de la caja pedida (-71.25,20.0 y -71.25,17.5) y la celda es mucho más grande que la caja. Giovanni no rechazó la caja, así que no hizo falta agrandarla. T2M es contexto regional, no una medida local.
 5. **Limitaciones del método.** No es un índice estandarizado como SPI o SPEI. El percentil 20 sale de solo 24 años, y por construcción el 20 % de los meses queda marcado como seco. Algunas rachas de 2 meses pueden ser azar. GLDAS es un modelo forzado con precipitación y no es independiente de los datos de lluvia.
+
+## Verificación de los 5 CSV reconstruidos (2026-11-14)
+
+Se regeneraron las 5 consultas en Giovanni y se descargó el CSV original completo:
+`<nombre>.giovanni_original.csv`, junto a cada reconstruido. El pipeline lee el reconstruido e
+ignora los originales; los originales quedan como prueba.
+
+Resultado: mismas 288 fechas en el mismo orden, y **los 1440 valores reconstruidos son exactamente
+`round(original, 4)`**. Diferencia máxima: 5.0e-05 (un empate de redondeo en gldas_rootmoist_noroeste,
+2023-02-01: 112.67775 → 112.6778).
+
+Diferencias solo en la cabecera de los reconstruidos: la fila `Title` está resumida en 4 de los 5 archivos
+(GLDAS y MERRA-2), la fila `URL to Reproduce Results` es la versión corta (también reproduce el resultado)
+y existe la fila `Note`. Caja, valor de relleno y nombres de columna son idénticos.
