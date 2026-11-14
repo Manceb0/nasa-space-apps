@@ -3,7 +3,7 @@
 // leyenda solo cuando hay más de una serie y con la misma marca que explica.
 import * as Plot from "@observablehq/plot";
 import type { Audit, Phantom, PhantomEventRow, Puntos, SensRow, Series, Trend, Window, ZSeries } from "./data";
-import { fmt } from "./text";
+import { fmt, fmtSigned } from "./text";
 import { T } from "./i18n";
 
 export const C = {
@@ -644,6 +644,72 @@ export function quadrant(audits: Audit[], names: Record<string, string>, width: 
         title: (p: { name: string; f: string; x: number; y: number; censX: boolean; censY: boolean }) =>
           `${p.name}\n${t.sigGreen}: ${p.censX ? t.fNot : `${p.x} ${t.days}`}\n${p.f === "gpp_modelo" ? t.sigGpp : t.sigLst}: ${p.censY ? t.fNot : `${p.y} ${t.days}`}`,
       }),
+    ],
+  });
+}
+
+
+/** Línea temporal protagonista: cada mes frente a lo normal. Oculta hasta que la persona predice. */
+export function monthTimeline(s: Series, stressHigh: boolean, show: boolean, width: number): SVGSVGElement | HTMLElement {
+  const t = T();
+  const years = s.anual.anios;
+  const y0 = years[0];
+  const y1 = years[years.length - 1];
+  const at = (m: string) => new Date(`${m.slice(0, 7)}-15T00:00:00`);
+  const rows = s.meses
+    .map((m, i) => ({ date: at(m), v: s.anomalia_mensual[i] }))
+    .filter((r): r is { date: Date; v: number } => r.v !== null);
+  const abs = rows.map((r) => Math.abs(r.v)).sort((a, b) => a - b);
+  const lim = (abs[Math.floor(abs.length * 0.98)] || 1) * 1.08;
+  const clip = (v: number) => Math.max(-lim, Math.min(lim, v));
+  const stress = (v: number) => (stressHigh ? v > 0 : v < 0);
+  const narrow = width < 560;
+  const bw = Math.max(1, ((width - 52) / rows.length) * 0.7);
+  // La tendencia está ajustada sobre medias anuales: el valor del año y cae a mitad de ese año
+  const tr = s.completa;
+  const trend = [y0, y1].map((y) => ({ date: new Date(`${y}-07-01T00:00:00`), v: tr.intercepto + (tr.pendiente_decada / 10) * y }));
+  return Plot.plot({
+    ...base,
+    width,
+    height: narrow ? 180 : 240,
+    marginLeft: 44,
+    marginRight: 8,
+    x: { domain: [new Date(`${y0}-01-01T00:00:00`), new Date(`${y1 + 1}-01-01T00:00:00`)], ticks: narrow ? 4 : 12, tickFormat: "%Y", label: null },
+    y: { domain: [-lim, lim], ticks: 4, grid: true, label: null, tickFormat: (v: number) => fmt(v, Math.abs(lim) < 1 ? 2 : 0) },
+    marks: [
+      Plot.ruleY([0], { stroke: C.control }),
+      show ? Plot.ruleX(rows, { x: "date", y1: 0, y2: (r: { v: number }) => clip(r.v), stroke: (r: { v: number }) => (stress(r.v) ? C.data : "#6b6f74"), strokeWidth: bw }) : null,
+      show ? Plot.line(trend, { x: "date", y: "v", stroke: C.ink, strokeWidth: 2.5 }) : null,
+      show ? null : Plot.text([0], { frameAnchor: "middle", dy: -18, text: () => t.tlHidden, fill: C.muted, fontSize: narrow ? 13 : 15 }),
+    ],
+  });
+}
+
+/** Incertidumbre a la vista: el rango probable de la pendiente frente al cero ("sin cambio"). */
+export function uncertaintyBar(tr: Trend, digits: number, unit: string, width: number): SVGSVGElement | HTMLElement {
+  const t = T();
+  const [lo, hi] = tr.ic95_decada;
+  const est = tr.pendiente_decada;
+  const a = Math.min(lo, 0, est);
+  const b = Math.max(hi, 0, est);
+  const pad = (b - a) * 0.12 || 1;
+  return Plot.plot({
+    ...base,
+    width,
+    height: 118,
+    marginLeft: 18,
+    marginRight: 18,
+    marginTop: 34,
+    marginBottom: 40,
+    x: { domain: [a - pad, b + pad], ticks: 5, label: `${unit} ${t.factPerDecade}`, labelAnchor: "center", labelOffset: 34 },
+    y: { domain: [-1, 1], axis: null },
+    marks: [
+      Plot.ruleX([0], { stroke: C.muted, strokeDasharray: "3,3" }),
+      // "0 = sin cambio" debajo de la barra, del lado que tenga sitio (arriba van los extremos del rango)
+      Plot.text([0], { x: (d: number) => d, y: -0.95, text: () => t.uncZero, textAnchor: 0 > (a + b) / 2 ? "end" : "start", dx: 0 > (a + b) / 2 ? -6 : 6, fill: C.muted, fontSize: 12 }),
+      Plot.link([{ x1: lo, x2: hi }], { x1: "x1", x2: "x2", y1: 0, y2: 0, stroke: C.data, strokeOpacity: 0.38, strokeWidth: 16, strokeLinecap: "round" }),
+      Plot.dot([est], { x: (d: number) => d, y: 0, r: 8, fill: C.data, stroke: C.ground, strokeWidth: 2 }),
+      Plot.text([lo, hi], { x: (d: number) => d, y: 0, text: (d: number) => fmtSigned(d, digits), dy: -20, fill: C.second, fontSize: 12 }),
     ],
   });
 }

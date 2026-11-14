@@ -2,7 +2,7 @@ import "leaflet/dist/leaflet.css";
 import "./style.css";
 import L from "leaflet";
 import {
-  DISCORDANT, dualTimeline, evidenceChart, gapIndex, heatmap, hysteresis, ledger, quadrant, rawChart, spiChart, windowLength, windowMatrix,
+  DISCORDANT, dualTimeline, evidenceChart, gapIndex, heatmap, hysteresis, ledger, monthTimeline, quadrant, rawChart, spiChart, uncertaintyBar, windowLength, windowMatrix,
 } from "./charts";
 import { load, type Audit, type Index, type Phantom, type Puntos, type Series, type Window } from "./data";
 import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
@@ -64,9 +64,10 @@ function shell(): void {
   document.title = t.title;
   app.innerHTML = `
     <header class="bar">
-      <a class="brand" href="#investigar" aria-label="${esc(t.brand)}">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="${AMBER}"/><path d="M3 20c6-9 20-15 26-8" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
-        <span>${esc(t.brand)}</span>
+      <a class="brand" href="#investigar" aria-label="Stellar Horizons · ${esc(t.brand)}">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="${AMBER}"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
+        <span class="brand-team">Stellar Horizons</span>
+        <span class="brand-prod">${esc(t.brand)}</span>
       </a>
       <nav>
         <a href="#investigar" data-nav="investigar">${esc(t.navInvestigate)}</a>
@@ -89,7 +90,25 @@ function setNav(r: string) {
   document.querySelectorAll<HTMLAnchorElement>("[data-nav]").forEach((a) => a.classList.toggle("on", a.dataset.nav === r));
 }
 
-/* ───────────── Investigar ───────────── */
+/* ───────────── Investigar: el observatorio ───────────── */
+// Recorrido: pregunta grande → mapa a sangre con visores sobre cada zona → línea temporal mes a mes,
+// oculta hasta que la persona apuesta → la línea se dibuja → veredicto con su incertidumbre.
+
+const SHORT: Record<string, [string, string]> = {
+  imerg_precip: ["Lluvia", "Rain"],
+  merra2_t2m: ["Temp. del aire", "Air temp."],
+  gldas_soilmoi0_10cm: ["Humedad del suelo", "Soil moisture"],
+  gldas_rootmoist: ["Agua en raíces", "Root-zone water"],
+  modis_ndvi: ["Verdor (NDVI)", "Greenness (NDVI)"],
+  modis_lst: ["Temp. de superficie", "Surface temp."],
+  modis_gpp: ["Productividad (GPP)", "Productivity (GPP)"],
+};
+const shortName = (k: string) => (SHORT[k] ? SHORT[k][getLang() === "es" ? 0 : 1] : varMeta(index, k).nombre);
+// Variables en las que "más alto que lo normal" es la dirección del estrés (más calor)
+const STRESS_HIGH = new Set(["merra2_t2m", "modis_lst"]);
+// Mayúscula en la primera letra, también tras "¿"
+const cap = (x: string) => x.replace(/^(¿?)(\p{L})/u, (_m, q: string, c: string) => q + c.toUpperCase());
+let zoneLayer: L.Rectangle | null = null;
 
 async function viewInvestigate() {
   const t = T();
@@ -97,54 +116,57 @@ async function viewInvestigate() {
   const vmeta = varMeta(index, state.variable);
   const rmeta = regionMeta(index, state.region);
   const predLabel: Record<Prediction, string> = { sube: t.predUp, baja: t.predDown, nada: t.predNone };
-  const groups: [string, string[]][] = [
-    [t.groupClimate, Object.keys(index.variables).filter((k) => !k.startsWith("modis_"))],
-    [t.groupVeg, Object.keys(index.variables).filter((k) => k.startsWith("modis_"))],
-  ];
+  const arrow: Record<Prediction, string> = { sube: "↑", baja: "↓", nada: "→" };
+  const keys = Object.keys(index.variables);
+  const climate = keys.filter((k) => !k.startsWith("modis_"));
+  const veg = keys.filter((k) => k.startsWith("modis_"));
   const ph = !TEST_MODE ? await load<Phantom>("phantom.json") : null;
   const auds = (ph?.auditorias ?? []).filter((a) => a.veredicto !== "sin_impacto");
   const count = (v: string) => auds.filter((a) => a.veredicto === v).length;
+  const all = await Promise.all(Object.keys(index.regiones).map((k) => load<Series>(`series/${state.variable}_${k}.json`)));
+  const s = all.find((x) => x.region === state.region) ?? (await load<Series>(`series/${state.variable}_${state.region}.json`));
+  const y0 = s.anual.anios[0];
+  const y1 = s.anual.anios[s.anual.anios.length - 1];
+  const stressHigh = STRESS_HIGH.has(state.variable);
+  const chip = (k: string) => `<button class="chip ${k === state.variable ? "on" : ""}" data-var="${k}" role="radio" aria-checked="${k === state.variable}">${esc(shortName(k))}</button>`;
 
   view.innerHTML = `
-    <div class="title-row">
-      <h1>${esc(t.invTitle)}</h1>
-      <p>${esc(t.invSub)}</p>
-    </div>
-
-    <section class="card hero">
-      <div class="hero-map">
-        <div class="seg" role="radiogroup" aria-label="${esc(t.whereH)}">
-          ${Object.keys(index.regiones).map((k) => `<button data-reg="${k}" class="${k === state.region ? "on" : ""}">${esc(regionMeta(index, k).nombre)}</button>`).join("")}
+    <section class="obs">
+      <div class="obs-head">
+        <h1 class="obs-q">${esc(cap(vmeta.pregunta))}</h1>
+        <p class="obs-sub">${esc(t.obsSub(vmeta.nombre, rmeta.nombre, y0, y1))}</p>
+        <div class="vsel-row">
+          <div class="vsel" role="radiogroup" aria-label="${esc(t.whatQ)}">${climate.map(chip).join("")}<span class="vgap" aria-hidden="true"></span>${veg.map(chip).join("")}</div>
+          <div class="seg regions" role="radiogroup" aria-label="${esc(t.whereH)}">
+            ${Object.keys(index.regiones).map((k) => `<button data-reg="${k}" class="${k === state.region ? "on" : ""}">${esc(regionMeta(index, k).nombre)}</button>`).join("")}
+          </div>
         </div>
-        <div id="map" aria-label="${esc(t.mapLabel)}"></div>
-        <figcaption id="mapcap"></figcaption>
       </div>
-      <div class="hero-pick">
-        <h2>${esc(t.whatQ)}</h2>
-        ${groups.filter(([, ks]) => ks.length).map(([title, ks]) => `
-          <p class="group">${esc(title)}</p>
-          <div class="vlist" role="radiogroup" aria-label="${esc(title)}">
-            ${ks.map((k) => { const v = varMeta(index, k); return `
-              <button class="vrow ${k === state.variable ? "on" : ""}" data-var="${k}" role="radio" aria-checked="${k === state.variable}">
-                <strong>${esc(v.nombre)}</strong><span>${esc(v.pregunta)}</span>
-              </button>`; }).join("")}
-          </div>`).join("")}
-        <p class="def">${esc(vmeta.definicion)} <span class="kind">${esc(t.dataType)}: ${esc(vmeta.tipo)}.</span>${vmeta.aviso ? ` ${esc(vmeta.aviso)}` : ""}</p>
-        <p class="def">${esc(rmeta.descripcion)}</p>
+
+      <div class="stage bleed">
+        <div id="map" aria-label="${esc(t.mapLabel)}"></div>
+        <p class="stage-note" id="mapcap"></p>
+      </div>
+
+      <div class="tl">
+        <div class="tl-head">
+          <h2 class="tl-title">${esc(t.tlTitle(vmeta.nombre, rmeta.nombre))}</h2>
+          <div class="legend tl-legend ${state.revealed ? "" : "hidden"}" id="tl-legend">
+            <span><i class="sq" style="background:${AMBER}"></i>${esc(stressHigh ? t.tlAbove : t.tlBelow)}</span>
+            <span><i class="sq" style="background:#6b6f74"></i>${esc(stressHigh ? t.tlBelow : t.tlAbove)}</span>
+            <span><i class="ln" style="background:#ffffff"></i>${esc(t.tlTrend)}</span>
+          </div>
+        </div>
+        <div class="tl-plot" id="tl"></div>
+        <div class="tl-ask ${state.revealed ? "done" : ""}" id="ask">
+          <p class="ask-q">${esc(t.since2001(vmeta.nombre.charAt(0).toLowerCase() + vmeta.nombre.slice(1), rmeta.nombre))}</p>
+          <div class="answers" role="radiogroup" aria-label="${esc(t.hypothesis)}">
+            ${(["sube", "baja", "nada"] as Prediction[]).map((p) => `<button class="answer ${state.prediction === p ? "on" : ""}" data-pred="${p}"><span class="arw" aria-hidden="true">${arrow[p]}</span>${esc(predLabel[p])}</button>`).join("")}
+          </div>
+        </div>
+        <p class="def">${esc(vmeta.definicion)} <span class="kind">${esc(t.dataType)}: ${esc(vmeta.tipo)}.</span>${vmeta.aviso ? ` ${esc(vmeta.aviso)}` : ""} ${esc(rmeta.descripcion)}</p>
       </div>
     </section>
-
-    <div class="grid">
-      <section class="card s6 predict" id="predict">
-        <h2>${esc(t.hypothesis)}</h2>
-        <p class="q">${esc(t.since2001(vmeta.nombre.charAt(0).toLowerCase() + vmeta.nombre.slice(1), rmeta.nombre))}</p>
-        <div class="answers">
-          ${(["sube", "baja", "nada"] as Prediction[]).map((p) => `
-            <button class="answer ${state.prediction === p ? "on" : ""}" data-pred="${p}">${esc(predLabel[p])}</button>`).join("")}
-        </div>
-        <button class="reveal" id="reveal" ${state.prediction ? "" : "disabled"}>${esc(t.reveal)}</button>
-      </section>
-    </div>
 
     <div id="evidence"></div>
 
@@ -166,50 +188,81 @@ async function viewInvestigate() {
   view.querySelectorAll<HTMLButtonElement>("[data-reg]").forEach((b) => b.addEventListener("click", () => {
     state.region = b.dataset.reg!; resetInvestigation(); route(false);
   }));
+
+  const tlEl = document.getElementById("tl")!;
+  const drawTl = (animate: boolean) => {
+    tlEl.innerHTML = "";
+    tlEl.classList.toggle("draw", animate);
+    tlEl.append(monthTimeline(s, stressHigh, state.revealed, tlEl.clientWidth || 1100));
+  };
   view.querySelectorAll<HTMLButtonElement>("[data-pred]").forEach((b) => b.addEventListener("click", () => {
     state.prediction = b.dataset.pred as Prediction;
     view.querySelectorAll("[data-pred]").forEach((x) => x.classList.toggle("on", x === b));
-    (document.getElementById("reveal") as HTMLButtonElement).disabled = false;
+    document.getElementById("ask")!.classList.add("done");
+    document.getElementById("tl-legend")!.classList.remove("hidden");
+    const first = !state.revealed;
+    state.revealed = true;
+    if (first) drawTl(true);
+    renderEvidence(s, first);
+    setZoneLabel(s);
   }));
-  document.getElementById("reveal")!.addEventListener("click", () => { state.revealed = true; renderEvidence(true); });
 
-  const all = await Promise.all(Object.keys(index.regiones).map((k) => load<Series>(`series/${state.variable}_${k}.json`)));
   drawRegionMap(all);
-  if (state.revealed) renderEvidence(false);
+  drawTl(false);
+  if (state.revealed) { renderEvidence(s, false); setZoneLabel(s); }
 }
 
 function resetInvestigation() {
   state.prediction = null; state.revealed = false; state.window = null; state.raw = false;
 }
 
-/** El mapa protagonista: las dos zonas a la vez; la elegida en ámbar, la otra en blanco; clic para elegir. */
+/** Visor: las cuatro esquinas de la zona, como el encuadre de un instrumento. */
+function reticle(map: L.Map, b: L.LatLngBounds, color: string, weight: number, opacity: number) {
+  const n = b.getNorth(), s = b.getSouth(), w = b.getWest(), e = b.getEast();
+  const dx = (e - w) * 0.32, dy = (n - s) * 0.32;
+  const arms: L.LatLngExpression[][] = [
+    [[n - dy, w], [n, w], [n, w + dx]],
+    [[n, e - dx], [n, e], [n - dy, e]],
+    [[s + dy, e], [s, e], [s, e - dx]],
+    [[s, w + dx], [s, w], [s + dy, w]],
+  ];
+  L.polyline(arms, { color, weight, opacity, lineCap: "square", lineJoin: "miter", interactive: false }).addTo(map);
+}
+
+/** El mapa a sangre: las dos zonas a la vez; la elegida con visor ámbar, la otra en blanco; clic para elegir. */
 function drawRegionMap(all: Series[]) {
   const t = T();
   const el = document.getElementById("map");
   if (!el) return;
   const map = baseMap(el, [18.8, -71.2], 8);
+  if (L.Browser.mobile) map.dragging.disable();
   const toBounds = (b: number[]) => L.latLngBounds([b[1], b[0]], [b[3], b[2]]);
   const pts: L.LatLng[] = [];
-  let note = t.mapDashed;
+  let note = t.obsMapNote;
+  zoneLayer = null;
   for (const s of all) {
     const on = s.region === state.region;
     const color = on ? AMBER : "#ffffff";
+    const name = regionMeta(index, s.region).nombre;
     const pick = () => { if (!on) { state.region = s.region; resetInvestigation(); route(false); } };
     const p = s.pasaporte;
     if (p.puntos && p.puntos.length) {
       note = t.mapPoints;
       for (const [lat, lon, id] of p.puntos) {
         L.circleMarker([lat, lon], { radius: on ? 9 : 7, color, weight: 2, fillColor: color, fillOpacity: on ? 0.9 : 0.25 })
-          .bindTooltip(pointName(id)).on("click", pick).addTo(map);
+          .bindTooltip(`${pointName(id)} · ${name}`).on("click", pick).addTo(map);
         pts.push(L.latLng(lat, lon));
       }
     } else {
       const box = p.caja_datos && !(p.caja_datos[0] === p.caja_datos[2]) ? p.caja_datos : p.caja_pedida;
       if (box) {
-        L.rectangle(toBounds(box), { color, weight: on ? 3 : 2, dashArray: on ? undefined : "5 4", fillColor: color, fillOpacity: on ? 0.32 : 0.08 })
-          .bindTooltip(regionMeta(index, s.region).nombre, { permanent: true, direction: "right", offset: [8, 0], className: on ? "zone-tip on" : "zone-tip" })
+        const b = toBounds(box);
+        reticle(map, b, color, on ? 3 : 2, on ? 1 : 0.8);
+        const hit = L.rectangle(b, { stroke: false, fill: true, fillColor: color, fillOpacity: on ? 0.16 : 0.0001 })
+          .bindTooltip(name, { permanent: true, direction: "right", offset: [12, 0], className: on ? "zone-tip on" : "zone-tip" })
           .on("click", pick).addTo(map);
-        pts.push(toBounds(box).getNorthEast(), toBounds(box).getSouthWest());
+        if (on) zoneLayer = hit;
+        pts.push(b.getNorthEast(), b.getSouthWest());
       }
       if (p.caja_datos && p.caja_datos[0] === p.caja_datos[2] && on) {
         L.circleMarker([p.caja_datos[1], p.caja_datos[0]], { radius: 6, color: AMBER, weight: 2, fillOpacity: 0.6 }).addTo(map);
@@ -217,14 +270,21 @@ function drawRegionMap(all: Series[]) {
       }
     }
   }
-  if (pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.12), { maxZoom: 9, animate: false });
+  if (pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.18), { maxZoom: 9, animate: false });
   document.getElementById("mapcap")!.textContent = note;
 }
 
-async function renderEvidence(scroll: boolean) {
+/** Tras revelar, la etiqueta de la zona lleva el resultado. */
+function setZoneLabel(s: Series) {
+  if (!zoneLayer) return;
+  const meta = varMeta(index, state.variable);
+  const name = regionMeta(index, state.region).nombre;
+  zoneLayer.setTooltipContent(`${esc(name)} · ${fmtSigned(s.completa.pendiente_decada, digitsFor(meta))} ${esc(meta.unidad)} ${esc(T().factPerDecade)}`);
+}
+
+function renderEvidence(s: Series, animate: boolean) {
   const t = T();
   const host = document.getElementById("evidence")!;
-  const s = await load<Series>(`series/${state.variable}_${state.region}.json`);
   const meta = varMeta(index, state.variable);
   const rname = regionMeta(index, state.region).nombre;
   const full = s.completa;
@@ -235,64 +295,72 @@ async function renderEvidence(scroll: boolean) {
   const mt = multipleTestingNote(full, index.series.length);
   const d = digitsFor(meta);
   const pp = s.pasaporte;
+  const dir = full.veredicto === "sube" || full.veredicto === "baja";
   host.innerHTML = `
-    <div class="grid evidence">
-      <section class="card s6">
-        <p class="feedback ${fb.ok === true ? "yes" : ""}">${esc(fb.text)}</p>
-        <h2 class="verdict">${esc(verdictSentence(meta, rname, full, y0, y1))}</h2>
+    <section class="verdict-sec ${animate ? "fade-in" : ""}" id="verdict">
+      <p class="feedback ${fb.ok === true ? "yes" : ""}">${esc(fb.text)}</p>
+      <div class="bignum"><span class="num">${fmtSigned(full.pendiente_decada, d)}</span><span class="unit">${esc(meta.unidad)}<br>${esc(t.factPerDecade)}</span></div>
+      <h2 class="verdict">${esc(verdictSentence(meta, rname, full, y0, y1))}</h2>
+      <div class="unc">
+        <h3>${esc(t.uncH)}</h3>
+        <div id="unc" class="chart"></div>
         <p class="explain">${esc(verdictExplain(meta, full))}</p>
         ${mt ? `<p class="warn">${esc(mt)}</p>` : ""}
-        <div class="facts">
-          <p><em>${esc(t.factSlope)}</em><span class="big">${fmtSigned(full.pendiente_decada, d)}</span>${esc(meta.unidad)} ${esc(t.factPerDecade)}</p>
-          <p><em>${esc(t.factRange)}</em><span class="big">${fmtSigned(full.ic95_decada[0], d)} ${esc(t.to)} ${fmtSigned(full.ic95_decada[1], d)}</span>${esc(meta.unidad)}</p>
-          <p><em>${esc(t.factP)}</em><span class="big">${fmtP(full.p_mk)}</span>Mann-Kendall</p>
-          <p><em>${esc(t.factYears)}</em><span class="big">${full.n}</span>${y0}–${y1}</p>
-        </div>
-      </section>
+      </div>
+      <div class="stats">
+        <p><b>${fmtP(full.p_mk)}</b>${esc(t.factP)}</p>
+        ${full.q_bh !== undefined ? `<p><b>${fmtP(full.q_bh)}</b>${esc(t.qLabel(index.series.length))}</p>` : ""}
+        <p><b>${full.n}</b>${esc(t.factYears)} · ${y0}–${y1}</p>
+      </div>
+    </section>
 
-      <section class="card s6">
-        <div class="card-head">
-          <h3>${esc(state.raw ? t.chartRaw : t.chartAnom)}</h3>
-          <button class="toggle" id="rawtoggle">${esc(state.raw ? t.btnAnom : t.btnRaw)}</button>
-        </div>
-        <div id="chart" class="chart"></div>
-        <p class="caption">${esc(state.raw ? seasonLesson(meta, s.amplitud_estacional, full, full.n) : t.captionAnom)}</p>
-      </section>
+    <section class="ev-sec">
+      <div class="sec-h">
+        <h2>${esc(state.raw ? t.chartRaw : t.chartAnom)}</h2>
+        <button class="toggle" id="rawtoggle">${esc(state.raw ? t.btnAnom : t.btnRaw)}</button>
+      </div>
+      <div id="chart" class="chart"></div>
+      <p class="caption">${esc(state.raw ? seasonLesson(meta, s.amplitud_estacional, full, full.n) : t.captionAnom)}</p>
+    </section>
 
-      <section class="card s3">
+    <section class="ev-sec ev-two">
+      <div>
         <h2>${esc(t.windowsH)}</h2>
         <p class="sub">${esc(t.windowLede)}</p>
         <div id="matrix"></div>
-      </section>
-      <section class="card s3 side">
+      </div>
+      <div class="side">
         <div id="wininfo"></div>
         <h3>${esc(t.wlTitle)}</h3>
         <p class="sub">${esc(t.wlSub)}</p>
         <div id="wlen" class="chart"></div>
-        <div class="legend"><span><i class="sq" style="background:${AMBER}"></i>${esc(t.wlHit)}</span>${full.veredicto === "sube" || full.veredicto === "baja" ? `<span><i class="sq" style="background:#e6e6e6"></i>${esc(t.wlOpp)}</span>` : ""}</div>
+        <div class="legend"><span><i class="sq" style="background:${AMBER}"></i>${esc(t.wlHit)}</span>${dir ? `<span><i class="sq" style="background:#e6e6e6"></i>${esc(t.wlOpp)}</span>` : ""}</div>
         ${s.ventanas_que_enganan.length ? `
           <h3>${esc(t.trapsTitle)}</h3>
           <div class="traps">${s.ventanas_que_enganan.map((w, i) => `<button class="trap" data-trap="${i}">${windowLabel(w)}</button>`).join("")}</div>
           <p class="small">${esc(t.trapsNote)}</p>` : `<p class="small" style="margin-top:14px">${esc(t.noTraps)}</p>`}
-      </section>
+      </div>
+    </section>
 
-      <details class="card s6 passport">
-        <summary>${esc(t.passport)}</summary>
-        <dl>
-          <dt>${esc(t.pSource)}</dt><dd>${esc(pp.fuente)}</dd>
-          <dt>${esc(t.pVariable)}</dt><dd>${esc(pp.producto)}</dd>
-          <dt>${esc(t.pTool)}</dt><dd>${esc(pp.herramienta)}</dd>
-          <dt>${esc(t.pBox)}</dt><dd>${pp.caja_pedida ? pp.caja_pedida.join(", ") + " " + esc(t.pBoxNote) : "—"}</dd>
-          <dt>${esc(t.pData)}</dt><dd>${pp.puntos ? pp.puntos.map(([la, lo, id]) => `${esc(pointName(id))} (${la}, ${lo})`).join(" · ") : pp.caja_datos ? pp.caja_datos.join(", ") : "—"}</dd>
-          <dt>${esc(t.pFile)}</dt><dd>${esc(pp.archivo)} · ${esc(pp.puntos ? t.pVerifyModis : pp.reconstruido ? t.pVerifyRecon : t.pVerifyOrig)}</dd>
-          <dt>${esc(t.pMethod)}</dt><dd>${esc(pp.puntos ? t.pMethodModis : t.pMethodText)}</dd>
-          <dt>${esc(t.pAutocorr)}</dt><dd>${esc(t.pAutocorrText(full.autocorr_lag1 === null ? "—" : fmt(full.autocorr_lag1, 2), fmt(full.factor_varianza_ar1, 2), fmtP(full.p_mk_simple)))}</dd>
-          <dt>${esc(t.pMulti)}</dt><dd>${esc(t.pMultiText(index.series.length, full.q_bh === undefined ? "—" : fmtP(full.q_bh)))}</dd>
-          <dt>${esc(t.pCode)}</dt><dd>${esc(pp.codigo)}</dd>
-          <dt>${esc(t.pRepro)}</dt><dd>${pp.url_reproducir ? `<a href="${esc(pp.url_reproducir)}" target="_blank" rel="noopener">${esc(t.pOpenGiovanni)}</a>` : "—"}</dd>
-        </dl>
-      </details>
-    </div>`;
+    <details class="ev-sec passport">
+      <summary>${esc(t.passport)}</summary>
+      <dl>
+        <dt>${esc(t.pSource)}</dt><dd>${esc(pp.fuente)}</dd>
+        <dt>${esc(t.pVariable)}</dt><dd>${esc(pp.producto)}</dd>
+        <dt>${esc(t.pTool)}</dt><dd>${esc(pp.herramienta)}</dd>
+        <dt>${esc(t.pBox)}</dt><dd>${pp.caja_pedida ? pp.caja_pedida.join(", ") + " " + esc(t.pBoxNote) : "—"}</dd>
+        <dt>${esc(t.pData)}</dt><dd>${pp.puntos ? pp.puntos.map(([la, lo, id]) => `${esc(pointName(id))} (${la}, ${lo})`).join(" · ") : pp.caja_datos ? pp.caja_datos.join(", ") : "—"}</dd>
+        <dt>${esc(t.pFile)}</dt><dd>${esc(pp.archivo)} · ${esc(pp.puntos ? t.pVerifyModis : pp.reconstruido ? t.pVerifyRecon : t.pVerifyOrig)}</dd>
+        <dt>${esc(t.pMethod)}</dt><dd>${esc(pp.puntos ? t.pMethodModis : t.pMethodText)}</dd>
+        <dt>${esc(t.pAutocorr)}</dt><dd>${esc(t.pAutocorrText(full.autocorr_lag1 === null ? "—" : fmt(full.autocorr_lag1, 2), fmt(full.factor_varianza_ar1, 2), fmtP(full.p_mk_simple)))}</dd>
+        <dt>${esc(t.pMulti)}</dt><dd>${esc(t.pMultiText(index.series.length, full.q_bh === undefined ? "—" : fmtP(full.q_bh)))}</dd>
+        <dt>${esc(t.pCode)}</dt><dd>${esc(pp.codigo)}</dd>
+        <dt>${esc(t.pRepro)}</dt><dd>${pp.url_reproducir ? `<a href="${esc(pp.url_reproducir)}" target="_blank" rel="noopener">${esc(t.pOpenGiovanni)}</a>` : "—"}</dd>
+      </dl>
+    </details>`;
+
+  const unc = document.getElementById("unc")!;
+  unc.append(uncertaintyBar(full, d, meta.unidad, Math.min(760, unc.clientWidth || 760)));
 
   const chartEl = document.getElementById("chart")!;
   const drawChart = () => {
@@ -302,7 +370,7 @@ async function renderEvidence(scroll: boolean) {
   drawChart();
   const wl = document.getElementById("wlen")!;
   wl.append(windowLength(s, wl.clientWidth || 420));
-  document.getElementById("rawtoggle")!.addEventListener("click", () => { state.raw = !state.raw; renderEvidence(false); });
+  document.getElementById("rawtoggle")!.addEventListener("click", () => { state.raw = !state.raw; renderEvidence(s, false); });
 
   const winInfo = () => {
     const el = document.getElementById("wininfo")!;
@@ -332,7 +400,7 @@ async function renderEvidence(scroll: boolean) {
     pick(s.ventanas_que_enganan[Number(b.dataset.trap)]);
     document.getElementById("chart")!.scrollIntoView({ behavior: "smooth", block: "center" });
   }));
-  if (scroll) host.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (animate) document.querySelector(".tl")!.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 /* ───────────── Auditoría de recuperación (Recovery Integrity) ───────────── */
