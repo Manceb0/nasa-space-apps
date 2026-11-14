@@ -7,20 +7,20 @@ import { fmt, fmtSigned } from "./text";
 import { T } from "./i18n";
 
 export const C = {
-  ground: "#0c0d0f",
-  surface: "#15171a",
-  raised: "#23262a",
-  control: "#44484d",
+  ground: "#131217",
+  surface: "#131217",
+  raised: "#212023",
+  control: "#3a3a3e",
   ink: "#ffffff",
   second: "#e6e6e6",
-  muted: "#b4b4b4",
-  faint: "#949494",
-  grid: "#2a2d31",
+  muted: "#a9abb0",
+  faint: "#8a8c92",
+  grid: "#26262a",
   data: "#f2b33d",
 };
 
 const base = {
-  style: { background: "transparent", color: C.faint, fontFamily: "Poppins, system-ui, sans-serif", fontSize: "12px" },
+  style: { background: "transparent", color: C.faint, fontFamily: "Public Sans, Inter, system-ui, sans-serif", fontSize: "12px" },
   marginLeft: 48,
   marginRight: 12,
   marginTop: 18,
@@ -650,7 +650,8 @@ export function quadrant(audits: Audit[], names: Record<string, string>, width: 
 
 
 /** Línea temporal protagonista: cada mes frente a lo normal. Oculta hasta que la persona predice. */
-export function monthTimeline(s: Series, stressHigh: boolean, show: boolean, width: number): SVGSVGElement | HTMLElement {
+export function monthTimeline(s: Series, stressHigh: boolean, show: boolean, width: number,
+  bands: { a: string; b: string }[] = []): SVGSVGElement | HTMLElement {
   const t = T();
   const years = s.anual.anios;
   const y0 = years[0];
@@ -671,12 +672,16 @@ export function monthTimeline(s: Series, stressHigh: boolean, show: boolean, wid
   return Plot.plot({
     ...base,
     width,
-    height: narrow ? 180 : 240,
+    height: narrow ? 170 : 200,
     marginLeft: 44,
     marginRight: 8,
     x: { domain: [new Date(`${y0}-01-01T00:00:00`), new Date(`${y1 + 1}-01-01T00:00:00`)], ticks: narrow ? 4 : 12, tickFormat: "%Y", label: null },
     y: { domain: [-lim, lim], ticks: 4, grid: true, label: null, tickFormat: (v: number) => fmt(v, Math.abs(lim) < 1 ? 2 : 0) },
     marks: [
+      // Sequías (SPI-3) de la zona como franjas de fondo; el fin cubre su mes completo
+      Plot.rect(bands, { x1: (d: { a: string }) => new Date(`${d.a.slice(0, 7)}-01T00:00:00`),
+        x2: (d: { b: string }) => { const e = new Date(`${d.b.slice(0, 7)}-01T00:00:00`); e.setMonth(e.getMonth() + 1); return e; },
+        fill: "#2c2c31" }),
       Plot.ruleY([0], { stroke: C.control }),
       show ? Plot.ruleX(rows, { x: "date", y1: 0, y2: (r: { v: number }) => clip(r.v), stroke: (r: { v: number }) => (stress(r.v) ? C.data : "#6b6f74"), strokeWidth: bw }) : null,
       show ? Plot.line(trend, { x: "date", y: "v", stroke: C.ink, strokeWidth: 2.5 }) : null,
@@ -699,9 +704,9 @@ export function uncertaintyBar(tr: Trend, digits: number, unit: string, width: n
     height: 118,
     marginLeft: 18,
     marginRight: 18,
-    marginTop: 34,
-    marginBottom: 40,
-    x: { domain: [a - pad, b + pad], ticks: 5, label: `${unit} ${t.factPerDecade}`, labelAnchor: "center", labelOffset: 34 },
+    marginTop: 30,
+    marginBottom: 30,
+    x: { domain: [a - pad, b + pad], ticks: [], tickSize: 0, label: `${unit} ${t.factPerDecade}`, labelAnchor: "center", labelOffset: 22 },
     y: { domain: [-1, 1], axis: null },
     marks: [
       Plot.ruleX([0], { stroke: C.muted, strokeDasharray: "3,3" }),

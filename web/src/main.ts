@@ -8,7 +8,7 @@ import { load, type Audit, type Index, type Phantom, type Puntos, type Series, t
 import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
-  trapText, verdictExplain, verdictSentence, verdictShort, windowLabel, type Prediction,
+  trapText, verdictSentence, verdictShort, windowLabel, type Prediction,
 } from "./text";
 
 const app = document.getElementById("app")!;
@@ -59,26 +59,29 @@ function baseMap(el: HTMLElement, center: [number, number], zoom: number): L.Map
   return m;
 }
 
+const ICON: Record<string, string> = {
+  investigar: '<path d="M2.75 5.25l4.75-2 5 2 4.75-2v11.5l-4.75 2-5-2-4.75 2z"/><path d="M7.5 3.25v11.5M12.5 5.25v11.5"/>',
+  expedientes: '<path d="M3.5 5.5l1.5 1.5 2.5-2.5M3.5 11.5l1.5 1.5 2.5-2.5"/><path d="M10.5 6h6M10.5 12h6M3.5 16.5h13"/>',
+  metodo: '<path d="M3 4.75c2.5-1 5-1 7 .5 2-1.5 4.5-1.5 7-.5v11c-2.5-1-5-1-7 .5-2-1.5-4.5-1.5-7-.5z"/><path d="M10 5.25v11"/>',
+};
+
 function shell(): void {
   const t = T();
   document.title = t.title;
+  const item = (r: "investigar" | "expedientes" | "metodo", label: string) =>
+    `<a class="rail-i" href="#${r}" data-nav="${r}" title="${esc(label)}" aria-label="${esc(label)}"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${ICON[r]}</svg><span>${esc(label)}</span></a>`;
   app.innerHTML = `
-    <header class="bar">
-      <a class="brand" href="#investigar" aria-label="Stellar Horizons · ${esc(t.brand)}">
+    <nav class="rail" aria-label="${esc(t.brand)}">
+      <a class="rail-mark" href="#investigar" title="Stellar Horizons · ${esc(t.brand)}" aria-label="Stellar Horizons · ${esc(t.brand)}">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="${AMBER}"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
-        <span class="brand-team">Stellar Horizons</span>
-        <span class="brand-prod">${esc(t.brand)}</span>
       </a>
-      <nav>
-        <a href="#investigar" data-nav="investigar">${esc(t.navInvestigate)}</a>
-        <a href="#expedientes" data-nav="expedientes">${esc(t.navAudit)}</a>
-        <a href="#metodo" data-nav="metodo">${esc(t.navMethod)}</a>
-      </nav>
-      <span class="team">${esc(t.team)}</span>
-      <button class="lang" id="lang" aria-label="${esc(t.langSwitchLabel)}" lang="${getLang() === "es" ? "en" : "es"}">${esc(t.langSwitch)}</button>
-    </header>
+      ${item("investigar", t.navInvestigate)}
+      ${item("expedientes", t.navAudit)}
+      ${item("metodo", t.navMethod)}
+      <button class="rail-lang" id="lang" aria-label="${esc(t.langSwitchLabel)}" title="${esc(t.langSwitchLabel)}" lang="${getLang() === "es" ? "en" : "es"}">${getLang() === "es" ? "EN" : "ES"}</button>
+    </nav>
     <main id="view"></main>
-    <footer class="foot"><p>${esc(t.footer)}</p></footer>`;
+    <footer class="foot"><p>${esc(t.team)} · ${esc(t.footer)}</p></footer>`;
   document.getElementById("lang")!.addEventListener("click", () => {
     setLang(getLang() === "es" ? "en" : "es");
     shell();
@@ -90,10 +93,14 @@ function setNav(r: string) {
   document.querySelectorAll<HTMLAnchorElement>("[data-nav]").forEach((a) => a.classList.toggle("on", a.dataset.nav === r));
 }
 
-/* ───────────── Investigar: el observatorio ───────────── */
-// Recorrido: pregunta grande → mapa a sangre con visores sobre cada zona → línea temporal mes a mes,
-// oculta hasta que la persona apuesta → la línea se dibuja → veredicto con su incertidumbre.
+/* ───────────── Investigar: la consola del observatorio ───────────── */
+// Pregunta de la pantalla: ¿cambió esta variable en esta zona desde 2001, y cuánto?
+// Estilo data-terminal (taste-skill, semilla 2114408584): paneles más oscuros que el fondo, cifras tabulares,
+// y la única marca de selección es una línea de 1px en ámbar (el color de la sequía) del ancho de su etiqueta.
+// Elemento propio: el mapa de la zona responde a la serie; al recorrer los meses, la zona toma el valor de ese mes.
 
+// Variables en las que "más alto que lo normal" es la dirección del estrés (más calor)
+const STRESS_HIGH = new Set(["merra2_t2m", "modis_lst"]);
 const SHORT: Record<string, [string, string]> = {
   imerg_precip: ["Lluvia", "Rain"],
   merra2_t2m: ["Temp. del aire", "Air temp."],
@@ -104,19 +111,21 @@ const SHORT: Record<string, [string, string]> = {
   modis_gpp: ["Productividad (GPP)", "Productivity (GPP)"],
 };
 const shortName = (k: string) => (SHORT[k] ? SHORT[k][getLang() === "es" ? 0 : 1] : varMeta(index, k).nombre);
-// Variables en las que "más alto que lo normal" es la dirección del estrés (más calor)
-const STRESS_HIGH = new Set(["merra2_t2m", "modis_lst"]);
-// Mayúscula en la primera letra, también tras "¿"
-const cap = (x: string) => x.replace(/^(¿?)(\p{L})/u, (_m, q: string, c: string) => q + c.toUpperCase());
-let zoneLayer: L.Rectangle | null = null;
+
+interface ZoneMarks { paths: L.Path[]; label: L.Layer | null; name: string }
+let zone: ZoneMarks = { paths: [], label: null, name: "" };
+let playTimer: number | null = null;
+
+function stopPlay() {
+  if (playTimer !== null) { clearInterval(playTimer); playTimer = null; }
+}
 
 async function viewInvestigate() {
+  stopPlay();
   const t = T();
   const view = document.getElementById("view")!;
   const vmeta = varMeta(index, state.variable);
   const rmeta = regionMeta(index, state.region);
-  const predLabel: Record<Prediction, string> = { sube: t.predUp, baja: t.predDown, nada: t.predNone };
-  const arrow: Record<Prediction, string> = { sube: "↑", baja: "↓", nada: "→" };
   const keys = Object.keys(index.variables);
   const climate = keys.filter((k) => !k.startsWith("modis_"));
   const veg = keys.filter((k) => k.startsWith("modis_"));
@@ -128,57 +137,76 @@ async function viewInvestigate() {
   const y0 = s.anual.anios[0];
   const y1 = s.anual.anios[s.anual.anios.length - 1];
   const stressHigh = STRESS_HIGH.has(state.variable);
-  const chip = (k: string) => `<button class="chip ${k === state.variable ? "on" : ""}" data-var="${k}" role="radio" aria-checked="${k === state.variable}">${esc(shortName(k))}</button>`;
+  const droughts = [...(ph?.sequias.find((d) => d.region === state.region)?.eventos ?? [])].reverse();
+  const tab = (k: string) => `<button class="tab ${k === state.variable ? "on" : ""}" data-var="${k}" role="tab" aria-selected="${k === state.variable}">${esc(shortName(k))}</button>`;
 
   view.innerHTML = `
-    <section class="obs">
-      <div class="obs-head">
-        <h1 class="obs-q">${esc(cap(vmeta.pregunta))}</h1>
-        <p class="obs-sub">${esc(t.obsSub(vmeta.nombre, rmeta.nombre, y0, y1))}</p>
-        <div class="vsel-row">
-          <div class="vsel" role="radiogroup" aria-label="${esc(t.whatQ)}">${climate.map(chip).join("")}<span class="vgap" aria-hidden="true"></span>${veg.map(chip).join("")}</div>
-          <div class="seg regions" role="radiogroup" aria-label="${esc(t.whereH)}">
-            ${Object.keys(index.regiones).map((k) => `<button data-reg="${k}" class="${k === state.region ? "on" : ""}">${esc(regionMeta(index, k).nombre)}</button>`).join("")}
-          </div>
-        </div>
+    <div class="con-head">
+      <div>
+        <p class="crumb">Stellar Horizons<span aria-hidden="true">/</span>${esc(t.brand)}</p>
+        <h1>${esc(rmeta.nombre)}</h1>
+        <p class="con-sub">${esc(vmeta.nombre)} · ${y0}–${y1} · ${esc(vmeta.fuente)}</p>
       </div>
+      <div class="tabs" role="tablist" aria-label="${esc(t.whereH)}">
+        ${Object.keys(index.regiones).map((k) => `<button class="tab ${k === state.region ? "on" : ""}" data-reg="${k}" role="tab" aria-selected="${k === state.region}">${esc(regionMeta(index, k).nombre)}</button>`).join("")}
+      </div>
+    </div>
+    <div class="vtabs" role="tablist" aria-label="${esc(t.whatQ)}">
+      <span class="vt-group">${esc(t.groupClimate)}</span>${climate.map(tab).join("")}
+      <span class="vt-group">${esc(t.groupVegShort)}</span>${veg.map(tab).join("")}
+    </div>
 
-      <div class="stage bleed">
-        <div id="map" aria-label="${esc(t.mapLabel)}"></div>
-        <p class="stage-note" id="mapcap"></p>
-      </div>
+    <div class="console">
+      <section class="pnl map-pnl" aria-label="${esc(t.mapLabel)}">
+        <div id="map"></div>
+        <p class="map-note" id="mapcap"></p>
+      </section>
 
-      <div class="tl">
-        <div class="tl-head">
-          <h2 class="tl-title">${esc(t.tlTitle(vmeta.nombre, rmeta.nombre))}</h2>
-          <div class="legend tl-legend ${state.revealed ? "" : "hidden"}" id="tl-legend">
-            <span><i class="sq" style="background:${AMBER}"></i>${esc(stressHigh ? t.tlAbove : t.tlBelow)}</span>
-            <span><i class="sq" style="background:#6b6f74"></i>${esc(stressHigh ? t.tlBelow : t.tlAbove)}</span>
-            <span><i class="ln" style="background:#ffffff"></i>${esc(t.tlTrend)}</span>
+      <aside class="side-col">
+        <section class="pnl verdict-pnl" id="verdict" aria-live="polite"></section>
+        <section class="pnl drought-pnl">
+          <div class="pnl-h"><h2>${esc(t.zoneDroughtsH(rmeta.nombre))}</h2><span class="meta num">${droughts.length}</span></div>
+          <p class="meta">${esc(t.droughtsRule)}</p>
+          <div class="dscroll">
+            <table class="dtable">
+              <thead><tr><th>${esc(t.dPeriod)}</th><th class="num">${esc(t.dDur)}</th><th class="num">${esc(t.dPeak)}</th></tr></thead>
+              <tbody>${droughts.map((e, i) => `<tr data-ev="${i}" tabindex="0"><td>${e.inicio.slice(0, 7)} – ${e.fin.slice(0, 7)}</td><td class="num">${e.duracion_meses} ${esc(t.monthsShort)}</td><td class="num">${fmt(e.pico, 2)}</td></tr>`).join("")}</tbody>
+            </table>
+          </div>
+          <a class="more" href="#expedientes">${esc(t.droughtsGo)} →</a>
+        </section>
+      </aside>
+
+      <section class="pnl tl-pnl">
+        <div class="pnl-h">
+          <h2>${esc(t.tlTitle(vmeta.nombre, rmeta.nombre))}</h2>
+          <div class="tl-tools">
+            <span class="readout num" id="readout"></span>
+            <button class="txt-btn" id="play" ${state.revealed ? "" : "disabled"}>${esc(t.play)}</button>
           </div>
         </div>
-        <div class="tl-plot" id="tl"></div>
-        <div class="tl-ask ${state.revealed ? "done" : ""}" id="ask">
-          <p class="ask-q">${esc(t.since2001(vmeta.nombre.charAt(0).toLowerCase() + vmeta.nombre.slice(1), rmeta.nombre))}</p>
-          <div class="answers" role="radiogroup" aria-label="${esc(t.hypothesis)}">
-            ${(["sube", "baja", "nada"] as Prediction[]).map((p) => `<button class="answer ${state.prediction === p ? "on" : ""}" data-pred="${p}"><span class="arw" aria-hidden="true">${arrow[p]}</span>${esc(predLabel[p])}</button>`).join("")}
-          </div>
+        <div class="legend tl-legend" id="tl-legend">
+          <span><i class="sq" style="background:${AMBER}"></i>${esc(stressHigh ? t.tlAbove : t.tlBelow)}</span>
+          <span><i class="sq" style="background:#6b6f74"></i>${esc(stressHigh ? t.tlBelow : t.tlAbove)}</span>
+          <span><i class="ln" style="background:#ffffff"></i>${esc(t.tlTrend)}</span>
+          <span><i class="sq" style="background:#2c2c31"></i>${esc(t.tlDrought)}</span>
         </div>
-        <p class="def">${esc(vmeta.definicion)} <span class="kind">${esc(t.dataType)}: ${esc(vmeta.tipo)}.</span>${vmeta.aviso ? ` ${esc(vmeta.aviso)}` : ""} ${esc(rmeta.descripcion)}</p>
-      </div>
-    </section>
+        <div class="tl-plot" id="tl"><div class="cursor" id="cursor" hidden></div></div>
+        <p class="meta">${esc(state.revealed ? t.scrubHint : t.tlLocked)}</p>
+      </section>
+    </div>
 
     <div id="evidence"></div>
 
     ${auds.length ? `
-    <section class="band">
+    <section class="pnl band">
       <div>
         <h2>${esc(t.findingsH)}</h2>
         <p class="band-lead">${esc(t.verdictLead(auds.length, count("fantasma"), count("estres_invisible"), count("censurada"), count("inconclusa")))}</p>
-        <a class="band-link" href="#expedientes">${esc(t.findingsGo)} →</a>
+        <a class="more" href="#expedientes">${esc(t.findingsGo)} →</a>
       </div>
-      <div class="numbers band-numbers">
-        ${(["fantasma", "estres_invisible", "censurada", "inconclusa"] as const).map((v) => `<p>${esc(t.verdictName[v])}<b>${count(v)}</b></p>`).join("")}
+      <div class="kstrip">
+        ${(["fantasma", "estres_invisible", "censurada", "inconclusa"] as const).map((v) => `<p><span>${esc(t.verdictName[v])}</span><b class="num">${count(v)}</b></p>`).join("")}
       </div>
     </section>` : ""}`;
 
@@ -189,30 +217,103 @@ async function viewInvestigate() {
     state.region = b.dataset.reg!; resetInvestigation(); route(false);
   }));
 
-  const tlEl = document.getElementById("tl")!;
-  const drawTl = (animate: boolean) => {
-    tlEl.innerHTML = "";
-    tlEl.classList.toggle("draw", animate);
-    tlEl.append(monthTimeline(s, stressHigh, state.revealed, tlEl.clientWidth || 1100));
-  };
-  view.querySelectorAll<HTMLButtonElement>("[data-pred]").forEach((b) => b.addEventListener("click", () => {
-    state.prediction = b.dataset.pred as Prediction;
-    view.querySelectorAll("[data-pred]").forEach((x) => x.classList.toggle("on", x === b));
-    document.getElementById("ask")!.classList.add("done");
-    document.getElementById("tl-legend")!.classList.remove("hidden");
-    const first = !state.revealed;
-    state.revealed = true;
-    if (first) drawTl(true);
-    renderEvidence(s, first);
-    setZoneLabel(s);
-  }));
-
   drawRegionMap(all);
+
+  // ── La serie mes a mes, con cursor que mueve el mapa ──
+  const d = digitsFor(vmeta);
+  const tlEl = document.getElementById("tl")!;
+  const cursor = document.getElementById("cursor")!;
+  const readout = document.getElementById("readout")!;
+  const months = s.meses.map((m) => m.slice(0, 7));
+  const anom = s.anomalia_mensual;
+  const absSorted = anom.filter((v): v is number => v !== null).map(Math.abs).sort((a, b) => a - b);
+  const lim = (absSorted[Math.floor(absSorted.length * 0.98)] || 1) * 1.08;
+  let xs: { apply: (v: Date) => number; invert: (v: number) => Date } | null = null;
+
+  const setMonth = (i: number) => {
+    if (!xs) return;
+    const v = anom[i];
+    const date = new Date(`${months[i]}-15T00:00:00`);
+    cursor.hidden = false;
+    cursor.style.left = `${xs.apply(date)}px`;
+    const val = v === null ? "—" : `${fmtSigned(v, d)} ${vmeta.unidad}`;
+    readout.textContent = `${months[i]} · ${val}`;
+    const stress = v !== null && (stressHigh ? v > 0 : v < 0);
+    const k = v === null ? 0 : Math.min(1, Math.abs(v) / lim);
+    for (const p of zone.paths) p.setStyle({ fillColor: stress ? AMBER : "#ffffff", fillOpacity: 0.12 + 0.6 * k });
+    if (zone.label) (zone.label as L.Rectangle).setTooltipContent(`${esc(zone.name)} · ${months[i]} · ${esc(val)}`);
+  };
+  const clearMonth = () => {
+    cursor.hidden = true;
+    readout.textContent = "";
+    for (const p of zone.paths) p.setStyle({ fillColor: AMBER, fillOpacity: 0.16 });
+    setZoneLabel(s);
+  };
+  const nearest = (x: number) => {
+    if (!xs) return 0;
+    const t0 = xs.invert(x).getTime();
+    let best = 0;
+    let bd = Infinity;
+    months.forEach((m, i) => { const dd = Math.abs(new Date(`${m}-15T00:00:00`).getTime() - t0); if (dd < bd) { bd = dd; best = i; } });
+    return best;
+  };
+
+  const drawTl = (animate: boolean) => {
+    tlEl.querySelector("svg")?.remove();
+    tlEl.classList.toggle("draw", animate);
+    const bands = droughts.map((e) => ({ a: e.inicio, b: e.fin }));
+    const plot = monthTimeline(s, stressHigh, state.revealed, tlEl.clientWidth || 900, state.revealed ? bands : []) as SVGSVGElement & { scale?: (n: string) => { apply: (v: Date) => number; invert: (v: number) => Date } };
+    tlEl.prepend(plot);
+    xs = state.revealed && plot.scale ? plot.scale("x") : null;
+    if (!state.revealed) return;
+    plot.addEventListener("pointermove", (e) => { stopPlay(); setMonth(nearest((e as PointerEvent).offsetX)); });
+    plot.addEventListener("pointerleave", () => { if (playTimer === null) clearMonth(); });
+  };
   drawTl(false);
-  if (state.revealed) { renderEvidence(s, false); setZoneLabel(s); }
+
+  view.querySelectorAll<HTMLTableRowElement>("[data-ev]").forEach((r) => {
+    const go = () => {
+      if (!state.revealed) return;
+      stopPlay();
+      const e = droughts[Number(r.dataset.ev)];
+      const i = months.indexOf(e.inicio.slice(0, 7));
+      if (i >= 0) setMonth(i);
+      view.querySelectorAll("[data-ev]").forEach((x) => x.classList.toggle("on", x === r));
+    };
+    r.addEventListener("click", go);
+    r.addEventListener("keydown", (ev) => { if ((ev as KeyboardEvent).key === "Enter") go(); });
+  });
+
+  const play = document.getElementById("play") as HTMLButtonElement;
+  play.addEventListener("click", () => {
+    if (playTimer !== null) { stopPlay(); play.textContent = t.play; clearMonth(); return; }
+    let i = 0;
+    play.textContent = t.pause;
+    playTimer = window.setInterval(() => {
+      if (i >= months.length) { stopPlay(); play.textContent = t.play; return; }
+      setMonth(i); i += 1;
+    }, 32);
+  });
+
+  const reveal = (p: Prediction) => {
+    const first = !state.revealed;
+    state.prediction = p;
+    state.revealed = true;
+    if (first) {
+      drawTl(true);
+      play.disabled = false;
+      view.querySelector(".tl-pnl > .meta")!.textContent = t.scrubHint;
+    }
+    renderVerdict(s, reveal);
+    if (first) renderEvidence(s);
+    setZoneLabel(s);
+  };
+  renderVerdict(s, reveal);
+  if (state.revealed) { renderEvidence(s); setZoneLabel(s); }
 }
 
 function resetInvestigation() {
+  stopPlay();
   state.prediction = null; state.revealed = false; state.window = null; state.raw = false;
 }
 
@@ -229,7 +330,7 @@ function reticle(map: L.Map, b: L.LatLngBounds, color: string, weight: number, o
   L.polyline(arms, { color, weight, opacity, lineCap: "square", lineJoin: "miter", interactive: false }).addTo(map);
 }
 
-/** El mapa a sangre: las dos zonas a la vez; la elegida con visor ámbar, la otra en blanco; clic para elegir. */
+/** Mapa de terreno: las dos zonas a la vez; la elegida con visor ámbar; clic en la otra para cambiar. */
 function drawRegionMap(all: Series[]) {
   const t = T();
   const el = document.getElementById("map");
@@ -239,7 +340,7 @@ function drawRegionMap(all: Series[]) {
   const toBounds = (b: number[]) => L.latLngBounds([b[1], b[0]], [b[3], b[2]]);
   const pts: L.LatLng[] = [];
   let note = t.obsMapNote;
-  zoneLayer = null;
+  zone = { paths: [], label: null, name: regionMeta(index, state.region).nombre };
   for (const s of all) {
     const on = s.region === state.region;
     const color = on ? AMBER : "#ffffff";
@@ -248,119 +349,143 @@ function drawRegionMap(all: Series[]) {
     const p = s.pasaporte;
     if (p.puntos && p.puntos.length) {
       note = t.mapPoints;
-      for (const [lat, lon, id] of p.puntos) {
-        L.circleMarker([lat, lon], { radius: on ? 9 : 7, color, weight: 2, fillColor: color, fillOpacity: on ? 0.9 : 0.25 })
-          .bindTooltip(`${pointName(id)} · ${name}`).on("click", pick).addTo(map);
+      p.puntos.forEach(([lat, lon, id], i) => {
+        const m = L.circleMarker([lat, lon], { radius: on ? 8 : 6, color, weight: 2, fillColor: on ? AMBER : color, fillOpacity: on ? 0.16 : 0.25 })
+          .on("click", pick).addTo(map);
+        if (i === 0) {
+          m.bindTooltip(name, { permanent: true, direction: "right", offset: [12, 0], className: on ? "zone-tip on" : "zone-tip" });
+          if (on) zone.label = m;
+        } else m.bindTooltip(pointName(id));
+        if (on) zone.paths.push(m);
         pts.push(L.latLng(lat, lon));
-      }
+      });
     } else {
       const box = p.caja_datos && !(p.caja_datos[0] === p.caja_datos[2]) ? p.caja_datos : p.caja_pedida;
       if (box) {
         const b = toBounds(box);
-        reticle(map, b, color, on ? 3 : 2, on ? 1 : 0.8);
+        reticle(map, b, color, on ? 2.5 : 1.5, on ? 1 : 0.8);
         const hit = L.rectangle(b, { stroke: false, fill: true, fillColor: color, fillOpacity: on ? 0.16 : 0.0001 })
           .bindTooltip(name, { permanent: true, direction: "right", offset: [12, 0], className: on ? "zone-tip on" : "zone-tip" })
           .on("click", pick).addTo(map);
-        if (on) zoneLayer = hit;
+        if (on) { zone.paths.push(hit); zone.label = hit; }
         pts.push(b.getNorthEast(), b.getSouthWest());
       }
       if (p.caja_datos && p.caja_datos[0] === p.caja_datos[2] && on) {
-        L.circleMarker([p.caja_datos[1], p.caja_datos[0]], { radius: 6, color: AMBER, weight: 2, fillOpacity: 0.6 }).addTo(map);
+        L.circleMarker([p.caja_datos[1], p.caja_datos[0]], { radius: 5, color: AMBER, weight: 2, fillOpacity: 0.6 }).addTo(map);
         note += t.mapPoint;
       }
     }
   }
-  if (pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.18), { maxZoom: 9, animate: false });
+  if (pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.2), { maxZoom: 9, animate: false });
   document.getElementById("mapcap")!.textContent = note;
 }
 
 /** Tras revelar, la etiqueta de la zona lleva el resultado. */
 function setZoneLabel(s: Series) {
-  if (!zoneLayer) return;
+  if (!zone.label || !state.revealed) return;
   const meta = varMeta(index, state.variable);
-  const name = regionMeta(index, state.region).nombre;
-  zoneLayer.setTooltipContent(`${esc(name)} · ${fmtSigned(s.completa.pendiente_decada, digitsFor(meta))} ${esc(meta.unidad)} ${esc(T().factPerDecade)}`);
+  (zone.label as L.Rectangle).setTooltipContent(`${esc(zone.name)} · ${fmtSigned(s.completa.pendiente_decada, digitsFor(meta))} ${esc(meta.unidad)} ${esc(T().factPerDecade)}`);
 }
 
-function renderEvidence(s: Series, animate: boolean) {
+/** Panel lateral: primero la apuesta; después, el resultado con su incertidumbre. */
+function renderVerdict(s: Series, onPick: (p: Prediction) => void) {
+  const t = T();
+  const el = document.getElementById("verdict")!;
+  const meta = varMeta(index, state.variable);
+  const rname = regionMeta(index, state.region).nombre;
+  const full = s.completa;
+  const y0 = s.anual.anios[0];
+  const y1 = s.anual.anios[s.anual.anios.length - 1];
+  const predLabel: Record<Prediction, string> = { sube: t.predUp, baja: t.predDown, nada: t.predNone };
+  const arrow: Record<Prediction, string> = { sube: "↑", baja: "↓", nada: "→" };
+  if (!state.revealed) {
+    el.innerHTML = `
+      <div class="pnl-h"><h2>${esc(t.hypothesis)}</h2></div>
+      <p class="vq">${esc(t.since2001(vmeta0(meta.nombre), rname))}</p>
+      <div class="pred" role="radiogroup" aria-label="${esc(t.hypothesis)}">
+        ${(["sube", "baja", "nada"] as Prediction[]).map((p) => `<button class="pred-b" data-pred="${p}" role="radio" aria-checked="false"><span class="arw" aria-hidden="true">${arrow[p]}</span>${esc(predLabel[p])}</button>`).join("")}
+      </div>
+      <p class="meta">${esc(t.predHint)}</p>`;
+  } else {
+    const fb = predictionFeedback(state.prediction ?? "nada", full);
+    const d = digitsFor(meta);
+    const mt = multipleTestingNote(full, index.series.length);
+    el.innerHTML = `
+      <div class="pnl-h"><h2>${esc(t.resultH)}</h2><span class="meta">${esc(t.yourBet)}: ${arrow[state.prediction ?? "nada"]} ${esc(predLabel[state.prediction ?? "nada"])}</span></div>
+      <p class="fb ${fb.ok === true ? "yes" : fb.ok === false ? "no" : ""}">${esc(fb.text)}</p>
+      <p class="fig"><b class="num">${fmtSigned(full.pendiente_decada, d)}</b><span>${esc(meta.unidad)} ${esc(t.factPerDecade)}</span></p>
+      <p class="vs">${esc(verdictSentence(meta, rname, full, y0, y1))}</p>
+      <div id="unc" class="chart"></div>
+      <div class="kstrip three">
+        <p><span>p</span><b class="num">${fmtP(full.p_mk)}</b></p>
+        <p><span>q · ${index.series.length} ${esc(t.seriesWord)}</span><b class="num">${full.q_bh === undefined ? "—" : fmtP(full.q_bh)}</b></p>
+        <p><span>${esc(t.years)}</span><b class="num">${full.n}</b></p>
+      </div>
+      ${mt ? `<p class="notice">${esc(t.mtShort)}</p>` : ""}`;
+    const unc = document.getElementById("unc")!;
+    unc.append(uncertaintyBar(full, d, meta.unidad, unc.clientWidth || 320));
+  }
+  el.querySelectorAll<HTMLButtonElement>("[data-pred]").forEach((b) => b.addEventListener("click", () => onPick(b.dataset.pred as Prediction)));
+}
+const vmeta0 = (n: string) => n.charAt(0).toLowerCase() + n.slice(1);
+
+/** Debajo de la consola: el año a año, los intervalos y el pasaporte. */
+function renderEvidence(s: Series) {
   const t = T();
   const host = document.getElementById("evidence")!;
   const meta = varMeta(index, state.variable);
-  const rname = regionMeta(index, state.region).nombre;
   const full = s.completa;
   const years = s.anual.anios;
   const y0 = years[0];
   const y1 = years[years.length - 1];
-  const fb = predictionFeedback(state.prediction ?? "nada", full);
-  const mt = multipleTestingNote(full, index.series.length);
   const d = digitsFor(meta);
   const pp = s.pasaporte;
   const dir = full.veredicto === "sube" || full.veredicto === "baja";
   host.innerHTML = `
-    <section class="verdict-sec ${animate ? "fade-in" : ""}" id="verdict">
-      <p class="feedback ${fb.ok === true ? "yes" : ""}">${esc(fb.text)}</p>
-      <div class="bignum"><span class="num">${fmtSigned(full.pendiente_decada, d)}</span><span class="unit">${esc(meta.unidad)}<br>${esc(t.factPerDecade)}</span></div>
-      <h2 class="verdict">${esc(verdictSentence(meta, rname, full, y0, y1))}</h2>
-      <div class="unc">
-        <h3>${esc(t.uncH)}</h3>
-        <div id="unc" class="chart"></div>
-        <p class="explain">${esc(verdictExplain(meta, full))}</p>
-        ${mt ? `<p class="warn">${esc(mt)}</p>` : ""}
-      </div>
-      <div class="stats">
-        <p><b>${fmtP(full.p_mk)}</b>${esc(t.factP)}</p>
-        ${full.q_bh !== undefined ? `<p><b>${fmtP(full.q_bh)}</b>${esc(t.qLabel(index.series.length))}</p>` : ""}
-        <p><b>${full.n}</b>${esc(t.factYears)} · ${y0}–${y1}</p>
-      </div>
-    </section>
+    <div class="ev-grid">
+      <section class="pnl ev-year">
+        <div class="pnl-h">
+          <h2>${esc(state.raw ? t.chartRaw : t.chartAnom)}</h2>
+          <button class="txt-btn" id="rawtoggle">${esc(state.raw ? t.btnAnom : t.btnRaw)}</button>
+        </div>
+        <div id="chart" class="chart"></div>
+        <p class="meta">${esc(state.raw ? seasonLesson(meta, s.amplitud_estacional, full, full.n) : t.captionAnom)}</p>
+      </section>
 
-    <section class="ev-sec">
-      <div class="sec-h">
-        <h2>${esc(state.raw ? t.chartRaw : t.chartAnom)}</h2>
-        <button class="toggle" id="rawtoggle">${esc(state.raw ? t.btnAnom : t.btnRaw)}</button>
-      </div>
-      <div id="chart" class="chart"></div>
-      <p class="caption">${esc(state.raw ? seasonLesson(meta, s.amplitud_estacional, full, full.n) : t.captionAnom)}</p>
-    </section>
-
-    <section class="ev-sec ev-two">
-      <div>
-        <h2>${esc(t.windowsH)}</h2>
-        <p class="sub">${esc(t.windowLede)}</p>
+      <section class="pnl ev-win">
+        <div class="pnl-h"><h2>${esc(t.windowsH)}</h2></div>
+        <p class="meta">${esc(t.windowLede)}</p>
         <div id="matrix"></div>
-      </div>
-      <div class="side">
+      </section>
+      <section class="pnl ev-len side">
         <div id="wininfo"></div>
-        <h3>${esc(t.wlTitle)}</h3>
-        <p class="sub">${esc(t.wlSub)}</p>
-        <div id="wlen" class="chart"></div>
+        <div class="pnl-h" style="margin-top:20px"><h2>${esc(t.wlTitle)}</h2></div>
+        <p class="meta">${esc(t.wlSub)}</p>
         <div class="legend"><span><i class="sq" style="background:${AMBER}"></i>${esc(t.wlHit)}</span>${dir ? `<span><i class="sq" style="background:#e6e6e6"></i>${esc(t.wlOpp)}</span>` : ""}</div>
+        <div id="wlen" class="chart"></div>
         ${s.ventanas_que_enganan.length ? `
           <h3>${esc(t.trapsTitle)}</h3>
           <div class="traps">${s.ventanas_que_enganan.map((w, i) => `<button class="trap" data-trap="${i}">${windowLabel(w)}</button>`).join("")}</div>
-          <p class="small">${esc(t.trapsNote)}</p>` : `<p class="small" style="margin-top:14px">${esc(t.noTraps)}</p>`}
-      </div>
-    </section>
+          <p class="meta">${esc(t.trapsNote)}</p>` : `<p class="meta" style="margin-top:12px">${esc(t.noTraps)}</p>`}
+      </section>
 
-    <details class="ev-sec passport">
-      <summary>${esc(t.passport)}</summary>
-      <dl>
-        <dt>${esc(t.pSource)}</dt><dd>${esc(pp.fuente)}</dd>
-        <dt>${esc(t.pVariable)}</dt><dd>${esc(pp.producto)}</dd>
-        <dt>${esc(t.pTool)}</dt><dd>${esc(pp.herramienta)}</dd>
-        <dt>${esc(t.pBox)}</dt><dd>${pp.caja_pedida ? pp.caja_pedida.join(", ") + " " + esc(t.pBoxNote) : "—"}</dd>
-        <dt>${esc(t.pData)}</dt><dd>${pp.puntos ? pp.puntos.map(([la, lo, id]) => `${esc(pointName(id))} (${la}, ${lo})`).join(" · ") : pp.caja_datos ? pp.caja_datos.join(", ") : "—"}</dd>
-        <dt>${esc(t.pFile)}</dt><dd>${esc(pp.archivo)} · ${esc(pp.puntos ? t.pVerifyModis : pp.reconstruido ? t.pVerifyRecon : t.pVerifyOrig)}</dd>
-        <dt>${esc(t.pMethod)}</dt><dd>${esc(pp.puntos ? t.pMethodModis : t.pMethodText)}</dd>
-        <dt>${esc(t.pAutocorr)}</dt><dd>${esc(t.pAutocorrText(full.autocorr_lag1 === null ? "—" : fmt(full.autocorr_lag1, 2), fmt(full.factor_varianza_ar1, 2), fmtP(full.p_mk_simple)))}</dd>
-        <dt>${esc(t.pMulti)}</dt><dd>${esc(t.pMultiText(index.series.length, full.q_bh === undefined ? "—" : fmtP(full.q_bh)))}</dd>
-        <dt>${esc(t.pCode)}</dt><dd>${esc(pp.codigo)}</dd>
-        <dt>${esc(t.pRepro)}</dt><dd>${pp.url_reproducir ? `<a href="${esc(pp.url_reproducir)}" target="_blank" rel="noopener">${esc(t.pOpenGiovanni)}</a>` : "—"}</dd>
-      </dl>
-    </details>`;
-
-  const unc = document.getElementById("unc")!;
-  unc.append(uncertaintyBar(full, d, meta.unidad, Math.min(760, unc.clientWidth || 760)));
+      <details class="pnl passport">
+        <summary>${esc(t.passport)}</summary>
+        <dl>
+          <dt>${esc(t.pSource)}</dt><dd>${esc(pp.fuente)}</dd>
+          <dt>${esc(t.pVariable)}</dt><dd>${esc(pp.producto)}</dd>
+          <dt>${esc(t.pTool)}</dt><dd>${esc(pp.herramienta)}</dd>
+          <dt>${esc(t.pBox)}</dt><dd>${pp.caja_pedida ? pp.caja_pedida.join(", ") + " " + esc(t.pBoxNote) : "—"}</dd>
+          <dt>${esc(t.pData)}</dt><dd>${pp.puntos ? pp.puntos.map(([la, lo, id]) => `${esc(pointName(id))} (${la}, ${lo})`).join(" · ") : pp.caja_datos ? pp.caja_datos.join(", ") : "—"}</dd>
+          <dt>${esc(t.pFile)}</dt><dd>${esc(pp.archivo)} · ${esc(pp.puntos ? t.pVerifyModis : pp.reconstruido ? t.pVerifyRecon : t.pVerifyOrig)}</dd>
+          <dt>${esc(t.pMethod)}</dt><dd>${esc(pp.puntos ? t.pMethodModis : t.pMethodText)}</dd>
+          <dt>${esc(t.pAutocorr)}</dt><dd>${esc(t.pAutocorrText(full.autocorr_lag1 === null ? "—" : fmt(full.autocorr_lag1, 2), fmt(full.factor_varianza_ar1, 2), fmtP(full.p_mk_simple)))}</dd>
+          <dt>${esc(t.pMulti)}</dt><dd>${esc(t.pMultiText(index.series.length, full.q_bh === undefined ? "—" : fmtP(full.q_bh)))}</dd>
+          <dt>${esc(t.pCode)}</dt><dd>${esc(pp.codigo)}</dd>
+          <dt>${esc(t.pRepro)}</dt><dd>${pp.url_reproducir ? `<a href="${esc(pp.url_reproducir)}" target="_blank" rel="noopener">${esc(t.pOpenGiovanni)}</a>` : "—"}</dd>
+        </dl>
+      </details>
+    </div>`;
 
   const chartEl = document.getElementById("chart")!;
   const drawChart = () => {
@@ -370,7 +495,7 @@ function renderEvidence(s: Series, animate: boolean) {
   drawChart();
   const wl = document.getElementById("wlen")!;
   wl.append(windowLength(s, wl.clientWidth || 420));
-  document.getElementById("rawtoggle")!.addEventListener("click", () => { state.raw = !state.raw; renderEvidence(s, false); });
+  document.getElementById("rawtoggle")!.addEventListener("click", () => { state.raw = !state.raw; renderEvidence(s); });
 
   const winInfo = () => {
     const el = document.getElementById("wininfo")!;
@@ -383,8 +508,8 @@ function renderEvidence(s: Series, animate: boolean) {
     el.innerHTML = `
       <p class="wtitle">${windowLabel(w)} · ${w.fin - w.inicio + 1} ${esc(t.years)}</p>
       <p><strong>${esc(verdictShort(w.veredicto))}</strong>: ${fmtSigned(w.pendiente_decada, d)} ${esc(meta.unidad)} ${esc(t.factPerDecade)} (${esc(t.range)} ${fmtSigned(w.ic95_decada[0], d)} ${esc(t.to)} ${fmtSigned(w.ic95_decada[1], d)}), p = ${fmtP(w.p_mk)}.</p>
-      ${isTrap ? `<p class="warn">${esc(trapText(w, full, meta))}</p>` : ""}
-      <button class="toggle" id="clearwin">${esc(t.backFull)}</button>`;
+      ${isTrap ? `<p class="notice">${esc(trapText(w, full, meta))}</p>` : ""}
+      <button class="txt-btn" id="clearwin">${esc(t.backFull)}</button>`;
     document.getElementById("clearwin")?.addEventListener("click", () => pick(null));
   };
   const matrixEl = document.getElementById("matrix")!;
@@ -400,7 +525,6 @@ function renderEvidence(s: Series, animate: boolean) {
     pick(s.ventanas_que_enganan[Number(b.dataset.trap)]);
     document.getElementById("chart")!.scrollIntoView({ behavior: "smooth", block: "center" });
   }));
-  if (animate) document.querySelector(".tl")!.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 /* ───────────── Auditoría de recuperación (Recovery Integrity) ───────────── */
@@ -723,6 +847,7 @@ function viewMethod() {
 async function route(scrollTop = true) {
   const r = (location.hash.replace("#", "") || "investigar") as "investigar" | "expedientes" | "metodo";
   setNav(r);
+  stopPlay();
   clearMaps();
   try {
     if (r === "expedientes") await viewCases();
