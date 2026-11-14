@@ -22,12 +22,16 @@ export function terrain3d(el: HTMLElement, opts: {
   onZone: (id: string) => void; onSite: (id: string) => void;
   cellLabel: (mes: string, mm: number | null, pct: number | null) => string;
   siteAction: string;
+  provinces?: { type: "FeatureCollection"; features: unknown[] };
+  onProvince?: (id: string, name: string) => void;
 }) {
   const map = new maplibregl.Map({
     container: el,
     style: {
       version: 8,
       sources: {
+        dark: { type: "raster", tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 16,
+          attribution: "Base: Esri World Dark Gray" },
         sat: { type: "raster", tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 17,
           attribution: "Imagen: Esri, Maxar, Earthstar Geographics" },
         dem: { type: "raster-dem", tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"], encoding: "terrarium", tileSize: 256, maxzoom: 13,
@@ -36,6 +40,7 @@ export function terrain3d(el: HTMLElement, opts: {
       },
       layers: [
         { id: "bg", type: "background", paint: { "background-color": "#07080a" } },
+        { id: "dark", type: "raster", source: "dark", layout: { visibility: "none" }, paint: { "raster-opacity": 1 } },
         { id: "sat", type: "raster", source: "sat", paint: { "raster-saturation": -0.3, "raster-brightness-max": 0.78, "raster-contrast": 0.12 } },
         { id: "shade", type: "hillshade", source: "shade", paint: { "hillshade-exaggeration": 0.55, "hillshade-shadow-color": "#05070a", "hillshade-highlight-color": "#bfe8da", "hillshade-accent-color": "#0c1512" } },
       ],
@@ -61,6 +66,8 @@ export function terrain3d(el: HTMLElement, opts: {
   const cvs = document.createElement("canvas");
   let corners: [[number, number], [number, number], [number, number], [number, number]] = [[0, 0], [0, 0], [0, 0], [0, 0]];
   let cur = -1;
+  let pendingUrl = "";
+  let imgTimer = 0;
   let clim: (number | null)[][][] = [];
   const markers: maplibregl.Marker[] = [];
   const firstVisit = !lastCam;
@@ -92,6 +99,27 @@ export function terrain3d(el: HTMLElement, opts: {
       m.querySelector("button")!.addEventListener("click", (ev) => { ev.stopPropagation(); flyToSite(s); m.classList.add("open"); opts.onSite(s.id); });
       m.querySelector("a")!.addEventListener("click", () => opts.onSite(s.id));
       markers.push(new maplibregl.Marker({ element: m, anchor: "left", offset: [-9, 0] }).setLngLat([s.lon, s.lat]).addTo(map));
+    }
+    // Provincias: relleno por métrica (feature-state), borde fino y resaltado al pasar
+    if (opts.provinces) {
+      map.addSource("prov", { type: "geojson", data: opts.provinces as GeoJSON.FeatureCollection, promoteId: "shapeID" });
+      map.addLayer({ id: "prov-fill", type: "fill", source: "prov", layout: { visibility: "none" }, paint: {
+        "fill-color": ["coalesce", ["feature-state", "c"], "rgba(120,120,128,.15)"],
+        "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.92, 0.72],
+      } }, "zone-fill");
+      map.addLayer({ id: "prov-line", type: "line", source: "prov", paint: {
+        "line-color": ["case", ["boolean", ["feature-state", "sel"], false], "#ffffff", "rgba(255,255,255,.35)"],
+        "line-width": ["case", ["boolean", ["feature-state", "sel"], false], 2.4, ["boolean", ["feature-state", "hover"], false], 1.6, 0.7],
+      } }, "zone-fill");
+      let hov: string | number | undefined;
+      map.on("mousemove", "prov-fill", (e) => {
+        const f = e.features?.[0]; if (!f) return;
+        if (hov !== undefined && hov !== f.id) map.setFeatureState({ source: "prov", id: hov }, { hover: false });
+        hov = f.id; map.setFeatureState({ source: "prov", id: hov! }, { hover: true });
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", "prov-fill", () => { if (hov !== undefined) map.setFeatureState({ source: "prov", id: hov }, { hover: false }); hov = undefined; map.getCanvas().style.cursor = ""; });
+      map.on("click", "prov-fill", (e) => { const f = e.features?.[0]; if (f && opts.onProvince) opts.onProvince(String(f.id), String(f.properties?.shapeName ?? "")); });
     }
     res();
   }));
@@ -150,7 +178,12 @@ export function terrain3d(el: HTMLElement, opts: {
       img.data[k + 3] = Math.round(255 * (0.08 + 0.4 * mag));
     }
     ctx.putImageData(img, 0, 0);
-    (map.getSource("rain") as maplibregl.ImageSource).updateImage({ url: cvs.toDataURL(), coordinates: corners });
+    pendingUrl = cvs.toDataURL();
+    if (!imgTimer) imgTimer = window.setTimeout(() => {
+      imgTimer = 0;
+      if (pendingUrl && map.getSource("rain")) (map.getSource("rain") as maplibregl.ImageSource).updateImage({ url: pendingUrl, coordinates: corners });
+      pendingUrl = "";
+    }, 140);
   };
   const tintZone = (color: string, opacity: number) => {
     if (!map.getLayer("zone-fill")) return;
@@ -159,5 +192,29 @@ export function terrain3d(el: HTMLElement, opts: {
   };
   // Entrada: desde arriba, la cámara se inclina sobre el relieve del país (solo la primera vez)
   ready.then(() => { if (firstVisit) country(matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 3600); });
-  return { map, ready, setGrid, setField, tintZone, country, flyToSite, destroy: () => { markers.forEach((m) => m.remove()); map.remove(); } };
+  // Formas de ver el mapa: relieve 3D con foto, plano con foto, u oscuro para leer los datos
+  const setMode = (mode: "3d" | "plano" | "oscuro") => {
+    const flat = mode !== "3d";
+    map.setTerrain(flat ? null : { source: "dem", exaggeration: 1.8 });
+    map.setLayoutProperty("sat", "visibility", mode === "oscuro" ? "none" : "visible");
+    map.setLayoutProperty("dark", "visibility", mode === "oscuro" ? "visible" : "none");
+    map.setPaintProperty("shade", "hillshade-exaggeration", mode === "oscuro" ? 0.25 : 0.55);
+    if (flat) map.fitBounds([[-72.05, 17.45], [-68.3, 19.98]], { padding: { top: 230, bottom: 360, left: 260, right: 460 }, pitch: 0, bearing: 0, duration: 1400 });
+    else map.easeTo({ pitch: 52, bearing: -14, duration: 1400 });
+  };
+  let selProv: string | null = null;
+  const setLayer = (kind: "rain" | "prov") => {
+    if (map.getLayer("rain")) map.setLayoutProperty("rain", "visibility", kind === "rain" ? "visible" : "none");
+    if (map.getLayer("prov-fill")) map.setLayoutProperty("prov-fill", "visibility", kind === "prov" ? "visible" : "none");
+  };
+  const setChoro = (colors: Record<string, string>) => {
+    for (const [id, c] of Object.entries(colors)) map.setFeatureState({ source: "prov", id }, { c });
+  };
+  const selectProvince = (id: string | null, bounds?: [[number, number], [number, number]]) => {
+    if (selProv) map.setFeatureState({ source: "prov", id: selProv }, { sel: false });
+    selProv = id;
+    if (id) map.setFeatureState({ source: "prov", id }, { sel: true });
+    if (bounds) map.fitBounds(bounds, { padding: { top: 260, bottom: 340, left: 60, right: 460 }, pitch: map.getPitch(), duration: 1800, maxZoom: 10 });
+  };
+  return { setMode, setLayer, setChoro, selectProvince, map, ready, setGrid, setField, tintZone, country, flyToSite, destroy: () => { markers.forEach((m) => m.remove()); map.remove(); } };
 }

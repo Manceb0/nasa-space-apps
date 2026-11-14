@@ -9,6 +9,7 @@ import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
 import { pillNav, wirePillNav } from "./pillnav";
 import { type Grid } from "./field";
 import { terrain3d } from "./terrain3d";
+import { provinceStats, type ProvStat } from "./provincias";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
@@ -147,7 +148,6 @@ async function viewInvestigate() {
   const stressHigh = STRESS_HIGH.has(state.variable);
   const droughts = [...(ph?.sequias.find((d) => d.region === state.region)?.eventos ?? [])].reverse();
   const spiS = ph?.sequias.find((d) => d.region === state.region)?.spi3;
-  const spiOf = new Map((spiS?.meses ?? []).map((m, k) => [m, spiS!.valores[k]]));
   const startMonth = (() => {
     const e = droughts[0];
     if (!e || !spiS) return "2024-12";
@@ -155,17 +155,6 @@ async function viewInvestigate() {
     spiS.meses.forEach((m, k) => { const v = spiS.valores[k]; if (m >= e.inicio.slice(0, 7) && m <= e.fin.slice(0, 7) && v !== null && v < bv) { bv = v; best = m; } });
     return best;
   })();
-  const MON = Array.from({ length: 12 }, (_, k) => monthName(k));
-  const years = Array.from({ length: 24 }, (_, k) => 2001 + k);
-  const dmCell = (m: string) => {
-    const v = spiOf.get(m) ?? null;
-    const dry = v !== null && v <= -1;
-    const col = v === null ? "rgba(120,120,128,.2)" : v < 0
-      ? `rgba(${v <= -1 ? "255,69,58" : "255,159,10"},${Math.min(1, 0.25 + (-v) / 2.2).toFixed(2)})`
-      : `rgba(10,132,255,${Math.min(0.5, 0.08 + v / 4).toFixed(2)})`;
-    const size = 1;
-    return `<button class="dm ${dry ? "dry" : ""}" data-month="${m}" style="--s:${size.toFixed(2)};--c:${col}" title="${fmtMonth(m)} · SPI-3 ${v === null ? "—" : fmt(v, 2)}" aria-label="${m} SPI-3 ${v === null ? "—" : fmt(v, 2)}"></button>`;
-  };
 
   view.innerHTML = `
     <div class="con-head">
@@ -189,6 +178,15 @@ async function viewInvestigate() {
           <span>${esc(LL("Arrastra para mover · Ctrl + arrastrar para girar e inclinar · Toca un lugar para bajar a su terreno", "Drag to move · Ctrl + drag to rotate and tilt · Tap a site to fly down to its terrain"))}</span>
           <button class="txt-btn" id="t3-country">${esc(LL("Ver todo el país", "See the whole country"))}</button>
         </div>
+        <div class="map-tools">
+          <div class="seg-pill" role="radiogroup" aria-label="${esc(LL("Estilo del mapa", "Map style"))}">
+            ${([["3d", "3D"], ["plano", LL("Plano", "Flat")], ["oscuro", LL("Oscuro", "Dark")]] as const).map(([k, l]) => `<button data-mmode="${k}" class="${mapMode === k ? "on" : ""}" role="radio" aria-checked="${mapMode === k}">${l}</button>`).join("")}
+          </div>
+          <div class="seg-pill" role="radiogroup" aria-label="${esc(LL("Qué mostrar", "What to show"))}">
+            ${([["seco", LL("Sequías", "Droughts")], ["extremo", LL("Lluvias extremas", "Extreme rain")], ["cambio", LL("¿Van a más?", "Getting worse?")], ["mes", LL("Lluvia del mes", "Monthly rain")]] as const).map(([k, l]) => `<button data-mlayer="${k}" class="${mapLayer === k ? "on" : ""}" role="radio" aria-checked="${mapLayer === k}">${l}</button>`).join("")}
+          </div>
+          <p class="map-legend" id="map-legend"></p>
+        </div>
         <div class="field-hud" aria-live="polite">
           <p class="field-cap">${esc(LL("Mes en el mapa", "Month on the map"))}</p>
           <p class="field-month num loading" id="f-month">${esc(LL("Cargando lluvia…", "Loading rain…"))}</p>
@@ -198,18 +196,10 @@ async function viewInvestigate() {
         </div>
       </section>
 
-      <aside class="side-col">
+      <button class="drawer-tab" id="drawer-tab" aria-expanded="true" aria-controls="side-col" title="${esc(LL("Esconder o mostrar el panel", "Hide or show the panel"))}"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 3l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <aside class="side-col" id="side-col">
         <section class="pnl verdict-pnl" id="verdict" aria-live="polite"></section>
-        <section class="pnl drought-pnl">
-          <div class="pnl-h"><h2>${esc(t.zoneDroughtsH(rmeta.nombre))}</h2><span class="meta num">${droughts.length}</span></div>
-          <p class="meta">${esc(LL("SPI-3 de cada mes. Rojo: sequía (SPI-3 ≤ −1). Toca un mes para verlo en el mapa.", "SPI-3 for every month. Red: drought (SPI-3 ≤ −1). Tap a month to see it on the map."))}</p>
-          <div class="dmatrix">
-            <div class="dm-row dm-head"><span class="dm-y"></span>${MON.map((c) => `<span class="dm-m">${c}</span>`).join("")}</div>
-            ${years.map((y, yi) => `<div class="dm-row" style="--i:${yi}"><span class="dm-y">${y}</span>${Array.from({ length: 12 }, (_, k) => dmCell(`${y}-${String(k + 1).padStart(2, "0")}`)).join("")}</div>`).join("")}
-          </div>
-          <p class="dm-key"><i style="background:#ff453a"></i>${esc(LL("sequía", "drought"))}<i style="background:rgba(255,159,10,.75)"></i>${esc(LL("más seco", "drier"))}<i style="background:rgba(10,132,255,.5)"></i>${esc(LL("más húmedo", "wetter"))}<i style="background:rgba(120,120,128,.25)"></i>${esc(LL("sin dato", "no data"))}</p>
-          <a class="more" href="#expedientes">${esc(t.droughtsGo)} →</a>
-        </section>
+<section class="pnl prov-pnl" id="prov-card" aria-live="polite"></section>
       </aside>
 
       <section class="pnl tl-pnl">
@@ -258,6 +248,8 @@ async function viewInvestigate() {
   zone = { paths: [], label: null, name: regionMeta(index, state.region).nombre };
   t3?.destroy();
   const ptsAll = await load<Puntos>("puntos.json").catch(() => null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const provFC = await load<any>("limites/provincias.geojson").catch(() => null);
   t3 = terrain3d(document.getElementById("map")!, {
     zones: all.map((z) => {
       const pp = z.pasaporte;
@@ -269,6 +261,8 @@ async function viewInvestigate() {
     onSite: (id) => { rb.id = id; rb.lane = -1; },
     cellLabel: (mes, mm, pct) => `${mes} · ${mm === null ? "—" : `${fmt(mm, 0)} mm`}${pct === null ? "" : ` · ${pct} % ${LL("de lo normal", "of normal")}`}`,
     siteAction: LL("Ver su recuperación →", "See its recovery →"),
+    provinces: provFC ?? undefined,
+    onProvince: (id) => pickProv(id, true),
   });
   const hint = document.getElementById("t3-hint");
   t3.map.once("mousedown", () => hint?.classList.add("gone"));
@@ -284,10 +278,121 @@ async function viewInvestigate() {
     view.querySelectorAll(".dm.on").forEach((x) => x.classList.remove("on"));
     view.querySelector(`[data-month="${mes}"]`)?.classList.add("on");
   };
+  // ── Provincias: coropletas, ficha y controles del mapa ──
+  let stats: ProvStat[] = [];
+  const consoleEl = view.querySelector<HTMLElement>(".console")!;
+  const legend = document.getElementById("map-legend")!;
+  const provCard = document.getElementById("prov-card")!;
+  const ramp = (a: number[], b: number[], t: number, al: number) => `rgba(${a.map((v, k) => Math.round(v + (b[k] - v) * t)).join(",")},${al})`;
+  const metric = (st: ProvStat) => (mapLayer === "seco" ? st.dryA + st.dryB : mapLayer === "extremo" ? st.wetA + st.wetB : st.dryB - st.dryA);
+  const applyLayer = () => {
+    if (!t3) return;
+    consoleEl.dataset.layer = mapLayer;
+    t3.setLayer(mapLayer === "mes" ? "rain" : "prov");
+    if (mapLayer === "mes" || !stats.length) {
+      legend.innerHTML = `<i class="lg lg-rain"></i>${esc(LL("más seca · normal · más húmeda que lo normal de ese mes", "drier · normal · wetter than normal for that month"))}`;
+      return;
+    }
+    const vals = stats.map(metric);
+    const lo = Math.min(...vals), hi = Math.max(...vals), m = Math.max(Math.abs(lo), Math.abs(hi), 1);
+    const colors: Record<string, string> = {};
+    stats.forEach((st, k) => {
+      const v = vals[k];
+      colors[st.id] = mapLayer === "seco" ? ramp([255, 214, 10], [255, 69, 58], (v - lo) / Math.max(1, hi - lo), 0.25 + 0.6 * (v - lo) / Math.max(1, hi - lo))
+        : mapLayer === "extremo" ? ramp([100, 210, 255], [10, 132, 255], (v - lo) / Math.max(1, hi - lo), 0.25 + 0.6 * (v - lo) / Math.max(1, hi - lo))
+        : v >= 0 ? `rgba(255,69,58,${(0.15 + 0.7 * v / m).toFixed(2)})` : `rgba(48,209,88,${(0.15 + 0.7 * -v / m).toFixed(2)})`;
+    });
+    t3.setChoro(colors);
+    legend.innerHTML = mapLayer === "seco"
+      ? `<i class="lg lg-dry"></i>${esc(LL(`meses muy secos, 2001–2024: de ${lo} a ${hi}`, `very dry months, 2001–2024: ${lo} to ${hi}`))}`
+      : mapLayer === "extremo"
+        ? `<i class="lg lg-wet"></i>${esc(LL(`meses de lluvia extrema, 2001–2024: de ${lo} a ${hi}`, `extreme-rain months, 2001–2024: ${lo} to ${hi}`))}`
+        : `<i class="lg lg-chg"></i>${esc(LL("meses muy secos: 2013–2024 frente a 2001–2012 (rojo: más; verde: menos)", "very dry months: 2013–2024 vs 2001–2012 (red: more; green: fewer)"))}`;
+  };
+  const bboxOf = (id: string): [[number, number], [number, number]] | undefined => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const f = provFC?.features.find((x: any) => x.properties.shapeID === id);
+    if (!f) return undefined;
+    const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    let x0 = 180, y0 = 90, x1 = -180, y1 = -90;
+    for (const pl of polys) for (const [x, y] of pl[0]) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }
+    return [[x0, y0], [x1, y1]];
+  };
+  const defaultProv = () => {
+    const want = state.region === "jaragua" ? "Pedernales" : "Monte Cristi";
+    return (stats.find((x) => x.name === want) ?? stats[0]).id;
+  };
+  const delta = (a: number, b: number, worseUp: boolean) => {
+    const d = b - a;
+    const cls = d === 0 ? "eq" : (d > 0) === worseUp ? "bad" : "good";
+    return `<span class="dl ${cls}">${d > 0 ? "▲" : d < 0 ? "▼" : "="} ${Math.abs(d)}</span>`;
+  };
+  const pickProv = (id: string, fly: boolean) => {
+    const st = stats.find((x) => x.id === id);
+    if (!st || !t3) return;
+    t3.selectProvince(id, fly ? bboxOf(id) : undefined);
+    const yrs = Array.from({ length: st.dryYear.length }, (_, k) => 2001 + k);
+    const mx = Math.max(1, ...st.dryYear, ...st.wetYear);
+    const W = 340, H = 132, mid = 64, bw = W / yrs.length;
+    const bars = yrs.map((y, k) => {
+      const hd = (st.dryYear[k] / mx) * 52, hw = (st.wetYear[k] / mx) * 52;
+      return `<g class="yb" data-year="${y}" tabindex="0" role="button" aria-label="${y}: ${st.dryYear[k]} ${LL("meses muy secos", "very dry months")}, ${st.wetYear[k]} ${LL("de lluvia extrema", "of extreme rain")}" style="--i:${k}">
+        <rect x="${k * bw}" y="0" width="${bw}" height="${H}" fill="transparent"/>
+        ${hd ? `<rect class="bd" x="${k * bw + 2}" y="${mid - hd}" width="${bw - 4}" height="${hd}" rx="${Math.min(3, (bw - 4) / 2)}"/>` : ""}
+        ${hw ? `<rect class="bw" x="${k * bw + 2}" y="${mid + 2}" width="${bw - 4}" height="${hw}" rx="${Math.min(3, (bw - 4) / 2)}"/>` : ""}
+      </g>`;
+    }).join("");
+    provCard.innerHTML = `
+      <div class="pnl-h"><h2>${esc(st.name)}</h2><span class="meta">${esc(LL("provincia", "province"))}</span></div>
+      <div class="pc-stats">
+        <div><p class="pc-l">${esc(LL("Meses muy secos", "Very dry months"))}</p><p class="pc-v"><b>${st.dryA}</b><span>→</span><b>${st.dryB}</b>${delta(st.dryA, st.dryB, true)}</p><p class="pc-s">2001–12 → 2013–24</p></div>
+        <div><p class="pc-l">${esc(LL("Lluvia extrema", "Extreme rain"))}</p><p class="pc-v"><b>${st.wetA}</b><span>→</span><b>${st.wetB}</b>${delta(st.wetA, st.wetB, true)}</p><p class="pc-s">${esc(LL("meses", "months"))} · 2001–12 → 2013–24</p></div>
+      </div>
+      <svg class="pc-bars" viewBox="0 0 ${W} ${H}" role="group" aria-label="${esc(LL("Meses muy secos (arriba) y de lluvia extrema (abajo) por año", "Very dry (up) and extreme-rain (down) months per year"))}">
+        <line x1="0" x2="${W}" y1="${mid + 1}" y2="${mid + 1}" stroke="rgba(235,235,245,.25)"/>${bars}
+      </svg>
+      <div class="pc-axis"><span>2001</span><span>2012</span><span>2024</span></div>
+      <p class="pc-key"><i class="k-d"></i>${esc(LL("meses muy secos", "very dry months"))}<i class="k-w"></i>${esc(LL("lluvia extrema", "extreme rain"))} · ${esc(LL("toca un año", "tap a year"))}</p>
+      <details class="pc-how"><summary>${esc(LL("¿Qué tan confiable es?", "How reliable is it?"))}</summary>
+        <p>${esc(LL(`Promedio de ${st.cells} celda${st.cells === 1 ? "" : "s"} IMERG de unos 11 km${st.near ? " (la más cercana: la provincia es más pequeña que una celda)" : ""}. Mes muy seco: menos del 50 % de lo normal de ese mes (solo meses con normal ≥ 20 mm). Lluvia extrema: el 10 % de meses más lluviosos de la provincia (≥ ${Math.round(st.p90)} mm). Es lluvia medida por satélite: no mide ríos, drenaje, suelos ni población.`,
+          `Average of ${st.cells} IMERG cell${st.cells === 1 ? "" : "s"} of about 11 km${st.near ? " (the nearest one: the province is smaller than a cell)" : ""}. Very dry month: under 50 % of that month's normal (only months with normal ≥ 20 mm). Extreme rain: the province's wettest 10 % of months (≥ ${Math.round(st.p90)} mm). Satellite rain only: it does not measure rivers, drainage, soils or people.`))}</p></details>`;
+    provCard.classList.remove("in"); void provCard.offsetWidth; provCard.classList.add("in");
+    provCard.querySelectorAll<SVGGElement>(".yb").forEach((gEl) => {
+      const go = () => {
+        const y = gEl.dataset.year!;
+        // El mes más seco de ese año en la provincia, en el mapa de lluvia
+        let best = -1, bv = Infinity;
+        st.ratio.forEach((r, t) => { if (r !== null && t >= (Number(y) - 2001) * 12 && t < (Number(y) - 2000) * 12 && r < bv) { bv = r; best = t; } });
+        if (best < 0) return;
+        mapLayer = "mes";
+        view.querySelectorAll<HTMLButtonElement>("[data-mlayer]").forEach((b) => { const on = b.dataset.mlayer === "mes"; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
+        applyLayer();
+        showField(`${y}-${String((best % 12) + 1).padStart(2, "0")}`);
+      };
+      gEl.addEventListener("click", go);
+      gEl.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") go(); });
+    });
+  };
+  view.querySelectorAll<HTMLButtonElement>("[data-mmode]").forEach((b) => b.addEventListener("click", () => {
+    mapMode = b.dataset.mmode as typeof mapMode;
+    view.querySelectorAll<HTMLButtonElement>("[data-mmode]").forEach((x) => { const on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-checked", String(on)); });
+    t3?.setMode(mapMode);
+  }));
+  view.querySelectorAll<HTMLButtonElement>("[data-mlayer]").forEach((b) => b.addEventListener("click", () => {
+    mapLayer = b.dataset.mlayer as typeof mapLayer;
+    view.querySelectorAll<HTMLButtonElement>("[data-mlayer]").forEach((x) => { const on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-checked", String(on)); });
+    applyLayer();
+  }));
+  document.getElementById("drawer-tab")!.addEventListener("click", (e) => {
+    const off = consoleEl.classList.toggle("drawer-off");
+    (e.currentTarget as HTMLElement).setAttribute("aria-expanded", String(!off));
+  });
+  t3.ready.then(() => { if (mapMode !== "3d") t3?.setMode(mapMode); });
   const mine = t3;
   Promise.all([t3.ready, load<Grid>("grid/precip_imerg.json")]).then(([, g]) => {
     if (t3 !== mine) return;
     t3.setGrid(g); fieldReady = true; showField(startMonth);
+    if (provFC) { stats = provinceStats(g, provFC); applyLayer(); pickProv(defaultProv(), false); }
   }).catch(() => { fMonth.textContent = ""; });
 
 
@@ -623,6 +728,8 @@ function renderEvidence(s: Series) {
 
 let rbStage: Stage | null = null;
 let rbPlayed = false;
+let mapMode: "3d" | "plano" | "oscuro" = "3d";
+let mapLayer: "seco" | "extremo" | "cambio" | "mes" = "seco";
 let t3: ReturnType<typeof terrain3d> | null = null;
 let rbStoried = false;
 let storyToken = 0;
