@@ -63,6 +63,7 @@ export function buildLanes(pts: Puntos, audits: Audit[], id: string, fn: Fn): La
 
 export interface Stage {
   setLanes(l: Lane[], selected: number): void;
+  setAnchor(a: [number, number] | null): void;
   select(i: number): void;
   play(): void;
   stop(): void;
@@ -82,6 +83,7 @@ export function ribbonStage(host: HTMLElement, onSelect: (i: number) => void, on
   let yaw = -0.28;
   let pitch = 0.36;
   let playhead = D1;
+  let anchor: [number, number] | null = null;
   let raf = 0;
   let anim = 0;
   let W = 0;
@@ -144,6 +146,13 @@ export function ribbonStage(host: HTMLElement, onSelect: (i: number) => void, on
         ctx.fillStyle = d % 90 === 0 ? "rgba(255,255,255,0.32)" : "rgba(255,255,255,0.14)";
         ctx.fillRect(p[0] - 1, p[1] - 1, 2, 2);
       }
+    }
+    // El lugar en el mapa, unido al inicio de su cinta elegida
+    if (anchor) {
+      const o = project(X(0), FLOOR, Zl(sel));
+      line([[anchor[0], anchor[1], 0], o], "rgba(242,179,61,0.55)", 1, [4, 4]);
+      ctx.beginPath(); ctx.arc(anchor[0], anchor[1], 13, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(242,179,61,0.6)"; ctx.lineWidth = 1; ctx.stroke();
     }
     // Eje de días al frente
     const front = Zl(lanes.length - 1) + 0.25;
@@ -243,6 +252,7 @@ export function ribbonStage(host: HTMLElement, onSelect: (i: number) => void, on
   return {
     setLanes(l, s) { lanes = l; sel = Math.min(s, Math.max(0, l.length - 1)); resize(); },
     select(i) { sel = i; draw(); },
+    setAnchor(a) { anchor = a; draw(); },
     play() {
       stopAnim();
       const t0 = performance.now();

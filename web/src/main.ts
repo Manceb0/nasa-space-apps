@@ -534,7 +534,12 @@ function renderEvidence(s: Series) {
 
 let rbStage: Stage | null = null;
 let rbPlayed = false;
-const rb = { id: "sierramontecristi", fn: "gpp_modelo" as Fn, lane: -1 };
+const TIP_SIDE = (id: string): { direction: L.Direction; offset: [number, number] } =>
+  id === "montecristimontesecoa" ? { direction: "left", offset: [-10, 0] }
+  : id === "montecristimontesecob" ? { direction: "top", offset: [0, -10] }
+  : id === "sierramontecristi" ? { direction: "bottom", offset: [0, 10] }
+  : { direction: "right", offset: [10, 0] };
+const rb = { id: "sierramontecristi", fn: "gpp_modelo" as Fn, lane: -1, mode: "3d" as "3d" | "2d" | "map" };
 const LL = (es: string, en: string) => (getLang() === "es" ? es : en);
 
 async function viewRibbon() {
@@ -555,7 +560,13 @@ async function viewRibbon() {
   const fLabel = fnName(rb.fn);
 
   view.innerHTML = `
-    <section class="rb">
+    <section class="rb" data-mode="${rb.mode}">
+      <div class="rb-scene">
+        <div class="rb-map" id="rb-map" aria-label="${esc(LL("Mapa de los lugares", "Map of the sites"))}"></div>
+        <div class="rb-scrim" aria-hidden="true"></div>
+        <div class="rb-stage" id="rb-stage"></div>
+        <div class="rb-big" id="rb-big"></div>
+      </div>
       <div class="rb-head rb-top">
         <div>
           <p class="crumb">Stellar Horizons<span aria-hidden="true">/</span>PHANTOM</p>
@@ -564,6 +575,9 @@ async function viewRibbon() {
             "Does greenness come back before function? Each ribbon is a drought. Its edges are greenness and function; the surface between them is the gap, coloured by whichever signal leads."))}</p>
         </div>
         <div class="rb-ctrl">
+          <div class="seg rb-modes" role="radiogroup" aria-label="${esc(LL("Forma de ver", "View"))}">
+            ${([["3d", LL("Cintas 3D", "3D ribbons")], ["2d", LL("Brecha 2D", "2D gap")], ["map", LL("Lugares", "Sites")]] as const).map(([m, lab]) => `<button data-rbmode="${m}" class="${rb.mode === m ? "on" : ""}" role="radio" aria-checked="${rb.mode === m}">${esc(lab)}</button>`).join("")}
+          </div>
           <div class="tabs" role="tablist" aria-label="${esc(LL("Lugar", "Site"))}">
             ${ids.map((id) => `<button class="tab ${id === rb.id ? "on" : ""}" data-rbid="${id}" role="tab" aria-selected="${id === rb.id}">${esc(NAMES[id])}</button>`).join("")}
           </div>
@@ -573,7 +587,6 @@ async function viewRibbon() {
         </div>
       </div>
 
-      <div class="rb-stage" id="rb-stage"></div>
       <div class="rb-bottom">
       <div class="rb-bar">
         <div class="legend">
@@ -613,7 +626,48 @@ async function viewRibbon() {
     dayEl.textContent = `${LL("día", "day")} ${Math.round(d)}`;
   });
   rbStage.setLanes(lanes, rb.lane);
-  if (!rbPlayed && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+
+  // ── El mapa de fondo: los lugares reales; el elegido queda unido a sus cintas ──
+  const mapEl = document.getElementById("rb-map")!;
+  const map = baseMap(mapEl, [18.8, -71.2], 8);
+  map.attributionControl.setPosition("bottomleft");
+  const sites = pts.puntos.filter((q) => ids.includes(q.id));
+  const summary = (id: string) => {
+    const ev = audits.filter((a) => a.id === id && a.veredicto !== "sin_impacto");
+    const disc = ev.filter((a) => DISCORDANT.has(a.veredicto)).length;
+    return LL(`${ev.length} sequías con impacto · ${disc} discordantes`, `${ev.length} droughts with impact · ${disc} discordant`);
+  };
+  for (const q of sites) {
+    const on = q.id === rb.id;
+    L.circleMarker([q.lat, q.lon], { radius: on ? 7 : 5, color: on ? FUNC : "#ffffff", weight: 2, fillColor: on ? FUNC : "#ffffff", fillOpacity: on ? 0.9 : 0.35 })
+      .bindTooltip(rb.mode === "map" ? `<b>${esc(NAMES[q.id])}</b><br>${esc(summary(q.id))}` : esc(NAMES[q.id]), { permanent: rb.mode === "map" || on, ...TIP_SIDE(q.id), className: on ? "zone-tip on" : "zone-tip" })
+      .on("click", () => { rb.id = q.id; rb.lane = -1; if (rb.mode === "map") rb.mode = "3d"; viewRibbon(); })
+      .addTo(map);
+  }
+  const wide = innerWidth > 1100;
+  map.fitBounds(L.latLngBounds(sites.map((q) => [q.lat, q.lon] as [number, number])), {
+    paddingTopLeft: wide ? [rb.mode === "map" ? 120 : 520, 300] : [40, 40],
+    paddingBottomRight: wide ? [480, 220] : [40, 40], maxZoom: 9, animate: false,
+  });
+  const here = sites.find((q) => q.id === rb.id);
+  const anchor = () => { if (here && rbStage) { const c = map.latLngToContainerPoint([here.lat, here.lon]); rbStage.setAnchor(rb.mode === "3d" ? [c.x, c.y] : null); } };
+  map.on("move zoom resize", anchor);
+  anchor();
+
+  const big = document.getElementById("rb-big")!;
+  const drawBig = () => {
+    if (rb.mode !== "2d" || !lanes[rb.lane]) { big.innerHTML = ""; return; }
+    big.innerHTML = `<div class="pnl-h"><h2>${esc(NAMES[rb.id])} · ${LL("sequía", "drought")} ${lanes[rb.lane].label}</h2><span class="meta">${esc(LL("Pasa el cursor: fecha, cada z y la brecha", "Hover: date, each z and the gap"))}</span></div>`;
+    const box = document.createElement("div");
+    big.append(box);
+    box.append(ribbon2D(lanes[rb.lane], fLabel, big.clientWidth - 40, Math.max(240, big.clientHeight - 80)));
+  };
+  view.querySelectorAll<HTMLButtonElement>("[data-rbmode]").forEach((b) => b.addEventListener("click", () => {
+    rb.mode = b.dataset.rbmode as typeof rb.mode;
+    rbStage?.stop();
+    viewRibbon();
+  }));
+  if (rb.mode === "3d" && !rbPlayed && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     rbPlayed = true;
     setTimeout(() => { if (rbStage && !rbStage.playing()) { (document.getElementById("rb-play") as HTMLButtonElement | null)?.click(); } }, 600);
   }
@@ -626,6 +680,7 @@ async function viewRibbon() {
     const el2 = document.getElementById("rb-2d")!;
     el2.innerHTML = "";
     el2.append(ribbon2D(l, fLabel, el2.clientWidth || 380, el2.clientWidth < 500 ? 210 : 300));
+    drawBig();
     const gd = a.ndvi_dias as number | null;
     const fd = a[`${rb.fn}_dias`] as number | null;
     const dt = gd !== null && fd !== null ? fd - gd : null;
