@@ -649,3 +649,22 @@ main { padding-top: 88px; }
   .pills { width: 100%; }
 }
 .rb .zone-tip.on, .map-pnl .zone-tip.on { color: #fff; background: rgba(18,20,24,.88); border-color: rgba(255,255,255,.12); border-bottom-color: #f2b33d; }
+
+/* Paneles flotantes que se contraen */
+.col-btn { display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 999px; vertical-align: middle;
+  background: rgba(255,255,255,.08); color: #f4f4f5; cursor: pointer; transition: background .2s, transform .35s cubic-bezier(.22,1,.36,1); }
+.col-btn:hover { background: rgba(255,255,255,.16); }
+.col-btn svg { width: 12px; height: 12px; }
+.collapsed > .col-btn, .collapsed .col-btn { transform: rotate(180deg); }
+.rb-top h1 { display: flex; align-items: center; gap: 12px; }
+.rb-top.collapsed .crumb, .rb-top.collapsed .rb-q { display: none; }
+.rb-top.collapsed h1 { font-size: 20px; }
+.rb-panel > .col-btn { position: absolute; top: 14px; right: 14px; z-index: 3; }
+.rb-panel #rb-card .pnl-h { padding-right: 36px; }
+.rb-panel.collapsed { bottom: auto; overflow: hidden; }
+.rb-panel.collapsed #rb-card > :not(.pnl-h):not(.rb-verdict), .rb-panel.collapsed .rb-2d-h, .rb-panel.collapsed #rb-2d { display: none; }
+.rb-panel.collapsed .rb-verdict { margin-top: 4px; font-size: 20px; }
+.rb-bottom > .col-btn { position: absolute; top: 10px; right: 10px; z-index: 3; }
+.rb-bottom .rb-bar { padding-right: 34px; }
+.rb-bottom.collapsed .rb-bar { display: none; }
+.rb-bottom.collapsed .rb-time { margin-top: 0; padding-right: 40px; }

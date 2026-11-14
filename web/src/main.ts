@@ -536,6 +536,9 @@ function renderEvidence(s: Series) {
 
 let rbStage: Stage | null = null;
 let rbPlayed = false;
+const rbHide: Record<string, boolean> = { top: false, panel: false, bottom: false };
+const colBtn = (k: string, label: string) =>
+  `<button class="col-btn" data-col="${k}" aria-expanded="${!rbHide[k]}" aria-label="${label}" title="${label}"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 7.5l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
 const CHEV = '<svg class="pill-chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const PIN = '<svg class="pill-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 1 0-9 0C3.5 9.8 8 14 8 14z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="6.5" r="1.6" fill="currentColor"/></svg>';
 const pillSelect = (id: string, label: string, icon: string, opts: string) =>
@@ -578,10 +581,10 @@ async function viewRibbon() {
         <div class="rb-stage" id="rb-stage"></div>
         <div class="rb-big" id="rb-big"></div>
       </div>
-      <div class="rb-head rb-top">
+      <div class="rb-head rb-top ${rbHide.top ? "collapsed" : ""}" data-panel="top">
         <div>
           <p class="crumb">Stellar Horizons<span aria-hidden="true">/</span>PHANTOM</p>
-          <h1>Recovery Ribbon</h1>
+          <h1>Recovery Ribbon ${colBtn("top", LL("Contraer o abrir la explicación", "Collapse or expand the explanation"))}</h1>
           <p class="rb-q">${esc(LL("¿Vuelve el verdor antes que la función? Cada cinta es una sequía. Sus bordes son el verdor y la función; la superficie entre ellos es la brecha, del color de la señal que va delante.",
             "Does greenness come back before function? Each ribbon is a drought. Its edges are greenness and function; the surface between them is the gap, coloured by whichever signal leads."))}</p>
         </div>
@@ -594,7 +597,8 @@ async function viewRibbon() {
         </div>
       </div>
 
-      <div class="rb-bottom">
+      <div class="rb-bottom ${rbHide.bottom ? "collapsed" : ""}" data-panel="bottom">
+      ${colBtn("bottom", LL("Contraer o abrir la leyenda", "Collapse or expand the legend"))}
       <div class="rb-bar">
         <div class="legend">
           <span><i class="ln" style="background:${GREEN}"></i>${esc(LL("Verdor (NDVI)", "Greenness (NDVI)"))}</span>
@@ -621,7 +625,8 @@ async function viewRibbon() {
 
 
       </div>
-      <aside class="rb-panel">
+      <aside class="rb-panel ${rbHide.panel ? "collapsed" : ""}" data-panel="panel">
+        ${colBtn("panel", LL("Contraer o abrir la ficha", "Collapse or expand the card"))}
         <div class="rb-card" id="rb-card"></div>
         <div class="pnl-h rb-2d-h"><h2 id="rb-2d-h"></h2><span class="meta">${esc(LL("2D · mismos valores", "2D · same values"))}</span></div>
         <div id="rb-2d" class="chart"></div>
@@ -735,6 +740,13 @@ async function viewRibbon() {
     rbStage!.play();
   });
   view.querySelectorAll<HTMLButtonElement>("[data-lane]").forEach((b) => b.addEventListener("click", () => pickLane(Number(b.dataset.lane))));
+  view.querySelectorAll<HTMLButtonElement>("[data-col]").forEach((b) => b.addEventListener("click", () => {
+    const k = b.dataset.col!;
+    rbHide[k] = !rbHide[k];
+    view.querySelector(`[data-panel="${k}"]`)!.classList.toggle("collapsed", rbHide[k]);
+    b.setAttribute("aria-expanded", String(!rbHide[k]));
+    if (k === "panel" && !rbHide[k]) renderDetail();
+  }));
   document.getElementById("rb-site")!.addEventListener("change", (e) => { rb.id = (e.target as HTMLSelectElement).value; rb.lane = -1; viewRibbon(); });
   document.getElementById("rb-fn")!.addEventListener("change", (e) => { rb.fn = (e.target as HTMLSelectElement).value as Fn; viewRibbon(); });
 }
