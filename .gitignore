@@ -9,3 +9,6 @@ __pycache__/
 .pytest_cache/
 out/
 .taste-skill/
+.secrets/
+# recortes crudos de Earthdata (reproducibles desde data/nacional/MANIFEST.json con el token)
+data/nacional/gesdisc/

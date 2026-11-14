@@ -1,0 +1,53 @@
+{
+  "pais": "DOM",
+  "caja_descarga": [
+    -72.3223,
+    17.2956,
+    -68.0161,
+    20.1877
+  ],
+  "anios": [
+    2001,
+    2024
+  ],
+  "celdas_total": 42,
+  "celdas_incluidas": 15,
+  "respuestas": [
+    "GWETROOT",
+    "GWETTOP",
+    "EVLAND",
+    "T2M"
+  ],
+  "ajustes_principales": {
+    "z_kind": "robusta",
+    "spi_r": 3,
+    "lag_r": 0,
+    "spi_arx": 1,
+    "block": 12,
+    "period": null,
+    "corr": "pearson",
+    "B": 2000,
+    "seed": 2026
+  },
+  "variantes_sensibilidad": [
+    "bloque 6 meses",
+    "bloque 24 meses",
+    "z estándar (media/DE)",
+    "SPI-1 en r",
+    "SPI-6 en r",
+    "lag 1 mes en r",
+    "lag 2 meses en r",
+    "ARX forzado con SPI-3",
+    "Spearman en r",
+    "2001-2012",
+    "2013-2024"
+  ],
+  "earthdata": {
+    "netrc_con_urs": false,
+    "EARTHDATA_TOKEN": false,
+    "disponible": false,
+    "que_hace_falta": "Para IMERG (GPM_3IMERGM 0.1°) y GLDAS Noah 2.1 (GLDAS_NOAH025_M 0.25°) por OPeNDAP/Harmony: una cuenta gratuita de NASA Earthdata (https://urs.earthdata.nasa.gov) con la aplicación 'NASA GESDISC DATA ARCHIVE' autorizada, y UNA de estas dos cosas en la máquina que corre Docker: (1) variable de entorno EARTHDATA_TOKEN con un token generado en urs.earthdata.nasa.gov ('Generate Token'), pasada al contenedor con `-e EARTHDATA_TOKEN`; o (2) un archivo .netrc con 'machine urs.earthdata.nasa.gov login USUARIO password CLAVE' montado en /root/.netrc. Nadie más que el usuario debe escribir la clave."
+  },
+  "n_pruebas_pares": 648,
+  "n_pruebas_pares_q05": 266
+}

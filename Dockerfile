@@ -16,7 +16,11 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project
 
+# rasterio (GDAL de la rueda) necesita libexpat en la imagen slim (earthmemory/hr: COG, WCS, GeoTIFF)
+RUN apt-get update && apt-get install -y --no-install-recommends libexpat1 && rm -rf /var/lib/apt/lists/*
+
 COPY phantom ./phantom
+COPY earthmemory ./earthmemory
 COPY tests ./tests
 COPY data ./data
 COPY appeears ./appeears

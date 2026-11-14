@@ -1,0 +1,19 @@
+{
+  "archivos": [
+    "fig11_grace_contexto.pdf",
+    "fig11_grace_contexto.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    85.0
+  ],
+  "limites": "geoBoundaries gbOpen DOM ADM1 (fuente Natural Earth, dominio público)",
+  "rejillas": "celdas nativas: IMERG 0.1°, GLDAS 0.25° (sin interpolar)",
+  "periodo": "2001-2024",
+  "codigo": "earthmemory/figures.py",
+  "datos": [
+    "JPL GRACE/GRACE-FO Mascon RL06.3 CRI v04 (doi:10.5067/TEMSC-3JC634)",
+    "GLDAS Noah 2.1 mensual 0.25° (doi:10.5067/SXAVCZFAQLNO)"
+  ],
+  "nota": "contexto nacional; no sirve para provincias ni celdas; sin factores de ganancia; banda = incertidumbre JPL"
+}

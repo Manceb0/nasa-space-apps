@@ -1,0 +1,19 @@
+{
+  "archivos": [
+    "fig08_calibracion_fpr.pdf",
+    "fig08_calibracion_fpr.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    64.0
+  ],
+  "limites": "geoBoundaries gbOpen DOM ADM1 (fuente Natural Earth, dominio público)",
+  "rejillas": "celdas nativas: IMERG 0.1°, GLDAS 0.25° (sin interpolar)",
+  "periodo": "2001-2024",
+  "codigo": "earthmemory/figures.py",
+  "metodo_tendencias": "sustitutos de fases aleatorias multivariadas y de bloques circulares de 24 meses sobre residuos sin ciclo ni recta; barras = percentiles 2.5-97.5 de la tasa por mapa nulo",
+  "metodo_pares": "nulo paramétrico ARX común con residuos remuestreados en bloques conjuntos de 12 meses; barras = ±1.96 EE binomial",
+  "n_sustitutos_tendencias": 1000,
+  "n_sustitutos_pares": 100,
+  "pares_calibracion": 30
+}

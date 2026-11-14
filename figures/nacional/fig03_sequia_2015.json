@@ -1,0 +1,34 @@
+{
+  "archivos": [
+    "fig03_sequia_2015.pdf",
+    "fig03_sequia_2015.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    112.0
+  ],
+  "limites": "geoBoundaries gbOpen DOM ADM1 (fuente Natural Earth, dominio público)",
+  "rejillas": "celdas nativas: IMERG 0.1°, GLDAS 0.25° (sin interpolar)",
+  "periodo": "2001-2024",
+  "codigo": "earthmemory/figures.py",
+  "datos": [
+    "GPM IMERG Final V07 (doi:10.5067/GPM/IMERG/3B-MONTH/07; diario doi:10.5067/GPM/IMERGDF/DAY/07)",
+    "GLDAS Noah 2.1 mensual 0.25° (doi:10.5067/SXAVCZFAQLNO)"
+  ],
+  "meses": [
+    "2015-03",
+    "2015-04",
+    "2015-05",
+    "2015-06",
+    "2015-07",
+    "2015-08",
+    "2015-09",
+    "2015-10",
+    "2015-11",
+    "2015-12",
+    "2016-01",
+    "2016-02"
+  ],
+  "seleccion_meses": "12 meses centrados en el mínimo del SPI-3 medio nacional entre 2014-06-01 y 2016-06-01",
+  "escala": "misma escala de color −2.5..2.5 en todos los paneles"
+}

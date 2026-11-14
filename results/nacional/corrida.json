@@ -1,0 +1,185 @@
+{
+  "pais": "DOM",
+  "anios": [
+    2001,
+    2024
+  ],
+  "celdas_imerg_caja": 1014,
+  "celdas_imerg_incluidas": 442,
+  "celdas_imerg_tocan_pais": 489,
+  "celdas_gldas_caja": 176,
+  "celdas_gldas_incluidas": 65,
+  "celdas_gldas_tocan_pais": 100,
+  "celdas_gldas_tierra_tocan_pais": 72,
+  "meses_imerg_faltantes": [],
+  "dias_imerg": 8766,
+  "dias_imerg_faltantes": 0,
+  "respuestas": [
+    "SM_RAIZ",
+    "SM_0_10",
+    "ET",
+    "TAIRE"
+  ],
+  "ajustes_principales": {
+    "z_kind": "robusta",
+    "spi_r": 3,
+    "lag_r": 0,
+    "spi_arx": 1,
+    "block": 12,
+    "period": null,
+    "corr": "pearson",
+    "B": 2000,
+    "seed": 2026
+  },
+  "variantes_sensibilidad": [
+    "bloque 6 meses",
+    "bloque 24 meses",
+    "z estándar (media/DE)",
+    "SPI-1 en r",
+    "SPI-6 en r",
+    "lag 1 mes en r",
+    "lag 2 meses en r",
+    "ARX forzado con SPI-3",
+    "Spearman en r",
+    "2001-2012",
+    "2013-2024"
+  ],
+  "n_pruebas_pares": 11904,
+  "n_pruebas_pares_q05_nominal": 3506,
+  "n_pruebas_pares_q05_calibrado": 1311,
+  "pares_lluvia_parecida": 992,
+  "pares_candidatos": 2080,
+  "pares_usados_en_calibracion": [
+    [
+      "18.125_-71.125",
+      "18.625_-70.875"
+    ],
+    [
+      "18.125_-71.375",
+      "18.375_-70.875"
+    ],
+    [
+      "18.125_-71.625",
+      "18.375_-71.625"
+    ],
+    [
+      "18.125_-71.625",
+      "18.625_-70.625"
+    ],
+    [
+      "18.375_-68.625",
+      "18.625_-69.375"
+    ],
+    [
+      "18.375_-70.125",
+      "18.875_-70.125"
+    ],
+    [
+      "18.375_-70.625",
+      "18.625_-70.125"
+    ],
+    [
+      "18.375_-70.625",
+      "18.875_-70.625"
+    ],
+    [
+      "18.375_-70.875",
+      "19.625_-71.125"
+    ],
+    [
+      "18.625_-69.125",
+      "19.125_-69.875"
+    ],
+    [
+      "18.625_-69.625",
+      "18.875_-69.125"
+    ],
+    [
+      "18.625_-69.625",
+      "18.875_-69.375"
+    ],
+    [
+      "18.625_-70.125",
+      "18.625_-70.375"
+    ],
+    [
+      "18.625_-70.625",
+      "19.125_-70.375"
+    ],
+    [
+      "18.625_-71.125",
+      "19.625_-71.375"
+    ],
+    [
+      "18.875_-68.875",
+      "18.875_-70.125"
+    ],
+    [
+      "18.875_-69.625",
+      "19.625_-70.625"
+    ],
+    [
+      "18.875_-70.125",
+      "18.875_-71.125"
+    ],
+    [
+      "18.875_-70.375",
+      "19.125_-69.625"
+    ],
+    [
+      "18.875_-70.375",
+      "19.375_-71.125"
+    ],
+    [
+      "18.875_-70.875",
+      "19.375_-71.375"
+    ],
+    [
+      "18.875_-70.875",
+      "19.625_-71.625"
+    ],
+    [
+      "18.875_-71.125",
+      "19.625_-71.625"
+    ],
+    [
+      "18.875_-71.375",
+      "19.875_-71.125"
+    ],
+    [
+      "19.125_-70.125",
+      "19.125_-70.875"
+    ],
+    [
+      "19.125_-70.875",
+      "19.125_-71.375"
+    ],
+    [
+      "19.375_-69.875",
+      "19.375_-70.375"
+    ],
+    [
+      "19.375_-71.625",
+      "19.875_-71.125"
+    ],
+    [
+      "19.625_-70.375",
+      "19.875_-71.125"
+    ],
+    [
+      "19.625_-70.875",
+      "19.625_-71.375"
+    ]
+  ],
+  "limites_adm1": {
+    "boundaryID": "DOM-ADM1-93820187",
+    "boundarySource": "Natural Earth",
+    "boundaryLicense": "Public Domain",
+    "boundaryYearRepresented": "2022",
+    "admUnitCount": "32",
+    "gjDownloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/DOM/ADM1/geoBoundaries-DOM-ADM1.geojson"
+  },
+  "lluvia_forzamiento_gldas_disponible": true,
+  "imerg_version": "IMERG Final V07 (archivos V07B); la serie mensual Final llega hasta 2025-09, aquí se usa 2001-2024",
+  "appeears": "no hay GeoTIFF de AppEEARS en data/appeears/nacional (gancho listo)"
+}

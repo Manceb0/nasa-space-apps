@@ -7,3 +7,9 @@ figures
 RESULTS.md
 *.md
 !README.md
+.secrets
+.taste-skill
+web
+out
+data/nacional
+data/nacional_hr

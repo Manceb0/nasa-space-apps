@@ -1,0 +1,303 @@
+{
+  "PRECIP_IMERG_0.1": {
+    "fase": {
+      "metodo": "fases aleatorias multivariadas",
+      "n_sustitutos": 1000,
+      "n_celdas": 442,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0418507,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.323812
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.013,
+      "celdas_p05_nulo_media": 18.498,
+      "celdas_p05_nulo_p95": 99.05,
+      "celdas_p05_observadas": 10,
+      "p_campo": 0.326673,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "bloques": {
+      "metodo": "bloques circulares de 24 meses",
+      "n_sustitutos": 1000,
+      "n_celdas": 442,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0548032,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.540781
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.02,
+      "celdas_p05_nulo_media": 24.223,
+      "celdas_p05_nulo_p95": 173.0,
+      "celdas_p05_observadas": 10,
+      "p_campo": 0.248751,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "moran_I_pendiente": 0.854855,
+    "n_celdas": 442,
+    "celdas_q05_nominal": 0,
+    "celdas_q05_calibrado": 0,
+    "mediana_pendiente_decada": -2.91408
+  },
+  "SM_RAIZ": {
+    "fase": {
+      "metodo": "fases aleatorias multivariadas",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0440308,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.323077
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.018,
+      "celdas_p05_nulo_media": 2.862,
+      "celdas_p05_nulo_p95": 14.0,
+      "celdas_p05_observadas": 21,
+      "p_campo": 0.027972,
+      "celdas_q05_BH_nominal": 2,
+      "celdas_q05_BH_p_empirico": 8
+    },
+    "bloques": {
+      "metodo": "bloques circulares de 24 meses",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0605538,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.584615
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.029,
+      "celdas_p05_nulo_media": 3.936,
+      "celdas_p05_nulo_p95": 26.0,
+      "celdas_p05_observadas": 21,
+      "p_campo": 0.0689311,
+      "celdas_q05_BH_nominal": 2,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "moran_I_pendiente": 0.425291,
+    "n_celdas": 65,
+    "celdas_q05_nominal": 2,
+    "celdas_q05_calibrado": 8,
+    "mediana_pendiente_decada": -34.1128
+  },
+  "SM_0_10": {
+    "fase": {
+      "metodo": "fases aleatorias multivariadas",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0402308,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.338462
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.014,
+      "celdas_p05_nulo_media": 2.615,
+      "celdas_p05_nulo_p95": 15.0,
+      "celdas_p05_observadas": 11,
+      "p_campo": 0.0839161,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "bloques": {
+      "metodo": "bloques circulares de 24 meses",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0566308,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.569231
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.025,
+      "celdas_p05_nulo_media": 3.681,
+      "celdas_p05_nulo_p95": 26.0,
+      "celdas_p05_observadas": 11,
+      "p_campo": 0.105894,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "moran_I_pendiente": 0.386072,
+    "n_celdas": 65,
+    "celdas_q05_nominal": 0,
+    "celdas_q05_calibrado": 0,
+    "mediana_pendiente_decada": -1.56042
+  },
+  "TAIRE": {
+    "fase": {
+      "metodo": "fases aleatorias multivariadas",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0546462,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.230769
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.095,
+      "celdas_p05_nulo_media": 3.552,
+      "celdas_p05_nulo_p95": 12.0,
+      "celdas_p05_observadas": 11,
+      "p_campo": 0.0799201,
+      "celdas_q05_BH_nominal": 6,
+      "celdas_q05_BH_p_empirico": 6
+    },
+    "bloques": {
+      "metodo": "bloques circulares de 24 meses",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0597231,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.353846
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.054,
+      "celdas_p05_nulo_media": 3.882,
+      "celdas_p05_nulo_p95": 18.0,
+      "celdas_p05_observadas": 11,
+      "p_campo": 0.137862,
+      "celdas_q05_BH_nominal": 6,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "moran_I_pendiente": 0.249531,
+    "n_celdas": 65,
+    "celdas_q05_nominal": 6,
+    "celdas_q05_calibrado": 6,
+    "mediana_pendiente_decada": 0.239564
+  },
+  "ET": {
+    "fase": {
+      "metodo": "fases aleatorias multivariadas",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0457231,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.4
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.017,
+      "celdas_p05_nulo_media": 2.972,
+      "celdas_p05_nulo_p95": 17.0,
+      "celdas_p05_observadas": 0,
+      "p_campo": 1.0,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "bloques": {
+      "metodo": "bloques circulares de 24 meses",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0628154,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.677308
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.035,
+      "celdas_p05_nulo_media": 4.083,
+      "celdas_p05_nulo_p95": 27.05,
+      "celdas_p05_observadas": 0,
+      "p_campo": 1.0,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "moran_I_pendiente": 0.232831,
+    "n_celdas": 65,
+    "celdas_q05_nominal": 0,
+    "celdas_q05_calibrado": 0,
+    "mediana_pendiente_decada": -0.0723165
+  },
+  "LLUVIA_GLDAS_FORZAMIENTO": {
+    "fase": {
+      "metodo": "fases aleatorias multivariadas",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0431077,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.508077
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.013,
+      "celdas_p05_nulo_media": 2.802,
+      "celdas_p05_nulo_p95": 19.1,
+      "celdas_p05_observadas": 0,
+      "p_campo": 1.0,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "bloques": {
+      "metodo": "bloques circulares de 24 meses",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0531231,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.585
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.022,
+      "celdas_p05_nulo_media": 3.453,
+      "celdas_p05_nulo_p95": 26.0,
+      "celdas_p05_observadas": 0,
+      "p_campo": 1.0,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "moran_I_pendiente": 0.411656,
+    "n_celdas": 65,
+    "celdas_q05_nominal": 0,
+    "celdas_q05_calibrado": 0,
+    "mediana_pendiente_decada": -6.46749
+  },
+  "LLUVIA_IMERG_EN_CELDA_GLDAS": {
+    "fase": {
+      "metodo": "fases aleatorias multivariadas",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0419846,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.354231
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.02,
+      "celdas_p05_nulo_media": 2.729,
+      "celdas_p05_nulo_p95": 15.05,
+      "celdas_p05_observadas": 0,
+      "p_campo": 1.0,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "bloques": {
+      "metodo": "bloques circulares de 24 meses",
+      "n_sustitutos": 1000,
+      "n_celdas": 65,
+      "alfa_nominal": 0.05,
+      "tasa_empirica_p05": 0.0545231,
+      "tasa_empirica_p05_ic95": [
+        0.0,
+        0.554231
+      ],
+      "fraccion_mapas_nulos_con_descubrimiento_BH": 0.025,
+      "celdas_p05_nulo_media": 3.544,
+      "celdas_p05_nulo_p95": 27.0,
+      "celdas_p05_observadas": 0,
+      "p_campo": 1.0,
+      "celdas_q05_BH_nominal": 0,
+      "celdas_q05_BH_p_empirico": 0
+    },
+    "moran_I_pendiente": 0.63254,
+    "n_celdas": 65,
+    "celdas_q05_nominal": 0,
+    "celdas_q05_calibrado": 0,
+    "mediana_pendiente_decada": -2.72964
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "archivos": [
+    "fig09_santo_domingo_2023.pdf",
+    "fig09_santo_domingo_2023.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    66.0
+  ],
+  "limites": "geoBoundaries gbOpen DOM ADM1 (fuente Natural Earth, dominio público)",
+  "rejillas": "celdas nativas: IMERG 0.1°, GLDAS 0.25° (sin interpolar)",
+  "periodo": "2001-2024",
+  "codigo": "earthmemory/figures.py",
+  "datos": [
+    "GPM IMERG Final V07 (doi:10.5067/GPM/IMERG/3B-MONTH/07; diario doi:10.5067/GPM/IMERGDF/DAY/07)",
+    "IMERG Final V07 media hora (doi:10.5067/GPM/IMERG/3B-HH/07)"
+  ],
+  "referencia": "431 mm en 24 h el sábado 18-nov-2023 en la estación de ONAMET Arroyo Hondo Viejo (dato preliminar; 474 mm acumulados desde el jueves). Es un pluviómetro (un punto); NASA no publicó una magnitud IMERG para este evento: todo valor IMERG aquí es cálculo nuestro sobre IMERG Final V07.",
+  "nota": "IMERG diario = día UTC (00-24 UTC = 20:00 del día anterior a 20:00 hora local). Una celda IMERG de 0.1° (~10.5 × 10.6 km) promedia el aguacero sobre ~110 km²; un pluviómetro mide un punto. Un solo evento no es una tendencia."
+}

@@ -1,0 +1,13 @@
+resultado,factor,columna_factor,n,n_conglomerados,beta,ic95,p,q_bh,n_pruebas_bh
+z_retorno_SM_RAIZ,fraccion_lluvia_intensa,fraccion_lluvia_intensa,714,20,-0.0790468,"[-0.20728, 0.0646935]",0.25932,0.483738,12
+z_retorno_SM_RAIZ,lluvia_max_1dia_mm,lluvia_max_1dia_mm,714,20,-0.0604663,"[-0.224276, 0.16203]",0.531247,0.579542,12
+z_retorno_SM_RAIZ,meses_sequia_previos,meses_sequia_previos,714,20,-0.106399,"[-0.263079, 0.13753]",0.295937,0.483738,12
+z_retorno_SM_RAIZ,z_antecedente,z_antecedente_SM_RAIZ,714,20,0.463498,"[0.241489, 0.597029]",2.29425e-07,2.75311e-06,12
+z_retorno_SM_0_10,fraccion_lluvia_intensa,fraccion_lluvia_intensa,714,20,-0.0742986,"[-0.250039, 0.109094]",0.419435,0.559247,12
+z_retorno_SM_0_10,lluvia_max_1dia_mm,lluvia_max_1dia_mm,714,20,-0.149378,"[-0.339125, 0.15163]",0.276672,0.483738,12
+z_retorno_SM_0_10,meses_sequia_previos,meses_sequia_previos,714,20,-0.0937025,"[-0.250914, 0.129001]",0.322492,0.483738,12
+z_retorno_SM_0_10,z_antecedente,z_antecedente_SM_0_10,714,20,0.223539,"[0.0515829, 0.376736]",0.00809364,0.0323746,12
+contradiccion_A_SM_RAIZ,fraccion_lluvia_intensa,fraccion_lluvia_intensa,714,20,0.0110834,"[-0.0251141, 0.0388824]",0.497954,0.579542,12
+contradiccion_A_SM_RAIZ,lluvia_max_1dia_mm,lluvia_max_1dia_mm,714,20,0.014636,"[-0.052491, 0.0529637]",0.614317,0.614317,12
+contradiccion_A_SM_RAIZ,meses_sequia_previos,meses_sequia_previos,714,20,0.0355498,"[-0.019253, 0.0762306]",0.120923,0.362769,12
+contradiccion_A_SM_RAIZ,z_antecedente,z_antecedente_SM_RAIZ,714,20,-0.110167,"[-0.144142, -0.0451972]",1.19792e-05,7.18754e-05,12

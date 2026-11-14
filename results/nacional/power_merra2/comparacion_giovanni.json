@@ -1,0 +1,36 @@
+[
+  {
+    "region_phantom": "noroeste",
+    "caja_giovanni": [
+      -71.6,
+      19.75,
+      -71.35,
+      19.92
+    ],
+    "celda_power": "20.00_-71.250",
+    "celda_incluida": true,
+    "r_spi3_imerg_vs_power": 0.361476,
+    "n_spi": 286,
+    "r_z_raiz_gldas_vs_merra2": 0.181731,
+    "n_raiz": 288,
+    "lluvia_anual_imerg_mm": 1312.8,
+    "lluvia_anual_power_mm": 713.643
+  },
+  {
+    "region_phantom": "jaragua",
+    "caja_giovanni": [
+      -71.6,
+      17.62,
+      -71.3,
+      17.85
+    ],
+    "celda_power": "17.50_-71.250",
+    "celda_incluida": false,
+    "r_spi3_imerg_vs_power": 0.539808,
+    "n_spi": 286,
+    "r_z_raiz_gldas_vs_merra2": 0.448271,
+    "n_raiz": 240,
+    "lluvia_anual_imerg_mm": 1053.61,
+    "lluvia_anual_power_mm": 681.553
+  }
+]

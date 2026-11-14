@@ -131,3 +131,30 @@ Para qué sirve:
 - **Filtro:** despejado (bits 0-1 = 00), sin sombra (bit 2), sin nube interna (bit 10) y no adyacente a nube (bit 13).
 - **Cuenta como señal observada,** igual que la térmica. Si cae y el verdor no, es "estrés invisible".
 - **Integración automática:** al poner el CSV en `data/appeears/`, el pipeline lo incorpora sin cambios de código (`phantom/appeears.py:read_mod09`).
+
+### Pedido nacional (MOD13A3 + MOD17A3HGF)
+
+| Versión | Fecha | ID de AppEEARS | Estado |
+|---|---|---|---|
+| stellar-rd-nacional-v1 | 2026-11-14 (17:23 GMT-4) | `8ad4ac19-6b4c-4445-8443-2c4a4fc7f928` | Pending al enviar. AppEEARS avisa por correo al terminar. |
+
+- **Tipo:** área. GeoTIFF, proyección geográfica (EPSG:4326, WGS84). Fechas 01-01-2001 a 12-31-2024.
+- **Capas MOD13A3.061** (NDVI/EVI mensual, 1 km): `_1_km_monthly_NDVI`, `_1_km_monthly_EVI`,
+  `_1_km_monthly_pixel_reliability`, `_1_km_monthly_VI_Quality`.
+- **Capas MOD17A3HGF.061** (anual, 500 m, con huecos rellenados): `Npp_500m`, `Npp_QC_500m`.
+- **Falta GPP anual:** se pidió `Gpp_500m`, pero la API de AppEEARS (`/api/product/MOD17A3HGF.061`,
+  consultada el 2026-11-14) solo ofrece `Npp_500m` y `Npp_QC_500m` para ese producto. No se envió.
+  Si hace falta GPP, la vía en AppEEARS es MOD17A2HGF.061 `Gpp_500m` (8 días) y sumar por año.
+- **Ojo con la independencia:** MOD17A3HGF es salida de un modelo (eficiencia de uso de la luz) que usa
+  FPAR de MODIS. No es una medida independiente del verdor (NDVI/EVI); si ambos bajan a la vez, no son
+  dos pruebas distintas.
+- **Geometría:** `appeears/rd-adm0.geojson`, límite terrestre de la República Dominicana (ADM0) de
+  geoBoundaries gbOpen, versión simplificada (`DOM-ADM0-20870125`, año 2020, fuente original Caribbean
+  GeoPortal). Licencia **CC BY 4.0** (atribución: geoBoundaries, Runfola et al. 2020, *PLOS ONE*).
+  URL: https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/DOM/ADM0/geoBoundaries-DOM-ADM0_simplified.geojson.
+  Un MultiPolygon de 23 partes (isla principal + Saona, Beata, Catalina, etc.), 2937 vértices,
+  coordenadas redondeadas a 5 decimales (~1 m); 61 KB.
+- **Archivo del pedido:** `appeears/rd-nacional-area.json`, subido con "Upload a request file" en la web.
+
+Ver el estado: https://appeears.earthdatacloud.nasa.gov/explore
+Descargar: https://appeears.earthdatacloud.nasa.gov/download/8ad4ac19-6b4c-4445-8443-2c4a4fc7f928

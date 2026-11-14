@@ -1,0 +1,13 @@
+resultado,factor,columna_factor,n,n_conglomerados,beta,ic95,p,q_bh,n_pruebas_bh
+z_retorno_GWETROOT,fraccion_lluvia_intensa,fraccion_lluvia_intensa,105,16,0.134362,"[-0.0700641, 0.424564]",0.277469,,8
+z_retorno_GWETROOT,lluvia_max_1dia_mm,lluvia_max_1dia_mm,105,16,0.192399,"[-0.0473075, 0.396048]",0.0860895,,8
+z_retorno_GWETROOT,meses_sequia_previos,meses_sequia_previos,105,16,0.0438012,"[-0.190155, 0.388493]",0.77586,,8
+z_retorno_GWETROOT,z_antecedente,z_antecedente_GWETROOT,104,16,0.0793988,"[-0.194806, 0.301359]",0.535854,,8
+z_retorno_GWETTOP,fraccion_lluvia_intensa,fraccion_lluvia_intensa,106,16,0.080163,"[-0.0925072, 0.3179]",0.446256,,8
+z_retorno_GWETTOP,lluvia_max_1dia_mm,lluvia_max_1dia_mm,106,16,0.156294,"[-0.0616803, 0.333683]",0.118314,,8
+z_retorno_GWETTOP,meses_sequia_previos,meses_sequia_previos,106,16,-0.015042,"[-0.136587, 0.151744]",0.84055,,8
+z_retorno_GWETTOP,z_antecedente,z_antecedente_GWETTOP,106,16,0.208705,"[0.0452229, 0.358217]",0.0113575,,8
+contradiccion_A_GWETROOT,fraccion_lluvia_intensa,fraccion_lluvia_intensa,106,16,0,"[0.0, 0.0]",,,8
+contradiccion_A_GWETROOT,lluvia_max_1dia_mm,lluvia_max_1dia_mm,106,16,0,"[0.0, 0.0]",,,8
+contradiccion_A_GWETROOT,meses_sequia_previos,meses_sequia_previos,106,16,0,"[0.0, 0.0]",,,8
+contradiccion_A_GWETROOT,z_antecedente,z_antecedente_GWETROOT,105,16,0,"[0.0, 0.0]",,,8

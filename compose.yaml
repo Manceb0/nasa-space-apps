@@ -1,6 +1,7 @@
-# PHANTOM · un solo comando en cmd, PowerShell o bash:
-#   docker compose run --rm phantom
-# Las rutas son relativas a esta carpeta; no hace falta $PWD ni %cd%.
+# PHANTOM + Earth Memory · NASA Space Apps 2026 · Stellar Horizons
+# Un solo comando en cmd, PowerShell o bash (rutas relativas a esta carpeta):
+#   docker compose run --rm phantom     # análisis PHANTOM (dos regiones, MODIS)
+#   docker compose run --rm nacional    # Earth Memory nacional: todo el país, a nivel de celda
 services:
   phantom:
     build: .
@@ -8,3 +9,40 @@ services:
     volumes:
       - ./out:/app/out                        # results/, figures/ y RESULTS.md
       - ./data/appeears:/app/data/appeears    # CSV de AppEEARS (si ya están)
+
+  # Earth Memory nacional (IMERG 0.1° + GLDAS 0.25°; NASA POWER como comprobación).
+  # Descarga solo lo que falta en data/nacional/ (caché con SHA-256), corre los dos motores, figuras, informe
+  # y cuadernos. Otro país: docker compose run --rm nacional --pais HTI
+  # El token de Earthdata (.secrets/earthdata_token) se monta SOLO en tiempo de ejecución y de solo lectura;
+  # no entra a la imagen (.dockerignore excluye .secrets). Sin token, usa lo que ya esté en caché.
+  nacional:
+    build: .
+    image: phantom:latest
+    entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.run_all"]
+    command: []
+    volumes:
+      - ./.secrets:/run/secrets:ro
+      - ./data/nacional:/app/data/nacional
+      - ./data/appeears:/app/data/appeears
+      - ./results/nacional:/app/results/nacional
+      - ./figures/nacional:/app/figures/nacional
+      - ./reports_nacional:/app/reports_nacional
+      - ./notebooks:/app/notebooks
+
+  # Alta resolución + umbrales críticos (earthmemory/hr): CHIRPS 0.05°, TerraClimate ~4 km, SoilGrids, Copernicus
+  # DEM, WorldCover y SMAP L4 9 km (NASA, si hay token). Descarga lo que falta en data/nacional_hr/ (manifiesto con
+  # SHA-256), analiza, hace figuras, informe y cuaderno 05. Lee data/nacional SOLO para comparar con IMERG/GLDAS.
+  #   docker compose run --rm alta_resolucion            (añadir --sin-descarga para usar solo la caché)
+  alta_resolucion:
+    build: .
+    image: phantom:latest
+    entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.hr.run"]
+    command: []
+    volumes:
+      - ./.secrets:/run/secrets:ro
+      - ./data/nacional_hr:/app/data/nacional_hr
+      - ./data/nacional:/app/data/nacional:ro
+      - ./results/nacional_hr:/app/results/nacional_hr
+      - ./figures/nacional_hr:/app/figures/nacional_hr
+      - ./reports_nacional:/app/reports_nacional
+      - ./notebooks:/app/notebooks

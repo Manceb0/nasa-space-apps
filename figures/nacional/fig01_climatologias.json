@@ -1,0 +1,21 @@
+{
+  "archivos": [
+    "fig01_climatologias.pdf",
+    "fig01_climatologias.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    125.0
+  ],
+  "limites": "geoBoundaries gbOpen DOM ADM1 (fuente Natural Earth, dominio público)",
+  "rejillas": "celdas nativas: IMERG 0.1°, GLDAS 0.25° (sin interpolar)",
+  "periodo": "2001-2024",
+  "codigo": "earthmemory/figures.py",
+  "datos": [
+    "GPM IMERG Final V07 (doi:10.5067/GPM/IMERG/3B-MONTH/07; diario doi:10.5067/GPM/IMERGDF/DAY/07)",
+    "GLDAS Noah 2.1 mensual 0.25° (doi:10.5067/SXAVCZFAQLNO)"
+  ],
+  "transformaciones": [
+    "media 2001-2024 de los totales anuales (a) o de los meses (b-d)"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "archivos": [
+    "fig05_contradicciones.pdf",
+    "fig05_contradicciones.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    122.0
+  ],
+  "limites": "geoBoundaries gbOpen DOM ADM1 (fuente Natural Earth, dominio público)",
+  "rejillas": "celdas nativas: IMERG 0.1°, GLDAS 0.25° (sin interpolar)",
+  "periodo": "2001-2024",
+  "codigo": "earthmemory/figures.py",
+  "datos": [
+    "GPM IMERG Final V07 (doi:10.5067/GPM/IMERG/3B-MONTH/07; diario doi:10.5067/GPM/IMERGDF/DAY/07)",
+    "GLDAS Noah 2.1 mensual 0.25° (doi:10.5067/SXAVCZFAQLNO)",
+    "GLDAS Rainf_f_tavg (lluvia de forzamiento)"
+  ],
+  "definiciones": {
+    "A": "SPI-3 vuelve a >= 0 tras SPI-3 <= -1 (2+ meses) y z raíz < -1 ese mes y el siguiente",
+    "B1": "2+ meses con z raíz < -1 y SPI-3 >= 0",
+    "B2": "2+ meses con z raíz >= 0 y SPI-3 <= -1"
+  },
+  "advertencia": "GLDAS-2.1 se forzó con GPCP, no con IMERG: A con IMERG puede ser diferencia entre productos (panel b)"
+}

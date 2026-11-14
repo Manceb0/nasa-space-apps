@@ -1,0 +1,25 @@
+{
+  "archivos": [
+    "fig07_mejor_contraste.pdf",
+    "fig07_mejor_contraste.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    130.0
+  ],
+  "limites": "geoBoundaries gbOpen DOM ADM1 (fuente Natural Earth, dominio público)",
+  "rejillas": "celdas nativas: IMERG 0.1°, GLDAS 0.25° (sin interpolar)",
+  "periodo": "2001-2024",
+  "codigo": "earthmemory/figures.py",
+  "datos": [
+    "GPM IMERG Final V07 (doi:10.5067/GPM/IMERG/3B-MONTH/07; diario doi:10.5067/GPM/IMERGDF/DAY/07)",
+    "GLDAS Noah 2.1 mensual 0.25° (doi:10.5067/SXAVCZFAQLNO)"
+  ],
+  "par": [
+    "18.875_-70.375",
+    "19.375_-70.625"
+  ],
+  "respuesta": "SM_RAIZ",
+  "metrica": "gamma",
+  "emparejamiento": "episodios que terminan con <= 2 meses de diferencia y |ΔSPI-3 mínimo| <= 0.5"
+}

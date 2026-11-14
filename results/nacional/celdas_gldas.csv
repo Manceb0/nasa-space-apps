@@ -1,0 +1,177 @@
+celda,lat,lon,area_km2,frac_pais,frac_otro_pais,otro_pais,frac_mar,provincia_principal,tierra_gldas,elevacion_m,incluida,motivo_exclusion
+17.375_-72.125,17.375,-72.125,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-71.875,17.375,-71.875,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-71.625,17.375,-71.625,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-71.375,17.375,-71.375,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-71.125,17.375,-71.125,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-70.875,17.375,-70.875,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-70.625,17.375,-70.625,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-70.375,17.375,-70.375,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-70.125,17.375,-70.125,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-69.875,17.375,-69.875,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-69.625,17.375,-69.625,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-69.375,17.375,-69.375,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-69.125,17.375,-69.125,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-68.875,17.375,-68.875,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-68.625,17.375,-68.625,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.375_-68.375,17.375,-68.375,737.508,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-72.125,17.625,-72.125,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-71.875,17.625,-71.875,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-71.625,17.625,-71.625,736.494,0.04321,0,,0.95679,Pedernales,False,,False,GLDAS la trata como mar; fracción en DOM 0.04 < 0.25
+17.625_-71.375,17.625,-71.375,736.494,0.24951,0,,0.75049,Pedernales,False,,False,GLDAS la trata como mar; fracción en DOM 0.25 < 0.25
+17.625_-71.125,17.625,-71.125,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-70.875,17.625,-70.875,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-70.625,17.625,-70.625,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-70.375,17.625,-70.375,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-70.125,17.625,-70.125,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-69.875,17.625,-69.875,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-69.625,17.625,-69.625,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-69.375,17.625,-69.375,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-69.125,17.625,-69.125,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-68.875,17.625,-68.875,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-68.625,17.625,-68.625,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.625_-68.375,17.625,-68.375,736.494,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-72.125,17.875,-72.125,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-71.875,17.875,-71.875,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-71.625,17.875,-71.625,735.466,0.59997,0,,0.40003,Pedernales,True,159.511,True,
+17.875_-71.375,17.875,-71.375,735.466,0.89915,0,,0.10085,Pedernales,True,230.298,True,
+17.875_-71.125,17.875,-71.125,735.466,0.11035,0,,0.88965,Barahona,False,,False,GLDAS la trata como mar; fracción en DOM 0.11 < 0.25
+17.875_-70.875,17.875,-70.875,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-70.625,17.875,-70.625,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-70.375,17.875,-70.375,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-70.125,17.875,-70.125,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-69.875,17.875,-69.875,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-69.625,17.875,-69.625,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-69.375,17.875,-69.375,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-69.125,17.875,-69.125,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-68.875,17.875,-68.875,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-68.625,17.875,-68.625,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+17.875_-68.375,17.875,-68.375,735.466,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+18.125_-72.125,18.125,-72.125,734.424,0,0.08155,HTI,0.91845,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25; dominada por HTI
+18.125_-71.875,18.125,-71.875,734.424,0.05439,0.41747,HTI,0.52814,Pedernales,False,,False,GLDAS la trata como mar; fracción en DOM 0.05 < 0.25; dominada por HTI
+18.125_-71.625,18.125,-71.625,734.424,0.98559,0,,0.01441,Pedernales,True,968.605,True,
+18.125_-71.375,18.125,-71.375,734.424,1,0,,0,Barahona,True,828.714,True,
+18.125_-71.125,18.125,-71.125,734.424,0.63037,0,,0.36963,Barahona,True,477.933,True,
+18.125_-70.875,18.125,-70.875,734.424,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+18.125_-70.625,18.125,-70.625,734.424,0.04477,0,,0.95523,Peravia,False,,False,GLDAS la trata como mar; fracción en DOM 0.04 < 0.25
+18.125_-70.375,18.125,-70.375,734.424,0.07675,0,,0.92325,Peravia,False,,False,GLDAS la trata como mar; fracción en DOM 0.08 < 0.25
+18.125_-70.125,18.125,-70.125,734.424,0.02718,0,,0.97282,Peravia,False,,False,GLDAS la trata como mar; fracción en DOM 0.03 < 0.25
+18.125_-69.875,18.125,-69.875,734.424,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+18.125_-69.625,18.125,-69.625,734.424,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+18.125_-69.375,18.125,-69.375,734.424,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+18.125_-69.125,18.125,-69.125,734.424,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+18.125_-68.875,18.125,-68.875,734.424,0.03039,0,,0.96961,La Altagracia,False,,False,GLDAS la trata como mar; fracción en DOM 0.03 < 0.25
+18.125_-68.625,18.125,-68.625,734.424,0.20794,0,,0.79206,La Altagracia,False,,False,GLDAS la trata como mar; fracción en DOM 0.21 < 0.25
+18.125_-68.375,18.125,-68.375,734.424,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+18.375_-72.125,18.375,-72.125,733.368,0,1,HTI,0,,True,1076.09,False,fracción en DOM 0.00 < 0.25; dominada por HTI
+18.375_-71.875,18.375,-71.875,733.368,0.29429,0.70571,HTI,0,Independencia,True,997.299,False,dominada por HTI
+18.375_-71.625,18.375,-71.625,733.368,0.96639,0.03361,HTI,0,Independencia,True,513.811,True,
+18.375_-71.375,18.375,-71.375,733.368,1,0,,0,Independencia,True,70.0589,True,
+18.375_-71.125,18.375,-71.125,733.368,0.91355,0,,0.08645,Barahona,True,173.759,True,
+18.375_-70.875,18.375,-70.875,733.368,0.75668,0,,0.24332,Azua,True,208.344,True,
+18.375_-70.625,18.375,-70.625,733.368,0.55989,0,,0.44011,Azua,True,229.255,True,
+18.375_-70.375,18.375,-70.375,733.368,1,0,,0,Peravia,True,437.104,True,
+18.375_-70.125,18.375,-70.125,733.368,0.79032,0,,0.20968,San Cristóbal,True,118.262,True,
+18.375_-69.875,18.375,-69.875,733.368,0.1711,0,,0.8289,Santo Domingo,False,,False,GLDAS la trata como mar; fracción en DOM 0.17 < 0.25
+18.375_-69.625,18.375,-69.625,733.368,0.25427,0,,0.74573,Santo Domingo,False,,False,GLDAS la trata como mar
+18.375_-69.375,18.375,-69.375,733.368,0.27666,0,,0.72334,San Pedro de Macorís,False,,False,GLDAS la trata como mar
+18.375_-69.125,18.375,-69.125,733.368,0.34064,0,,0.65936,San Pedro de Macorís,False,,False,GLDAS la trata como mar
+18.375_-68.875,18.375,-68.875,733.368,0.52945,0,,0.47055,La Altagracia,True,55.4699,True,
+18.375_-68.625,18.375,-68.625,733.368,0.79031,0,,0.20969,La Altagracia,True,59.8417,True,
+18.375_-68.375,18.375,-68.375,733.368,0.16954,0,,0.83046,La Altagracia,False,,False,GLDAS la trata como mar; fracción en DOM 0.17 < 0.25
+18.625_-72.125,18.625,-72.125,732.298,0.0016,0.9984,HTI,0,Independencia,True,256.836,False,fracción en DOM 0.00 < 0.25; dominada por HTI
+18.625_-71.875,18.625,-71.875,732.298,0.47694,0.52306,HTI,0,Independencia,True,623.36,False,dominada por HTI
+18.625_-71.625,18.625,-71.625,732.298,0.99041,0.00959,HTI,0,Independencia,True,855.953,True,
+18.625_-71.375,18.625,-71.375,732.298,1,0,,0,San Juan,True,849.996,True,
+18.625_-71.125,18.625,-71.125,732.298,1,0,,0,San Juan,True,440.266,True,
+18.625_-70.875,18.625,-70.875,732.298,1,0,,0,Azua,True,696.821,True,
+18.625_-70.625,18.625,-70.625,732.298,1,0,,0,San José de Ocoa,True,1229.65,True,
+18.625_-70.375,18.625,-70.375,732.298,1,0,,0,San José de Ocoa,True,815.688,True,
+18.625_-70.125,18.625,-70.125,732.298,1,0,,0,Santo Domingo,True,196.152,True,
+18.625_-69.875,18.625,-69.875,732.298,1,0,,0,Santo Domingo,True,28.09,True,
+18.625_-69.625,18.625,-69.625,732.298,1,0,,0,Santo Domingo,True,31.6856,True,
+18.625_-69.375,18.625,-69.375,732.298,1,0,,0,San Pedro de Macorís,True,43.3989,True,
+18.625_-69.125,18.625,-69.125,732.298,1,0,,0,El Seybo,True,68.69,True,
+18.625_-68.875,18.625,-68.875,732.298,1,0,,0,La Altagracia,True,118.281,True,
+18.625_-68.625,18.625,-68.625,732.298,1,0,,0,La Altagracia,True,86.4289,True,
+18.625_-68.375,18.625,-68.375,732.298,0.49125,0,,0.50875,La Altagracia,False,23.93,False,GLDAS la trata como mar
+18.875_-72.125,18.875,-72.125,731.214,0,1,HTI,0,,True,317.162,False,fracción en DOM 0.00 < 0.25; dominada por HTI
+18.875_-71.875,18.875,-71.875,731.214,0.07836,0.92164,HTI,0,La Estrelleta,True,424.974,False,fracción en DOM 0.08 < 0.25; dominada por HTI
+18.875_-71.625,18.875,-71.625,731.214,0.94558,0.05442,HTI,0,La Estrelleta,True,572.039,True,
+18.875_-71.375,18.875,-71.375,731.214,1,0,,0,San Juan,True,624.156,True,
+18.875_-71.125,18.875,-71.125,731.214,1,0,,0,San Juan,True,958.883,True,
+18.875_-70.875,18.875,-70.875,731.214,1,0,,0,Azua,True,1325.09,True,
+18.875_-70.625,18.875,-70.625,731.214,1,0,,0,La Vega,True,1541.77,True,
+18.875_-70.375,18.875,-70.375,731.214,1,0,,0,Monseñor Nouel,True,407.118,True,
+18.875_-70.125,18.875,-70.125,731.214,1,0,,0,Monte Plata,True,211.173,True,
+18.875_-69.875,18.875,-69.875,731.214,1,0,,0,Monte Plata,True,134.717,True,
+18.875_-69.625,18.875,-69.625,731.214,1,0,,0,Monte Plata,True,194.949,True,
+18.875_-69.375,18.875,-69.375,731.214,1,0,,0,Hato Mayor,True,189.074,True,
+18.875_-69.125,18.875,-69.125,731.214,0.98721,0,,0.01279,El Seybo,True,186.264,True,
+18.875_-68.875,18.875,-68.875,731.214,0.96482,0,,0.03518,El Seybo,True,173.351,True,
+18.875_-68.625,18.875,-68.625,731.214,0.44173,0,,0.55827,La Altagracia,False,,False,GLDAS la trata como mar
+18.875_-68.375,18.875,-68.375,731.214,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.125_-72.125,19.125,-72.125,730.117,0,1,HTI,0,,True,496.686,False,fracción en DOM 0.00 < 0.25; dominada por HTI
+19.125_-71.875,19.125,-71.875,730.117,0.00961,0.99039,HTI,0,La Estrelleta,True,382.944,False,fracción en DOM 0.01 < 0.25; dominada por HTI
+19.125_-71.625,19.125,-71.625,730.117,0.74885,0.25115,HTI,0,La Estrelleta,True,596.474,True,
+19.125_-71.375,19.125,-71.375,730.117,1,0,,0,San Juan,True,1182.42,True,
+19.125_-71.125,19.125,-71.125,730.117,1,0,,0,Santiago,True,1747.73,True,
+19.125_-70.875,19.125,-70.875,730.117,1,0,,0,Santiago,True,1282.92,True,
+19.125_-70.625,19.125,-70.625,730.117,1,0,,0,La Vega,True,746.228,True,
+19.125_-70.375,19.125,-70.375,730.117,1,0,,0,La Vega,True,135.352,True,
+19.125_-70.125,19.125,-70.125,730.117,1,0,,0,Sánchez Ramírez,True,67.2833,True,
+19.125_-69.875,19.125,-69.875,730.117,1,0,,0,Duarte,True,86.9456,True,
+19.125_-69.625,19.125,-69.625,730.117,0.74725,0,,0.25275,Samaná,True,114.39,True,
+19.125_-69.375,19.125,-69.375,730.117,0.50562,0,,0.49438,Hato Mayor,False,113.923,False,GLDAS la trata como mar
+19.125_-69.125,19.125,-69.125,730.117,0.10401,0,,0.89599,Samaná,False,,False,GLDAS la trata como mar; fracción en DOM 0.10 < 0.25
+19.125_-68.875,19.125,-68.875,730.117,0.04963,0,,0.95037,El Seybo,False,,False,GLDAS la trata como mar; fracción en DOM 0.05 < 0.25
+19.125_-68.625,19.125,-68.625,730.117,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.125_-68.375,19.125,-68.375,730.117,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.375_-72.125,19.375,-72.125,729.005,0,1,HTI,0,,True,427.916,False,fracción en DOM 0.00 < 0.25; dominada por HTI
+19.375_-71.875,19.375,-71.875,729.005,0.01601,0.98399,HTI,0,Dajabón,True,594.057,False,fracción en DOM 0.02 < 0.25; dominada por HTI
+19.375_-71.625,19.375,-71.625,729.005,0.89603,0.10397,HTI,0,Dajabón,True,452.692,True,
+19.375_-71.375,19.375,-71.375,729.005,1,0,,0,Santiago Rodríguez,True,425.882,True,
+19.375_-71.125,19.375,-71.125,729.005,1,0,,0,Santiago,True,501.291,True,
+19.375_-70.875,19.375,-70.875,729.005,1,0,,0,Santiago,True,392.806,True,
+19.375_-70.625,19.375,-70.625,729.005,1,0,,0,Santiago,True,244.349,True,
+19.375_-70.375,19.375,-70.375,729.005,1,0,,0,Hermanas,True,264.189,True,
+19.375_-70.125,19.375,-70.125,729.005,1,0,,0,Duarte,True,224.151,True,
+19.375_-69.875,19.375,-69.875,729.005,0.70248,0,,0.29752,María Trinidad Sánchez,True,49.0296,True,
+19.375_-69.625,19.375,-69.625,729.005,0.24814,0,,0.75186,Samaná,False,,False,GLDAS la trata como mar; fracción en DOM 0.25 < 0.25
+19.375_-69.375,19.375,-69.375,729.005,0.30416,0,,0.69584,Samaná,False,,False,GLDAS la trata como mar
+19.375_-69.125,19.375,-69.125,729.005,0.07684,0,,0.92316,Samaná,False,,False,GLDAS la trata como mar; fracción en DOM 0.08 < 0.25
+19.375_-68.875,19.375,-68.875,729.005,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.375_-68.625,19.375,-68.625,729.005,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.375_-68.375,19.375,-68.375,729.005,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.625_-72.125,19.625,-72.125,727.879,0,0.92485,HTI,0.07515,,True,179.89,False,fracción en DOM 0.00 < 0.25; dominada por HTI
+19.625_-71.875,19.625,-71.875,727.879,0.0016,0.8417,HTI,0.1567,Monte Cristi,True,63.9276,False,fracción en DOM 0.00 < 0.25; dominada por HTI
+19.625_-71.625,19.625,-71.625,727.879,0.93759,0.04642,HTI,0.01599,Monte Cristi,True,58.1185,True,
+19.625_-71.375,19.625,-71.375,727.879,1,0,,0,Monte Cristi,True,97.6444,True,
+19.625_-71.125,19.625,-71.125,727.879,1,0,,0,Valverde,True,151.072,True,
+19.625_-70.875,19.625,-70.875,727.879,1,0,,0,Puerto Plata,True,296.44,True,
+19.625_-70.625,19.625,-70.625,727.879,1,0,,0,Puerto Plata,True,364.819,True,
+19.625_-70.375,19.625,-70.375,727.879,0.83529,0,,0.16471,Espaillat,True,201.479,True,
+19.625_-70.125,19.625,-70.125,727.879,0.58738,0,,0.41262,María Trinidad Sánchez,True,150.886,True,
+19.625_-69.875,19.625,-69.875,727.879,0.29127,0,,0.70873,María Trinidad Sánchez,False,,False,GLDAS la trata como mar
+19.625_-69.625,19.625,-69.625,727.879,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.625_-69.375,19.625,-69.375,727.879,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.625_-69.125,19.625,-69.125,727.879,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.625_-68.875,19.625,-68.875,727.879,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.625_-68.625,19.625,-68.625,727.879,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.625_-68.375,19.625,-68.375,727.879,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.875_-72.125,19.875,-72.125,726.74,0,0.02242,HTI,0.97758,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25; dominada por HTI
+19.875_-71.875,19.875,-71.875,726.74,0.00961,0,,0.99039,Monte Cristi,False,,False,GLDAS la trata como mar; fracción en DOM 0.01 < 0.25
+19.875_-71.625,19.875,-71.625,726.74,0.51858,0,,0.48142,Monte Cristi,False,33.488,False,GLDAS la trata como mar
+19.875_-71.375,19.875,-71.375,726.74,0.47219,0,,0.52781,Monte Cristi,False,,False,GLDAS la trata como mar
+19.875_-71.125,19.875,-71.125,726.74,0.51538,0,,0.48462,Puerto Plata,True,133.804,True,
+19.875_-70.875,19.875,-70.875,726.74,0.57138,0,,0.42862,Puerto Plata,True,87.2628,True,
+19.875_-70.625,19.875,-70.625,726.74,0.11687,0,,0.88313,Puerto Plata,False,,False,GLDAS la trata como mar; fracción en DOM 0.12 < 0.25
+19.875_-70.375,19.875,-70.375,726.74,0.04003,0,,0.95997,Puerto Plata,False,,False,GLDAS la trata como mar; fracción en DOM 0.04 < 0.25
+19.875_-70.125,19.875,-70.125,726.74,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.875_-69.875,19.875,-69.875,726.74,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.875_-69.625,19.875,-69.625,726.74,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.875_-69.375,19.875,-69.375,726.74,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.875_-69.125,19.875,-69.125,726.74,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.875_-68.875,19.875,-68.875,726.74,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.875_-68.625,19.875,-68.625,726.74,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25
+19.875_-68.375,19.875,-68.375,726.74,0,0,,1,,False,,False,GLDAS la trata como mar; fracción en DOM 0.00 < 0.25

@@ -1,0 +1,43 @@
+celda,lat,lon,elevacion_merra2_m,frac_pais,frac_otro_pais,otro_pais,frac_mar,tierra_en_merra2,incluida,motivo_exclusion,lugares
+17.50_-68.125,17.5,-68.125,0.01,0,0,,1,True,False,fracción en DOM 0.00 < 0.25,cerca de Punta Cana
+17.50_-68.750,17.5,-68.75,0,0,0,,1,False,False,MERRA-2 la trata como mar; fracción en DOM 0.00 < 0.25,cerca de La Romana
+17.50_-69.375,17.5,-69.375,0,0,0,,1,False,False,MERRA-2 la trata como mar; fracción en DOM 0.00 < 0.25,cerca de San Pedro de Macorís
+17.50_-70.000,17.5,-70,0,0,0,,1,False,False,MERRA-2 la trata como mar; fracción en DOM 0.00 < 0.25,cerca de Baní
+17.50_-70.625,17.5,-70.625,2.22,0,0,,1,True,False,fracción en DOM 0.00 < 0.25,cerca de Baní
+17.50_-71.250,17.5,-71.25,4.09,0.0599,0,,0.9401,True,False,fracción en DOM 0.06 < 0.25,cerca de Barahona
+17.50_-71.875,17.5,-71.875,2.8,0,0,,1,True,False,fracción en DOM 0.00 < 0.25,cerca de Pedernales
+18.00_-68.125,18,-68.125,0.26,0,0.0131,PRI,0.9869,True,False,fracción en DOM 0.00 < 0.25; dominada por PRI (0.01),cerca de Punta Cana
+18.00_-68.750,18,-68.75,0.45,0.0512,0,,0.9488,True,False,fracción en DOM 0.05 < 0.25,cerca de La Romana
+18.00_-69.375,18,-69.375,0.1,0,0,,1,True,False,fracción en DOM 0.00 < 0.25,cerca de San Pedro de Macorís
+18.00_-70.000,18,-70,27.74,0.0075,0,,0.9925,True,False,fracción en DOM 0.01 < 0.25,cerca de Baní
+18.00_-70.625,18,-70.625,71.88,0.0231,0,,0.9769,True,False,fracción en DOM 0.02 < 0.25,cerca de Baní
+18.00_-71.250,18,-71.25,340.4,0.6249,0,,0.3751,True,True,,Barahona
+18.00_-71.875,18,-71.875,358.42,0.2293,0.0943,HTI,0.6764,True,False,fracción en DOM 0.23 < 0.25,Pedernales
+18.50_-68.125,18.5,-68.125,0.27,0.0562,0,,0.9438,True,False,fracción en DOM 0.06 < 0.25,Punta Cana
+18.50_-68.750,18.5,-68.75,60.71,0.8104,0,,0.1896,True,True,,Higüey / La Romana
+18.50_-69.375,18.5,-69.375,47.67,0.6459,0,,0.3541,True,True,,San Pedro de Macorís
+18.50_-70.000,18.5,-70,126.11,0.7498,0,,0.2502,True,True,,Santo Domingo
+18.50_-70.625,18.5,-70.625,530.99,0.868,0,,0.132,True,True,,Azua / Baní
+18.50_-71.250,18.5,-71.25,415.29,0.9775,0,,0.0225,True,True,,Neiba
+18.50_-71.875,18.5,-71.875,533.18,0.4469,0.5531,HTI,0,True,False,dominada por HTI (0.55),Jimaní
+19.00_-68.125,19,-68.125,0,0,0,,1,False,False,MERRA-2 la trata como mar; fracción en DOM 0.00 < 0.25,cerca de Punta Cana
+19.00_-68.750,19,-68.75,42.46,0.3415,0,,0.6585,True,True,,El Seibo
+19.00_-69.375,19,-69.375,97.66,0.7221,0,,0.2779,True,True,,Samaná / Hato Mayor
+19.00_-70.000,19,-70,155.2,1,0,,0,True,True,,Cotuí / Monte Plata
+19.00_-70.625,19,-70.625,904.1,1,0,,0,True,True,,Constanza / Bonao
+19.00_-71.250,19,-71.25,935.34,1,0,,0,True,True,,San Juan de la Maguana
+19.00_-71.875,19,-71.875,507.23,0.255,0.745,HTI,0,True,False,dominada por HTI (0.74),Comendador (Elías Piña)
+19.50_-68.125,19.5,-68.125,0,0,0,,1,False,False,MERRA-2 la trata como mar; fracción en DOM 0.00 < 0.25,cerca de Punta Cana
+19.50_-68.750,19.5,-68.75,0.73,0,0,,1,True,False,fracción en DOM 0.00 < 0.25,cerca de Samaná
+19.50_-69.375,19.5,-69.375,11.45,0.1158,0,,0.8842,True,False,fracción en DOM 0.12 < 0.25,cerca de Samaná
+19.50_-70.000,19.5,-70,75.83,0.6046,0,,0.3954,True,True,,Nagua / San Francisco de Macorís
+19.50_-70.625,19.5,-70.625,279.41,0.985,0,,0.015,True,True,,Santiago
+19.50_-71.250,19.5,-71.25,387.68,1,0,,0,True,True,,Mao
+19.50_-71.875,19.5,-71.875,304,0.2706,0.6807,HTI,0.0487,True,False,dominada por HTI (0.68),Dajabón
+20.00_-68.125,20,-68.125,0,0,0,,1,False,False,MERRA-2 la trata como mar; fracción en DOM 0.00 < 0.25,cerca de Punta Cana
+20.00_-68.750,20,-68.75,0,0,0,,1,False,False,MERRA-2 la trata como mar; fracción en DOM 0.00 < 0.25,cerca de Samaná
+20.00_-69.375,20,-69.375,0.01,0,0,,1,False,False,MERRA-2 la trata como mar; fracción en DOM 0.00 < 0.25,cerca de Nagua
+20.00_-70.000,20,-70,12.07,0,0,,1,True,False,fracción en DOM 0.00 < 0.25,cerca de Nagua
+20.00_-70.625,20,-70.625,75.62,0.1133,0,,0.8867,True,False,fracción en DOM 0.11 < 0.25,Puerto Plata
+20.00_-71.250,20,-71.25,53.83,0.2628,0,,0.7372,True,True,,cerca de Montecristi
+20.00_-71.875,20,-71.875,7.28,0.0707,0,,0.9293,True,False,fracción en DOM 0.07 < 0.25,Montecristi
