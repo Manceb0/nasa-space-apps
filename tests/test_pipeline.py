@@ -63,5 +63,5 @@ def test_pipeline_end_to_end_with_synthetic_modis(tmp_path):
     assert ev2015.loc["gpp_modelo", "dt_dias"] > 32  # GPP sintético vuelve ~2.5 meses después
     assert ev2015.loc["lst_menos_aire", "dt_dias"] > 0
     assert (root / "results" / "tendencias.csv").exists()
-    assert any(p.name.startswith("evento_") for p in (root / "figures").iterdir())
+    assert any(p.name.startswith("fig3_evento_") for p in (root / "figures").iterdir())
     assert "Recuperación verde vs. función" in (root / "RESULTS.md").read_text(encoding="utf-8")

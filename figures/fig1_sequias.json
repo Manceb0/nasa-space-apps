@@ -1,0 +1,22 @@
+{
+  "archivos": [
+    "fig1_sequias.pdf",
+    "fig1_sequias.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    150.0
+  ],
+  "datos": [
+    "data/giovanni/imerg_precip_noroeste.csv",
+    "data/giovanni/imerg_precip_jaragua.csv",
+    "data/giovanni/gldas_rootmoist_noroeste.csv",
+    "data/giovanni/gldas_rootmoist_jaragua.csv"
+  ],
+  "transformaciones": [
+    "SPI-3: gamma por mes calendario con probabilidad de cero (phantom.drought.spi)",
+    "z de humedad: (x - media del mes) / desviación del mes, 2001-2024"
+  ],
+  "marcas": "barras negras bajo el eje = eventos SPI-3 <= -1 durante 2+ meses; años = los 3 más severos",
+  "faltantes": "SPI-3 no existe en los 2 primeros meses (ventana de 3 meses); se dejan vacíos"
+}

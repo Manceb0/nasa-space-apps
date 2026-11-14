@@ -1,6 +1,6 @@
 # RESULTS
 
-Generado por `phantom.pipeline` el 2026-11-14 15:50 UTC. Este archivo se reescribe en cada corrida; no editarlo a mano.
+Generado por `phantom.pipeline` el 2026-11-14 16:00 UTC. Este archivo se reescribe en cada corrida; no editarlo a mano.
 
 ## 1. Datos climáticos (Giovanni)
 
@@ -48,7 +48,7 @@ Generado por `phantom.pipeline` el 2026-11-14 15:50 UTC. Este archivo se reescri
 | noroeste | 2013-03 | 2013-04 | 2 | -3.49 | -1.96 | 2013-07 |
 | noroeste | 2022-06 | 2022-07 | 2 | -2.67 | -1.54 | 2022-09 |
 
-Catálogo completo con los tres criterios: `results/sequias_catalogo.csv`. Figura: `figures/sequias_timeline.png`.
+Catálogo completo con los tres criterios: `results/sequias_catalogo.csv`. Figuras: `figures/fig1_sequias.pdf` y `figures/fig2_criterios_sequia.pdf` (leyendas en `figures/LEYENDAS.md`).
 
 ## 3. Recuperación verde vs. función (MODIS)
 

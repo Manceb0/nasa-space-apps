@@ -1,0 +1,17 @@
+{
+  "archivos": [
+    "fig2_criterios_sequia.pdf",
+    "fig2_criterios_sequia.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    62.0
+  ],
+  "datos": "results/sequias_catalogo.csv",
+  "criterios": [
+    "SPI-3 ≤ −1",
+    "SPI-6 ≤ −1",
+    "Suelo z ≤ −1"
+  ],
+  "nota": "Una racha cuenta si dura 2+ meses. GLDAS recibe lluvia como entrada: coincidir no es validación independiente."
+}

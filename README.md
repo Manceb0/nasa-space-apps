@@ -29,6 +29,28 @@ Cuando AppEEARS termine:
 2. Ponerlos en `data/appeears/`
 3. Volver a correr `uv run python -m phantom.pipeline`
 
+### Con Docker
+
+La imagen corre las 22 pruebas durante el build: si alguna falla, no se construye.
+La salida es idéntica byte a byte a la corrida local (comprobado en CSV y JSON; `RESULTS.md`
+solo cambia en la fecha de generación).
+
+```bash
+docker build -t phantom .
+```
+
+```bash
+docker run --rm -v "$PWD/out:/app/out" phantom
+```
+
+Con los datos MODIS, se monta además la carpeta de AppEEARS:
+
+```bash
+docker run --rm -v "$PWD/out:/app/out" -v "$PWD/data/appeears:/app/data/appeears" phantom
+```
+
+Queda todo en `out/`: `results/`, `figures/` y `RESULTS.md`.
+
 El pipeline encuentra solo los archivos `*-MOD13Q1-061-results.csv`, `*-MOD11A2-061-results.csv`,
 `*-MOD17A2HGF-061-results.csv` y `*-MCD12Q1-061-results.csv`.
 

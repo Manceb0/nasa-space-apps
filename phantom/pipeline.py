@@ -23,6 +23,7 @@ from . import appeears, drought, figures, giovanni, recovery, stats
 REGIONS = ("noroeste", "jaragua")
 PRIMARY = {"verde": "ndvi", "umbral": -1.0, "persistencia": 3}
 HORIZON_DAYS = 365
+LF = "\n"  # fin de línea fijo: la misma salida en Windows, Linux y Docker
 
 
 def _json_default(o):
@@ -40,7 +41,7 @@ def _json_default(o):
 
 
 def write_json(path: Path, obj) -> None:
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2, default=_json_default), encoding="utf-8")
+    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2, default=_json_default), encoding="utf-8", newline=LF)
 
 
 def region_of_point(pid: str, category: str) -> str | None:
@@ -65,9 +66,10 @@ def run_climate(gdir: Path, out: Path, figdir: Path) -> tuple[dict, dict]:
         ev.insert(0, "region", reg)
         events[reg] = ev
     cat = pd.concat(catalogs, ignore_index=True)
-    cat.to_csv(out / "sequias_catalogo.csv", index=False)
-    pd.concat(events.values(), ignore_index=True).to_csv(out / "eventos_principales.csv", index=False)
-    figures.drought_timeline(series, events, figdir / "sequias_timeline.png")
+    cat.to_csv(out / "sequias_catalogo.csv", index=False, lineterminator=LF)
+    pd.concat(events.values(), ignore_index=True).to_csv(out / "eventos_principales.csv", index=False, lineterminator=LF)
+    figures.fig_droughts(series, events, figdir / "fig1_sequias")
+    figures.fig_criteria(cat, figdir / "fig2_criterios_sequia")
     return series, events
 
 
@@ -123,6 +125,7 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
         stops = _stop_dates(ev, series_end)
         for (i, e), stop in zip(ev.iterrows(), stops):
             e_end = e["fin"] + pd.offsets.MonthEnd(0)
+            recs = {}
             for fname, fz in funcs.items():
                 prim = recovery.event_gap(green[PRIMARY["verde"]], fz, e["inicio"], e_end, stop,
                                           PRIMARY["umbral"], PRIMARY["persistencia"])
@@ -131,19 +134,24 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
                 sens.insert(0, "evento_inicio", e["inicio"])
                 sens.insert(0, "id", pid)
                 sens_rows.append(sens)
+                recs["ndvi"] = prim["verde_recuperacion"]
+                recs[fname] = prim["funcion_recuperacion"]
                 rob = recovery.robustness_label(sens, prim["dt_dias"])
                 rows.append({"id": pid, "region": reg, "evento_inicio": e["inicio"], "evento_fin": e_end,
                              "evento_severidad_spi3": e["severidad"], "fin_ventana": stop, "funcion": fname,
                              **prim, **{f"rob_{k}": val for k, val in rob.items()}})
             if e["severidad"] <= ev["severidad"].nsmallest(3).max():
-                fp = figdir / f"evento_{pid}_{e['inicio']:%Y-%m}.png"
-                figures.event_panel(pid, e["inicio"], e_end, stop, green["ndvi"], funcs, fp)
-                figs.append(fp.name)
+                stem = figdir / f"fig3_evento_{pid}_{e['inicio']:%Y-%m}"
+                figs += figures.fig_event(pid, e["inicio"], e_end, stop, {"ndvi": green["ndvi"], **funcs}, recs, stem,
+                                          threshold=PRIMARY["umbral"])
 
     res = pd.DataFrame(rows)
-    res.to_csv(out / "recuperacion_eventos.csv", index=False)
+    res.to_csv(out / "recuperacion_eventos.csv", index=False, lineterminator=LF)
     if sens_rows:
-        pd.concat(sens_rows, ignore_index=True).to_csv(out / "sensibilidad.csv", index=False)
+        sens_all = pd.concat(sens_rows, ignore_index=True)
+        sens_all.to_csv(out / "sensibilidad.csv", index=False, lineterminator=LF)
+        if (sens_all["estado"] == "ambos_recuperados").any():
+            figs += figures.fig_sensitivity(sens_all, figdir / "fig4_sensibilidad_dt")
 
     # Tendencias: Δt por evento (si hay >= 4 eventos recuperados) y verdor/función anual.
     tests = []
@@ -168,7 +176,7 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
     for t, qq in zip(tests, q):
         t["q_bh"] = qq
     tdf = pd.DataFrame(tests)
-    tdf.to_csv(out / "tendencias.csv", index=False)
+    tdf.to_csv(out / "tendencias.csv", index=False, lineterminator=LF)
 
     summary = {
         "estado": "procesado",
@@ -188,7 +196,7 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
     return summary
 
 
-def write_results_md(root: Path, out: Path, validation_path: Path, modis: dict) -> None:
+def write_results_md(md_path: Path, out: Path, validation_path: Path, modis: dict) -> None:
     val = json.loads(validation_path.read_text(encoding="utf-8"))
     ev = pd.read_csv(out / "eventos_principales.csv", parse_dates=["inicio", "fin", "recuperacion_candidata"])
     lines = [
@@ -213,7 +221,7 @@ def write_results_md(root: Path, out: Path, validation_path: Path, modis: dict) 
         lines.append(f"| {r['region']} | {r['inicio']:%Y-%m} | {r['fin']:%Y-%m} | {r['duracion_meses']} | "
                      f"{r['severidad']:.2f} | {r['pico']:.2f} | {'' if pd.isna(rec) else f'{rec:%Y-%m}'} |")
     lines += ["", "Catálogo completo con los tres criterios: `results/sequias_catalogo.csv`. "
-              "Figura: `figures/sequias_timeline.png`.", "", "## 3. Recuperación verde vs. función (MODIS)", ""]
+              "Figuras: `figures/fig1_sequias.pdf` y `figures/fig2_criterios_sequia.pdf` (leyendas en `figures/LEYENDAS.md`).", "", "## 3. Recuperación verde vs. función (MODIS)", ""]
     if modis.get("estado") != "procesado":
         lines += [f"**Pendiente.** {modis.get('nota', '')} Faltan: {', '.join(modis.get('faltan', []))}.",
                   "", "No hay ningún resultado sobre la brecha todavía."]
@@ -228,7 +236,8 @@ def write_results_md(root: Path, out: Path, validation_path: Path, modis: dict) 
         lines += ["", "Detalle: `results/recuperacion_eventos.csv`, `results/sensibilidad.csv`, "
                   "`results/tendencias.csv`.", "",
                   "Cinco puntos son una exploración. Estos números no describen bosques completos."]
-    (root / "RESULTS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline=LF)
 
 
 def main(argv=None) -> None:
@@ -238,6 +247,7 @@ def main(argv=None) -> None:
     ap.add_argument("--appeears", default="data/appeears")
     ap.add_argument("--out", default="results")
     ap.add_argument("--figures", default="figures")
+    ap.add_argument("--results-md", default="RESULTS.md")
     a = ap.parse_args(argv)
     root = Path(a.root)
     out, figdir = root / a.out, root / a.figures
@@ -247,7 +257,7 @@ def main(argv=None) -> None:
     adir = root / a.appeears
     adir.mkdir(parents=True, exist_ok=True)
     modis = run_modis(adir, series, events, out, figdir)
-    write_results_md(root, out, out / "giovanni_validacion.json", modis)
+    write_results_md(root / a.results_md, out, out / "giovanni_validacion.json", modis)
     print(f"listo: {out}  (MODIS: {modis.get('estado')})")
 
 
