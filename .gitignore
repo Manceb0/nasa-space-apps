@@ -1,0 +1,7 @@
+data/raw/
+*.nc
+*.hdf
+*.tif
+.env
+node_modules/
+__pycache__/
