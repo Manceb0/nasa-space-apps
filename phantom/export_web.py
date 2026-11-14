@@ -267,6 +267,9 @@ def export(root: Path, results: Path, out: Path) -> dict:
             phantom["colisiones"] = {"eventos_evaluados": int(len(g)),
                                      "ventanas_cortadas": int(g["ventana_cortada_por_siguiente_sequia"].sum()),
                                      "colisiones": int(g["colision_verde"].sum())}
+    aud = results / "auditorias.json"
+    if estado.get("estado") == "procesado" and aud.exists():
+        phantom["auditorias"] = json.loads(aud.read_text(encoding="utf-8"))
     _write(out / "phantom.json", phantom)
     pts = export_points(root, results, out)
     if pts:

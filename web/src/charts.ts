@@ -2,7 +2,7 @@
 // neutrales para lo demás, 3-5 líneas de cuadrícula tenues, sin línea de eje Y, líneas rectas,
 // leyenda solo cuando hay más de una serie y con la misma marca que explica.
 import * as Plot from "@observablehq/plot";
-import type { Phantom, PhantomEventRow, Puntos, SensRow, Series, Trend, Window, ZSeries } from "./data";
+import type { Audit, Phantom, PhantomEventRow, Puntos, SensRow, Series, Trend, Window, ZSeries } from "./data";
 import { fmt } from "./text";
 import { T } from "./i18n";
 
@@ -404,6 +404,193 @@ export function sensitivityStrip(rows: SensRow[], chosen: SensRow | null, width:
       chosen && chosen.dt_dias !== null
         ? Plot.dot([chosen], { x: "dt_dias", y: () => 0.5, r: 9, stroke: C.ink, strokeWidth: 2.5, fill: "none" })
         : null,
+    ],
+  });
+}
+
+
+/** Interpola la serie suavizada `a` en las fechas de `b`. */
+function alignTo(a: { date: Date; z: number }[], b: { date: Date; z: number }[]) {
+  const out: { date: Date; za: number; zb: number }[] = [];
+  let j = 0;
+  for (const p of b) {
+    while (j < a.length - 2 && a[j + 1].date < p.date) j++;
+    const p0 = a[j], p1 = a[j + 1];
+    if (!p0 || !p1 || p.date < p0.date || p.date > p1.date) continue;
+    const f = (p.date.getTime() - p0.date.getTime()) / Math.max(1, p1.date.getTime() - p0.date.getTime());
+    out.push({ date: p.date, za: p0.z + f * (p1.z - p0.z), zb: p.z });
+  }
+  return out;
+}
+
+/** Brecha fantasma: z(verdor) − z(función). Positivo = se ve mejor de lo que funciona. */
+export function gapIndex(o: { green: ZSeries; func: ZSeries; start: string; end: string; stop: string; width: number }): SVGSVGElement | HTMLElement {
+  const t = T();
+  const start = new Date(`${o.start.slice(0, 10)}T00:00:00`);
+  const end = new Date(`${o.end.slice(0, 10)}T00:00:00`);
+  const stop = new Date(`${o.stop.slice(0, 10)}T00:00:00`);
+  const lo = new Date(start.getTime() - 200 * DAY);
+  const hi = new Date(stop.getTime() + 60 * DAY);
+  const rows = alignTo(smooth(o.green), smooth(o.func))
+    .filter((r) => r.date >= lo && r.date <= hi)
+    .map((r) => ({ date: r.date, gap: Math.max(-6, Math.min(6, r.za - r.zb)) }));
+  return Plot.plot({
+    ...base,
+    width: o.width,
+    height: 170,
+    clip: true,
+    x: { type: "utc", domain: [lo, hi], label: null, ticks: 6 },
+    y: { domain: [-4, 4], ticks: [-2, 0, 2], label: t.axisGap, labelAnchor: "top", grid: true },
+    marks: [
+      Plot.rectX([{ a: start, b: end }], { x1: "a", x2: "b", y1: -4, y2: 4, fill: C.raised }),
+      Plot.areaY(rows, { x: "date", y1: 0, y2: (r: { gap: number }) => Math.max(0, r.gap), fill: C.data, fillOpacity: 0.35 }),
+      Plot.ruleY([0], { stroke: C.control }),
+      Plot.ruleY([1, -1], { stroke: C.faint, strokeDasharray: "4,3" }),
+      Plot.line(rows, { x: "date", y: "gap", stroke: C.data, strokeWidth: 1.8 }),
+      Plot.text([{ x: hi }], { x: "x", y: 3.4, text: () => t.gapUp, textAnchor: "end", fill: C.faint, fontSize: 11 }),
+      Plot.text([{ x: hi }], { x: "x", y: -3.4, text: () => t.gapDown, textAnchor: "end", fill: C.faint, fontSize: 11 }),
+    ],
+  });
+}
+
+/** Histéresis: verdor (x) contra función (y) a lo largo del episodio; el camino de ida no es el de vuelta. */
+export function hysteresis(o: { green: ZSeries; func: ZSeries; start: string; end: string; stop: string; width: number }): SVGSVGElement | HTMLElement {
+  const t = T();
+  const start = new Date(`${o.start.slice(0, 10)}T00:00:00`);
+  const end = new Date(`${o.end.slice(0, 10)}T00:00:00`);
+  const stop = new Date(`${o.stop.slice(0, 10)}T00:00:00`);
+  const lo = new Date(start.getTime() - 120 * DAY);
+  const rows = alignTo(smooth(o.green), smooth(o.func))
+    .filter((r) => r.date >= lo && r.date <= stop)
+    .map((r) => ({ x: Math.max(-6, Math.min(3, r.za)), y: Math.max(-6, Math.min(3, r.zb)), date: r.date,
+      phase: r.date < start ? t.phBefore : r.date <= end ? t.phDuring : t.phAfter }));
+  const colors: Record<string, string> = { [t.phBefore]: C.faint, [t.phDuring]: C.second, [t.phAfter]: C.data };
+  const segs = rows.slice(1).map((r, i) => ({ x1: rows[i].x, y1: rows[i].y, x2: r.x, y2: r.y, phase: r.phase }));
+  const first = rows[0];
+  const last = rows[rows.length - 1];
+  return Plot.plot({
+    ...base,
+    width: o.width,
+    height: Math.min(470, Math.round(o.width * 1.25)),
+    marginLeft: 48,
+    x: { domain: [-6, 3], label: t.axisGreenZ, ticks: [-4, -2, 0, 2], grid: true },
+    y: { domain: [-6, 3], label: t.axisFuncZ, labelAnchor: "top", ticks: [-4, -2, 0, 2], grid: true },
+    marks: [
+      Plot.rect([{ x1: -1, x2: 3, y1: -1, y2: 3 }], { x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: C.raised }),
+      Plot.text([{ x: 2.8, y: 2.6 }], { x: "x", y: "y", text: () => t.normalZone, textAnchor: "end", fill: C.faint, fontSize: 11 }),
+      Plot.link(segs, { x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: (s: { phase: string }) => colors[s.phase], strokeWidth: 1.6, markerEnd: "arrow" }),
+      first ? Plot.text([first], { x: "x", y: "y", text: () => t.phStart, dx: 8, textAnchor: "start", fill: C.muted, fontSize: 11 }) : null,
+      last ? Plot.text([last], { x: "x", y: "y", text: () => t.phEnd, dx: 8, textAnchor: "start", fill: C.data, fontSize: 11 }) : null,
+    ],
+  });
+}
+
+const VERDICT_GLYPH: Record<string, string> = {
+  consistente: "C", estres_invisible: "E", censurada: "I", inconclusa: "?", fantasma: "F",
+  verdor_tarde: "V", caida_posterior: "P", sin_recuperacion: "N", solo_modelo: "M",
+};
+export const DISCORDANT = new Set(["fantasma", "verdor_tarde", "caida_posterior", "estres_invisible", "sin_recuperacion"]);
+
+/** Libro de auditorías: lugares × tiempo; cada sequía con impacto es una marca con su veredicto. */
+export function ledger(audits: Audit[], order: string[], names: Record<string, string>, width: number,
+  selected: Audit | null, onPick: (a: Audit) => void): SVGSVGElement {
+  const ns = "http://www.w3.org/2000/svg";
+  const rows = order.filter((id) => audits.some((a) => a.id === id));
+  const left = 150, rowH = 36, top = 6, bottom = 26;
+  const t0 = new Date("2001-01-01").getTime();
+  const t1 = new Date("2025-01-01").getTime();
+  const X = (d: string) => left + ((new Date(d).getTime() - t0) / (t1 - t0)) * (width - left - 14);
+  const H = top + rows.length * rowH + bottom;
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${width} ${H}`);
+  svg.setAttribute("role", "group");
+  svg.setAttribute("class", "ledger");
+  rows.forEach((id, r) => {
+    const y = top + r * rowH;
+    const lab = document.createElementNS(ns, "text");
+    lab.setAttribute("x", "0"); lab.setAttribute("y", String(y + rowH / 2 + 4));
+    lab.setAttribute("fill", C.muted); lab.setAttribute("font-size", "12"); lab.textContent = names[id] ?? id;
+    svg.appendChild(lab);
+    const track = document.createElementNS(ns, "rect");
+    track.setAttribute("x", String(left)); track.setAttribute("y", String(y + rowH / 2 - 1));
+    track.setAttribute("width", String(width - left - 14)); track.setAttribute("height", "2"); track.setAttribute("fill", C.raised);
+    svg.appendChild(track);
+    for (const a of audits.filter((x) => x.id === id && x.veredicto !== "sin_impacto")) {
+      const cx = X(a.evento_inicio);
+      const g = document.createElementNS(ns, "g");
+      g.setAttribute("class", "lmark"); g.setAttribute("tabindex", "0"); g.setAttribute("role", "button");
+      const disc = DISCORDANT.has(a.veredicto);
+      const c = document.createElementNS(ns, "rect");
+      c.setAttribute("x", String(cx - 11)); c.setAttribute("y", String(y + 6));
+      c.setAttribute("width", "22"); c.setAttribute("height", String(rowH - 12)); c.setAttribute("rx", "6");
+      c.setAttribute("fill", disc ? C.data : a.veredicto === "consistente" ? C.second : C.raised);
+      if (a.veredicto === "censurada" || a.veredicto === "inconclusa") { c.setAttribute("stroke", C.control); c.setAttribute("stroke-width", "1.5"); }
+      if (selected && selected.id === a.id && selected.evento_inicio === a.evento_inicio) { c.setAttribute("stroke", C.ink); c.setAttribute("stroke-width", "2.5"); }
+      g.appendChild(c);
+      const txt = document.createElementNS(ns, "text");
+      txt.setAttribute("x", String(cx)); txt.setAttribute("y", String(y + rowH / 2 + 4)); txt.setAttribute("text-anchor", "middle");
+      txt.setAttribute("font-size", "11"); txt.setAttribute("font-weight", "600");
+      txt.setAttribute("fill", disc || a.veredicto === "consistente" ? "#000" : C.ink);
+      txt.textContent = VERDICT_GLYPH[a.veredicto] ?? "?";
+      g.appendChild(txt);
+      const tt = document.createElementNS(ns, "title");
+      tt.textContent = `${names[id] ?? id} · ${a.evento_inicio.slice(0, 7)}: ${T().verdictName[a.veredicto] ?? a.veredicto}`;
+      g.appendChild(tt);
+      g.addEventListener("click", () => onPick(a));
+      g.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") onPick(a); });
+      svg.appendChild(g);
+    }
+  });
+  for (let yy = 2001; yy <= 2025; yy += 4) {
+    const tx = document.createElementNS(ns, "text");
+    tx.setAttribute("x", String(X(`${yy}-01-01`))); tx.setAttribute("y", String(H - 6));
+    tx.setAttribute("fill", C.faint); tx.setAttribute("font-size", "11"); tx.setAttribute("text-anchor", "middle");
+    tx.textContent = String(yy);
+    svg.appendChild(tx);
+  }
+  return svg;
+}
+
+/** Cuadrantes: días hasta que vuelve el verdor (x) y la función (y); la diagonal es "vuelven juntos". */
+export function quadrant(audits: Audit[], names: Record<string, string>, width: number): SVGSVGElement | HTMLElement {
+  const t = T();
+  const CAP = 420; // más allá: no volvió dentro de la ventana
+  const pts: { x: number; y: number; f: string; name: string; v: string; censX: boolean; censY: boolean }[] = [];
+  for (const a of audits) {
+    if (!a.ndvi_impactado) continue;
+    for (const f of ["gpp_modelo", "lst_menos_aire"]) {
+      if (!a[`${f}_impactado`]) continue;
+      const gx = a.ndvi_dias as number | null;
+      const fy = a[`${f}_dias`] as number | null;
+      pts.push({ x: gx ?? CAP, y: fy ?? CAP, f, name: `${names[a.id] ?? a.id} ${a.evento_inicio.slice(0, 7)}`, v: a.veredicto, censX: gx === null, censY: fy === null });
+    }
+  }
+  const lo = -120;
+  const hi = CAP + 20;
+  return Plot.plot({
+    ...base,
+    width,
+    height: Math.min(470, width),
+    marginLeft: 52,
+    x: { domain: [lo, hi], label: t.axisGreenDays, ticks: [0, 100, 200, 300], grid: true },
+    y: { domain: [lo, hi], label: t.axisFuncDays, labelAnchor: "top", ticks: [0, 100, 200, 300], grid: true },
+    symbol: { domain: ["gpp_modelo", "lst_menos_aire"], range: ["circle", "triangle"] },
+    marks: [
+      Plot.areaY([{ x: lo, y1: lo - 32, y2: lo + 32 }, { x: hi, y1: hi - 32, y2: hi + 32 }], { x: "x", y1: "y1", y2: "y2", fill: C.raised }),
+      Plot.ruleX([CAP], { stroke: C.control, strokeDasharray: "3,3" }),
+      Plot.ruleY([CAP], { stroke: C.control, strokeDasharray: "3,3" }),
+      Plot.text([{ x: lo + 10, y: CAP - 16 }], { x: "x", y: "y", text: () => t.qPhantom, textAnchor: "start", fill: C.faint, fontSize: 11 }),
+      Plot.text([{ x: CAP - 10, y: lo + 16 }], { x: "x", y: "y", text: () => t.qGreenLate, textAnchor: "end", fill: C.faint, fontSize: 11 }),
+      Plot.text([{ x: 150, y: 150 }], { x: "x", y: "y", text: () => t.qJoint, rotate: -45, dy: -16, fill: C.faint, fontSize: 11 }),
+      Plot.dot(pts, {
+        x: "x", y: "y", symbol: "f", r: 5,
+        stroke: (p: { v: string }) => (DISCORDANT.has(p.v) ? C.data : C.second),
+        fill: (p: { v: string }) => (DISCORDANT.has(p.v) ? C.data : "none"),
+        fillOpacity: 0.85, strokeWidth: 1.5,
+        tip: true,
+        title: (p: { name: string; f: string; x: number; y: number; censX: boolean; censY: boolean }) =>
+          `${p.name}\n${t.sigGreen}: ${p.censX ? t.fNot : `${p.x} ${t.days}`}\n${p.f === "gpp_modelo" ? t.sigGpp : t.sigLst}: ${p.censY ? t.fNot : `${p.y} ${t.days}`}`,
+      }),
     ],
   });
 }

@@ -150,3 +150,36 @@ Nunca escriben en `results/` ni en `figures/`. Cubren:
 - estabilidad de la cobertura del suelo;
 - SPI, rachas, Mann-Kendall, Theil-Sen y Benjamini-Hochberg;
 - el pipeline completo con archivos con el formato de AppEEARS en una carpeta temporal.
+
+## 9. Auditoría Recovery Integrity (`phantom/audit.py`)
+
+La herramienta no responde "¿se recuperó?". Audita la afirmación "la vegetación se recuperó" en cada sequía y cada lugar, con cuatro señales:
+- NDVI y EVI (verdor);
+- GPP MOD17 (modelo);
+- dosel menos aire (señal térmica, independiente del verdor).
+
+Las mismas reglas de impacto y recuperación de la sección 5 se aplican a cada señal.
+
+| Veredicto | Regla |
+|---|---|
+| Consistente | Las señales que cayeron volvieron a menos de 32 días de distancia |
+| Recuperación fantasma | El verdor volvió y una función no, o volvió más de 32 días después |
+| El verdor llegó tarde | La función volvió más de 32 días antes que el verdor |
+| Caída posterior | La función toca fondo después de que el verdor ya volvió (otra caída, no recuperación tardía) |
+| Estrés invisible | El verdor no cayó, pero la **señal térmica** sí, de forma sostenida |
+| Solo en el modelo GPP | El verdor y la señal térmica no cayeron; solo la GPP. No se cuenta como evidencia: puede ser el clima del reanálisis que usa MOD17 |
+| Interrumpida | La siguiente sequía empezó antes de que todas las señales impactadas se recuperaran (censura) |
+| Inconclusa | La categoría se mantiene en menos del 60 % de las 18 definiciones, o la cobertura de observaciones válidas es menor del 50 % de lo esperado |
+
+**Sensibilidad.** Cada auditoría se repite con 18 combinaciones: umbral −1,5 / −1 / −0,5 × persistencia 2 / 3 / 4 × verdor NDVI / EVI.
+
+**Mann-Kendall.** Desde la versión del 14 de noviembre, las tendencias usan Mann-Kendall con corrección de varianza por autocorrelación AR(1) (Yue y Wang 2004), además de Benjamini-Hochberg. El p simple se informa junto al corregido.
+
+Fuentes verificadas que motivan la auditoría (detalle en `reports/Auditoría Recovery Integrity.md`, carpeta superior):
+- **Yan et al. 2025, *Nature Plants*:** el agua del dosel se recupera después que el verdor tras mortalidad forestal.
+- **Ma et al. 2026, *Remote Sensing*:** NDVI, EVI, LAI, GPP y SIF dan tiempos de recuperación distintos.
+- **Fu et al. 2026, *Nature Communications*:** zonas semiáridas que reverdecen mientras pierden resiliencia.
+- **Jiao et al. 2021, *Global Change Biology*:** la recuperación completa es rara si la siguiente sequía llega en 3 meses o menos.
+- **Schwalm et al. 2017, *Nature*:** definición estándar de evento y recuperación.
+
+No existe un método publicado estándar para medir la histéresis verdor-función: la gráfica de histéresis es exploratoria.

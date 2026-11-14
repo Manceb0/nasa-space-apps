@@ -20,6 +20,9 @@
 | Módulo de idiomas español / inglés | **Implementado**, probado en local | Selector en la barra, recordado en el navegador; `?lang=es` o `?lang=en` |
 | Visualizaciones del atlas (doble línea, calor espacio-tiempo, constelación, distribución, tendencias por punto) | **Implementado con datos reales** | Ver `DISENO.md`; el mapa por superficie sigue pendiente del pedido de área |
 | Pasada de diseño (taste-skill, app) | **Hecha** | Inspector 0 FAIL en las 3 pantallas; lint 0 FAIL; crítica en `DISENO.md` |
+| **Recovery Integrity**: auditoría de la afirmación "se recuperó" | **Implementado con datos reales** | `phantom/audit.py`, 37 pruebas; 31 sequías con impacto: 0 fantasma, 1 estrés invisible (térmico), 5 solo en el modelo GPP, 3 interrumpidas, 13 inconclusas, 7 consistentes |
+| Auditoría por capítulos (Descubrimiento, Evidencia, Comparación, Veredicto) | **Implementado** | Afirmación auditada paso a paso; brecha fantasma, histéresis, libro de auditorías, cuadrantes, mapa de calor y tendencias por lugar |
+| Investigación profunda que verifica el informe (7) | **Hecha** | `../reports/Auditoría Recovery Integrity.md`: 7 correcciones de citas y premios |
 | Atlas de impacto (mapa de discordancia) | **Pendiente** | Pedido de área `eec5627a…` enviado; sin datos no hay mapa |
 | URL pública | **Retirada a pedido del equipo** (14-nov, noche). Proyecto de Vercel `earth-system-detective` sin despliegues; las URL dan 404 | Publicar de nuevo solo con aprobación: `cd web && npx vercel@latest deploy --prod` |
 
@@ -241,4 +244,6 @@ Lo que nunca se recorta: tendencia + significancia + definiciones (el reto) y la
 | 14-nov | Regla de cobertura: se excluye solo por clase no natural (no por cambio bosque/sabana) | Excluir por cualquier cambio (regla escrita) | Ningún punto pasó a cultivo o urbano; la confusión bosque/sabana es común en MCD12Q1 | — | Documentado en `appeears/METODO.md` |
 | 14-nov | Variables MODIS en el detective, agregadas por zona como media de anomalías | Una serie por punto | Responde "dónde" sin fingir región; el mapa muestra los puntos | — | — |
 | 14-nov | Español e inglés | Solo español | El jurado global evalúa en inglés | — | — |
+| 14-nov | **Recovery Integrity** como motor: PHANTOM, colisión y sensibilidad en un solo veredicto auditable | Siete ideas separadas | Informe (7) + literatura verificada (Yan 2025, Ma 2026, Fu 2026, Jiao 2021) | Que el jurado lo vea como otro dashboard | Pitch centrado en la afirmación auditada |
+| 14-nov | "Estrés invisible" exige la señal térmica; las caídas solo de GPP pasan a "solo en el modelo" | Contar cualquier función | 5 de 6 casos dependían solo de GPP (modelo con clima de reanálisis) | — | — |
 | pendiente | Confirmar sede (Santo Domingo o Santiago) y si hay pitch | — | El brief y el reporte anterior no coinciden | — | **Equipo** |

@@ -142,12 +142,32 @@ export interface SensRow {
   dt_dias: number | null;
 }
 
+/** Una auditoría Recovery Integrity (phantom/audit.py). */
+export interface Audit {
+  id: string;
+  region: string;
+  evento_inicio: string;
+  evento_fin: string;
+  fin_ventana: string;
+  evento_severidad_spi3: number;
+  categoria_principal: string;
+  veredicto: string;
+  motivo_inconclusa: string | null;
+  colision: boolean;
+  estabilidad: number;
+  combinaciones: number;
+  categorias_combinaciones: Record<string, number>;
+  calidad_ok: boolean;
+  [k: string]: unknown;
+}
+
 export interface Phantom {
   estado_modis: string;
   sequias: { region: string; spi3: { meses: string[]; valores: (number | null)[] }; eventos: DroughtEvent[] }[];
   eventos: PhantomEventRow[];
   sensibilidad: SensRow[];
   colisiones: { eventos_evaluados: number; ventanas_cortadas: number; colisiones: number } | null;
+  auditorias?: Audit[];
 }
 
 const cache = new Map<string, unknown>();

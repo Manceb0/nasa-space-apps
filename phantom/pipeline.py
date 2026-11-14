@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from . import appeears, drought, export_web, figures, giovanni, recovery, stats
+from . import appeears, audit, drought, export_web, figures, giovanni, recovery, stats
 
 REGIONS = ("noroeste", "jaragua")
 PRIMARY = {"verde": "ndvi", "umbral": -1.0, "persistencia": 3}
@@ -95,6 +95,7 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
     vi, lst, gpp = data["MOD13Q1"], data["MOD11A2"], data["MOD17A2HGF"]
     rows, sens_rows, figs = [], [], []
     zseries: dict[str, dict] = {}
+    audits: list[dict] = []
     series_end = pd.Timestamp("2024-12-31")
     points = vi[["id", "categoria"]].drop_duplicates().itertuples(index=False)
 
@@ -130,6 +131,10 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
         stops = _stop_dates(ev, series_end)
         for (i, e), stop in zip(ev.iterrows(), stops):
             e_end = e["fin"] + pd.offsets.MonthEnd(0)
+            nxt = ev["inicio"].iloc[i + 1] if i + 1 < len(ev) else None
+            aud = audit.audit_recovery({**green, **funcs}, e["inicio"], e_end, stop, nxt)
+            audits.append({"id": pid, "region": reg, "evento_inicio": e["inicio"], "evento_fin": e_end,
+                           "fin_ventana": stop, "evento_severidad_spi3": e["severidad"], **aud})
             recs = {}
             for fname, fz in funcs.items():
                 prim = recovery.event_gap(green[PRIMARY["verde"]], fz, e["inicio"], e_end, stop,
@@ -160,6 +165,7 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
                                           threshold=PRIMARY["umbral"])
 
     write_json(out / "zseries.json", zseries)
+    write_json(out / "auditorias.json", audits)
     res = pd.DataFrame(rows)
     res.to_csv(out / "recuperacion_eventos.csv", index=False, lineterminator=LF)
     if sens_rows:

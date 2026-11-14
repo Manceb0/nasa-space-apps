@@ -2,12 +2,12 @@ import "leaflet/dist/leaflet.css";
 import "./style.css";
 import L from "leaflet";
 import {
-  constellation, dualTimeline, evidenceChart, heatmap, rawChart, recoveryDist, sensitivityStrip, spiChart, windowMatrix,
+  DISCORDANT, dualTimeline, evidenceChart, gapIndex, heatmap, hysteresis, ledger, quadrant, rawChart, spiChart, windowMatrix,
 } from "./charts";
-import { load, type Index, type Phantom, type PhantomEventRow, type Puntos, type SensRow, type Series, type Window } from "./data";
+import { load, type Audit, type Index, type Phantom, type Puntos, type Series, type Window } from "./data";
 import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
 import {
-  digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, robustLabel, seasonLesson, stateLabel,
+  digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
   trapText, verdictExplain, verdictSentence, verdictShort, windowLabel, type Prediction,
 } from "./text";
 
@@ -22,14 +22,15 @@ interface State {
   raw: boolean;
   heatVar: string;
   mapVar: string;
-  dualFn: "gpp_modelo" | "lst_menos_aire";
+  fn: "gpp_modelo" | "lst_menos_aire";
+  audit: { id: string; ev: string } | null;
+  audited: boolean;
 }
 const state: State = {
   variable: "imerg_precip", region: "noroeste", prediction: null, revealed: false, window: null, raw: false,
-  heatVar: "modis_ndvi", mapVar: "modis_ndvi", dualFn: "lst_menos_aire",
+  heatVar: "modis_ndvi", mapVar: "modis_ndvi", fn: "lst_menos_aire", audit: null, audited: false,
 };
 
-// Modo de prueba local: ?prueba=1 lee un archivo SINTÉTICO que solo existe en la máquina de desarrollo.
 const TEST_MODE = new URLSearchParams(location.search).get("prueba") === "1";
 
 let index: Index;
@@ -41,14 +42,13 @@ const POINT_NAMES: Record<string, string> = {
 };
 const POINT_ORDER = ["montecristimontesecoa", "montecristimontesecob", "sierramontecristi", "jaraguacomparacionseco", "cordilleracomparacionhumedo"];
 const pointName = (id: string) => POINT_NAMES[id.replace(/_/g, "")] ?? id;
-// Para cada variable MODIS, qué dirección es "peor" (para el color del mapa de calor y del mapa de tendencias)
+const NAMES = Object.fromEntries(POINT_ORDER.map((id) => [id, pointName(id)]));
 const WORSE_IS_HIGH: Record<string, boolean> = { modis_ndvi: false, modis_gpp: false, modis_lst: true };
+const AMBER = "#f2b33d";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 
-function clearMaps() {
-  while (maps.length) maps.pop()!.remove();
-}
+function clearMaps() { while (maps.length) maps.pop()!.remove(); }
 
 function baseMap(el: HTMLElement, center: [number, number], zoom: number): L.Map {
   const m = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false }).setView(center, zoom);
@@ -65,12 +65,12 @@ function shell(): void {
   app.innerHTML = `
     <header class="bar">
       <a class="brand" href="#investigar" aria-label="${esc(t.brand)}">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="#f2b33d"/><path d="M3 20c6-9 20-15 26-8" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="${AMBER}"/><path d="M3 20c6-9 20-15 26-8" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
         <span>${esc(t.brand)}</span>
       </a>
       <nav>
         <a href="#investigar" data-nav="investigar">${esc(t.navInvestigate)}</a>
-        <a href="#expedientes" data-nav="expedientes">${esc(t.navCases)}</a>
+        <a href="#expedientes" data-nav="expedientes">${esc(t.navAudit)}</a>
         <a href="#metodo" data-nav="metodo">${esc(t.navMethod)}</a>
       </nav>
       <span class="team">${esc(t.team)}</span>
@@ -101,39 +101,41 @@ async function viewInvestigate() {
     [t.groupClimate, Object.keys(index.variables).filter((k) => !k.startsWith("modis_"))],
     [t.groupVeg, Object.keys(index.variables).filter((k) => k.startsWith("modis_"))],
   ];
+  const ph = !TEST_MODE ? await load<Phantom>("phantom.json") : null;
+  const auds = (ph?.auditorias ?? []).filter((a) => a.veredicto !== "sin_impacto");
+  const count = (v: string) => auds.filter((a) => a.veredicto === v).length;
+
   view.innerHTML = `
     <div class="title-row">
       <h1>${esc(t.invTitle)}</h1>
       <p>${esc(t.invSub)}</p>
     </div>
 
-    <div class="grid">
-      <section class="card s4">
-        <h2>${esc(t.whatQ)}</h2>
-        ${groups.filter(([, ks]) => ks.length).map(([title, ks]) => `
-          <p class="group">${esc(title)}</p>
-          <div class="choices" role="radiogroup" aria-label="${esc(title)}" style="--n:${ks.length}">
-            ${ks.map((k) => { const v = varMeta(index, k); return `
-              <button class="choice ${k === state.variable ? "on" : ""}" data-var="${k}" role="radio" aria-checked="${k === state.variable}">
-                <strong>${esc(v.nombre)}</strong><span>${esc(v.pregunta)}</span>
-              </button>`; }).join("")}
-          </div>`).join("")}
-        <p class="def">${esc(vmeta.definicion)} ${esc(t.measuredIn)} ${esc(vmeta.unidad_larga)}. <span class="kind">${esc(t.dataType)}: ${esc(vmeta.tipo)}.</span>${vmeta.aviso ? ` ${esc(vmeta.aviso)}` : ""}</p>
-      </section>
-      <section class="card s2 map-card">
-        <h2>${esc(t.whereH)}</h2>
-        <div class="choices regions" role="radiogroup" aria-label="${esc(t.whereH)}">
-          ${Object.keys(index.regiones).map((k) => { const r = regionMeta(index, k); return `
-            <button class="choice ${k === state.region ? "on" : ""}" data-reg="${k}" role="radio" aria-checked="${k === state.region}">
-              <strong>${esc(r.nombre)}</strong><span>${esc(r.zona)}</span>
-            </button>`; }).join("")}
+    <section class="card hero">
+      <div class="hero-map">
+        <div class="seg" role="radiogroup" aria-label="${esc(t.whereH)}">
+          ${Object.keys(index.regiones).map((k) => `<button data-reg="${k}" class="${k === state.region ? "on" : ""}">${esc(regionMeta(index, k).nombre)}</button>`).join("")}
         </div>
         <div id="map" aria-label="${esc(t.mapLabel)}"></div>
         <figcaption id="mapcap"></figcaption>
-        <p class="caption">${esc(rmeta.descripcion)}</p>
-      </section>
+      </div>
+      <div class="hero-pick">
+        <h2>${esc(t.whatQ)}</h2>
+        ${groups.filter(([, ks]) => ks.length).map(([title, ks]) => `
+          <p class="group">${esc(title)}</p>
+          <div class="vlist" role="radiogroup" aria-label="${esc(title)}">
+            ${ks.map((k) => { const v = varMeta(index, k); return `
+              <button class="vrow ${k === state.variable ? "on" : ""}" data-var="${k}" role="radio" aria-checked="${k === state.variable}">
+                <strong>${esc(v.nombre)}</strong><span>${esc(v.pregunta)}</span>
+              </button>`; }).join("")}
+          </div>`).join("")}
+        <p class="def">${esc(vmeta.definicion)} <span class="kind">${esc(t.dataType)}: ${esc(vmeta.tipo)}.</span>${vmeta.aviso ? ` ${esc(vmeta.aviso)}` : ""}</p>
+        <p class="def">${esc(rmeta.descripcion)}</p>
+      </div>
+    </section>
 
-      <section class="card s6" id="predict">
+    <div class="grid">
+      <section class="card s6 predict" id="predict">
         <h2>${esc(t.hypothesis)}</h2>
         <p class="q">${esc(t.since2001(vmeta.nombre.charAt(0).toLowerCase() + vmeta.nombre.slice(1), rmeta.nombre))}</p>
         <div class="answers">
@@ -144,7 +146,19 @@ async function viewInvestigate() {
       </section>
     </div>
 
-    <div id="evidence"></div>`;
+    <div id="evidence"></div>
+
+    ${auds.length ? `
+    <section class="band">
+      <div>
+        <h2>${esc(t.findingsH)}</h2>
+        <p class="band-lead">${esc(t.verdictLead(auds.length, count("fantasma"), count("estres_invisible"), count("censurada"), count("inconclusa")))}</p>
+        <a class="band-link" href="#expedientes">${esc(t.findingsGo)} →</a>
+      </div>
+      <div class="numbers band-numbers">
+        ${(["fantasma", "estres_invisible", "censurada", "inconclusa"] as const).map((v) => `<p>${esc(t.verdictName[v])}<b>${count(v)}</b></p>`).join("")}
+      </div>
+    </section>` : ""}`;
 
   view.querySelectorAll<HTMLButtonElement>("[data-var]").forEach((b) => b.addEventListener("click", () => {
     state.variable = b.dataset.var!; resetInvestigation(); route(false);
@@ -157,12 +171,10 @@ async function viewInvestigate() {
     view.querySelectorAll("[data-pred]").forEach((x) => x.classList.toggle("on", x === b));
     (document.getElementById("reveal") as HTMLButtonElement).disabled = false;
   }));
-  document.getElementById("reveal")!.addEventListener("click", () => {
-    state.revealed = true; renderEvidence(true);
-  });
+  document.getElementById("reveal")!.addEventListener("click", () => { state.revealed = true; renderEvidence(true); });
 
-  const s = await load<Series>(`series/${state.variable}_${state.region}.json`);
-  drawRegionMap(s);
+  const all = await Promise.all(Object.keys(index.regiones).map((k) => load<Series>(`series/${state.variable}_${k}.json`)));
+  drawRegionMap(all);
   if (state.revealed) renderEvidence(false);
 }
 
@@ -170,36 +182,41 @@ function resetInvestigation() {
   state.prediction = null; state.revealed = false; state.window = null; state.raw = false;
 }
 
-function drawRegionMap(s: Series) {
+/** El mapa protagonista: las dos zonas a la vez; la elegida en ámbar, la otra en blanco; clic para elegir. */
+function drawRegionMap(all: Series[]) {
   const t = T();
   const el = document.getElementById("map");
   if (!el) return;
-  const r = index.regiones[s.region];
-  const map = baseMap(el, r.centro, 8);
-  const p = s.pasaporte;
+  const map = baseMap(el, [18.8, -71.2], 8);
   const toBounds = (b: number[]) => L.latLngBounds([b[1], b[0]], [b[3], b[2]]);
+  const pts: L.LatLng[] = [];
   let note = t.mapDashed;
-  if (p.puntos && p.puntos.length) {
-    const pts = p.puntos.map(([lat, lon]) => L.latLng(lat, lon));
-    p.puntos.forEach(([lat, lon, id]) => L.circleMarker([lat, lon], { radius: 7, color: "#f2b33d", weight: 2, fillOpacity: 0.8 })
-      .bindTooltip(pointName(id)).addTo(map));
-    note = t.mapPoints;
-    if (pts.length === 1) map.setView(pts[0], 9);
-    else map.fitBounds(L.latLngBounds(pts).pad(1.2), { maxZoom: 9 });
-  } else {
-    if (p.caja_pedida) L.rectangle(toBounds(p.caja_pedida), { color: "#ffffff", weight: 1.5, dashArray: "4 4", fill: false }).addTo(map);
-    if (p.caja_datos) {
-      const [w, so, e, n] = p.caja_datos;
-      if (w === e && so === n) {
-        L.circleMarker([so, w], { radius: 7, color: "#f2b33d", weight: 2, fillOpacity: 0.7 }).addTo(map);
+  for (const s of all) {
+    const on = s.region === state.region;
+    const color = on ? AMBER : "#ffffff";
+    const pick = () => { if (!on) { state.region = s.region; resetInvestigation(); route(false); } };
+    const p = s.pasaporte;
+    if (p.puntos && p.puntos.length) {
+      note = t.mapPoints;
+      for (const [lat, lon, id] of p.puntos) {
+        L.circleMarker([lat, lon], { radius: on ? 9 : 7, color, weight: 2, fillColor: color, fillOpacity: on ? 0.9 : 0.25 })
+          .bindTooltip(pointName(id)).on("click", pick).addTo(map);
+        pts.push(L.latLng(lat, lon));
+      }
+    } else {
+      const box = p.caja_datos && !(p.caja_datos[0] === p.caja_datos[2]) ? p.caja_datos : p.caja_pedida;
+      if (box) {
+        L.rectangle(toBounds(box), { color, weight: on ? 2.5 : 1.5, dashArray: on ? undefined : "4 4", fillColor: color, fillOpacity: on ? 0.18 : 0.04 })
+          .bindTooltip(regionMeta(index, s.region).nombre).on("click", pick).addTo(map);
+        pts.push(toBounds(box).getNorthEast(), toBounds(box).getSouthWest());
+      }
+      if (p.caja_datos && p.caja_datos[0] === p.caja_datos[2] && on) {
+        L.circleMarker([p.caja_datos[1], p.caja_datos[0]], { radius: 6, color: AMBER, weight: 2, fillOpacity: 0.6 }).addTo(map);
         note += t.mapPoint;
-      } else {
-        L.rectangle(toBounds(p.caja_datos), { color: "#f2b33d", weight: 2, fillOpacity: 0.12 }).addTo(map);
-        note += t.mapBox;
       }
     }
-    if (p.caja_pedida) map.fitBounds(toBounds(p.caja_pedida).pad(1.6), { maxZoom: 9 });
   }
+  if (pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.25), { maxZoom: 9 });
   document.getElementById("mapcap")!.textContent = note;
 }
 
@@ -251,8 +268,7 @@ async function renderEvidence(scroll: boolean) {
         ${s.ventanas_que_enganan.length ? `
           <h3>${esc(t.trapsTitle)}</h3>
           <div class="traps">${s.ventanas_que_enganan.map((w, i) => `<button class="trap" data-trap="${i}">${windowLabel(w)}</button>`).join("")}</div>
-          <p class="small">${esc(t.trapsNote)}</p>` : `
-          <p class="small" style="margin-top:14px">${esc(t.noTraps)}</p>`}
+          <p class="small">${esc(t.trapsNote)}</p>` : `<p class="small" style="margin-top:14px">${esc(t.noTraps)}</p>`}
       </section>
 
       <details class="card s6 passport">
@@ -276,8 +292,7 @@ async function renderEvidence(scroll: boolean) {
   const chartEl = document.getElementById("chart")!;
   const drawChart = () => {
     chartEl.innerHTML = "";
-    const w = chartEl.clientWidth || 800;
-    chartEl.append(state.raw ? rawChart(s, meta.unidad, w) : evidenceChart(s, meta.unidad, state.window, w));
+    chartEl.append(state.raw ? rawChart(s, meta.unidad, chartEl.clientWidth || 800) : evidenceChart(s, meta.unidad, state.window, chartEl.clientWidth || 800));
   };
   drawChart();
   document.getElementById("rawtoggle")!.addEventListener("click", () => { state.raw = !state.raw; renderEvidence(false); });
@@ -299,12 +314,10 @@ async function renderEvidence(scroll: boolean) {
   };
   const matrixEl = document.getElementById("matrix")!;
   const pick = (w: Window | null) => {
-    state.window = w;
-    state.raw = false;
+    state.window = w; state.raw = false;
     matrixEl.innerHTML = "";
     matrixEl.append(windowMatrix(s, state.window, pick));
-    drawChart();
-    winInfo();
+    drawChart(); winInfo();
   };
   matrixEl.append(windowMatrix(s, state.window, pick));
   winInfo();
@@ -315,164 +328,253 @@ async function renderEvidence(scroll: boolean) {
   if (scroll) host.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-/* ───────────── Expedientes ───────────── */
+/* ───────────── Auditoría de recuperación (Recovery Integrity) ───────────── */
+
+// Marcas dibujadas (no emoji): sí, no, no aplica
+const MARK: Record<string, string> = {
+  ok: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  bad: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  na: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 8h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+};
+
+function auditKey(a: Audit) { return `${a.id}|${a.evento_inicio}`; }
+
+function defaultAudit(auds: Audit[]): Audit | undefined {
+  // La primera afirmación es la más reveladora: estrés invisible o interrumpida; si no, la más severa
+  const pref = ["estres_invisible", "censurada", "fantasma", "verdor_tarde", "consistente"];
+  for (const v of pref) {
+    const c = auds.filter((a) => a.veredicto === v).sort((a, b) => a.evento_severidad_spi3 - b.evento_severidad_spi3)[0];
+    if (c) return c;
+  }
+  return auds[0];
+}
 
 async function viewCases() {
   const t = T();
   const view = document.getElementById("view")!;
   const ph = await load<Phantom>(TEST_MODE ? "phantom-SINTETICO-prueba.json" : "phantom.json");
   const pts = index.puntos && !TEST_MODE ? await load<Puntos>("puntos.json") : null;
-  const done = ph.estado_modis === "procesado" && ph.eventos.length > 0;
-  const both = ph.eventos.filter((e) => e.estado === "ambos_recuperados" && e.dt_dias !== null);
-  const after = both.filter((e) => (e.dt_dias as number) > 32);
-  const before = both.filter((e) => (e.dt_dias as number) < -32);
-  const robustAfter = after.filter((e) => e.rob_etiqueta === "ROBUSTO" && !e.funcion_cae_despues_del_verde);
-  const robustBefore = both.filter((e) => e.rob_etiqueta === "ROBUSTO" && ((e.dt_dias as number) < -32 || (e.rob_dt_mediana ?? 0) < -32));
-  const lateDips = after.filter((e) => e.funcion_cae_despues_del_verde);
-  const supported = after.length > before.length && robustAfter.length > 0;
-  const fnName = (f: string) => (f === "gpp_modelo" ? t.sigGpp : t.sigLst);
+  const auds = (ph.auditorias ?? []).filter((a) => a.veredicto !== "sin_impacto");
+  const done = ph.estado_modis === "procesado" && auds.length > 0;
+  const count = (v: string) => auds.filter((a) => a.veredicto === v).length;
+
+  if (!state.audit || !auds.some((a) => auditKey(a) === `${state.audit!.id}|${state.audit!.ev}`)) {
+    const d = defaultAudit(auds);
+    state.audit = d ? { id: d.id, ev: d.evento_inicio } : null;
+    state.audited = false;
+  }
 
   view.innerHTML = `
     ${TEST_MODE ? `<p class="test-banner">${esc(t.testBanner)}</p>` : ""}
     <div class="title-row">
-      <h1>${esc(t.caseTitle)}</h1>
-      <p>${esc(done ? t.caseSub : t.caseLede)}</p>
+      <h1>${esc(t.auditTitle)}</h1>
+      <p>${esc(t.auditSub)}</p>
     </div>
+    ${!done ? `<div class="grid"><section class="card s6"><h2>${esc(t.caseWaiting)}</h2><p class="explain">${t.caseWaitingText}</p></section></div>` : `
+    <nav class="chapnav" aria-label="${esc(t.auditTitle)}">
+      <a href="#c-discover" data-ch>${esc(t.chDiscover)}</a><a href="#c-evidence" data-ch>${esc(t.chEvidence)}</a><a href="#c-compare" data-ch>${esc(t.chCompare)}</a><a href="#c-verdict" data-ch>${esc(t.chVerdict)}</a>
+    </nav>
 
-    ${!done ? `
-    <div class="grid"><section class="card s6"><h2>${esc(t.caseWaiting)}</h2><p class="explain">${t.caseWaitingText}</p></section></div>` : `
-    <div class="grid">
-      <section class="card s6">
-        <h2>${esc(supported ? t.phantomYesH : t.phantomNoH)}</h2>
-        <div class="numbers">
-          <p>${esc(t.numWithin)} <b>${both.length - after.length - before.length}</b>${esc(t.withinShort)}</p>
-          <p>${esc(t.numBefore)} <b>${before.length}</b>${esc(t.beforeShort)}</p>
-          <p>${esc(t.numAfter)} <b>${after.length}</b>${esc(t.afterShort)}</p>
-          <p>${esc(t.robustShort)} <b>${robustAfter.length} / ${robustBefore.length}</b>${esc(t.robustSplit)}</p>
-        </div>
-        <p class="explain">${esc(t.phantomSummary(both.length, both.length - after.length - before.length, before.length, after.length))}</p>
-        ${lateDips.length ? `<p class="warn">${esc(t.phantomLateDip(lateDips.map((e) => `${pointName(e.id)} ${e.evento_inicio.slice(0, 4)} (${fnName(e.funcion)}, +${fmt(e.dt_dias as number, 0)} ${t.days})`)))}</p>` : ""}
-        <p class="small" style="margin-top:10px">${esc(t.phantomCaveat)}</p>
-      </section>
-
-      <section class="card s4">
-        <div class="card-head">
-          <div><h2>${esc(t.dualH)}</h2></div>
-          <div class="seg" role="radiogroup" aria-label="${esc(t.cSignal)}">
-            <button data-fn="lst_menos_aire" class="${state.dualFn === "lst_menos_aire" ? "on" : ""}">${esc(t.sigLst)}</button>
-            <button data-fn="gpp_modelo" class="${state.dualFn === "gpp_modelo" ? "on" : ""}">${esc(t.sigGpp)}</button>
-          </div>
-        </div>
+    <section class="chapter" id="c-discover">
+      <h2 class="ch-title">${esc(t.chDiscover)}</h2>
+      <div class="card claim-card">
+        <p class="claim" id="claim"></p>
         <div class="controls">
-          <label>${esc(t.cPoint)} <select id="d-id"></select></label>
-          <label>${esc(t.cDrought)} <select id="d-ev"></select></label>
-          <div class="legend"><span><i class="ln" style="background:#e6e6e6"></i>${esc(t.sigGreen)}</span><span><i class="ln" style="background:#f2b33d"></i><span id="d-fname"></span></span></div>
+          <label>${esc(t.cPoint)} <select id="a-id">${POINT_ORDER.filter((id) => auds.some((a) => a.id === id)).map((id) => `<option value="${id}">${esc(pointName(id))}</option>`).join("")}</select></label>
+          <label>${esc(t.cDrought)} <select id="a-ev"></select></label>
+          <button class="reveal inline" id="audit-go">${esc(t.auditBtn)}</button>
         </div>
-        <div id="dual" class="chart" style="margin-top:8px"></div>
-        <p class="caption">${esc(t.dualSub)}</p>
-      </section>
-      <section class="card s2">
-        <h3>${esc(t.caseFacts)}</h3>
-        <div class="facts-list" id="d-facts"></div>
-        <div class="foot-note"><div id="d-strip" class="chart"></div><p class="small" id="d-sens"></p></div>
-      </section>
+        <ol class="checklist" id="chk"></ol>
+        <div class="verdict-box" id="vbox"></div>
+      </div>
+    </section>
 
-      <section class="card s6">
-        <div class="card-head">
-          <div><h2>${esc(t.heatH)}</h2><p class="sub">${esc(t.heatSub)}</p></div>
-          <div class="seg" role="radiogroup" aria-label="${esc(t.heatH)}">
-            ${["modis_ndvi", "modis_lst", "modis_gpp"].map((v) => `<button data-heat="${v}" class="${state.heatVar === v ? "on" : ""}">${esc(varMeta(index, v).nombre)}</button>`).join("")}
+    <section class="chapter" id="c-evidence">
+      <div class="ch-head">
+        <div><h2 class="ch-title">${esc(t.chEvidence)}</h2><p class="sub">${esc(t.evidenceSub)}</p></div>
+        <div class="seg" role="radiogroup" aria-label="${esc(t.cSignal)}">
+          <button data-fn="lst_menos_aire" class="${state.fn === "lst_menos_aire" ? "on" : ""}">${esc(t.sigLst)}</button>
+          <button data-fn="gpp_modelo" class="${state.fn === "gpp_modelo" ? "on" : ""}">${esc(t.sigGpp)}</button>
+        </div>
+      </div>
+      <div class="grid">
+        <section class="card s4">
+          <div class="card-head"><h3>${esc(t.dualH)}</h3>
+            <div class="legend"><span><i class="ln" style="background:#e6e6e6"></i>${esc(t.sigGreen)}</span><span><i class="ln" style="background:${AMBER}"></i><span class="fname"></span></span></div></div>
+          <div id="dual" class="chart"></div>
+          <h3 style="margin-top:14px">${esc(t.gapH)}</h3>
+          <p class="sub">${esc(t.gapSub)}</p>
+          <div id="gap" class="chart"></div>
+        </section>
+        <section class="card s2">
+          <h3>${esc(t.hystH)}</h3>
+          <p class="sub">${esc(t.hystSub)}</p>
+          <div id="hyst" class="chart"></div>
+          <div class="legend foot-note"><span><i class="ln" style="background:#949494"></i>${esc(t.phBefore)}</span><span><i class="ln" style="background:#e6e6e6"></i>${esc(t.phDuring)}</span><span><i class="ln" style="background:${AMBER}"></i>${esc(t.phAfter)}</span></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="chapter" id="c-compare">
+      <h2 class="ch-title">${esc(t.chCompare)}</h2>
+      <p class="sub">${esc(t.compareSub)}</p>
+      <div class="numbers wide">
+        ${(["consistente", "estres_invisible", "solo_modelo", "censurada", "inconclusa", "fantasma"] as const).map((v) => `<p>${esc(t.verdictName[v])}<b>${count(v)}</b></p>`).join("")}
+      </div>
+      <div class="grid">
+        <section class="card s6">
+          <h3>${esc(t.ledgerH)}</h3>
+          <p class="sub">${esc(t.ledgerSub)}</p>
+          <div id="ledger" class="chart"></div>
+          <div class="legend" style="margin-top:8px">${["C consistente", "E estres_invisible", "M solo_modelo", "I censurada", "? inconclusa", "P caida_posterior", "V verdor_tarde", "F fantasma"].map((x) => { const [g, k] = x.split(" "); return `<span><b>${g}</b>&nbsp;${esc(t.verdictName[k])}</span>`; }).join("")}</div>
+        </section>
+        <section class="card s3">
+          <h3>${esc(t.quadH)}</h3>
+          <p class="sub">${esc(t.quadSub)}</p>
+          <div id="quad" class="chart"></div>
+          <div class="legend foot-note"><span>● ${esc(t.sigGpp)}</span><span>▲ ${esc(t.sigLst)}</span><span><i class="dot" style="background:${AMBER}"></i>${esc(t.verdictName.fantasma)} / ${esc(t.verdictName.verdor_tarde)}…</span></div>
+        </section>
+        ${pts ? `
+        <section class="card s3">
+          <div class="card-head"><h3>${esc(t.mapH)}</h3>
+            <div class="seg" role="radiogroup" aria-label="${esc(t.mapH)}">${["modis_ndvi", "modis_lst", "modis_gpp"].map((v) => `<button data-mapv="${v}" class="${state.mapVar === v ? "on" : ""}">${esc(varMeta(index, v).unidad === "NDVI" ? "NDVI" : v === "modis_lst" ? "LST" : "GPP")}</button>`).join("")}</div></div>
+          <p class="sub">${esc(t.mapSub)}</p>
+          <div id="pmap"></div>
+          <table class="trend-list" id="pm-table" style="margin-top:10px"></table>
+          <p class="small foot-note">${esc(t.qNote(pts.n_pruebas_mapa))}</p>
+        </section>
+        <section class="card s6">
+          <div class="card-head">
+            <div><h3>${esc(t.heatH)}</h3><p class="sub">${esc(t.heatSub)}</p></div>
+            <div class="seg" role="radiogroup" aria-label="${esc(t.heatH)}">${["modis_ndvi", "modis_lst", "modis_gpp"].map((v) => `<button data-heat="${v}" class="${state.heatVar === v ? "on" : ""}">${esc(varMeta(index, v).nombre)}</button>`).join("")}</div>
           </div>
-        </div>
-        <div id="heat" class="chart"></div>
-        <div class="legend" style="margin-top:10px"><span><i class="sq" style="background:#f2b33d"></i>${esc(t.worse)}</span><span><i class="sq" style="background:#a9a9a9"></i>${esc(t.better)}</span><span><i class="sq none"></i>${esc(t.noData)}</span><span><i class="sq" style="background:#fff;height:2px"></i>${esc(t.droughtLabel)} (SPI-3)</span></div>
-      </section>
+          <div id="heat" class="chart"></div>
+          <div class="legend" style="margin-top:10px"><span><i class="sq" style="background:${AMBER}"></i>${esc(t.worse)}</span><span><i class="sq" style="background:#a9a9a9"></i>${esc(t.better)}</span><span><i class="sq none"></i>${esc(t.noData)}</span></div>
+        </section>` : ""}
+      </div>
+    </section>
 
-      <section class="card s3">
-        <h2>${esc(t.constH)}</h2>
-        <p class="sub">${esc(t.constSub)}</p>
-        <div class="legend"><span><i class="dot" style="background:#f2b33d"></i>${esc(robustLabel("ROBUSTO"))}</span><span><i class="ring"></i>${esc(t.sigRing)}</span><span>● ${esc(t.sigGpp)}</span><span>▲ ${esc(t.sigLst)}</span></div>
-        <div id="const" class="chart" style="margin-top:6px"></div>
-      </section>
-      <section class="card s3">
-        <h2>${esc(t.distH)}</h2>
-        <p class="sub">${esc(t.distSub)}</p>
-        <div id="dist" class="chart"></div>
-      </section>
-
-      ${pts ? `
-      <section class="card s4">
-        <div class="card-head">
-          <div><h2>${esc(t.mapH)}</h2><p class="sub">${esc(t.mapSub)}</p></div>
-          <div class="seg" role="radiogroup" aria-label="${esc(t.mapH)}">
-            ${["modis_ndvi", "modis_lst", "modis_gpp"].map((v) => `<button data-mapv="${v}" class="${state.mapVar === v ? "on" : ""}">${esc(varMeta(index, v).nombre)}</button>`).join("")}
+    <section class="chapter" id="c-verdict">
+      <h2 class="ch-title">${esc(t.chVerdict)}</h2>
+      <div class="grid">
+        <section class="card s6">
+          <h3>${esc(t.verdictH)}</h3>
+          <p class="claim small-claim">${esc(t.verdictLead(auds.length, count("fantasma"), count("estres_invisible"), count("censurada"), count("inconclusa")))}</p>
+          <p class="explain">${esc(t.verdictClaimsText)}</p>
+        </section>
+        <section class="card s6">
+          <div class="two-col">
+            <div><h3>${esc(t.howH)}</h3><p class="explain">${t.howP1}</p><p class="explain">${esc(t.howP2)}</p></div>
+            <div><h3>${esc(t.notClaimH)}</h3><p class="explain">${esc(t.notClaim)}</p></div>
           </div>
-        </div>
-        <div id="pmap"></div>
-        <div class="legend" style="margin-top:10px"><span><i class="dot" style="background:#f2b33d"></i>${esc(t.worsens)}, ${esc(t.sigFilled)}</span><span><i class="dot" style="background:#e6e6e6"></i>${esc(t.improves)}, ${esc(t.sigFilled)}</span><span><i class="ring"></i>${esc(t.sigRing)}</span></div>
-      </section>
-      <section class="card s2">
-        <h3 id="pm-title"></h3>
-        <table class="trend-list" id="pm-table"></table>
-        <p class="small foot-note">${esc(t.qNote(pts.n_pruebas_mapa))}</p>
-      </section>` : ""}
-
-      <section class="card s3">
-        <h2>${esc(t.areaH)}</h2>
-        <div class="empty" style="margin-top:12px">${esc(t.areaEmpty)}</div>
-      </section>
-      <section class="card s3">
-        <h2>${esc(t.case2H)}</h2>
-        <p class="sub">${esc(t.case2Lede)}</p>
-        ${ph.colisiones ? `<p class="verdict">${esc(t.case2Count(ph.colisiones.colisiones, ph.colisiones.eventos_evaluados))}</p>` : `<p>${esc(t.case2Pending)}</p>`}
-      </section>
-    </div>`}
-
-    <div class="grid">
-      <section class="card s6">
-        <h2>${esc(t.droughtsH)}</h2>
-        <p class="sub">${esc(t.droughtsNote)}</p>
-        ${ph.sequias.map((d, i) => `<h3 style="margin-top:12px">${esc(regionMeta(index, d.region).nombre)}</h3><div class="chart" id="spi${i}"></div>`).join("")}
-      </section>
-      <section class="card s6">
-        <div class="two-col">
-          <div><h2>${esc(t.howH)}</h2><p class="explain">${t.howP1}</p><p class="explain">${esc(t.howP2)}</p></div>
-          <div><h2>${esc(t.notClaimH)}</h2><p class="explain">${esc(t.notClaim)}</p></div>
-        </div>
-      </section>
-      ${done ? `
-      <details class="card s6">
-        <summary>${esc(t.tableAll)}</summary>
-        <div class="table-wrap"><table class="events">
-          <thead><tr><th>${esc(t.thPoint)}</th><th>${esc(t.thDrought)}</th><th>${esc(t.thSignal)}</th><th>${esc(t.thState)}</th><th class="num">${esc(t.thDt)}</th><th>${esc(t.thRobust)}</th></tr></thead>
-          <tbody>${ph.eventos.filter((e) => e.estado !== "sin_impacto").map((e) => `
-            <tr><td>${esc(pointName(e.id))}</td><td>${esc(e.evento_inicio.slice(0, 7))}</td><td>${esc(fnName(e.funcion))}</td>
-            <td>${esc(stateLabel(e.estado))}</td><td class="num">${e.dt_dias === null ? "—" : (e.dt_es_cota_inferior ? "≥ " : "") + fmt(e.dt_dias, 0)}</td>
-            <td>${esc(robustLabel(e.rob_etiqueta))}</td></tr>`).join("")}</tbody>
-        </table></div>
-        <p class="small" style="margin-top:10px">${esc(t.hiddenRows(ph.eventos.filter((e) => e.estado === "sin_impacto").length))}</p>
-      </details>` : ""}
-    </div>`;
+        </section>
+        <section class="card s6">
+          <h3>${esc(t.droughtsH)}</h3>
+          <p class="sub">${esc(t.droughtsNote)}</p>
+          ${ph.sequias.map((d, i) => `<p class="group">${esc(regionMeta(index, d.region).nombre)}</p><div class="chart" id="spi${i}"></div>`).join("")}
+        </section>
+      </div>
+    </section>`}`;
 
   ph.sequias.forEach((d, i) => {
-    const el = document.getElementById(`spi${i}`)!;
-    el.append(spiChart(d, el.clientWidth || 800));
+    const el = document.getElementById(`spi${i}`);
+    if (el) el.append(spiChart(d, el.clientWidth || 800));
   });
   if (!done) return;
-  wireDual(ph, pts);
+
+  const $ = <E extends HTMLElement>(id: string) => document.getElementById(id) as E;
   const draw = (id: string, f: (w: number) => Element) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.innerHTML = "";
     el.append(f(el.clientWidth || 600));
   };
-  draw("const", (w) => constellation(ph.eventos, Object.fromEntries(ph.eventos.map((e) => [e.id, pointName(e.id)])), w));
-  draw("dist", (w) => recoveryDist(ph.eventos, w));
+  const current = () => auds.find((a) => a.id === state.audit!.id && a.evento_inicio === state.audit!.ev)!;
+
+  const fillEvents = () => {
+    const id = $<HTMLSelectElement>("a-id").value;
+    $<HTMLSelectElement>("a-ev").innerHTML = auds.filter((a) => a.id === id)
+      .map((a) => `<option value="${a.evento_inicio}">${a.evento_inicio.slice(0, 7)}</option>`).join("");
+  };
+
+  const renderClaim = () => {
+    const a = current();
+    $("claim").textContent = t.claim(pointName(a.id), a.evento_inicio.slice(0, 4));
+    $<HTMLSelectElement>("a-id").value = a.id;
+    fillEvents();
+    $<HTMLSelectElement>("a-ev").value = a.evento_inicio;
+    const box = $("vbox");
+    const chk = $("chk");
+    if (!state.audited) { chk.innerHTML = ""; box.innerHTML = ""; box.className = "verdict-box"; return; }
+    const sig = (k: string) => {
+      if (!a[`${k}_impactado`]) return { cls: "na", txt: t.resNotHit };
+      const r = a[`${k}_recupera`] as string | null;
+      return r ? { cls: "ok", txt: t.resYes(r, a[`${k}_dias`] as number) } : { cls: "bad", txt: t.resNo };
+    };
+    const covs = ["ndvi", "gpp_modelo", "lst_menos_aire"].map((k) => (a[`${k}_cobertura`] as number) ?? 0);
+    const stableN = Math.round(a.estabilidad * a.combinaciones);
+    const items = [
+      { l: t.chkGreen, ...sig("ndvi") },
+      { l: t.chkEvi, ...sig("evi") },
+      { l: t.chkGpp, ...sig("gpp_modelo") },
+      { l: t.chkLst, ...sig("lst_menos_aire") },
+      a.colision ? { l: t.chkNext, cls: "bad", txt: t.resNextBad } : { l: t.chkNext, cls: "ok", txt: t.resNextOk },
+      { l: t.chkStable, cls: a.estabilidad >= 0.6 ? "ok" : "bad", txt: t.resStable(stableN, a.combinaciones) },
+      { l: t.chkQc, cls: a.calidad_ok ? "ok" : "bad", txt: t.resQc(Math.min(...covs)) },
+    ];
+    chk.innerHTML = items.map((it, i) => `<li class="${it.cls}" style="--i:${i}"><span class="mk">${MARK[it.cls]}</span><span class="lbl">${esc(it.l)}</span><span class="res">${esc(it.txt)}</span></li>`).join("");
+    const disc = DISCORDANT.has(a.veredicto);
+    box.className = `verdict-box shown ${disc ? "disc" : ""}`;
+    box.style.setProperty("--i", String(items.length));
+    const reason = a.motivo_inconclusa === "definicion" ? ` (${t.reasonDef})` : a.motivo_inconclusa === "calidad" ? ` (${t.reasonQc})` : "";
+    box.innerHTML = `<p class="vlabel">${esc(t.verdictLabel)}</p><p class="vname">${esc(t.verdictName[a.veredicto] ?? a.veredicto)}${esc(reason)}</p><p class="explain">${esc(t.verdictWhy[a.veredicto] ?? "")}</p>`;
+  };
+
+  const renderEvidenceCh = () => {
+    const a = current();
+    document.querySelectorAll(".fname").forEach((e) => { e.textContent = state.fn === "gpp_modelo" ? t.sigGpp : t.sigLst; });
+    const z = pts?.z[a.id];
+    if (!z) return;
+    const common = { green: z.ndvi, func: z[state.fn], start: a.evento_inicio, end: a.evento_fin, stop: a.fin_ventana };
+    draw("dual", (w) => dualTimeline({ ...common, greenRec: a.ndvi_recupera as string | null, funcRec: a[`${state.fn}_recupera`] as string | null, threshold: -1, width: w }));
+    draw("gap", (w) => gapIndex({ ...common, width: w }));
+    draw("hyst", (w) => hysteresis({ ...common, width: w }));
+  };
+
+  const renderLedger = () => draw("ledger", (w) => ledger(auds, POINT_ORDER, NAMES, w, current(), (a) => {
+    state.audit = { id: a.id, ev: a.evento_inicio }; state.audited = true;
+    renderClaim(); renderEvidenceCh(); renderLedger();
+    document.getElementById("c-discover")!.scrollIntoView({ behavior: "smooth", block: "start" });
+  }));
+
+  $("a-id").addEventListener("change", () => {
+    fillEvents();
+    state.audit = { id: $<HTMLSelectElement>("a-id").value, ev: $<HTMLSelectElement>("a-ev").value };
+    state.audited = false; renderClaim(); renderEvidenceCh(); renderLedger();
+  });
+  $("a-ev").addEventListener("change", () => {
+    state.audit = { id: $<HTMLSelectElement>("a-id").value, ev: $<HTMLSelectElement>("a-ev").value };
+    state.audited = false; renderClaim(); renderEvidenceCh(); renderLedger();
+  });
+  $("audit-go").addEventListener("click", () => { state.audited = true; renderClaim(); });
+  view.querySelectorAll<HTMLButtonElement>("[data-fn]").forEach((b) => b.addEventListener("click", () => {
+    state.fn = b.dataset.fn as State["fn"];
+    view.querySelectorAll("[data-fn]").forEach((x) => x.classList.toggle("on", x === b));
+    renderEvidenceCh();
+  }));
+  view.querySelectorAll<HTMLAnchorElement>("[data-ch]").forEach((a) => a.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute("href")!)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }));
+
+  renderClaim();
+  renderEvidenceCh();
+  renderLedger();
+  draw("quad", (w) => quadrant(auds, NAMES, w));
   if (pts) {
     const regionOf = Object.fromEntries(pts.puntos.map((p) => [p.id, p.region]));
     const droughts = ph.sequias.flatMap((d) => d.eventos.map((e) => ({ region: d.region, a: e.inicio, b: e.fin })));
-    const drawHeat = () => draw("heat", (w) => heatmap(pts, state.heatVar, WORSE_IS_HIGH[state.heatVar], POINT_ORDER,
-      Object.fromEntries(POINT_ORDER.map((id) => [id, pointName(id)])), droughts, regionOf, w));
+    const drawHeat = () => draw("heat", (w) => heatmap(pts, state.heatVar, WORSE_IS_HIGH[state.heatVar], POINT_ORDER, NAMES, droughts, regionOf, w));
     drawHeat();
     view.querySelectorAll<HTMLButtonElement>("[data-heat]").forEach((b) => b.addEventListener("click", () => {
       state.heatVar = b.dataset.heat!;
@@ -486,68 +588,6 @@ async function viewCases() {
       drawPointMap(pts);
     }));
   }
-}
-
-function wireDual(ph: Phantom, pts: Puntos | null) {
-  const t = T();
-  const $ = <E extends HTMLElement>(id: string) => document.getElementById(id) as E;
-  const ids = POINT_ORDER.filter((id) => ph.eventos.some((e) => e.id === id && e.estado !== "sin_impacto"));
-  $<HTMLSelectElement>("d-id").innerHTML = ids.map((i) => `<option value="${i}">${esc(pointName(i))}</option>`).join("");
-  const rowsFor = (id: string) => ph.eventos.filter((e) => e.id === id && e.funcion === state.dualFn);
-  const fillEvents = () => {
-    const evs = rowsFor($<HTMLSelectElement>("d-id").value).filter((e) => e.estado !== "sin_impacto");
-    $<HTMLSelectElement>("d-ev").innerHTML = evs.map((e) => `<option value="${e.evento_inicio}">${e.evento_inicio.slice(0, 7)} · ${esc(stateLabel(e.estado))}</option>`).join("");
-  };
-  const update = () => {
-    const id = $<HTMLSelectElement>("d-id").value;
-    const ev = $<HTMLSelectElement>("d-ev").value;
-    const row: PhantomEventRow | undefined = rowsFor(id).find((e) => e.evento_inicio === ev);
-    $("d-fname").textContent = state.dualFn === "gpp_modelo" ? t.sigGpp : t.sigLst;
-    const z = pts?.z[id];
-    const el = $("dual");
-    el.innerHTML = "";
-    if (!row || !z) { el.innerHTML = `<div class="empty">${esc(t.cNA)}</div>`; return; }
-    el.append(dualTimeline({
-      green: z.ndvi, func: z[state.dualFn], start: row.evento_inicio, end: row.evento_fin, stop: row.fin_ventana,
-      greenRec: row.verde_recuperacion, funcRec: row.funcion_recuperacion, threshold: -1, width: el.clientWidth || 700,
-    }));
-    const date = (s: string | null) => (s ? s.slice(0, 10) : t.fNot);
-    $("d-facts").innerHTML = `
-      <div><span>${esc(t.fDrought)}</span><b>${row.evento_inicio.slice(0, 7)} → ${row.evento_fin.slice(0, 7)}</b></div>
-      <div><span>${esc(t.fGreen)}</span><b>${esc(date(row.verde_recuperacion))}</b></div>
-      <div><span>${esc(t.fFunc)}</span><b>${esc(date(row.funcion_recuperacion))}</b></div>
-      <div><span>${esc(t.fDt)}</span><b>${row.dt_dias === null ? "—" : `${row.dt_es_cota_inferior ? "≥ " : ""}${fmtSigned(row.dt_dias, 0)} ${esc(t.days)}`}</b></div>
-      <div><span>${esc(t.fRobust)}</span><b>${esc(robustLabel(row.rob_etiqueta))}</b></div>
-      <div><span>${esc(t.fSeverity)}</span><b>${row.evento_severidad_spi3 === null ? "—" : fmt(row.evento_severidad_spi3, 1)}</b></div>
-      <div><span>${esc(t.fWindow)}</span><b>${esc(row.fin_ventana.slice(0, 10))}</b></div>`;
-    const sens: SensRow[] = ph.sensibilidad.filter((r) => r.id === id && r.evento_inicio.slice(0, 10) === ev.slice(0, 10) && r.funcion === state.dualFn);
-    const valid = sens.filter((r) => r.estado === "ambos_recuperados" && r.dt_dias !== null);
-    const pos = valid.filter((r) => (r.dt_dias as number) > 32).length;
-    const neg = valid.filter((r) => (r.dt_dias as number) < -32).length;
-    const chosen = sens.find((r) => r.verde === "ndvi" && Number(r.umbral) === -1 && Number(r.persistencia) === 3) ?? null;
-    const strip = $("d-strip");
-    strip.innerHTML = "";
-    strip.append(sensitivityStrip(sens, chosen, strip.clientWidth || 300));
-    $("d-sens").textContent = t.cSummary(sens.length, valid.length, pos, neg, valid.length - pos - neg);
-  };
-  // Arranca en un caso con ambas recuperaciones de la señal elegida (el de mayor severidad)
-  const pickDefault = () => {
-    const best = ph.eventos.filter((e) => e.funcion === state.dualFn && e.estado === "ambos_recuperados")
-      .sort((a, b) => (a.evento_severidad_spi3 ?? 0) - (b.evento_severidad_spi3 ?? 0))[0];
-    if (best) $<HTMLSelectElement>("d-id").value = best.id;
-    fillEvents();
-    if (best) $<HTMLSelectElement>("d-ev").value = best.evento_inicio;
-  };
-  $("d-id").addEventListener("change", () => { fillEvents(); update(); });
-  $("d-ev").addEventListener("change", update);
-  document.querySelectorAll<HTMLButtonElement>("[data-fn]").forEach((b) => b.addEventListener("click", () => {
-    state.dualFn = b.dataset.fn as State["dualFn"];
-    document.querySelectorAll("[data-fn]").forEach((x) => x.classList.toggle("on", x === b));
-    pickDefault();
-    update();
-  }));
-  pickDefault();
-  update();
 }
 
 function drawPointMap(pts: Puntos) {
@@ -567,14 +607,13 @@ function drawPointMap(pts: Puntos) {
     if (!tr) continue;
     const worse = WORSE_IS_HIGH[v] ? tr.pendiente_decada > 0 : tr.pendiente_decada < 0;
     const sig = tr.p_mk < 0.05 && (tr.ic95_decada[0] > 0 || tr.ic95_decada[1] < 0);
-    const color = worse ? "#f2b33d" : "#e6e6e6";
+    const color = worse ? AMBER : "#e6e6e6";
     L.circleMarker([p.lat, p.lon], { radius: 9, color, weight: 2.5, fillColor: color, fillOpacity: sig ? 0.95 : 0 })
       .bindTooltip(`${pointName(p.id)}: ${fmtSigned(tr.pendiente_decada, d)} ${meta.unidad} ${t.factPerDecade} · p = ${fmtP(tr.p_mk)}`)
       .addTo(map);
     bounds.push(L.latLng(p.lat, p.lon));
   }
   if (bounds.length) map.fitBounds(L.latLngBounds(bounds).pad(0.35), { maxZoom: 9 });
-  document.getElementById("pm-title")!.textContent = `${meta.nombre} (${meta.unidad})`;
   document.getElementById("pm-table")!.innerHTML = `
     <thead><tr><th>${esc(t.thPoint)}</th><th class="num">${esc(t.thSlope)}</th><th class="num">${esc(t.thP)}</th><th class="num">${esc(t.thQ)}</th></tr></thead>
     <tbody>${rows.map((p) => { const tr = p.tendencias[v]; return tr ? `
@@ -620,7 +659,9 @@ async function route(scrollTop = true) {
 async function start() {
   shell();
   index = await load<Index>("index.json");
-  window.addEventListener("hashchange", () => route());
+  window.addEventListener("hashchange", () => {
+    if (["#investigar", "#expedientes", "#metodo", ""].includes(location.hash)) route();
+  });
   let timer: number | undefined;
   let lastW = window.innerWidth;
   window.addEventListener("resize", () => {
