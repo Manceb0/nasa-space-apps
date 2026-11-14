@@ -46,6 +46,7 @@ export interface Index {
   variables: Record<string, VariableMeta>;
   regiones: Record<string, RegionMeta>;
   series: { id: string; variable: string; region: string; veredicto: Verdict }[];
+  puntos?: boolean;
 }
 
 export interface Series {
@@ -88,6 +89,26 @@ export interface DroughtEvent {
   recuperacion_candidata: string | null;
 }
 
+export interface ZSeries { fechas: string[]; z: number[] }
+
+export interface PointInfo {
+  id: string;
+  nombre: string;
+  lat: number;
+  lon: number;
+  region: string | null;
+  cobertura: number[] | null;
+  estable: boolean | null;
+  tendencias: Record<string, Trend>;
+}
+
+export interface Puntos {
+  puntos: PointInfo[];
+  calor: { meses: string[]; series: Record<string, Record<string, (number | null)[]>> };
+  n_pruebas_mapa: number;
+  z: Record<string, Record<string, ZSeries>>;
+}
+
 export interface PhantomEventRow {
   id: string;
   region: string;
@@ -104,6 +125,10 @@ export interface PhantomEventRow {
   rob_etiqueta: string;
   rob_n_validas: number;
   rob_dt_mediana: number | null;
+  fin_ventana: string;
+  evento_severidad_spi3: number | null;
+  verde_dias_desde_fin: number | null;
+  funcion_dias_desde_fin: number | null;
 }
 
 export interface SensRow {

@@ -1,6 +1,6 @@
 # RESULTS
 
-Generado por `phantom.pipeline` el 2026-11-14 18:05 UTC. Este archivo se reescribe en cada corrida; no editarlo a mano.
+Generado por `phantom.pipeline` el 2026-11-14 18:27 UTC. Este archivo se reescribe en cada corrida; no editarlo a mano.
 
 ## 1. Datos climáticos (Giovanni)
 

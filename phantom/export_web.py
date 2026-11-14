@@ -268,5 +268,60 @@ def export(root: Path, results: Path, out: Path) -> dict:
                                      "ventanas_cortadas": int(g["ventana_cortada_por_siguiente_sequia"].sum()),
                                      "colisiones": int(g["colision_verde"].sum())}
     _write(out / "phantom.json", phantom)
+    pts = export_points(root, results, out)
+    if pts:
+        index["puntos"] = True
     _write(out / "index.json", index)
     return index
+
+
+POINT_NAMES = {
+    "montecristimontesecoa": "Montecristi A", "montecristimontesecob": "Montecristi B",
+    "sierramontecristi": "Sierra de Montecristi", "jaraguacomparacionseco": "Jaragua",
+    "cordilleracomparacionhumedo": "Cordillera Central",
+}
+
+
+def export_points(root: Path, results: Path, out: Path) -> dict | None:
+    """Por punto: tendencias de NDVI, LST y GPP (mismo método que el detective), anomalías mensuales
+    estandarizadas para el mapa de calor y las series z de recuperación para la doble línea."""
+    adir = root / "data" / "appeears"
+    data, _ = appeears.load_point_sample(adir)
+    if not data:
+        return None
+    lc = appeears.landcover_stability(data["MCD12Q1"]) if "MCD12Q1" in data else pd.DataFrame()
+    first = next(iter(data.values()))
+    coords = first.groupby("id")[["lat", "lon"]].first()
+    meses = modis_series.MONTHS
+    heat: dict = {"meses": [d.strftime("%Y-%m") for d in meses], "series": {}}
+    trends_out: dict = {}
+    tests = []
+    for var, spec in modis_series.MODIS_VARS.items():
+        df = data.get(spec["producto"])
+        if df is None:
+            continue
+        monthly = modis_series.monthly_point(df, spec["col"], spec["escala"])
+        g = monthly.groupby(monthly.index.month)
+        z = (monthly - g.transform("mean")) / g.transform("std")
+        heat["series"][var] = {pid: [None if pd.isna(v) else round(float(v), 2) for v in z[pid]] for pid in z.columns}
+        for pid in monthly.columns:
+            a = trends.analyze(monthly[pid], 9)["completa"]
+            trends_out.setdefault(pid, {})[var] = a
+            tests.append((pid, var, a.get("p_mk")))
+    q = stats.benjamini_hochberg([t[2] for t in tests])
+    for (pid, var, _), qq in zip(tests, q):
+        trends_out[pid][var]["q_bh"] = qq
+    points = []
+    for pid in coords.index:
+        row = lc[lc["id"] == pid].to_dict("records")[0] if len(lc) else {}
+        points.append({
+            "id": pid, "nombre": POINT_NAMES.get(pid.replace("_", ""), pid),
+            "lat": float(coords.loc[pid, "lat"]), "lon": float(coords.loc[pid, "lon"]),
+            "region": _region_of(pid), "cobertura": row.get("clases_2001_2021"), "estable": row.get("estable"),
+            "tendencias": trends_out.get(pid, {}),
+        })
+    zfile = results / "zseries.json"
+    doc = {"puntos": points, "calor": heat, "n_pruebas_mapa": len(tests),
+           "z": json.loads(zfile.read_text(encoding="utf-8")) if zfile.exists() else {}}
+    _write(out / "puntos.json", doc)
+    return doc

@@ -94,6 +94,7 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
     lc = appeears.landcover_stability(data["MCD12Q1"]) if "MCD12Q1" in data else pd.DataFrame()
     vi, lst, gpp = data["MOD13Q1"], data["MOD11A2"], data["MOD17A2HGF"]
     rows, sens_rows, figs = [], [], []
+    zseries: dict[str, dict] = {}
     series_end = pd.Timestamp("2024-12-31")
     points = vi[["id", "categoria"]].drop_duplicates().itertuples(index=False)
 
@@ -121,6 +122,10 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
             "lst_menos_aire": recovery.robust_seasonal_z(t["fecha"], t["lst_c"].to_numpy() - t_air.to_numpy(), 8,
                                                          invert=True),
         }
+        # Series z (las mismas que usa el cálculo de recuperación) para la doble línea de la web
+        zseries[pid] = {name: {"fechas": [d.strftime("%Y-%m-%d") for d in z.dropna().index],
+                               "z": [round(float(v), 2) for v in z.dropna()]}
+                        for name, z in {"ndvi": green["ndvi"], "evi": green["evi"], **funcs}.items()}
         ev = events[reg].reset_index(drop=True)
         stops = _stop_dates(ev, series_end)
         for (i, e), stop in zip(ev.iterrows(), stops):
@@ -154,6 +159,7 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
                 figs += figures.fig_event(pid, e["inicio"], e_end, stop, {"ndvi": green["ndvi"], **funcs}, recs, stem,
                                           threshold=PRIMARY["umbral"])
 
+    write_json(out / "zseries.json", zseries)
     res = pd.DataFrame(rows)
     res.to_csv(out / "recuperacion_eventos.csv", index=False, lineterminator=LF)
     if sens_rows:

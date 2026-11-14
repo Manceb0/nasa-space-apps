@@ -18,6 +18,8 @@
 | Expediente Recovery Collision | **Implementado con datos reales** | 3 colisiones en 54 sequías evaluadas (punto × evento) |
 | Variables MODIS en el detective (NDVI, LST, GPP) | **Implementado y validado** | Promedio de anomalías de los puntos de cada zona; 14 series en total con BH |
 | Módulo de idiomas español / inglés | **Implementado**, probado en local | Selector en la barra, recordado en el navegador; `?lang=es` o `?lang=en` |
+| Visualizaciones del atlas (doble línea, calor espacio-tiempo, constelación, distribución, tendencias por punto) | **Implementado con datos reales** | Ver `DISENO.md`; el mapa por superficie sigue pendiente del pedido de área |
+| Pasada de diseño (taste-skill, app) | **Hecha** | Inspector 0 FAIL en las 3 pantallas; lint 0 FAIL; crítica en `DISENO.md` |
 | Atlas de impacto (mapa de discordancia) | **Pendiente** | Pedido de área `eec5627a…` enviado; sin datos no hay mapa |
 | URL pública | **Retirada a pedido del equipo** (14-nov, noche). Proyecto de Vercel `earth-system-detective` sin despliegues; las URL dan 404 | Publicar de nuevo solo con aprobación: `cd web && npx vercel@latest deploy --prod` |
 
