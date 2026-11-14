@@ -155,7 +155,7 @@ async function viewInvestigate() {
     spiS.meses.forEach((m, k) => { const v = spiS.valores[k]; if (m >= e.inicio.slice(0, 7) && m <= e.fin.slice(0, 7) && v !== null && v < bv) { bv = v; best = m; } });
     return best;
   })();
-  const MON = getLang() === "es" ? "EFMAMJJASOND" : "JFMAMJJASOND";
+  const MON = Array.from({ length: 12 }, (_, k) => monthName(k));
   const years = Array.from({ length: 24 }, (_, k) => 2001 + k);
   const dmCell = (m: string) => {
     const v = spiOf.get(m) ?? null;
@@ -164,7 +164,7 @@ async function viewInvestigate() {
       ? `rgba(${v <= -1 ? "255,69,58" : "255,159,10"},${Math.min(1, 0.25 + (-v) / 2.2).toFixed(2)})`
       : `rgba(10,132,255,${Math.min(0.5, 0.08 + v / 4).toFixed(2)})`;
     const size = 1;
-    return `<button class="dm ${dry ? "dry" : ""}" data-month="${m}" style="--s:${size.toFixed(2)};--c:${col}" title="${m} · SPI-3 ${v === null ? "—" : fmt(v, 2)}" aria-label="${m} SPI-3 ${v === null ? "—" : fmt(v, 2)}"></button>`;
+    return `<button class="dm ${dry ? "dry" : ""}" data-month="${m}" style="--s:${size.toFixed(2)};--c:${col}" title="${fmtMonth(m)} · SPI-3 ${v === null ? "—" : fmt(v, 2)}" aria-label="${m} SPI-3 ${v === null ? "—" : fmt(v, 2)}"></button>`;
   };
 
   view.innerHTML = `
@@ -190,7 +190,8 @@ async function viewInvestigate() {
           <button class="txt-btn" id="t3-country">${esc(LL("Ver todo el país", "See the whole country"))}</button>
         </div>
         <div class="field-hud" aria-live="polite">
-          <p class="field-month num" id="f-month"></p>
+          <p class="field-cap">${esc(LL("Mes en el mapa", "Month on the map"))}</p>
+          <p class="field-month num loading" id="f-month">${esc(LL("Cargando lluvia…", "Loading rain…"))}</p>
           <p class="field-leg">${esc(LL("Lluvia del mes frente a lo normal. Cada punto es una celda IMERG de 0,1° (unos 11 km).", "Monthly rain against normal. Each dot is one 0.1° IMERG cell (about 11 km)."))}</p>
           <p class="field-key"><i style="background:#ff453a"></i>${esc(LL("mucho más seca", "much drier"))}<i style="background:#ff9f0a"></i>${esc(LL("más seca", "drier"))}<i style="background:#0a84ff"></i>${esc(LL("más húmeda", "wetter"))}</p>
           <p class="field-src">NASA GPM IMERG V07 · Huffman et al. 2023</p>
@@ -203,9 +204,10 @@ async function viewInvestigate() {
           <div class="pnl-h"><h2>${esc(t.zoneDroughtsH(rmeta.nombre))}</h2><span class="meta num">${droughts.length}</span></div>
           <p class="meta">${esc(LL("SPI-3 de cada mes. Rojo: sequía (SPI-3 ≤ −1). Toca un mes para verlo en el mapa.", "SPI-3 for every month. Red: drought (SPI-3 ≤ −1). Tap a month to see it on the map."))}</p>
           <div class="dmatrix">
-            <div class="dm-row dm-head"><span class="dm-y"></span>${[...MON].map((c) => `<span class="dm-m">${c}</span>`).join("")}</div>
+            <div class="dm-row dm-head"><span class="dm-y"></span>${MON.map((c) => `<span class="dm-m">${c}</span>`).join("")}</div>
             ${years.map((y, yi) => `<div class="dm-row" style="--i:${yi}"><span class="dm-y">${y}</span>${Array.from({ length: 12 }, (_, k) => dmCell(`${y}-${String(k + 1).padStart(2, "0")}`)).join("")}</div>`).join("")}
           </div>
+          <p class="dm-key"><i style="background:#ff453a"></i>${esc(LL("sequía", "drought"))}<i style="background:rgba(255,159,10,.75)"></i>${esc(LL("más seco", "drier"))}<i style="background:rgba(10,132,255,.5)"></i>${esc(LL("más húmedo", "wetter"))}<i style="background:rgba(120,120,128,.25)"></i>${esc(LL("sin dato", "no data"))}</p>
           <a class="more" href="#expedientes">${esc(t.droughtsGo)} →</a>
         </section>
       </aside>
@@ -270,6 +272,7 @@ async function viewInvestigate() {
   });
   const hint = document.getElementById("t3-hint");
   t3.map.once("mousedown", () => hint?.classList.add("gone"));
+  setTimeout(() => hint?.classList.add("gone"), 8000);
   t3.map.once("touchstart", () => hint?.classList.add("gone"));
   document.getElementById("t3-country")?.addEventListener("click", () => t3?.country(2200));
   const fMonth = document.getElementById("f-month")!;
@@ -277,7 +280,7 @@ async function viewInvestigate() {
   const showField = (mes: string) => {
     if (!fieldReady || !t3) return;
     t3.setField(mes);
-    if (fMonth.textContent !== mes) { fMonth.textContent = mes; fMonth.classList.remove("flip"); void fMonth.offsetWidth; fMonth.classList.add("flip"); }
+    if (fMonth.dataset.m !== mes) { fMonth.dataset.m = mes; fMonth.textContent = fmtMonth(mes); fMonth.classList.remove("flip", "loading"); void fMonth.offsetWidth; fMonth.classList.add("flip"); }
     view.querySelectorAll(".dm.on").forEach((x) => x.classList.remove("on"));
     view.querySelector(`[data-month="${mes}"]`)?.classList.add("on");
   };
@@ -298,6 +301,7 @@ async function viewInvestigate() {
   const absSorted = anom.filter((v): v is number => v !== null).map(Math.abs).sort((a, b) => a - b);
   const lim = (absSorted[Math.floor(absSorted.length * 0.98)] || 1) * 1.08;
   let xs: { apply: (v: Date) => number; invert: (v: number) => Date } | null = null;
+  let curIdx = -1;
 
   const setMonth = (i: number) => {
     if (!xs) return;
@@ -306,7 +310,8 @@ async function viewInvestigate() {
     cursor.hidden = false;
     cursor.style.left = `${xs.apply(date)}px`;
     const val = v === null ? "—" : `${fmtSigned(v, d)} ${vmeta.unidad}`;
-    readout.textContent = `${months[i]} · ${val}`;
+    readout.textContent = `${fmtMonth(months[i])} · ${val}`;
+    curIdx = i;
     showField(months[i]);
     const stress = v !== null && (stressHigh ? v > 0 : v < 0);
     const k = v === null ? 0 : Math.min(1, Math.abs(v) / lim);
@@ -342,6 +347,14 @@ async function viewInvestigate() {
     plot.addEventListener("pointerleave", () => { if (playTimer === null) clearMonth(); });
   };
   drawTl(false);
+  tlEl.tabIndex = 0;
+  tlEl.setAttribute("aria-label", LL("Serie mes a mes. Usa las flechas izquierda y derecha para recorrer los meses.", "Monthly record. Use the left and right arrows to move through the months."));
+  tlEl.addEventListener("keydown", (e) => {
+    if (!state.revealed || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+    e.preventDefault(); stopPlay();
+    const n = Math.max(0, Math.min(months.length - 1, (curIdx < 0 ? months.length - 1 : curIdx) + (e.key === "ArrowRight" ? 1 : -1)));
+    setMonth(n);
+  });
 
   view.querySelectorAll<HTMLTableRowElement>("[data-ev]").forEach((r) => {
     const go = () => {
@@ -489,7 +502,7 @@ function renderVerdict(s: Series, onPick: (p: Prediction) => void) {
     const d = digitsFor(meta);
     const mt = multipleTestingNote(full, index.series.length);
     el.innerHTML = `
-      <div class="pnl-h"><h2>${esc(t.resultH)}</h2><span class="meta">${esc(t.yourBet)}: ${arrow[state.prediction ?? "nada"]} ${esc(predLabel[state.prediction ?? "nada"])}</span></div>
+      <div class="pnl-h"><h2>${esc(t.resultH)}</h2><button class="txt-btn rebet" id="rebet">${esc(LL("Cambiar apuesta", "Change bet"))}</button><span class="meta">${esc(t.yourBet)}: ${arrow[state.prediction ?? "nada"]} ${esc(predLabel[state.prediction ?? "nada"])}</span></div>
       <p class="fb ${fb.ok === true ? "yes" : fb.ok === false ? "no" : ""}">${esc(fb.text)}</p>
       <p class="fig"><b class="num">${fmtSigned(full.pendiente_decada, d)}</b><span>${esc(meta.unidad)} ${esc(t.factPerDecade)}</span></p>
       <p class="vs">${esc(verdictSentence(meta, rname, full, y0, y1))}</p>
@@ -504,6 +517,7 @@ function renderVerdict(s: Series, onPick: (p: Prediction) => void) {
     unc.append(uncertaintyBar(full, d, meta.unidad, unc.clientWidth || 320));
   }
   el.querySelectorAll<HTMLButtonElement>("[data-pred]").forEach((b) => b.addEventListener("click", () => onPick(b.dataset.pred as Prediction)));
+  document.getElementById("rebet")?.addEventListener("click", () => { resetInvestigation(); route(false); });
 }
 const vmeta0 = (n: string) => n.charAt(0).toLowerCase() + n.slice(1);
 
@@ -631,6 +645,11 @@ const TIP_SIDE = (id: string): { direction: L.Direction; offset: [number, number
   : { direction: "right", offset: [10, 0] };
 const rb = { id: "sierramontecristi", fn: "gpp_modelo" as Fn, lane: -1, mode: (innerWidth < 640 ? "2d" : "3d") as "3d" | "2d" | "map" };
 const LL = (es: string, en: string) => (getLang() === "es" ? es : en);
+const MONTHS_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const monthName = (k: number) => (getLang() === "es" ? MONTHS_ES : MONTHS_EN)[k];
+/** "2023-02" → "feb 2023" */
+const fmtMonth = (m: string) => `${monthName(Number(m.slice(5, 7)) - 1)} ${m.slice(0, 4)}`;
 
 async function viewRibbon() {
   const t = T();

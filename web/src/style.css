@@ -901,3 +901,19 @@ h1 { font-weight: 700; }
 @keyframes ubGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes ubPop { from { transform: scale(0); } to { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { #unc .ub-fill, #unc .ub-dot { animation: none; } }
+
+/* ══════ Ajustes heurísticos (Nielsen) ══════ */
+.field-cap { font-size: 12px; font-weight: 600; color: var(--label2); margin-bottom: 2px; }
+.field-month.loading { font-size: 22px; font-weight: 600; color: var(--label2); letter-spacing: -0.01em; animation: blink 1.4s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: .45; } }
+.console .dm-m { font-size: 9.5px; letter-spacing: -0.02em; text-transform: lowercase; }
+.dm-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 10px; font-size: 12px; color: var(--label2); }
+.dm-key i { width: 11px; height: 11px; border-radius: 3.5px; margin-right: -6px; display: inline-block; }
+.rebet { height: 28px !important; padding: 0 12px !important; font-size: 12px !important; }
+.console .t3-hint { bottom: 384px; }
+.console .side-col { max-height: calc(100vh - 140px); }
+.tl-plot:focus-visible { outline: 2px solid var(--sys-blue); outline-offset: 4px; border-radius: 8px; }
+@media (prefers-reduced-motion: reduce) { .field-month.loading { animation: none; } }
+.console .dm-row, .console .dm { height: 11px; }
+.console .dm::before { width: 9.5px; height: 9.5px; border-radius: 3px; }
+.console .drought-pnl { padding-bottom: 16px; }
