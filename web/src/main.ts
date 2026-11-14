@@ -536,6 +536,8 @@ function renderEvidence(s: Series) {
 
 let rbStage: Stage | null = null;
 let rbPlayed = false;
+let rbStoried = false;
+let storyToken = 0;
 const rbHide: Record<string, boolean> = { top: false, panel: false, bottom: false };
 const colBtn = (k: string, label: string) =>
   `<button class="col-btn" data-col="${k}" aria-expanded="${!rbHide[k]}" aria-label="${label}" title="${label}"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 7.5l3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
@@ -581,6 +583,12 @@ async function viewRibbon() {
         <div class="rb-stage" id="rb-stage"></div>
         <div class="rb-big" id="rb-big"></div>
       </div>
+      <div class="story" id="story" hidden aria-live="polite">
+        <div class="story-bar" aria-hidden="true"><span id="st-prog"></span></div>
+        <h2 class="story-h" id="st-h"></h2>
+        <p class="story-p" id="st-p"></p>
+        <button class="txt-btn" id="st-skip">${esc(LL("Saltar y explorar", "Skip and explore"))}</button>
+      </div>
       <div class="rb-head rb-top ${rbHide.top ? "collapsed" : ""}" data-panel="top">
         <div>
           <p class="crumb">Stellar Horizons<span aria-hidden="true">/</span>PHANTOM</p>
@@ -589,6 +597,7 @@ async function viewRibbon() {
             "Does greenness come back before function? Each ribbon is a drought. Its edges are greenness and function; the surface between them is the gap, coloured by whichever signal leads."))}</p>
         </div>
         <div class="rb-ctrl pills">
+          <button class="txt-btn st-replay" id="st-replay">${esc(LL("▶ Ver la historia", "▶ Watch the story"))}</button>
           <div class="icon-seg" role="radiogroup" aria-label="${esc(LL("Forma de ver", "View"))}">
             ${([["3d", LL("Cintas 3D", "3D ribbons")], ["2d", LL("Brecha 2D", "2D gap")], ["map", LL("Lugares", "Sites")]] as const).map(([m, lab]) => `<button data-rbmode="${m}" class="${rb.mode === m ? "on" : ""}" role="radio" aria-checked="${rb.mode === m}" title="${esc(lab)}" aria-label="${esc(lab)}">${MODE_ICON[m]}<span>${esc(lab)}</span></button>`).join("")}
           </div>
@@ -675,6 +684,111 @@ async function viewRibbon() {
   map.on("move zoom resize", anchor);
   anchor();
 
+  // ── Modo historia: la cámara cuenta la sequía en el lugar exacto donde se midió ──
+  const sec = view.querySelector<HTMLElement>(".rb")!;
+  const story = document.getElementById("story")!;
+  const stH = document.getElementById("st-h")!;
+  const stP = document.getElementById("st-p")!;
+  const stProg = document.getElementById("st-prog")!;
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const region = pts.puntos.find((q) => q.id === rb.id)?.region ?? null;
+  const zoneSeries = region ? await load<Series>(`series/imerg_precip_${region}.json`).catch(() => null) : null;
+  const spi = region ? ph.sequias.find((d) => d.region === region)?.spi3 : undefined;
+  const toB = (b: number[]) => L.latLngBounds([b[1], b[0]], [b[3], b[2]]);
+  const fmtBox = (b: number[]) => `${b[1]}–${b[3]}° N, ${Math.abs(b[2])}–${Math.abs(b[0])}° O`;
+  let zoneLayer: L.Rectangle | null = null;
+  let reqLayer: L.Rectangle | null = null;
+  let ring: L.Marker | null = null;
+  const STEPS = 6;
+  const wait = (ms: number, my: number) => new Promise<boolean>((res) =>
+    setTimeout(() => res(my === storyToken && sec.isConnected), reduceMotion ? Math.min(ms, 600) : ms));
+  const caption = (h: string, p: string, step: number) => {
+    story.classList.remove("in"); void story.offsetWidth; story.classList.add("in");
+    stH.textContent = h; stP.textContent = p; stProg.style.width = `${(100 * step) / STEPS}%`;
+  };
+  const dur = reduceMotion ? 0 : 2.4;
+  const frame3d = () => {
+    if (!here) return;
+    const z = wide ? 11 : 10;
+    const sz = map.getSize();
+    const c = map.unproject(map.project([here.lat, here.lon], z).add([sz.x * (wide ? 0.22 : 0), -sz.y * (wide ? 0.1 : 0)]), z);
+    map.flyTo(c, z, { duration: reduceMotion ? 0 : 1.8 });
+  };
+  const endStory = (my: number) => {
+    if (my !== storyToken || !sec.isConnected) return;
+    sec.removeAttribute("data-story");
+    story.hidden = true;
+    ring?.remove(); ring = null;
+    rb.mode = wide ? "3d" : "2d"; sec.dataset.mode = rb.mode;
+    if (rb.mode === "2d") renderDetail();
+    view.querySelectorAll<HTMLButtonElement>("[data-rbmode]").forEach((b) => { const on = b.dataset.rbmode === rb.mode; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
+    frame3d(); anchor();
+  };
+  const runStory = async () => {
+    const my = ++storyToken;
+    rbStoried = true; rbPlayed = true;
+    const lane = lanes[rb.lane];
+    if (!lane || !here) return;
+    sec.dataset.story = "on"; story.hidden = false;
+    rbStage?.stop(); rb.mode = "map"; sec.dataset.mode = "map"; anchor();
+    // 1. El país
+    caption(LL("República Dominicana, 2001–2024", "Dominican Republic, 2001–2024"),
+      LL("Buscamos sequías en bosques secos con satélites de la NASA. Primero: dónde.", "We look for droughts in dry forests with NASA satellites. First: where."), 1);
+    map.flyToBounds([[17.45, -72.05], [19.98, -68.3]], { duration: dur, padding: [40, 40] });
+    if (!(await wait(3200, my))) return;
+    // 2. La zona exacta donde se promedió la lluvia
+    const pp = zoneSeries?.pasaporte;
+    const cd = pp?.caja_datos && pp.caja_datos[0] !== pp.caja_datos[2] ? pp.caja_datos : pp?.caja_pedida ?? null;
+    zoneLayer?.remove(); reqLayer?.remove();
+    if (pp?.caja_pedida) reqLayer = L.rectangle(toB(pp.caja_pedida), { color: "#ffffff", weight: 1.5, dashArray: "5 6", fill: false, className: "st-draw" }).addTo(map);
+    if (cd) zoneLayer = L.rectangle(toB(cd), { color: FUNC, weight: 2.5, fillColor: "#e5566f", fillOpacity: 0, className: "st-draw" }).addTo(map);
+    if (cd && region) {
+      map.flyToBounds(toB(pp?.caja_pedida ?? cd).pad(0.9), { duration: dur });
+      caption(LL(`${regionMeta(index, region).nombre}: aquí se midió la lluvia`, `${regionMeta(index, region).nombre}: where the rain was measured`),
+        LL(`Rectángulo ámbar: las celdas de IMERG que se promedian (${fmtBox(cd)}). Línea discontinua: la zona pedida a Giovanni.`,
+          `Amber rectangle: the IMERG cells that are averaged (${fmtBox(cd)}). Dashed line: the area requested from Giovanni.`), 2);
+      if (!(await wait(3800, my))) return;
+    }
+    // 3. La sequía, mes a mes, sobre esa misma caja (SPI-3 real)
+    caption(`${LL("Sequía", "Drought")} ${lane.label}`, "", 3);
+    if (spi && zoneLayer) {
+      const a = spi.meses.indexOf(lane.audit.evento_inicio.slice(0, 7));
+      const b = spi.meses.indexOf(lane.audit.evento_fin.slice(0, 7));
+      for (let i = Math.max(0, a - 3); i <= Math.min(spi.meses.length - 1, b + 3); i++) {
+        const v = spi.valores[i];
+        const dry = v !== null && v < -1;
+        zoneLayer.setStyle({ fillColor: dry ? "#e5566f" : "#8a8c92", fillOpacity: v === null ? 0.05 : v < 0 ? Math.min(0.72, -v * 0.3) : 0.06 });
+        stP.textContent = `${spi.meses[i]} · SPI-3 ${v === null ? "—" : fmtSigned(v, 2)}${dry ? LL(" · en sequía", " · in drought") : ""}`;
+        if (!(await wait(560, my))) return;
+      }
+    }
+    // 4. El lugar donde se mide la vegetación
+    map.flyTo([here.lat, here.lon], 12, { duration: dur });
+    ring?.remove();
+    ring = L.marker([here.lat, here.lon], { icon: L.divIcon({ className: "st-ring", iconSize: [64, 64] }), interactive: false }).addTo(map);
+    caption(LL(`${NAMES[rb.id]}: aquí se mide la vegetación`, `${NAMES[rb.id]}: where vegetation is measured`),
+      (cd && toB(cd).contains([here.lat, here.lon])
+        ? LL(`Punto MODIS ${here.lat}, ${here.lon}, dentro de las celdas de lluvia. Después de la sequía, ¿volvió el verde? ¿Volvió la función?`,
+          `MODIS point ${here.lat}, ${here.lon}, inside the rain cells. After the drought, did the green come back? Did function?`)
+        : LL(`Punto MODIS ${here.lat}, ${here.lon}: dentro de la zona pedida, a pocos km de las celdas de lluvia (ámbar). ¿Volvió el verde? ¿Volvió la función?`,
+          `MODIS point ${here.lat}, ${here.lon}: inside the requested area, a few km from the rain cells (amber). Did the green come back? Did function?`)), 4);
+    if (!(await wait(3600, my))) return;
+    // 5. Las cintas suben del lugar
+    rb.mode = "3d"; sec.dataset.mode = "3d"; ring?.remove(); ring = null; frame3d(); anchor();
+    caption(LL("La recuperación, día a día", "The recovery, day by day"),
+      LL("Cada cinta es una sequía de este lugar. Verde: el verdor (NDVI). Ámbar: la función. La superficie entre ambos es la brecha.",
+        "Each ribbon is a drought at this site. Green: greenness (NDVI). Amber: function. The surface between them is the gap."), 5);
+    rbStage?.play();
+    if (!(await wait(7800, my))) return;
+    // 6. El veredicto
+    caption(t.verdictName[lane.audit.veredicto] ?? lane.audit.veredicto, t.verdictWhy[lane.audit.veredicto] ?? "", 6);
+    if (!(await wait(5600, my))) return;
+    endStory(my);
+  };
+  document.getElementById("st-skip")!.addEventListener("click", () => { rbStage?.stop(); endStory(storyToken); });
+  document.getElementById("st-replay")!.addEventListener("click", () => { runStory(); });
+  if (!rbStoried) setTimeout(() => { if (sec.isConnected) runStory(); }, 700);
+
   const big = document.getElementById("rb-big")!;
   const drawBig = () => {
     if (rb.mode !== "2d" || !lanes[rb.lane]) { big.innerHTML = ""; return; }
@@ -688,7 +802,7 @@ async function viewRibbon() {
     rbStage?.stop();
     viewRibbon();
   }));
-  if (rb.mode === "3d" && !rbPlayed && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (rb.mode === "3d" && rbStoried && !rbPlayed && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     rbPlayed = true;
     setTimeout(() => { if (rbStage && !rbStage.playing()) { (document.getElementById("rb-play") as HTMLButtonElement | null)?.click(); } }, 600);
   }
