@@ -86,3 +86,14 @@ Ver el estado: https://appeears.earthdatacloud.nasa.gov/explore
 Descargar: https://appeears.earthdatacloud.nasa.gov/download/9490ce7b-3268-46aa-84a6-bbe8a3b648ed
 
 **Todavía no hay ningún resultado científico.** Este pedido solo trae los datos.
+
+### Pedido de área (para el atlas)
+
+| Versión | Fecha | ID de AppEEARS | Contenido |
+|---|---|---|---|
+| area-v1 | 2026-11-14 | `eec5627a-a7a7-43c3-8433-ecc39685f375` | GeoTIFF geográfico (EPSG:4326), 2012–2021, mismas 8 capas. Polígonos: Montecristi monte seco (−71.55, 19.76, −71.38, 19.92) y Jaragua bosque seco (−71.52, 17.66, −71.36, 17.82). Archivo: `appeears/phantom-rd-area.json` |
+
+Se recortó a 2012–2021 para que AppEEARS tenga más opciones de entregarlo antes del cierre. Cubre las
+sequías de 2015 y 2019–2020 con 10 años de referencia: es el mínimo para la regla de 8 años por época
+del año. Las superficies se calcularán solo con píxeles válidos y estables; si el pedido no llega a
+tiempo, el atlas no se publica.

@@ -1,6 +1,6 @@
 # RESULTS
 
-Generado por `phantom.pipeline` el 2026-11-14 16:00 UTC. Este archivo se reescribe en cada corrida; no editarlo a mano.
+Generado por `phantom.pipeline` el 2026-11-14 17:17 UTC. Este archivo se reescribe en cada corrida; no editarlo a mano.
 
 ## 1. Datos climáticos (Giovanni)
 
@@ -55,3 +55,20 @@ Catálogo completo con los tres criterios: `results/sequias_catalogo.csv`. Figur
 **Pendiente.** Sin resultados MODIS: no se calculó ninguna recuperación. Faltan: MOD11A2, MOD13Q1, MOD17A2HGF.
 
 No hay ningún resultado sobre la brecha todavía.
+
+## 4. Tendencias 2001–2024 (herramienta de detective)
+
+Anomalía anual (se quita el ciclo estacional). Pendiente Theil-Sen por década con IC 95 %; p de Mann-Kendall corregido por autocorrelación AR(1); q de Benjamini-Hochberg sobre las 8 series.
+
+| Serie | Pendiente / década | IC 95 % | p corregido (p simple) | q | Veredicto | Ventanas que engañan |
+|---|---|---|---|---|---|---|
+| Lluvia · Montecristi | -14.023 mm/mes | [-29.060, -1.155] | 0.031 (0.031) | 0.247 | baja | — |
+| Lluvia · Jaragua | -2.315 mm/mes | [-17.203, +11.108] | 0.867 (0.823) | 0.867 | sin_evidencia | 2005–2021, 2005–2022, 2007–2021 |
+| Temperatura del aire · Montecristi | +0.162 °C | [-0.003, +0.347] | 0.234 (0.063) | 0.371 | sin_evidencia | 2008–2024, 2009–2024, 2008–2023 |
+| Temperatura del aire · Jaragua | +0.127 °C | [-0.031, +0.315] | 0.325 (0.130) | 0.372 | sin_evidencia | 2011–2023, 2008–2023, 2012–2023 |
+| Humedad del suelo · Montecristi | -0.987 kg/m² | [-1.884, +0.272] | 0.279 (0.130) | 0.371 | sin_evidencia | 2005–2022, 2005–2021, 2006–2021 |
+| Humedad del suelo · Jaragua | -1.204 kg/m² | [-2.133, +0.029] | 0.184 (0.063) | 0.367 | sin_evidencia | 2005–2016, 2005–2015, 2005–2020 |
+| Agua para las raíces · Montecristi | -17.518 kg/m² | [-35.488, +0.098] | 0.150 (0.050) | 0.367 | sin_evidencia | 2004–2022, 2004–2021, 2005–2022 |
+| Agua para las raíces · Jaragua | -22.846 kg/m² | [-42.010, -4.252] | 0.132 (0.021) | 0.367 | sin_evidencia | 2004–2023, 2004–2020, 2004–2022 |
+
+Lectura: con la corrección por autocorrelación solo la lluvia de Montecristi queda significativa (p < 0,05), y deja de serlo al corregir por haber probado 8 series (q ≥ 0,05). "Sin evidencia" no significa "sin cambio": los IC muestran qué cambios siguen siendo posibles.

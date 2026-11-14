@@ -1,5 +1,23 @@
 # ESTRATEGIA: auditoría del brief maestro (documentos A–G)
 
+## Estado de cada capacidad (actualizado: sábado 14, tarde)
+
+| Capacidad | Estado | Evidencia |
+|---|---|---|
+| Flujo variable → zona → hipótesis → serie → tendencia → significancia → explicación | **Implementado y validado** | `web/`, datos de `phantom/trends.py`; 28 pruebas; revisado en navegador, en escritorio y teléfono |
+| Predict Before Reveal (predecir antes de ver) | **Implementado** | La evidencia no se muestra hasta elegir una predicción; luego se compara con ella |
+| Lección de la estación (datos crudos frente a anomalía) | **Implementado** | Botón "Ver los datos crudos" con la amplitud estacional real |
+| Mapa de ventanas (cambiar el intervalo y ver si la conclusión se mantiene) | **Implementado y validado** | 120 ventanas reales por serie, precalculadas por Python; "intervalos que engañan" en 7 de 8 series |
+| Corrección por autocorrelación (Mann-Kendall AR(1)) | **Implementado y validado** | Prueba sintética: menos falsos positivos que Mann-Kendall simple |
+| Corrección por comparaciones múltiples (BH) | **Implementado** | q sobre las 8 series, visible en la evidencia y en el pasaporte |
+| Pasaporte de la evidencia | **Implementado** | Fuente, producto, caja, archivo, verificación, método, URL para reproducir en Giovanni |
+| Expediente PHANTOM con resultados | **Provisional**: interfaz lista, probada solo con datos SINTÉTICOS (`?prueba=1`, aviso rojo) | Esperando AppEEARS (puntos ~40 %) |
+| Challenge the Evidence (18 combinaciones) | **Provisional**: igual que arriba | Lee `sensibilidad.csv` real cuando exista |
+| Expediente Recovery Collision | **Provisional**: regla programada y probada | Esperando AppEEARS |
+| Atlas de impacto (mapa de discordancia) | **Pendiente** | Pedido de área `eec5627a…` enviado; sin datos no hay mapa |
+| URL pública | **Pendiente** | Vercel pide iniciar sesión de nuevo (token vencido); el repo de GitHub no existe todavía |
+| Versión en inglés para el jurado global | **Pendiente: decisión del equipo** | — |
+
 Stellar Horizons · 14 de noviembre de 2026, sábado por la tarde · cierre: domingo 15, 11:59 p. m. (hora RD)
 
 Responde al "Master Research & Innovation Brief" (versión 1.0, 13 de noviembre). Separo en todo
@@ -207,5 +225,9 @@ Lo que nunca se recorta: tendencia + significancia + definiciones (el reto) y la
 | 14-nov | Recuperación: z ≥ −1 sostenido; impacto: z < −1.5 sostenido | z ≥ −0.5 | Las pruebas sintéticas: −0.5 da falsos "no recuperado" el 31 % del tiempo | Señal real muy ruidosa | Ver la sensibilidad real |
 | 14-nov | **Reencuadre: herramienta de detective + expedientes** | Pipeline PHANTOM como producto | Texto oficial del reto | Que el equipo prefiera competir solo con la investigación | **Decisión del equipo** |
 | 14-nov | Sitio estático sin backend | Next.js + FastAPI | Menos piezas que fallen; "Challenge" usa la grilla real | Necesidad de calcular en vivo | — |
-| pendiente | Lanzar un pedido de área en AppEEARS | Quedarse con puntos | El mapa del atlas lo necesita | Que no llegue a tiempo | **Decisión del equipo** |
+| 14-nov | **Aprobado por el equipo:** herramienta de detective + PHANTOM como expediente principal + Predict Before Reveal | Solo PHANTOM | Texto oficial del reto | — | — |
+| 14-nov | Pedido de área pequeño lanzado (2 polígonos de unos 18 km, 2012–2021, ID `eec5627a…`) | 2001–2024 completo | Los puntos llevan 6 h y van al 40 %; menos años y menos área dan más opciones de llegar | Que no llegue el domingo a las 10:00 | Vigilar |
+| 14-nov | Mann-Kendall corregido por autocorrelación AR(1) para el veredicto | MK simple | Lag-1 anual de 0,5–0,6 en 6 de 8 series; la prueba sintética muestra más falsos positivos con MK simple | — | — |
+| 14-nov | "Cambiar el intervalo" lee 120 ventanas precalculadas | Reimplementar la estadística en TypeScript | Una sola fuente de verdad (Python, probada) | — | — |
+| 14-nov | Mapa base NASA GIBS Blue Marble | OSM o Esri | Es de la NASA, sin clave y con uso claro | — | — |
 | pendiente | Confirmar sede (Santo Domingo o Santiago) y si hay pitch | — | El brief y el reporte anterior no coinciden | — | **Equipo** |

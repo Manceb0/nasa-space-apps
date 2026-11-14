@@ -28,6 +28,35 @@ def mann_kendall(y) -> dict:
     return {"n": n, "S": float(s), "Z": float(z), "p": float(p), "tau": float(tau)}
 
 
+def mann_kendall_ar1(x, y) -> dict:
+    """Mann-Kendall con corrección de varianza por autocorrelación AR(1) (tamaño efectivo de muestra).
+
+    Se quita la tendencia Theil-Sen, se mide el lag-1 de los residuos y, si es positivo, se infla la
+    varianza de S por n/n* = 1 + 2·Σ (1 − k/n)·r1^k (Yue y Wang 2004, versión AR(1)). Más conservador
+    que Mann-Kendall simple cuando los años consecutivos se parecen.
+    """
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    m = np.isfinite(x) & np.isfinite(y)
+    x, y = x[m], y[m]
+    base = mann_kendall(y)
+    n = y.size
+    if base["p"] is None:
+        return {**base, "p_ajustado": None, "factor_varianza": None, "r1_residuos": None}
+    slope, intercept, _, _ = stats.theilslopes(y, x)
+    r1 = lag1_autocorr(y - (intercept + slope * x))
+    factor = 1.0
+    if r1 is not None and r1 > 0:
+        k = np.arange(1, n)
+        factor = 1 + 2 * np.sum((1 - k / n) * r1 ** k)
+    _, counts = np.unique(y, return_counts=True)
+    var = (n * (n - 1) * (2 * n + 5) - np.sum(counts * (counts - 1) * (2 * counts + 5))) / 18.0 * factor
+    s = base["S"]
+    z = (s - np.sign(s)) / np.sqrt(var) if s != 0 else 0.0
+    p_adj = 2 * (1 - stats.norm.cdf(abs(z)))
+    return {**base, "p_ajustado": float(p_adj), "factor_varianza": float(factor), "r1_residuos": r1}
+
+
 def theil_sen(x, y) -> dict:
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)

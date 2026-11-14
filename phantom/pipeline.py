@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from . import appeears, drought, figures, giovanni, recovery, stats
+from . import appeears, drought, export_web, figures, giovanni, recovery, stats
 
 REGIONS = ("noroeste", "jaragua")
 PRIMARY = {"verde": "ndvi", "umbral": -1.0, "persistencia": 3}
@@ -137,8 +137,13 @@ def run_modis(adir: Path, series: dict, events: dict, out: Path, figdir: Path) -
                 recs["ndvi"] = prim["verde_recuperacion"]
                 recs[fname] = prim["funcion_recuperacion"]
                 rob = recovery.robustness_label(sens, prim["dt_dias"])
+                cut_by_next = i + 1 < len(ev) and stop == ev["inicio"].iloc[i + 1]
+                green_hit = prim["estado"] not in ("sin_impacto", "sin_impacto_verde")
                 rows.append({"id": pid, "region": reg, "evento_inicio": e["inicio"], "evento_fin": e_end,
                              "evento_severidad_spi3": e["severidad"], "fin_ventana": stop, "funcion": fname,
+                             "ventana_cortada_por_siguiente_sequia": bool(cut_by_next),
+                             # Recovery Collision: el verdor seguía bajo su banda cuando empezó la siguiente sequía
+                             "colision_verde": bool(cut_by_next and green_hit and prim["verde_recuperacion"] is None),
                              **prim, **{f"rob_{k}": val for k, val in rob.items()}})
             if e["severidad"] <= ev["severidad"].nsmallest(3).max():
                 stem = figdir / f"fig3_evento_{pid}_{e['inicio']:%Y-%m}"
@@ -240,6 +245,30 @@ def write_results_md(md_path: Path, out: Path, validation_path: Path, modis: dic
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline=LF)
 
 
+def append_trends_md(md_path: Path, web_data: Path) -> None:
+    """Añade a RESULTS.md la tabla de tendencias que muestra la herramienta (mismos JSON)."""
+    idx = json.loads((web_data / "index.json").read_text(encoding="utf-8"))
+    lines = ["", "## 4. Tendencias 2001–2024 (herramienta de detective)", "",
+             "Anomalía anual (se quita el ciclo estacional). Pendiente Theil-Sen por década con IC 95 %; p de "
+             "Mann-Kendall corregido por autocorrelación AR(1); q de Benjamini-Hochberg sobre las 8 series.", "",
+             "| Serie | Pendiente / década | IC 95 % | p corregido (p simple) | q | Veredicto | Ventanas que engañan |",
+             "|---|---|---|---|---|---|---|"]
+    for item in idx["series"]:
+        d = json.loads((web_data / "series" / f"{item['id']}.json").read_text(encoding="utf-8"))
+        c = d["completa"]
+        unit = idx["variables"][d["variable"]]["unidad"]
+        traps = ", ".join(f"{w['inicio']}–{w['fin']}" for w in d["ventanas_que_enganan"]) or "—"
+        lines.append(
+            f"| {idx['variables'][d['variable']]['nombre']} · {idx['regiones'][d['region']]['nombre']} | "
+            f"{c['pendiente_decada']:+.3f} {unit} | [{c['ic95_decada'][0]:+.3f}, {c['ic95_decada'][1]:+.3f}] | "
+            f"{c['p_mk']:.3f} ({c['p_mk_simple']:.3f}) | {c['q_bh']:.3f} | {c['veredicto']} | {traps} |")
+    lines += ["", "Lectura: con la corrección por autocorrelación solo la lluvia de Montecristi queda significativa "
+              "(p < 0,05), y deja de serlo al corregir por haber probado 8 series (q ≥ 0,05). \"Sin evidencia\" no "
+              "significa \"sin cambio\": los IC muestran qué cambios siguen siendo posibles."]
+    with md_path.open("a", encoding="utf-8", newline=LF) as fh:
+        fh.write(LF.join(lines) + LF)
+
+
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", default=".")
@@ -248,6 +277,7 @@ def main(argv=None) -> None:
     ap.add_argument("--out", default="results")
     ap.add_argument("--figures", default="figures")
     ap.add_argument("--results-md", default="RESULTS.md")
+    ap.add_argument("--web", default="web/public/data", help="carpeta de datos de la web ('' para no exportar)")
     a = ap.parse_args(argv)
     root = Path(a.root)
     out, figdir = root / a.out, root / a.figures
@@ -258,6 +288,9 @@ def main(argv=None) -> None:
     adir.mkdir(parents=True, exist_ok=True)
     modis = run_modis(adir, series, events, out, figdir)
     write_results_md(root / a.results_md, out, out / "giovanni_validacion.json", modis)
+    if a.web:
+        export_web.export(root, out, root / a.web)
+        append_trends_md(root / a.results_md, root / a.web)
     print(f"listo: {out}  (MODIS: {modis.get('estado')})")
 
 

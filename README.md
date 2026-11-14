@@ -85,3 +85,19 @@ data/         datos originales; no se sobrescriben
 results/      salidas generadas
 figures/      figuras generadas
 ```
+
+## Herramienta web: Detective del Sistema Tierra
+
+`web/` es un sitio estático (Vite + TypeScript) que lee los JSON que genera el pipeline en `web/public/data/`.
+No calcula estadística: muestra lo que calculó `phantom/trends.py`.
+
+```bash
+uv run python -m phantom.pipeline
+```
+
+```bash
+cd web && npm install && npm run build
+```
+
+El sitio queda en `web/dist/`. Para verlo en local: `npm run preview` (puerto 4180).
+`?prueba=1` carga un archivo SINTÉTICO que solo existe en la máquina de desarrollo y lo marca con un aviso rojo.
