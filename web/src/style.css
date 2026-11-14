@@ -725,3 +725,73 @@ main { padding-top: 88px; }
 @media (max-width: 1100px) { .story { top: 196px; bottom: auto; } }
 .story-p { text-align: left; font-variant-numeric: tabular-nums; }
 @media (max-width: 1100px) { .rb .story { position: relative; inset: auto; width: auto; margin-top: 12px; } }
+
+/* ══════ Investigar inmersivo: el mapa es el escenario, todo flota encima ══════ */
+#view:has(> .console) { position: relative; }
+.console { position: relative; display: block; margin: -88px -32px 0; height: 100vh; min-height: 800px; }
+.console .map-pnl { position: absolute; inset: 0; height: auto; border-radius: 0; box-shadow: none; padding: 0; animation: none; }
+.console .map-pnl #map { border-radius: 0; }
+.console .map-pnl .leaflet-tile-pane { filter: saturate(.55) brightness(.62) contrast(1.15); }
+#view:has(> .console) > .con-head { position: absolute; z-index: 5; top: 92px; left: 32px; right: 440px; }
+.console .pnl:not(.map-pnl) { background: rgba(14, 15, 18, .66); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  border: 1px solid #23252a; border-radius: 20px; box-shadow: none; }
+.console .side-col { position: absolute; z-index: 5; top: 84px; right: 24px; width: 392px; bottom: auto; display: flex; flex-direction: column; gap: 14px; }
+.console .tl-pnl { position: absolute; z-index: 5; left: 32px; right: 440px; bottom: 24px; }
+.console .map-note { display: none; }
+.field-hud { position: absolute; z-index: 600; left: 32px; top: 236px; max-width: 360px; pointer-events: none; }
+.field-month { font-size: 56px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; color: #fff; }
+.field-month.flip { animation: flip .45s cubic-bezier(.22,1,.36,1); }
+@keyframes flip { from { opacity: .2; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.field-leg { margin-top: 8px; font-size: 13px; color: #e6e6e6; line-height: 1.45; }
+.field-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 8px; font-size: 12px; color: #b4b4b8; }
+.field-key i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: -4px; }
+.field-src { margin-top: 6px; font-size: 11px; color: #8a8c92; }
+
+/* Sequías como matriz de puntos */
+.dmatrix { margin-top: 10px; display: grid; gap: 1px; }
+.dm-row { display: grid; grid-template-columns: 34px repeat(12, minmax(0, 1fr)); align-items: center; height: 12px;
+  animation: dmIn .5s cubic-bezier(.22,1,.36,1) both; animation-delay: calc(var(--i, 0) * 28ms + 200ms); }
+.dm-head { height: 16px; animation: none; }
+@keyframes dmIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+.dm-y { font-size: 10.5px; color: #8a8c92; font-variant-numeric: tabular-nums; }
+.dm-row:nth-child(5n+2) .dm-y { color: #b4b4b8; }
+.dm-m { font-size: 10.5px; color: #8a8c92; text-align: center; }
+.dm { position: relative; height: 12px; padding: 0; border: 0; background: none; cursor: pointer; }
+.dm::before { content: ""; position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--c);
+  transform: translate(-50%, -50%) scale(var(--s)); transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; }
+.dm:hover::before { transform: translate(-50%, -50%) scale(1.5); }
+.dm.on::before { transform: translate(-50%, -50%) scale(1.6); box-shadow: 0 0 0 2px #0e0f12, 0 0 0 3.5px #fff; }
+.dm.dry::before { animation: dmPulse 2.4s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 60ms); }
+@keyframes dmPulse { 50% { filter: brightness(1.35); } }
+
+/* Entrada de los paneles */
+#view:has(> .console) > .con-head, .console .side-col > .pnl, .console .tl-pnl { animation: panelIn .7s cubic-bezier(.22,1,.36,1) both; }
+.console .side-col > .pnl:nth-child(2) { animation-delay: .12s; }
+.console .tl-pnl { animation-delay: .2s; }
+@keyframes panelIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 900px) {
+  .console { height: auto; min-height: 0; margin: 0; display: grid; }
+  .console .map-pnl { position: relative; inset: auto; height: 360px; border-radius: 16px; }
+  #view:has(> .console) > .con-head { position: static; }
+  .console .side-col { position: static; width: auto; display: contents; }
+  .console .tl-pnl { position: static; }
+  .field-hud { top: 12px; left: 12px; }
+  .field-month { font-size: 34px; }
+  .field-leg, .field-src { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dm-row, .field-month.flip, #view:has(> .console) > .con-head, .console .side-col > .pnl, .console .tl-pnl, .dm.dry::before { animation: none; }
+}
+.console .map-pnl { z-index: 0; isolation: isolate; }
+.console .side-col, .console .tl-pnl { z-index: 10; }
+#view:has(> .console) > .con-head { z-index: 10; }
+.field-hud { z-index: 6; }
+.console .field-hud { z-index: 800; top: 250px; }
+.console .side-col { max-height: calc(100vh - 108px); overflow-y: auto; scrollbar-width: none; }
+.console .side-col::-webkit-scrollbar { display: none; }
+.console .drought-pnl { flex: none; min-height: 0; }
+.console .dm-row { height: 10px; }
+.console .dm { height: 10px; }
+.console .dm::before { width: 8px; height: 8px; }
+.field-month { text-align: left; }

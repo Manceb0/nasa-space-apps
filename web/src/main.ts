@@ -7,6 +7,7 @@ import {
 import { load, type Audit, type Index, type Phantom, type Puntos, type Series, type Window } from "./data";
 import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
 import { pillNav, wirePillNav } from "./pillnav";
+import { rainField, type Grid } from "./field";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
@@ -53,7 +54,7 @@ const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 function clearMaps() { while (maps.length) { const m = maps.pop()!; m.stop(); m.off(); m.remove(); } }
 
 function baseMap(el: HTMLElement, center: [number, number], zoom: number): L.Map {
-  const m = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false }).setView(center, zoom);
+  const m = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false, zoomSnap: 0.25 }).setView(center, zoom);
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
     maxZoom: 16, attribution: "Imagen: Esri, Maxar, Earthstar Geographics",
   }).addTo(m);
@@ -144,6 +145,24 @@ async function viewInvestigate() {
   const y1 = s.anual.anios[s.anual.anios.length - 1];
   const stressHigh = STRESS_HIGH.has(state.variable);
   const droughts = [...(ph?.sequias.find((d) => d.region === state.region)?.eventos ?? [])].reverse();
+  const spiS = ph?.sequias.find((d) => d.region === state.region)?.spi3;
+  const spiOf = new Map((spiS?.meses ?? []).map((m, k) => [m, spiS!.valores[k]]));
+  const startMonth = (() => {
+    const e = droughts[0];
+    if (!e || !spiS) return "2024-12";
+    let best = e.inicio.slice(0, 7), bv = Infinity;
+    spiS.meses.forEach((m, k) => { const v = spiS.valores[k]; if (m >= e.inicio.slice(0, 7) && m <= e.fin.slice(0, 7) && v !== null && v < bv) { bv = v; best = m; } });
+    return best;
+  })();
+  const MON = getLang() === "es" ? "EFMAMJJASOND" : "JFMAMJJASOND";
+  const years = Array.from({ length: 24 }, (_, k) => 2001 + k);
+  const dmCell = (m: string) => {
+    const v = spiOf.get(m) ?? null;
+    const dry = v !== null && v <= -1;
+    const col = v === null ? "#3a3a3e" : dry ? (v <= -2 ? "#e5566f" : "#ee8a5a") : v < 0 ? "#f2b33d" : "#6b6f74";
+    const size = v === null ? 0.35 : Math.min(1, 0.35 + Math.abs(v) / 2.6);
+    return `<button class="dm ${dry ? "dry" : ""}" data-month="${m}" style="--s:${size.toFixed(2)};--c:${col}" title="${m} · SPI-3 ${v === null ? "—" : fmt(v, 2)}" aria-label="${m} SPI-3 ${v === null ? "—" : fmt(v, 2)}"></button>`;
+  };
 
   view.innerHTML = `
     <div class="con-head">
@@ -163,18 +182,22 @@ async function viewInvestigate() {
       <section class="pnl map-pnl" aria-label="${esc(t.mapLabel)}">
         <div id="map"></div>
         <p class="map-note" id="mapcap"></p>
+        <div class="field-hud" aria-live="polite">
+          <p class="field-month num" id="f-month"></p>
+          <p class="field-leg">${esc(LL("Lluvia del mes frente a lo normal. Cada punto es una celda IMERG de 0,1° (unos 11 km).", "Monthly rain against normal. Each dot is one 0.1° IMERG cell (about 11 km)."))}</p>
+          <p class="field-key"><i style="background:#e5566f"></i>${esc(LL("mucho más seca", "much drier"))}<i style="background:#f2b33d"></i>${esc(LL("más seca", "drier"))}<i style="background:#8ef0c6"></i>${esc(LL("más húmeda", "wetter"))}</p>
+          <p class="field-src">NASA GPM IMERG V07 · Huffman et al. 2023</p>
+        </div>
       </section>
 
       <aside class="side-col">
         <section class="pnl verdict-pnl" id="verdict" aria-live="polite"></section>
         <section class="pnl drought-pnl">
           <div class="pnl-h"><h2>${esc(t.zoneDroughtsH(rmeta.nombre))}</h2><span class="meta num">${droughts.length}</span></div>
-          <p class="meta">${esc(t.droughtsRule)}</p>
-          <div class="dscroll">
-            <table class="dtable">
-              <thead><tr><th>${esc(t.dPeriod)}</th><th class="num">${esc(t.dDur)}</th><th class="num">${esc(t.dPeak)}</th></tr></thead>
-              <tbody>${droughts.map((e, i) => `<tr data-ev="${i}" tabindex="0"><td>${e.inicio.slice(0, 7)} – ${e.fin.slice(0, 7)}</td><td class="num">${e.duracion_meses} ${esc(t.monthsShort)}</td><td class="num">${fmt(e.pico, 2)}</td></tr>`).join("")}</tbody>
-            </table>
+          <p class="meta">${esc(LL("SPI-3 de cada mes. Rojo: sequía (SPI-3 ≤ −1). Toca un mes para verlo en el mapa.", "SPI-3 for every month. Red: drought (SPI-3 ≤ −1). Tap a month to see it on the map."))}</p>
+          <div class="dmatrix">
+            <div class="dm-row dm-head"><span class="dm-y"></span>${[...MON].map((c) => `<span class="dm-m">${c}</span>`).join("")}</div>
+            ${years.map((y, yi) => `<div class="dm-row" style="--i:${yi}"><span class="dm-y">${y}</span>${Array.from({ length: 12 }, (_, k) => dmCell(`${y}-${String(k + 1).padStart(2, "0")}`)).join("")}</div>`).join("")}
           </div>
           <a class="more" href="#expedientes">${esc(t.droughtsGo)} →</a>
         </section>
@@ -223,6 +246,24 @@ async function viewInvestigate() {
   }));
 
   drawRegionMap(all);
+  const imap = maps[maps.length - 1];
+  const fMonth = document.getElementById("f-month")!;
+  let field: ReturnType<typeof rainField> | null = null;
+  const showField = (mes: string) => {
+    if (!field) return;
+    field.show(mes);
+    if (fMonth.textContent !== mes) { fMonth.textContent = mes; fMonth.classList.remove("flip"); void fMonth.offsetWidth; fMonth.classList.add("flip"); }
+    view.querySelectorAll(".dm.on").forEach((x) => x.classList.remove("on"));
+    view.querySelector(`[data-month="${mes}"]`)?.classList.add("on");
+  };
+  load<Grid>("grid/precip_imerg.json").then((g) => {
+    if (!imap.getContainer().isConnected) return;
+    if (innerWidth > 900) imap.fitBounds([[17.45, -72.05], [19.98, -68.3]], { paddingTopLeft: [400, 250], paddingBottomRight: [440, 330], animate: false });
+    field = rainField(imap, g, (mes, mm, pct) => `${mes} · ${mm === null ? "—" : `${fmt(mm, 0)} mm`}${pct === null ? "" : ` · ${pct} % ${LL("de lo normal", "of normal")}`}`);
+    fMonth.textContent = startMonth;
+    field.intro(startMonth);
+    view.querySelector(`[data-month="${startMonth}"]`)?.classList.add("on");
+  }).catch(() => { fMonth.textContent = ""; });
 
   // ── La serie mes a mes, con cursor que mueve el mapa ──
   const d = digitsFor(vmeta);
@@ -243,6 +284,7 @@ async function viewInvestigate() {
     cursor.style.left = `${xs.apply(date)}px`;
     const val = v === null ? "—" : `${fmtSigned(v, d)} ${vmeta.unidad}`;
     readout.textContent = `${months[i]} · ${val}`;
+    showField(months[i]);
     const stress = v !== null && (stressHigh ? v > 0 : v < 0);
     const k = v === null ? 0 : Math.min(1, Math.abs(v) / lim);
     for (const p of zone.paths) p.setStyle({ fillColor: stress ? AMBER : "#ffffff", fillOpacity: 0.12 + 0.6 * k });
@@ -289,6 +331,12 @@ async function viewInvestigate() {
     r.addEventListener("keydown", (ev) => { if ((ev as KeyboardEvent).key === "Enter") go(); });
   });
 
+  view.querySelectorAll<HTMLButtonElement>("[data-month]").forEach((b) => b.addEventListener("click", () => {
+    const m = b.dataset.month!;
+    stopPlay();
+    const i = months.indexOf(m);
+    if (state.revealed && i >= 0) setMonth(i); else showField(m);
+  }));
   const play = document.getElementById("play") as HTMLButtonElement;
   play.addEventListener("click", () => {
     if (playTimer !== null) { stopPlay(); play.textContent = t.play; clearMonth(); return; }
