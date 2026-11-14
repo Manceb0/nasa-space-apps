@@ -6,6 +6,7 @@ import {
 } from "./charts";
 import { load, type Audit, type Index, type Phantom, type Puntos, type Series, type Window } from "./data";
 import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
+import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
   trapText, verdictSentence, verdictShort, windowLabel, type Prediction,
@@ -62,13 +63,14 @@ function baseMap(el: HTMLElement, center: [number, number], zoom: number): L.Map
 const ICON: Record<string, string> = {
   investigar: '<path d="M2.75 5.25l4.75-2 5 2 4.75-2v11.5l-4.75 2-5-2-4.75 2z"/><path d="M7.5 3.25v11.5M12.5 5.25v11.5"/>',
   expedientes: '<path d="M3.5 5.5l1.5 1.5 2.5-2.5M3.5 11.5l1.5 1.5 2.5-2.5"/><path d="M10.5 6h6M10.5 12h6M3.5 16.5h13"/>',
+  ribbon: '<path d="M2.5 8c2.5-4 5-4 7.5 0s5 4 7.5 0"/><path d="M2.5 13c2.5-4 5-4 7.5 0s5 4 7.5 0"/><path d="M2.5 8v5M17.5 8v5"/>',
   metodo: '<path d="M3 4.75c2.5-1 5-1 7 .5 2-1.5 4.5-1.5 7-.5v11c-2.5-1-5-1-7 .5-2-1.5-4.5-1.5-7-.5z"/><path d="M10 5.25v11"/>',
 };
 
 function shell(): void {
   const t = T();
   document.title = t.title;
-  const item = (r: "investigar" | "expedientes" | "metodo", label: string) =>
+  const item = (r: "investigar" | "ribbon" | "expedientes" | "metodo", label: string) =>
     `<a class="rail-i" href="#${r}" data-nav="${r}" title="${esc(label)}" aria-label="${esc(label)}"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${ICON[r]}</svg><span>${esc(label)}</span></a>`;
   app.innerHTML = `
     <nav class="rail" aria-label="${esc(t.brand)}">
@@ -76,6 +78,7 @@ function shell(): void {
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="${AMBER}"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
       </a>
       ${item("investigar", t.navInvestigate)}
+      ${item("ribbon", "Recovery Ribbon")}
       ${item("expedientes", t.navAudit)}
       ${item("metodo", t.navMethod)}
       <button class="rail-lang" id="lang" aria-label="${esc(t.langSwitchLabel)}" title="${esc(t.langSwitchLabel)}" lang="${getLang() === "es" ? "en" : "es"}">${getLang() === "es" ? "EN" : "ES"}</button>
@@ -527,6 +530,144 @@ function renderEvidence(s: Series) {
   }));
 }
 
+/* ───────────── Recovery Ribbon (PHANTOM) ───────────── */
+
+let rbStage: Stage | null = null;
+let rbPlayed = false;
+const rb = { id: "sierramontecristi", fn: "gpp_modelo" as Fn, lane: -1 };
+const LL = (es: string, en: string) => (getLang() === "es" ? es : en);
+
+async function viewRibbon() {
+  const t = T();
+  const view = document.getElementById("view")!;
+  const [pts, ph] = await Promise.all([load<Puntos>("puntos.json"), load<Phantom>("phantom.json")]);
+  const audits = ph.auditorias ?? [];
+  const ids = POINT_ORDER.filter((id) => pts.z[id]);
+  if (!ids.includes(rb.id)) rb.id = ids[0];
+  const fns = (["gpp_modelo", "lst_menos_aire", "ndii_agua"] as Fn[]).filter((f) => pts.z[rb.id]?.[f]);
+  if (!fns.includes(rb.fn)) rb.fn = fns[0];
+  const lanes = buildLanes(pts, audits, rb.id, rb.fn);
+  if (rb.lane < 0 || rb.lane >= lanes.length) {
+    const pref = lanes.findIndex((l) => DISCORDANT.has(l.audit.veredicto));
+    const imp = lanes.findIndex((l) => l.audit.veredicto !== "sin_impacto");
+    rb.lane = pref >= 0 ? pref : imp >= 0 ? imp : Math.max(0, lanes.length - 1);
+  }
+  const fLabel = fnName(rb.fn);
+
+  view.innerHTML = `
+    <section class="rb">
+      <div class="rb-head rb-top">
+        <div>
+          <p class="crumb">Stellar Horizons<span aria-hidden="true">/</span>PHANTOM</p>
+          <h1>Recovery Ribbon</h1>
+          <p class="rb-q">${esc(LL("¿Vuelve el verdor antes que la función? Cada cinta es una sequía. Sus bordes son el verdor y la función; la superficie entre ellos es la brecha, del color de la señal que va delante.",
+            "Does greenness come back before function? Each ribbon is a drought. Its edges are greenness and function; the surface between them is the gap, coloured by whichever signal leads."))}</p>
+        </div>
+        <div class="rb-ctrl">
+          <div class="tabs" role="tablist" aria-label="${esc(LL("Lugar", "Site"))}">
+            ${ids.map((id) => `<button class="tab ${id === rb.id ? "on" : ""}" data-rbid="${id}" role="tab" aria-selected="${id === rb.id}">${esc(NAMES[id])}</button>`).join("")}
+          </div>
+          <div class="tabs" role="tablist" aria-label="${esc(LL("Señal de función", "Function signal"))}">
+            ${fns.map((f) => `<button class="tab ${f === rb.fn ? "on" : ""}" data-rbfn="${f}" role="tab" aria-selected="${f === rb.fn}">${esc(fnName(f))}</button>`).join("")}
+          </div>
+        </div>
+      </div>
+
+      <div class="rb-stage" id="rb-stage"></div>
+      <div class="rb-bottom">
+      <div class="rb-bar">
+        <div class="legend">
+          <span><i class="ln" style="background:${GREEN}"></i>${esc(LL("Verdor (NDVI)", "Greenness (NDVI)"))}</span>
+          <span><i class="ln" style="background:${FUNC}"></i>${esc(fLabel)}</span>
+          <span><i class="sq" style="background:${GREEN};opacity:.5"></i>${esc(LL("brecha: el verdor va delante", "gap: greenness leads"))}</span>
+          <span><i class="sq" style="background:${FUNC};opacity:.5"></i>${esc(LL("brecha: la función va delante", "gap: function leads"))}</span>
+          <span><i class="sq" style="background:#e5566f;opacity:.7"></i>${esc(LL("sequía (SPI-3)", "drought (SPI-3)"))}</span>
+          <span><i class="ln dash"></i>${esc(LL("recuperado: z ≥ −1", "recovered: z ≥ −1"))}</span>
+        </div>
+        <div class="rb-tools">
+          <span class="readout num" id="rb-day"></span>
+          <button class="txt-btn" id="rb-play">${esc(LL("▶ Reproducir la recuperación", "▶ Play the recovery"))}</button>
+        </div>
+      </div>
+      <p class="meta">${esc(LL("Eje horizontal: días desde el inicio de cada sequía (−90 a 540). Altura: z. ", "Horizontal axis: days since each drought began (−90 to 540). Height: z. "))}${esc(LL("Arrastra para girar. Toca una fecha a la izquierda de una cinta, o elige abajo, para ver esa sequía con sus valores exactos.",
+        "Drag to rotate. Tap a date at the left of a ribbon, or choose below, to see that drought with its exact values."))}</p>
+
+      <div class="rb-lanes" role="tablist" aria-label="${esc(LL("Sequías", "Droughts"))}">
+        ${lanes.map((l, i) => `<button class="tab ${i === rb.lane ? "on" : ""}" data-lane="${i}" role="tab" aria-selected="${i === rb.lane}"><i class="dot" style="background:${verdictColor(l.audit.veredicto)}"></i>${l.label}</button>`).join("")}
+      </div>
+
+      </div>
+      <aside class="rb-panel">
+        <div class="rb-card" id="rb-card"></div>
+        <div class="pnl-h rb-2d-h"><h2 id="rb-2d-h"></h2><span class="meta">${esc(LL("2D · mismos valores", "2D · same values"))}</span></div>
+        <div id="rb-2d" class="chart"></div>
+      </aside>
+    </section>`;
+
+  const stageEl = document.getElementById("rb-stage")!;
+  const dayEl = document.getElementById("rb-day")!;
+  const playBtn = document.getElementById("rb-play") as HTMLButtonElement;
+  rbStage?.destroy();
+  rbStage = ribbonStage(stageEl, (i) => pickLane(i), (d) => {
+    if (d > 540) { dayEl.textContent = ""; playBtn.textContent = LL("▶ Reproducir la recuperación", "▶ Play the recovery"); return; }
+    dayEl.textContent = `${LL("día", "day")} ${Math.round(d)}`;
+  });
+  rbStage.setLanes(lanes, rb.lane);
+  if (!rbPlayed && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    rbPlayed = true;
+    setTimeout(() => { if (rbStage && !rbStage.playing()) { (document.getElementById("rb-play") as HTMLButtonElement | null)?.click(); } }, 600);
+  }
+
+  const renderDetail = () => {
+    const l = lanes[rb.lane];
+    if (!l) return;
+    const a = l.audit;
+    document.getElementById("rb-2d-h")!.textContent = `${NAMES[rb.id]} · ${LL("sequía", "drought")} ${l.label}`;
+    const el2 = document.getElementById("rb-2d")!;
+    el2.innerHTML = "";
+    el2.append(ribbon2D(l, fLabel, el2.clientWidth || 380, el2.clientWidth < 500 ? 210 : 300));
+    const gd = a.ndvi_dias as number | null;
+    const fd = a[`${rb.fn}_dias`] as number | null;
+    const dt = gd !== null && fd !== null ? fd - gd : null;
+    const yes = (b: unknown) => (b ? LL("sí", "yes") : LL("no", "no"));
+    const comb = Math.round((a.estabilidad as number) * (a.combinaciones as number));
+    document.getElementById("rb-card")!.innerHTML = `
+      <div class="pnl-h"><h2>${esc(LL("Lo que dice la auditoría", "What the audit says"))}</h2><span class="meta">${a.evento_inicio.slice(0, 7)} – ${a.evento_fin.slice(0, 7)}</span></div>
+      <p class="rb-verdict" style="color:${verdictColor(a.veredicto)}">${esc(t.verdictName[a.veredicto] ?? a.veredicto)}</p>
+      <p class="vs">${esc(t.verdictWhy[a.veredicto] ?? "")}</p>
+      <div class="kstrip three">
+        <p><span>${esc(LL("verdor vuelve", "greenness back"))}</span><b class="num" style="color:${GREEN}">${!a.ndvi_impactado ? esc(LL("no cayó", "no drop")) : gd === null ? "—" : `${gd} d`}</b></p>
+        <p><span>${esc(fLabel)} ${esc(LL("vuelve", "back"))}</span><b class="num" style="color:${FUNC}">${!a[`${rb.fn}_impactado`] ? esc(LL("no cayó", "no drop")) : fd === null ? "—" : `${fd} d`}</b></p>
+        <p><span>Δt</span><b class="num">${dt === null ? "—" : `${dt > 0 ? "+" : ""}${dt} d`}</b></p>
+      </div>
+      <dl class="rb-facts">
+        <dt>${esc(LL("¿Cayó el verdor?", "Did greenness drop?"))}</dt><dd>${yes(a.ndvi_impactado)}</dd>
+        <dt>${esc(LL(`¿Cayó ${fLabel}?`, `Did ${fLabel} drop?`))}</dt><dd>${yes(a[`${rb.fn}_impactado`])}</dd>
+        <dt>${esc(LL("¿Llegó otra sequía antes?", "Did another drought arrive first?"))}</dt><dd>${yes(a.colision)}</dd>
+        <dt>${esc(LL("Se mantiene al cambiar la definición", "Holds when the definition changes"))}</dt><dd class="num">${comb} ${esc(LL("de", "of"))} ${a.combinaciones}</dd>
+        <dt>${esc(LL("Observaciones válidas", "Valid observations"))}</dt><dd class="num">${Math.round(100 * ((a.ndvi_cobertura as number) ?? 0))} %</dd>
+      </dl>
+      <p class="meta">${esc(LL("En esta ficha los días se cuentan desde el fin de la sequía (negativo: volvió antes de que terminara); en las gráficas, desde su inicio.", "In this card days count from the end of the drought (negative: back before it ended); in the charts, from its start."))} ${esc(LL("z: desviación robusta de lo normal para esa época del año (mediana y MAD, 8 años o más), suavizada con mediana de 3. Impacto: z < −1,5 durante 3 observaciones; recuperado: z ≥ −1 durante 3. La GPP es salida del modelo MOD17 y usa el mismo FPAR que el verdor: no es una medición independiente.",
+        "z: robust departure from normal for that time of year (median and MAD, 8+ years), smoothed with a median of 3. Impact: z < −1.5 for 3 observations; recovered: z ≥ −1 for 3. GPP is MOD17 model output and uses the same FPAR as greenness: it is not an independent measurement."))}</p>`;
+  };
+  const pickLane = (i: number) => {
+    rb.lane = i;
+    rbStage?.select(i);
+    view.querySelectorAll<HTMLButtonElement>("[data-lane]").forEach((b) => { const on = Number(b.dataset.lane) === i; b.classList.toggle("on", on); b.setAttribute("aria-selected", String(on)); });
+    renderDetail();
+  };
+  renderDetail();
+
+  playBtn.addEventListener("click", () => {
+    if (rbStage!.playing()) { rbStage!.stop(); return; }
+    playBtn.textContent = LL("❚❚ Detener", "❚❚ Stop");
+    rbStage!.play();
+  });
+  view.querySelectorAll<HTMLButtonElement>("[data-lane]").forEach((b) => b.addEventListener("click", () => pickLane(Number(b.dataset.lane))));
+  view.querySelectorAll<HTMLButtonElement>("[data-rbid]").forEach((b) => b.addEventListener("click", () => { rb.id = b.dataset.rbid!; rb.lane = -1; viewRibbon(); }));
+  view.querySelectorAll<HTMLButtonElement>("[data-rbfn]").forEach((b) => b.addEventListener("click", () => { rb.fn = b.dataset.rbfn as Fn; viewRibbon(); }));
+}
+
 /* ───────────── Auditoría de recuperación (Recovery Integrity) ───────────── */
 
 // Marcas dibujadas (no emoji): sí, no, no aplica
@@ -845,12 +986,14 @@ function viewMethod() {
 /* ───────────── Router ───────────── */
 
 async function route(scrollTop = true) {
-  const r = (location.hash.replace("#", "") || "investigar") as "investigar" | "expedientes" | "metodo";
+  const r = (location.hash.replace("#", "") || "investigar") as "investigar" | "ribbon" | "expedientes" | "metodo";
   setNav(r);
   stopPlay();
   clearMaps();
   try {
+    if (r !== "ribbon") { rbStage?.destroy(); rbStage = null; }
     if (r === "expedientes") await viewCases();
+    else if (r === "ribbon") await viewRibbon();
     else if (r === "metodo") viewMethod();
     else await viewInvestigate();
   } catch (e) {
@@ -863,7 +1006,7 @@ async function start() {
   shell();
   index = await load<Index>("index.json");
   window.addEventListener("hashchange", () => {
-    if (["#investigar", "#expedientes", "#metodo", ""].includes(location.hash)) route();
+    if (["#investigar", "#ribbon", "#expedientes", "#metodo", ""].includes(location.hash)) route();
   });
   let timer: number | undefined;
   let lastW = window.innerWidth;

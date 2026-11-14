@@ -227,7 +227,7 @@ export function spiChart(d: Phantom["sequias"][number], width: number): SVGSVGEl
 }
 
 /** Mediana móvil de 3 observaciones válidas: la misma suavización que usa el cálculo de recuperación. */
-function smooth(zs: ZSeries): { date: Date; z: number }[] {
+export function smooth(zs: ZSeries): { date: Date; z: number }[] {
   const out: { date: Date; z: number }[] = [];
   for (let i = 0; i < zs.z.length; i++) {
     const win = zs.z.slice(Math.max(0, i - 1), i + 2).slice().sort((a, b) => a - b);
@@ -448,7 +448,7 @@ export function sensitivityStrip(rows: SensRow[], chosen: SensRow | null, width:
 
 
 /** Interpola la serie suavizada `a` en las fechas de `b`. */
-function alignTo(a: { date: Date; z: number }[], b: { date: Date; z: number }[]) {
+export function alignTo(a: { date: Date; z: number }[], b: { date: Date; z: number }[]) {
   const out: { date: Date; za: number; zb: number }[] = [];
   let j = 0;
   for (const p of b) {

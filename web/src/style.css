@@ -503,3 +503,61 @@ main { max-width: 1480px; padding: 24px 32px 64px; }
 }
 .meta, .legend { font-size: 13px; }
 .dtable th, .kstrip span { font-size: 12px; }
+
+/* ══════ Recovery Ribbon ══════ */
+.rb-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px 32px; flex-wrap: wrap; }
+.rb-head h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.025em; margin-top: 4px; }
+.rb-q { color: var(--muted); font-size: 15px; max-width: 64ch; margin-top: 6px; line-height: 1.5; }
+.rb-ctrl { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.rb-stage { position: relative; height: clamp(420px, 62vh, 620px); margin-top: 18px; background: #0d0e10; border-radius: var(--radius-card); cursor: grab; touch-action: pan-y; }
+.rb-stage:active { cursor: grabbing; }
+.rb-stage canvas { display: block; }
+.rb-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; margin-top: 12px; }
+.rb-tools { display: flex; align-items: center; gap: 16px; }
+.legend .ln.dash { background: none; border-top: 1px dashed rgba(255,255,255,.6); height: 0; }
+.rb-lanes { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; border-bottom: 1px solid var(--border); }
+.rb-lanes .tab { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.rb-lanes .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.rb-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--gap); margin-top: var(--gap); align-items: start; }
+.rb-verdict { font-size: 24px; font-weight: 700; letter-spacing: -0.015em; margin-top: 10px; }
+.rb-facts { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; margin: 14px 0 0; font-size: 13px; }
+.rb-facts dt { color: var(--faint); }
+.rb-facts dd { margin: 0; text-align: right; }
+@media (max-width: 900px) {
+  .rb-grid { grid-template-columns: minmax(0, 1fr); }
+  .rb-ctrl { align-items: flex-start; }
+  .rb-stage { height: 380px; }
+}
+.rb-ctrl .tabs { flex-wrap: wrap; justify-content: flex-end; row-gap: 0; }
+@media (max-width: 900px) { .rb-ctrl .tabs { justify-content: flex-start; } }
+
+/* Recovery Ribbon inmersivo: el escenario ocupa la pantalla; controles y ficha flotan encima */
+.rb { position: relative; margin: -24px -32px -64px; height: 100vh; min-height: 760px; overflow: hidden; background: #08090b; }
+.rb-stage { position: absolute; inset: 0; height: auto; margin: 0; border-radius: 0; background: #08090b; }
+.rb-top { position: absolute; top: 24px; left: 32px; right: 452px; z-index: 2; pointer-events: none; }
+.rb-top > * { pointer-events: auto; }
+.rb-top .rb-q { max-width: 54ch; }
+.rb-top .rb-ctrl { align-items: flex-start; }
+.rb-panel, .rb-bottom { position: absolute; z-index: 2; background: rgba(18, 20, 24, 0.66); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; }
+.rb-panel { top: 24px; right: 24px; bottom: 24px; width: 404px; padding: 22px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #3a3a3e transparent; }
+.rb-panel .rb-2d-h { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.08); }
+.rb-bottom { left: 32px; right: 452px; bottom: 24px; padding: 14px 18px 0; }
+.rb-bottom .rb-bar { margin-top: 0; }
+.rb-bottom .rb-lanes { border-bottom: 0; margin-top: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 16px; }
+.rb-bottom .rb-lanes::-webkit-scrollbar { display: none; }
+.rb-bottom .rb-lanes .tab { height: 38px; }
+.rb-bottom > .meta { display: none; }
+.rb .txt-btn { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); }
+@media (max-width: 1100px) {
+  .rb { height: auto; min-height: 0; overflow: visible; margin: -24px -32px 0; padding: 0 32px 32px; }
+  .rb-stage { position: relative; inset: auto; height: 460px; margin: 0 -32px; }
+  .rb-top, .rb-bottom, .rb-panel { position: relative; inset: auto; top: auto; left: auto; right: auto; bottom: auto; width: auto; }
+  .rb-top { padding-top: 24px; margin-bottom: 16px; }
+  .rb-bottom, .rb-panel { margin-top: 16px; }
+}
+@media (max-width: 640px) {
+  .rb { margin: -16px -16px 0; padding: 0 16px 24px; }
+  .rb-stage { height: 360px; margin: 0 -16px; }
+  .rb-panel { padding: 16px; }
+}
