@@ -77,7 +77,8 @@ def save(fig, stem: Path, provenance: dict) -> list[str]:
     stem = Path(stem)
     stem.parent.mkdir(parents=True, exist_ok=True)
     out = []
-    for ext, kw in (("pdf", {}), ("png", {"dpi": 300})):
+    # Sin fecha de creación: el mismo dato produce el mismo archivo en cualquier corrida
+    for ext, kw in (("pdf", {"metadata": {"CreationDate": None}}), ("png", {"dpi": 300, "metadata": {"Software": None}})):
         p = stem.with_suffix(f".{ext}")
         fig.savefig(p, **kw)  # sin bbox_inches="tight": se conserva el tamaño físico
         out.append(p.name)
