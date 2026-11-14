@@ -103,6 +103,40 @@ export function rawChart(s: Series, unit: string, width: number): SVGSVGElement 
 const CELL = { sube: C.data, baja: C.data, indicio: "rgba(242,179,61,0.35)", sin_evidencia: C.raised, insuficiente: C.surface };
 
 /** El mapa de ventanas: cada celda es un intervalo de años; el color es lo que concluirías. */
+/** Con cuántos años se ve: por cada largo de intervalo, qué parte de los intervalos detecta la tendencia de la serie completa. */
+export function windowLength(s: Series, width: number): SVGSVGElement | HTMLElement {
+  const t = T();
+  const full = s.completa.veredicto;
+  const dir = full === "sube" || full === "baja" ? full : null;
+  const byLen = new Map<number, { n: number; hit: number; opp: number }>();
+  for (const w of s.ventanas) {
+    const L = w.fin - w.inicio + 1;
+    const r = byLen.get(L) ?? { n: 0, hit: 0, opp: 0 };
+    r.n += 1;
+    const sig = w.veredicto === "sube" || w.veredicto === "baja";
+    if (sig && (dir === null || w.veredicto === dir)) r.hit += 1;
+    if (sig && dir !== null && w.veredicto !== dir) r.opp += 1;
+    byLen.set(L, r);
+  }
+  const rows = [...byLen.entries()].sort((a, b) => a[0] - b[0])
+    .map(([L, r]) => ({ L, pct: (100 * r.hit) / r.n, opp: (100 * r.opp) / r.n, n: r.n, hit: r.hit }));
+  return Plot.plot({
+    ...base,
+    width,
+    height: 250,
+    marginLeft: 40,
+    marginBottom: 36,
+    x: { label: t.wlAxisX, labelAnchor: "center", labelOffset: 32, tickFormat: (d: number) => (d % 2 === 0 ? String(d) : ""), padding: 0.15 },
+    y: { domain: [0, 100], label: t.wlAxisY, labelAnchor: "top", ticks: [0, 50, 100], grid: true },
+    marks: [
+      Plot.barY(rows, { x: "L", y: "pct", fill: C.data, rx: 3,
+        title: (r: { L: number; hit: number; n: number }) => t.wlTip(r.L, r.hit, r.n) }),
+      Plot.barY(rows.filter((r) => r.opp > 0), { x: "L", y: "opp", fill: C.second }),
+      Plot.ruleY([0], { stroke: C.control }),
+    ],
+  });
+}
+
 export function windowMatrix(s: Series, selected: Window | null, onPick: (w: Window) => void): SVGSVGElement {
   const years = s.anual.anios;
   const y0 = years[0];
@@ -258,21 +292,24 @@ export function heatmap(p: Puntos, variable: string, worseIsHigh: boolean, order
   const months = p.calor.meses;
   const series = p.calor.series[variable] ?? {};
   const rows = order.filter((id) => series[id]);
-  const left = 150;
-  const rowH = 26;
-  const top = 8;
+  const narrow = width < 560;
+  const left = narrow ? 0 : 150;
+  const label = narrow ? 18 : 0; // espacio para el nombre encima de la fila
+  const rowH = narrow ? 30 : 26;
+  const gap = 8 + label;
+  const top = 8 + label;
   const bottom = 26;
   const cw = (width - left - 8) / months.length;
-  const H = top + rows.length * (rowH + 8) + bottom;
+  const H = top + rows.length * (rowH + gap) + bottom - label;
   const svg = document.createElementNS(ns, "svg");
   svg.setAttribute("viewBox", `0 0 ${width} ${H}`);
   svg.setAttribute("role", "img");
   svg.setAttribute("aria-label", T().heatAria);
   const idx = new Map(months.map((m, i) => [m, i]));
   rows.forEach((id, r) => {
-    const y = top + r * (rowH + 8);
+    const y = top + r * (rowH + gap);
     const lab = document.createElementNS(ns, "text");
-    lab.setAttribute("x", "0"); lab.setAttribute("y", String(y + rowH / 2 + 4));
+    lab.setAttribute("x", "0"); lab.setAttribute("y", String(narrow ? y - 9 : y + rowH / 2 + 4));
     lab.setAttribute("fill", C.muted); lab.setAttribute("font-size", "12");
     lab.textContent = names[id] ?? id;
     svg.appendChild(lab);
@@ -281,7 +318,7 @@ export function heatmap(p: Puntos, variable: string, worseIsHigh: boolean, order
       const a = idx.get(d.a.slice(0, 7)); const b = idx.get(d.b.slice(0, 7));
       if (a === undefined || b === undefined) continue;
       const band = document.createElementNS(ns, "rect");
-      band.setAttribute("x", String(left + a * cw)); band.setAttribute("y", String(y - 4));
+      band.setAttribute("x", String(left + a * cw)); band.setAttribute("y", String(y - 3));
       band.setAttribute("width", String(Math.max(2, (b - a + 1) * cw))); band.setAttribute("height", "2");
       band.setAttribute("fill", C.ink);
       svg.appendChild(band);
@@ -304,9 +341,10 @@ export function heatmap(p: Puntos, variable: string, worseIsHigh: boolean, order
       svg.appendChild(cell);
     });
   });
-  const yAxis = top + rows.length * (rowH + 8) + 14;
+  const yAxis = top + rows.length * (rowH + gap) - gap + 22;
+  const every = narrow ? 8 : 4;
   months.forEach((m, i) => {
-    if (m.endsWith("-01") && Number(m.slice(0, 4)) % 4 === 1) {
+    if (m.endsWith("-01") && (Number(m.slice(0, 4)) - 2001) % every === 0) {
       const t = document.createElementNS(ns, "text");
       t.setAttribute("x", String(left + i * cw)); t.setAttribute("y", String(yAxis));
       t.setAttribute("fill", C.faint); t.setAttribute("font-size", "11");
@@ -468,17 +506,28 @@ export function hysteresis(o: { green: ZSeries; func: ZSeries; start: string; en
   const segs = rows.slice(1).map((r, i) => ({ x1: rows[i].x, y1: rows[i].y, x2: r.x, y2: r.y, phase: r.phase }));
   const first = rows[0];
   const last = rows[rows.length - 1];
+  // Encuadre: la trayectoria más la zona normal (z ≥ -1), con el mismo tramo en los dos ejes
+  const ext = (k: "x" | "y") => [Math.min(-1.5, ...rows.map((r) => r[k])), Math.max(1, ...rows.map((r) => r[k]))];
+  const [ex0, ex1] = ext("x");
+  const [ey0, ey1] = ext("y");
+  const span = Math.max(ex1 - ex0, ey1 - ey0) + 0.8;
+  const dom = (a: number, b: number): [number, number] => { const c = (a + b) / 2; return [c - span / 2, c + span / 2]; };
+  const dx = dom(ex0, ex1);
+  const dy = dom(ey0, ey1);
+  const side = Math.max(240, Math.min(440, o.width));
   return Plot.plot({
     ...base,
     width: o.width,
-    height: Math.min(470, Math.round(o.width * 1.25)),
-    marginLeft: 48,
-    x: { domain: [-6, 3], label: t.axisGreenZ, ticks: [-4, -2, 0, 2], grid: true },
-    y: { domain: [-6, 3], label: t.axisFuncZ, labelAnchor: "top", ticks: [-4, -2, 0, 2], grid: true },
+    height: side,
+    marginLeft: 44,
+    marginBottom: 40,
+    x: { domain: dx, label: t.axisGreenZ, labelAnchor: "center", labelOffset: 34, ticks: 5, grid: true },
+    y: { domain: dy, label: t.axisFuncZ, labelAnchor: "top", ticks: 5, grid: true },
     marks: [
-      Plot.rect([{ x1: -1, x2: 3, y1: -1, y2: 3 }], { x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: C.raised }),
-      Plot.text([{ x: 2.8, y: 2.6 }], { x: "x", y: "y", text: () => t.normalZone, textAnchor: "end", fill: C.faint, fontSize: 11 }),
-      Plot.link(segs, { x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: (s: { phase: string }) => colors[s.phase], strokeWidth: 1.6, markerEnd: "arrow" }),
+      Plot.rect([{ x1: -1, x2: dx[1], y1: -1, y2: dy[1] }], { x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: C.raised }),
+      Plot.text([{ x: dx[1], y: dy[1] }], { x: "x", y: "y", text: () => t.normalZone, textAnchor: "end", dx: -6, dy: 12, fill: C.faint, fontSize: 11 }),
+      Plot.link(segs, { x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: (s: { phase: string }) => colors[s.phase], strokeWidth: 2.2, markerEnd: "arrow" }),
+      Plot.dot(rows, { x: "x", y: "y", r: 2.2, fill: (r: { phase: string }) => colors[r.phase] }),
       first ? Plot.text([first], { x: "x", y: "y", text: () => t.phStart, dx: 8, textAnchor: "start", fill: C.muted, fontSize: 11 }) : null,
       last ? Plot.text([last], { x: "x", y: "y", text: () => t.phEnd, dx: 8, textAnchor: "start", fill: C.data, fontSize: 11 }) : null,
     ],
@@ -496,24 +545,28 @@ export function ledger(audits: Audit[], order: string[], names: Record<string, s
   selected: Audit | null, onPick: (a: Audit) => void): SVGSVGElement {
   const ns = "http://www.w3.org/2000/svg";
   const rows = order.filter((id) => audits.some((a) => a.id === id));
-  const left = 150, rowH = 36, top = 6, bottom = 26;
+  const narrow = width < 560;
+  const left = narrow ? 14 : 150, rowH = 36, bottom = 26;
+  const label = narrow ? 16 : 0;
+  const top = 6 + label;
+  const mw = narrow ? 16 : 22; // ancho de cada marca
   const t0 = new Date("2001-01-01").getTime();
   const t1 = new Date("2025-01-01").getTime();
-  const X = (d: string) => left + ((new Date(d).getTime() - t0) / (t1 - t0)) * (width - left - 14);
-  const H = top + rows.length * rowH + bottom;
+  const X = (d: string) => left + ((new Date(d).getTime() - t0) / (t1 - t0)) * (width - left - 16);
+  const H = top + rows.length * (rowH + label) - label + bottom;
   const svg = document.createElementNS(ns, "svg");
   svg.setAttribute("viewBox", `0 0 ${width} ${H}`);
   svg.setAttribute("role", "group");
   svg.setAttribute("class", "ledger");
   rows.forEach((id, r) => {
-    const y = top + r * rowH;
+    const y = top + r * (rowH + label);
     const lab = document.createElementNS(ns, "text");
-    lab.setAttribute("x", "0"); lab.setAttribute("y", String(y + rowH / 2 + 4));
+    lab.setAttribute("x", "0"); lab.setAttribute("y", String(narrow ? y - 2 : y + rowH / 2 + 4));
     lab.setAttribute("fill", C.muted); lab.setAttribute("font-size", "12"); lab.textContent = names[id] ?? id;
     svg.appendChild(lab);
     const track = document.createElementNS(ns, "rect");
     track.setAttribute("x", String(left)); track.setAttribute("y", String(y + rowH / 2 - 1));
-    track.setAttribute("width", String(width - left - 14)); track.setAttribute("height", "2"); track.setAttribute("fill", C.raised);
+    track.setAttribute("width", String(width - left - 16)); track.setAttribute("height", "2"); track.setAttribute("fill", C.raised);
     svg.appendChild(track);
     for (const a of audits.filter((x) => x.id === id && x.veredicto !== "sin_impacto")) {
       const cx = X(a.evento_inicio);
@@ -521,8 +574,8 @@ export function ledger(audits: Audit[], order: string[], names: Record<string, s
       g.setAttribute("class", "lmark"); g.setAttribute("tabindex", "0"); g.setAttribute("role", "button");
       const disc = DISCORDANT.has(a.veredicto);
       const c = document.createElementNS(ns, "rect");
-      c.setAttribute("x", String(cx - 11)); c.setAttribute("y", String(y + 6));
-      c.setAttribute("width", "22"); c.setAttribute("height", String(rowH - 12)); c.setAttribute("rx", "6");
+      c.setAttribute("x", String(cx - mw / 2)); c.setAttribute("y", String(y + 6));
+      c.setAttribute("width", String(mw)); c.setAttribute("height", String(rowH - 12)); c.setAttribute("rx", "6");
       c.setAttribute("fill", disc ? C.data : a.veredicto === "consistente" ? C.second : C.raised);
       if (a.veredicto === "censurada" || a.veredicto === "inconclusa") { c.setAttribute("stroke", C.control); c.setAttribute("stroke-width", "1.5"); }
       if (selected && selected.id === a.id && selected.evento_inicio === a.evento_inicio) { c.setAttribute("stroke", C.ink); c.setAttribute("stroke-width", "2.5"); }
@@ -541,7 +594,7 @@ export function ledger(audits: Audit[], order: string[], names: Record<string, s
       svg.appendChild(g);
     }
   });
-  for (let yy = 2001; yy <= 2025; yy += 4) {
+  for (let yy = 2001; yy <= 2025; yy += narrow ? 8 : 4) {
     const tx = document.createElementNS(ns, "text");
     tx.setAttribute("x", String(X(`${yy}-01-01`))); tx.setAttribute("y", String(H - 6));
     tx.setAttribute("fill", C.faint); tx.setAttribute("font-size", "11"); tx.setAttribute("text-anchor", "middle");

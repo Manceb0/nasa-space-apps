@@ -2,7 +2,7 @@ import "leaflet/dist/leaflet.css";
 import "./style.css";
 import L from "leaflet";
 import {
-  DISCORDANT, dualTimeline, evidenceChart, gapIndex, heatmap, hysteresis, ledger, quadrant, rawChart, spiChart, windowMatrix,
+  DISCORDANT, dualTimeline, evidenceChart, gapIndex, heatmap, hysteresis, ledger, quadrant, rawChart, spiChart, windowLength, windowMatrix,
 } from "./charts";
 import { load, type Audit, type Index, type Phantom, type Puntos, type Series, type Window } from "./data";
 import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
@@ -48,7 +48,7 @@ const AMBER = "#f2b33d";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 
-function clearMaps() { while (maps.length) maps.pop()!.remove(); }
+function clearMaps() { while (maps.length) { const m = maps.pop()!; m.stop(); m.off(); m.remove(); } }
 
 function baseMap(el: HTMLElement, center: [number, number], zoom: number): L.Map {
   const m = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false }).setView(center, zoom);
@@ -206,8 +206,9 @@ function drawRegionMap(all: Series[]) {
     } else {
       const box = p.caja_datos && !(p.caja_datos[0] === p.caja_datos[2]) ? p.caja_datos : p.caja_pedida;
       if (box) {
-        L.rectangle(toBounds(box), { color, weight: on ? 2.5 : 1.5, dashArray: on ? undefined : "4 4", fillColor: color, fillOpacity: on ? 0.18 : 0.04 })
-          .bindTooltip(regionMeta(index, s.region).nombre).on("click", pick).addTo(map);
+        L.rectangle(toBounds(box), { color, weight: on ? 3 : 2, dashArray: on ? undefined : "5 4", fillColor: color, fillOpacity: on ? 0.32 : 0.08 })
+          .bindTooltip(regionMeta(index, s.region).nombre, { permanent: true, direction: "right", offset: [8, 0], className: on ? "zone-tip on" : "zone-tip" })
+          .on("click", pick).addTo(map);
         pts.push(toBounds(box).getNorthEast(), toBounds(box).getSouthWest());
       }
       if (p.caja_datos && p.caja_datos[0] === p.caja_datos[2] && on) {
@@ -216,7 +217,7 @@ function drawRegionMap(all: Series[]) {
       }
     }
   }
-  if (pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.25), { maxZoom: 9 });
+  if (pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.12), { maxZoom: 9, animate: false });
   document.getElementById("mapcap")!.textContent = note;
 }
 
@@ -265,6 +266,10 @@ async function renderEvidence(scroll: boolean) {
       </section>
       <section class="card s3 side">
         <div id="wininfo"></div>
+        <h3>${esc(t.wlTitle)}</h3>
+        <p class="sub">${esc(t.wlSub)}</p>
+        <div id="wlen" class="chart"></div>
+        <div class="legend"><span><i class="sq" style="background:${AMBER}"></i>${esc(t.wlHit)}</span>${full.veredicto === "sube" || full.veredicto === "baja" ? `<span><i class="sq" style="background:#e6e6e6"></i>${esc(t.wlOpp)}</span>` : ""}</div>
         ${s.ventanas_que_enganan.length ? `
           <h3>${esc(t.trapsTitle)}</h3>
           <div class="traps">${s.ventanas_que_enganan.map((w, i) => `<button class="trap" data-trap="${i}">${windowLabel(w)}</button>`).join("")}</div>
@@ -295,6 +300,8 @@ async function renderEvidence(scroll: boolean) {
     chartEl.append(state.raw ? rawChart(s, meta.unidad, chartEl.clientWidth || 800) : evidenceChart(s, meta.unidad, state.window, chartEl.clientWidth || 800));
   };
   drawChart();
+  const wl = document.getElementById("wlen")!;
+  wl.append(windowLength(s, wl.clientWidth || 420));
   document.getElementById("rawtoggle")!.addEventListener("click", () => { state.raw = !state.raw; renderEvidence(false); });
 
   const winInfo = () => {
@@ -447,7 +454,7 @@ async function viewCases() {
         <section class="card s6">
           <div class="card-head">
             <div><h3>${esc(t.heatH)}</h3><p class="sub">${esc(t.heatSub)}</p></div>
-            <div class="seg" role="radiogroup" aria-label="${esc(t.heatH)}">${["modis_ndvi", "modis_lst", "modis_gpp"].map((v) => `<button data-heat="${v}" class="${state.heatVar === v ? "on" : ""}">${esc(varMeta(index, v).nombre)}</button>`).join("")}</div>
+            <div class="seg" role="radiogroup" aria-label="${esc(t.heatH)}">${["modis_ndvi", "modis_lst", "modis_gpp"].map((v) => `<button data-heat="${v}" class="${state.heatVar === v ? "on" : ""}"><span class="long">${esc(varMeta(index, v).nombre)}</span><span class="short">${v === "modis_ndvi" ? "NDVI" : v === "modis_lst" ? "LST" : "GPP"}</span></button>`).join("")}</div>
           </div>
           <div id="heat" class="chart"></div>
           <div class="legend" style="margin-top:10px"><span><i class="sq" style="background:${AMBER}"></i>${esc(t.worse)}</span><span><i class="sq" style="background:#a9a9a9"></i>${esc(t.better)}</span><span><i class="sq none"></i>${esc(t.noData)}</span></div>
@@ -616,7 +623,7 @@ function drawPointMap(pts: Puntos) {
       .addTo(map);
     bounds.push(L.latLng(p.lat, p.lon));
   }
-  if (bounds.length) map.fitBounds(L.latLngBounds(bounds).pad(0.35), { maxZoom: 9 });
+  if (bounds.length) map.fitBounds(L.latLngBounds(bounds).pad(0.35), { maxZoom: 9, animate: false });
   document.getElementById("pm-table")!.innerHTML = `
     <thead><tr><th>${esc(t.thPoint)}</th><th class="num">${esc(t.thSlope)}</th><th class="num">${esc(t.thP)}</th><th class="num">${esc(t.thQ)}</th></tr></thead>
     <tbody>${rows.map((p) => { const tr = p.tendencias[v]; return tr ? `

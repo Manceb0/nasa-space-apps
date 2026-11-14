@@ -295,3 +295,15 @@ details.card summary { cursor: pointer; font-weight: 600; font-size: var(--fs-se
 @media (prefers-reduced-motion: reduce) {
   .checklist li, .verdict-box.shown { opacity: 1 !important; transform: none !important; }
 }
+
+/* Mapa protagonista: el Blue Marble es muy oscuro a esta escala; se aclara solo la capa de teselas */
+.hero-map .leaflet-tile-pane { filter: brightness(1.45) contrast(1.05) saturate(1.1); }
+.zone-tip { background: var(--surface); color: var(--text); border: 0; border-radius: 8px; box-shadow: none; font-weight: 600; font-size: 12px; padding: 3px 8px; }
+.zone-tip.on { background: var(--data); color: #000; }
+.zone-tip::before { display: none; }
+.side #wlen { margin-top: 6px; }
+.seg .short { display: none; }
+@media (max-width: 640px) {
+  .seg .long { display: none; }
+  .seg .short { display: inline; }
+}
