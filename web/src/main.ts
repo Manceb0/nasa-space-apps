@@ -7,7 +7,8 @@ import {
 import { load, type Audit, type Index, type Phantom, type Puntos, type Series, type Window } from "./data";
 import { T, getLang, regionMeta, setLang, varMeta } from "./i18n";
 import { pillNav, wirePillNav } from "./pillnav";
-import { rainField, type Grid } from "./field";
+import { type Grid } from "./field";
+import { terrain3d } from "./terrain3d";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
@@ -182,6 +183,10 @@ async function viewInvestigate() {
       <section class="pnl map-pnl" aria-label="${esc(t.mapLabel)}">
         <div id="map"></div>
         <p class="map-note" id="mapcap"></p>
+        <div class="t3-hint" id="t3-hint">
+          <span>${esc(LL("Arrastra para mover · Ctrl + arrastrar para girar e inclinar · Toca un lugar para bajar a su terreno", "Drag to move · Ctrl + drag to rotate and tilt · Tap a site to fly down to its terrain"))}</span>
+          <button class="txt-btn" id="t3-country">${esc(LL("Ver todo el país", "See the whole country"))}</button>
+        </div>
         <div class="field-hud" aria-live="polite">
           <p class="field-month num" id="f-month"></p>
           <p class="field-leg">${esc(LL("Lluvia del mes frente a lo normal. Cada punto es una celda IMERG de 0,1° (unos 11 km).", "Monthly rain against normal. Each dot is one 0.1° IMERG cell (about 11 km)."))}</p>
@@ -245,25 +250,41 @@ async function viewInvestigate() {
     state.region = b.dataset.reg!; resetInvestigation(); route(false);
   }));
 
-  drawRegionMap(all);
-  const imap = maps[maps.length - 1];
+  // ── El mapa en 3D: relieve real, zonas exactas, lugares y el campo de lluvia ──
+  zone = { paths: [], label: null, name: regionMeta(index, state.region).nombre };
+  t3?.destroy();
+  const ptsAll = await load<Puntos>("puntos.json").catch(() => null);
+  t3 = terrain3d(document.getElementById("map")!, {
+    zones: all.map((z) => {
+      const pp = z.pasaporte;
+      return { id: z.region, name: regionMeta(index, z.region).nombre, req: pp.caja_pedida,
+        data: pp.caja_datos && pp.caja_datos[0] !== pp.caja_datos[2] ? pp.caja_datos : pp.caja_pedida, on: z.region === state.region };
+    }),
+    sites: (ptsAll?.puntos ?? []).map((q) => ({ id: q.id, name: pointName(q.id), lat: q.lat, lon: q.lon, on: q.region === state.region })),
+    onZone: (id) => { if (id !== state.region) { state.region = id; resetInvestigation(); route(false); } },
+    onSite: (id) => { rb.id = id; rb.lane = -1; },
+    cellLabel: (mes, mm, pct) => `${mes} · ${mm === null ? "—" : `${fmt(mm, 0)} mm`}${pct === null ? "" : ` · ${pct} % ${LL("de lo normal", "of normal")}`}`,
+    siteAction: LL("Ver su recuperación →", "See its recovery →"),
+  });
+  const hint = document.getElementById("t3-hint");
+  t3.map.once("mousedown", () => hint?.classList.add("gone"));
+  t3.map.once("touchstart", () => hint?.classList.add("gone"));
+  document.getElementById("t3-country")?.addEventListener("click", () => t3?.country(2200));
   const fMonth = document.getElementById("f-month")!;
-  let field: ReturnType<typeof rainField> | null = null;
+  let fieldReady = false;
   const showField = (mes: string) => {
-    if (!field) return;
-    field.show(mes);
+    if (!fieldReady || !t3) return;
+    t3.setField(mes);
     if (fMonth.textContent !== mes) { fMonth.textContent = mes; fMonth.classList.remove("flip"); void fMonth.offsetWidth; fMonth.classList.add("flip"); }
     view.querySelectorAll(".dm.on").forEach((x) => x.classList.remove("on"));
     view.querySelector(`[data-month="${mes}"]`)?.classList.add("on");
   };
-  load<Grid>("grid/precip_imerg.json").then((g) => {
-    if (!imap.getContainer().isConnected) return;
-    if (innerWidth > 900) imap.fitBounds([[17.45, -72.05], [19.98, -68.3]], { paddingTopLeft: [400, 250], paddingBottomRight: [440, 330], animate: false });
-    field = rainField(imap, g, (mes, mm, pct) => `${mes} · ${mm === null ? "—" : `${fmt(mm, 0)} mm`}${pct === null ? "" : ` · ${pct} % ${LL("de lo normal", "of normal")}`}`);
-    fMonth.textContent = startMonth;
-    field.intro(startMonth);
-    view.querySelector(`[data-month="${startMonth}"]`)?.classList.add("on");
+  const mine = t3;
+  Promise.all([t3.ready, load<Grid>("grid/precip_imerg.json")]).then(([, g]) => {
+    if (t3 !== mine) return;
+    t3.setGrid(g); fieldReady = true; showField(startMonth);
   }).catch(() => { fMonth.textContent = ""; });
+
 
   // ── La serie mes a mes, con cursor que mueve el mapa ──
   const d = digitsFor(vmeta);
@@ -288,12 +309,14 @@ async function viewInvestigate() {
     const stress = v !== null && (stressHigh ? v > 0 : v < 0);
     const k = v === null ? 0 : Math.min(1, Math.abs(v) / lim);
     for (const p of zone.paths) p.setStyle({ fillColor: stress ? AMBER : "#ffffff", fillOpacity: 0.12 + 0.6 * k });
+    t3?.tintZone(stress ? "#e5566f" : "#8ef0c6", 0.08 + 0.5 * k);
     if (zone.label) (zone.label as L.Rectangle).setTooltipContent(`${esc(zone.name)} · ${months[i]} · ${esc(val)}`);
   };
   const clearMonth = () => {
     cursor.hidden = true;
     readout.textContent = "";
     for (const p of zone.paths) p.setStyle({ fillColor: AMBER, fillOpacity: 0.16 });
+    t3?.tintZone(AMBER, 0.14);
     setZoneLabel(s);
   };
   const nearest = (x: number) => {
@@ -384,7 +407,7 @@ function reticle(map: L.Map, b: L.LatLngBounds, color: string, weight: number, o
 }
 
 /** Mapa de terreno: las dos zonas a la vez; la elegida con visor ámbar; clic en la otra para cambiar. */
-function drawRegionMap(all: Series[]) {
+export function drawRegionMap(all: Series[]) {
   const t = T();
   const el = document.getElementById("map");
   if (!el) return;
@@ -584,6 +607,7 @@ function renderEvidence(s: Series) {
 
 let rbStage: Stage | null = null;
 let rbPlayed = false;
+let t3: ReturnType<typeof terrain3d> | null = null;
 let rbStoried = false;
 let storyToken = 0;
 const rbHide: Record<string, boolean> = { top: false, panel: false, bottom: false };
@@ -1237,6 +1261,7 @@ async function route(scrollTop = true) {
   clearMaps();
   try {
     if (r !== "ribbon") { rbStage?.destroy(); rbStage = null; }
+    if (r !== "investigar") { t3?.destroy(); t3 = null; }
     if (r === "expedientes") await viewCases();
     else if (r === "ribbon") await viewRibbon();
     else if (r === "metodo") viewMethod();

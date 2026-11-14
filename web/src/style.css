@@ -795,3 +795,37 @@ main { padding-top: 88px; }
 .console .dm { height: 10px; }
 .console .dm::before { width: 8px; height: 8px; }
 .field-month { text-align: left; }
+
+/* ══════ Mapa 3D (MapLibre) ══════ */
+.console .map-pnl #map { position: absolute; inset: 0; }
+.maplibregl-ctrl-group { background: rgba(14,15,18,.72) !important; border: 1px solid #23252a; border-radius: 12px !important; box-shadow: none !important; margin: 250px 0 0 24px !important; }
+.maplibregl-ctrl-group button { width: 34px; height: 34px; }
+.maplibregl-ctrl-group button + button { border-top: 1px solid #23252a !important; }
+.maplibregl-ctrl-group .maplibregl-ctrl-icon { filter: invert(1); }
+.maplibregl-ctrl-attrib { background: rgba(14,15,18,.7) !important; color: #8a8c92 !important; font-size: 11px; }
+.maplibregl-ctrl-attrib a { color: #b4b4b8 !important; }
+.t3-site { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.t3-dot { display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; cursor: pointer; }
+.t3-dot i { position: relative; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(14,15,18,.85); }
+.t3-site.on .t3-dot i { background: #f2b33d; }
+.t3-dot i::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid currentColor; color: #fff; animation: t3Pulse 2s cubic-bezier(.22,1,.36,1) infinite; }
+.t3-site.on .t3-dot i::after { color: #f2b33d; }
+@keyframes t3Pulse { from { transform: scale(.6); opacity: 1; } to { transform: scale(2.2); opacity: 0; } }
+.t3-dot span { font: 600 12px/1 "Public Sans", sans-serif; color: #fff; background: rgba(14,15,18,.82); padding: 6px 9px; border-radius: 999px; white-space: nowrap; transition: background .2s; }
+.t3-dot:hover span, .t3-dot:focus-visible span { background: #f2b33d; color: #121016; }
+.t3-go { display: none; margin-left: 22px; font: 600 12px/1 "Public Sans", sans-serif; color: #121016; background: #f2b33d; padding: 7px 11px; border-radius: 999px; text-decoration: none; white-space: nowrap; animation: panelIn .5s cubic-bezier(.22,1,.36,1) both; }
+.t3-site.open .t3-go { display: inline-block; }
+.t3-pop .maplibregl-popup-content { background: rgba(14,15,18,.9); color: #fff; font: 600 12px/1.3 "Public Sans", sans-serif; padding: 7px 10px; border-radius: 10px; box-shadow: none; border: 1px solid #23252a; }
+.t3-pop .maplibregl-popup-tip { display: none; }
+.t3-hint { position: absolute; z-index: 6; left: 50%; bottom: 360px; transform: translateX(-50%); display: flex; align-items: center; gap: 12px;
+  background: rgba(14,15,18,.72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid #23252a; border-radius: 999px;
+  padding: 6px 6px 6px 16px; font-size: 13px; color: #e6e6e6; white-space: nowrap; animation: panelIn .8s cubic-bezier(.22,1,.36,1) .6s both; }
+.t3-hint.gone span { display: none; }
+.t3-hint.gone { padding-left: 6px; }
+@media (max-width: 900px) { .t3-hint { bottom: 12px; white-space: normal; width: calc(100% - 24px); font-size: 12px; } .maplibregl-ctrl-group { margin: 12px 0 0 12px !important; } }
+.t3-far .t3-dot span { opacity: 0; transform: translateX(-6px); pointer-events: none; transition: opacity .25s, transform .25s; }
+.t3-far .t3-dot:hover span, .t3-far .t3-site.open .t3-dot span { opacity: 1; transform: none; }
+.t3-dot span { transition: opacity .25s, transform .25s, background .2s; }
+.console .maplibregl-ctrl-top-right .maplibregl-ctrl-group { margin: 250px 440px 0 0 !important; }
+.console .t3-hint { left: 32px; transform: none; bottom: 360px; }
+@media (max-width: 900px) { .console .t3-hint { left: 12px; bottom: 12px; } .console .maplibregl-ctrl-top-right .maplibregl-ctrl-group { margin: 12px 12px 0 0 !important; } }
