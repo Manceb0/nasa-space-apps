@@ -8,10 +8,12 @@ import type { Grid } from "./field";
 export interface Zone { id: string; name: string; req: number[] | null; data: number[] | null; on: boolean }
 export interface Site { id: string; name: string; lat: number; lon: number; on: boolean; note?: string }
 
-const DRY = [242, 179, 61];
-const VERY_DRY = [229, 86, 111];
-const WET = [142, 240, 198];
-const mix = (a: number[], b: number[], t: number) => `rgb(${a.map((v, k) => Math.round(v + (b[k] - v) * t)).join(",")})`;
+// Colores de sistema de Apple (modo oscuro)
+const ORANGE = [255, 159, 10];
+const RED = [255, 69, 58];
+const BLUE = [10, 132, 255];
+const MIST = [150, 170, 190];
+const lerp = (a: number[], b: number[], t: number) => a.map((v, k) => Math.round(v + (b[k] - v) * t));
 const ring = (b: number[]) => [[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]], [b[0], b[1]]];
 let lastCam: { center: [number, number]; zoom: number; pitch: number; bearing: number } | null = null;
 
@@ -56,6 +58,9 @@ export function terrain3d(el: HTMLElement, opts: {
   map.on("moveend", () => { const c = map.getCenter(); lastCam = { center: [c.lng, c.lat], zoom: map.getZoom(), pitch: map.getPitch(), bearing: map.getBearing() }; });
 
   let grid: Grid | null = null;
+  const cvs = document.createElement("canvas");
+  let corners: [[number, number], [number, number], [number, number], [number, number]] = [[0, 0], [0, 0], [0, 0], [0, 0]];
+  let cur = -1;
   let clim: (number | null)[][][] = [];
   const markers: maplibregl.Marker[] = [];
   const firstVisit = !lastCam;
@@ -70,11 +75,11 @@ export function terrain3d(el: HTMLElement, opts: {
       ]),
     } });
     map.addLayer({ id: "zone-fill", type: "fill", source: "zones", filter: ["==", ["get", "kind"], "data"],
-      paint: { "fill-color": ["case", ["==", ["get", "on"], 1], "#f2b33d", "#ffffff"], "fill-opacity": ["case", ["==", ["get", "on"], 1], 0.14, 0.05] } });
+      paint: { "fill-color": ["case", ["==", ["get", "on"], 1], "#ff9f0a", "#ffffff"], "fill-opacity": ["case", ["==", ["get", "on"], 1], 0.14, 0.05] } });
     map.addLayer({ id: "zone-req", type: "line", source: "zones", filter: ["==", ["get", "kind"], "req"],
       paint: { "line-color": "#ffffff", "line-width": 1.2, "line-dasharray": [3, 3], "line-opacity": 0.7 } });
     map.addLayer({ id: "zone-data", type: "line", source: "zones", filter: ["==", ["get", "kind"], "data"],
-      paint: { "line-color": ["case", ["==", ["get", "on"], 1], "#f2b33d", "#ffffff"], "line-width": ["case", ["==", ["get", "on"], 1], 2.5, 1.5] } });
+      paint: { "line-color": ["case", ["==", ["get", "on"], 1], "#ff9f0a", "#ffffff"], "line-width": ["case", ["==", ["get", "on"], 1], 2.5, 1.5] } });
     map.on("click", "zone-fill", (e) => { const id = e.features?.[0]?.properties?.id; if (id) opts.onZone(String(id)); });
     map.on("mouseenter", "zone-fill", () => { map.getCanvas().style.cursor = "pointer"; });
     map.on("mouseleave", "zone-fill", () => { map.getCanvas().style.cursor = ""; });
@@ -102,37 +107,50 @@ export function terrain3d(el: HTMLElement, opts: {
       for (let t = mo; t < g.meses.length; t += 12) { const v = g.valores[t][i][j]; if (v !== null) { s += v; n++; } }
       return n ? s / n : null;
     })));
-    map.addSource("rain", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-    map.addLayer({ id: "rain", type: "circle", source: "rain", paint: {
-      "circle-radius": ["interpolate", ["exponential", 2], ["zoom"], 6, ["*", ["get", "r"], 4], 8, ["*", ["get", "r"], 13], 11, ["*", ["get", "r"], 90]],
-      "circle-color": ["get", "c"], "circle-opacity": ["interpolate", ["linear"], ["zoom"], 9.5, ["get", "o"], 11.5, ["*", ["get", "o"], 0.28]], "circle-pitch-alignment": "map",
-
+    // Campo de lluvia como imagen: un píxel por celda IMERG; el mapa lo dibuja suave (lineal) entre centros
+    const res = g.resolucion_grados / 2;
+    cvs.width = g.lons.length; cvs.height = g.lats.length;
+    corners = [[g.lons[0] - res, g.lats[0] + res], [g.lons[g.lons.length - 1] + res, g.lats[0] + res],
+      [g.lons[g.lons.length - 1] + res, g.lats[g.lats.length - 1] - res], [g.lons[0] - res, g.lats[g.lats.length - 1] - res]];
+    map.addSource("rain", { type: "image", url: cvs.toDataURL(), coordinates: corners });
+    map.addLayer({ id: "rain", type: "raster", source: "rain", paint: {
+      "raster-resampling": "linear", "raster-fade-duration": 300,
+      "raster-opacity": ["interpolate", ["linear"], ["zoom"], 9.5, 0.85, 11.5, 0.3],
     } }, "zone-fill");
-    const pop = new maplibregl.Popup({ closeButton: false, closeOnClick: false, className: "t3-pop", offset: 10 });
-    map.on("mousemove", "rain", (e) => { const p = e.features?.[0]?.properties; if (p) pop.setLngLat(e.lngLat).setHTML(String(p.t)).addTo(map); });
-    map.on("mouseleave", "rain", () => pop.remove());
+    const pop = new maplibregl.Popup({ closeButton: false, closeOnClick: false, className: "t3-pop", offset: 12 });
+    map.on("mousemove", (e) => {
+      if (cur < 0 || !grid) { pop.remove(); return; }
+      const j = Math.round((e.lngLat.lng - g.lons[0]) / g.resolucion_grados);
+      const i = Math.round((g.lats[0] - e.lngLat.lat) / g.resolucion_grados);
+      const v = g.valores[cur]?.[i]?.[j];
+      if (v === null || v === undefined) { pop.remove(); return; }
+      const c = clim[Number(g.meses[cur].slice(5, 7)) - 1][i][j];
+      pop.setLngLat([g.lons[j], g.lats[i]]).setHTML(opts.cellLabel(g.meses[cur], v, c ? Math.round(100 * v / c) : null)).addTo(map);
+    });
+    map.getCanvas().addEventListener("mouseleave", () => pop.remove());
   };
   const setField = (mes: string) => {
     if (!grid || !map.getSource("rain")) return;
     const g = grid;
     const t = g.meses.indexOf(mes);
     if (t < 0) return;
+    cur = t;
     const mo = Number(mes.slice(5, 7)) - 1;
-    const features = [];
+    const ctx = cvs.getContext("2d")!;
+    const img = ctx.createImageData(cvs.width, cvs.height);
     for (let i = 0; i < g.lats.length; i++) for (let j = 0; j < g.lons.length; j++) {
       const v = g.valores[t][i][j];
-      if (v === null) continue;
+      const k = 4 * (i * cvs.width + j);
+      if (v === null) { img.data[k + 3] = 0; continue; }
       const c = clim[mo][i][j];
-      const ratio = c ? v / c - 1 : null;
-      const mag = ratio === null ? 0 : Math.min(1, Math.abs(ratio) / 0.8);
-      features.push({ type: "Feature" as const, geometry: { type: "Point" as const, coordinates: [g.lons[j], g.lats[i]] }, properties: {
-        r: 0.3 + 0.7 * mag,
-        c: ratio === null ? "#5a5c62" : ratio < 0 ? mix(DRY, VERY_DRY, Math.min(1, -ratio / 0.7)) : mix([170, 190, 185], WET, Math.min(1, ratio / 0.6)),
-        o: 0.55 + 0.4 * mag,
-        t: opts.cellLabel(mes, v, ratio === null ? null : Math.round(100 * (1 + ratio))),
-      } });
+      const ratio = c ? v / c - 1 : 0;
+      const mag = Math.min(1, Math.abs(ratio) / 0.8);
+      const rgb = ratio < 0 ? lerp(ORANGE, RED, Math.min(1, -ratio / 0.75)) : lerp(MIST, BLUE, Math.min(1, ratio / 0.7));
+      img.data[k] = rgb[0]; img.data[k + 1] = rgb[1]; img.data[k + 2] = rgb[2];
+      img.data[k + 3] = Math.round(255 * (0.08 + 0.4 * mag));
     }
-    (map.getSource("rain") as maplibregl.GeoJSONSource).setData({ type: "FeatureCollection", features });
+    ctx.putImageData(img, 0, 0);
+    (map.getSource("rain") as maplibregl.ImageSource).updateImage({ url: cvs.toDataURL(), coordinates: corners });
   };
   const tintZone = (color: string, opacity: number) => {
     if (!map.getLayer("zone-fill")) return;

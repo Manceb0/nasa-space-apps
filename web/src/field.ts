@@ -10,7 +10,7 @@ export interface Grid {
 
 interface Dot { m: L.CircleMarker; i: number; j: number; r: number; tr: number }
 
-const DRY = [242, 179, 61];
+const DRY = [255, 159, 10];
 const VERY_DRY = [229, 86, 111];
 const WET = [142, 240, 198];
 const mix = (a: number[], b: number[], t: number) => `rgb(${a.map((v, k) => Math.round(v + (b[k] - v) * t)).join(",")})`;

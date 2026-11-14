@@ -6,9 +6,9 @@
   --pn-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.8), 0 6px 16px -8px rgba(0, 0, 0, 0.5);
   --pn-text: rgba(244, 244, 245, 0.64);
   --pn-strong: #f4f4f5;
-  --pn-pill: #f2b33d;
+  --pn-pill: #ff9f0a;
   --pn-pill-ink: #121016;
-  --pn-dot: #f2b33d;
+  --pn-dot: #ff9f0a;
   --pn-ring: rgba(244, 244, 245, 0.55);
   --pn-blur: blur(20px) saturate(1.6);
   --pn-h: 44px; --pn-pad: 4px; --pn-inner: 36px; --pn-x: 16px; --pn-font: 14px; --pn-gap: 8px; --pn-mark: 24px;

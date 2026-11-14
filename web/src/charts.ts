@@ -16,11 +16,11 @@ export const C = {
   muted: "#a9abb0",
   faint: "#8a8c92",
   grid: "#26262a",
-  data: "#f2b33d",
+  data: "#ff9f0a",
 };
 
 const base = {
-  style: { background: "transparent", color: C.faint, fontFamily: "Public Sans, Inter, system-ui, sans-serif", fontSize: "12px" },
+  style: { background: "transparent", color: C.faint, fontFamily: "Inter, -apple-system, system-ui, sans-serif", fontSize: "12px" },
   marginLeft: 48,
   marginRight: 12,
   marginTop: 18,
@@ -100,7 +100,7 @@ export function rawChart(s: Series, unit: string, width: number): SVGSVGElement 
   });
 }
 
-const CELL = { sube: C.data, baja: C.data, indicio: "rgba(242,179,61,0.35)", sin_evidencia: C.raised, insuficiente: C.surface };
+const CELL = { sube: C.data, baja: C.data, indicio: "rgba(255,159,10,0.35)", sin_evidencia: C.raised, insuficiente: C.surface };
 
 /** El mapa de ventanas: cada celda es un intervalo de años; el color es lo que concluirías. */
 /** Con cuántos años se ve: por cada largo de intervalo, qué parte de los intervalos detecta la tendencia de la serie completa. */
@@ -649,7 +649,8 @@ export function quadrant(audits: Audit[], names: Record<string, string>, width: 
 }
 
 
-/** Línea temporal protagonista: cada mes frente a lo normal. Oculta hasta que la persona predice. */
+/** Serie mes a mes al estilo Apple Stocks: área con degradado (seco en naranja, húmedo en azul), media de 3 meses,
+ *  sequías como bandas suaves, tendencia con su valor al final y la peor sequía anotada. Oculta hasta la apuesta. */
 export function monthTimeline(s: Series, stressHigh: boolean, show: boolean, width: number,
   bands: { a: string; b: string }[] = []): SVGSVGElement | HTMLElement {
   const t = T();
@@ -657,64 +658,79 @@ export function monthTimeline(s: Series, stressHigh: boolean, show: boolean, wid
   const y0 = years[0];
   const y1 = years[years.length - 1];
   const at = (m: string) => new Date(`${m.slice(0, 7)}-15T00:00:00`);
-  const rows = s.meses
-    .map((m, i) => ({ date: at(m), v: s.anomalia_mensual[i] }))
-    .filter((r): r is { date: Date; v: number } => r.v !== null);
+  const raw = s.meses.map((m, i) => ({ date: at(m), v: s.anomalia_mensual[i] }));
+  // Media móvil de 3 meses, solo para dibujar la línea (los valores mensuales siguen en el cursor)
+  const rows = raw.map((r, i) => {
+    const w = raw.slice(Math.max(0, i - 1), i + 2).map((x) => x.v).filter((x): x is number => x !== null);
+    return { date: r.date, v: w.length ? w.reduce((a, b) => a + b, 0) / w.length : null };
+  }).filter((r): r is { date: Date; v: number } => r.v !== null);
   const abs = rows.map((r) => Math.abs(r.v)).sort((a, b) => a - b);
-  const lim = (abs[Math.floor(abs.length * 0.98)] || 1) * 1.08;
+  const lim = (abs[Math.floor(abs.length * 0.99)] || 1) * 1.15;
   const clip = (v: number) => Math.max(-lim, Math.min(lim, v));
-  const stress = (v: number) => (stressHigh ? v > 0 : v < 0);
   const narrow = width < 560;
-  const bw = Math.max(1, ((width - 52) / rows.length) * 0.7);
-  // La tendencia está ajustada sobre medias anuales: el valor del año y cae a mitad de ese año
   const tr = s.completa;
   const trend = [y0, y1].map((y) => ({ date: new Date(`${y}-07-01T00:00:00`), v: tr.intercepto + (tr.pendiente_decada / 10) * y }));
-  return Plot.plot({
+  const worst = rows.reduce((m, r) => ((stressHigh ? r.v > m.v : r.v < m.v) ? r : m), rows[0]);
+  const badFill = "url(#tl-bad)";
+  const goodFill = "url(#tl-good)";
+  const plot = Plot.plot({
     ...base,
+    style: { ...base.style, fontFamily: "Inter, -apple-system, system-ui, sans-serif" },
     width,
-    height: narrow ? 170 : 200,
-    marginLeft: 44,
-    marginRight: 8,
-    x: { domain: [new Date(`${y0}-01-01T00:00:00`), new Date(`${y1 + 1}-01-01T00:00:00`)], ticks: narrow ? 4 : 12, tickFormat: "%Y", label: null },
-    y: { domain: [-lim, lim], ticks: 4, grid: true, label: null, tickFormat: (v: number) => fmt(v, Math.abs(lim) < 1 ? 2 : 0) },
+    height: narrow ? 180 : 210,
+    marginLeft: 40,
+    marginRight: narrow ? 8 : 120,
+    x: { domain: [new Date(`${y0}-01-01T00:00:00`), new Date(`${y1 + 1}-01-01T00:00:00`)], ticks: narrow ? 4 : 8, tickFormat: "%Y", label: null, tickSize: 0 },
+    y: { domain: [-lim, lim], ticks: 3, grid: true, label: null, tickSize: 0, tickFormat: (v: number) => (v === 0 ? "0" : fmt(v, Math.abs(lim) < 1 ? 2 : 0)) },
     marks: [
-      // Sequías (SPI-3) de la zona como franjas de fondo; el fin cubre su mes completo
-      Plot.rect(bands, { x1: (d: { a: string }) => new Date(`${d.a.slice(0, 7)}-01T00:00:00`),
+      show ? Plot.rect(bands, { x1: (d: { a: string }) => new Date(`${d.a.slice(0, 7)}-01T00:00:00`),
         x2: (d: { b: string }) => { const e = new Date(`${d.b.slice(0, 7)}-01T00:00:00`); e.setMonth(e.getMonth() + 1); return e; },
-        fill: "#2c2c31" }),
-      Plot.ruleY([0], { stroke: C.control }),
-      show ? Plot.ruleX(rows, { x: "date", y1: 0, y2: (r: { v: number }) => clip(r.v), stroke: (r: { v: number }) => (stress(r.v) ? C.data : "#6b6f74"), strokeWidth: bw }) : null,
-      show ? Plot.line(trend, { x: "date", y: "v", stroke: C.ink, strokeWidth: 2.5 }) : null,
-      show ? null : Plot.text([0], { frameAnchor: "middle", dy: -18, text: () => t.tlHidden, fill: C.muted, fontSize: narrow ? 13 : 15 }),
+        fill: "#ff453a", fillOpacity: 0.12, rx: 4 }) : null,
+      Plot.ruleY([0], { stroke: "rgba(235,235,245,.25)" }),
+      show ? Plot.areaY(rows, { x: "date", y1: 0, y2: (r: { v: number }) => Math.min(0, clip(r.v)), fill: stressHigh ? goodFill : badFill, curve: "monotone-x" }) : null,
+      show ? Plot.areaY(rows, { x: "date", y1: 0, y2: (r: { v: number }) => Math.max(0, clip(r.v)), fill: stressHigh ? badFill : goodFill, curve: "monotone-x" }) : null,
+      show ? Plot.lineY(rows, { x: "date", y: (r: { v: number }) => clip(r.v), stroke: "rgba(255,255,255,.85)", strokeWidth: 1.4, curve: "monotone-x" }) : null,
+      show ? Plot.line(trend, { x: "date", y: "v", stroke: "#ffffff", strokeWidth: 2.5, strokeLinecap: "round" }) : null,
+      show && !narrow ? Plot.text([trend[1]], { x: "date", y: "v", text: () => `${fmtSigned(tr.pendiente_decada, 1)} ${t.factPerDecade}`, dx: 10, textAnchor: "start", fill: "#ffffff", fontSize: 13, fontWeight: 600 }) : null,
+      show ? Plot.dot([worst], { x: "date", y: (r: { v: number }) => clip(r.v), r: 4.5, fill: "#ff453a", stroke: "#000", strokeWidth: 2 }) : null,
+      show && !narrow ? Plot.text([worst], { x: "date", y: (r: { v: number }) => clip(r.v), text: (r: { date: Date }) => `${r.date.getFullYear()}-${String(r.date.getMonth() + 1).padStart(2, "0")}`,
+        dy: stressHigh ? -12 : 14, fill: "#ff453a", fontSize: 12, fontWeight: 600 }) : null,
+      show ? null : Plot.text([0], { frameAnchor: "middle", dy: -18, text: () => t.tlHidden, fill: "rgba(235,235,245,.6)", fontSize: narrow ? 13 : 15 }),
     ],
-  });
+  }) as SVGSVGElement;
+  plot.insertAdjacentHTML("afterbegin", `<defs>
+    <linearGradient id="tl-bad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9f0a" stop-opacity=".15"/><stop offset="1" stop-color="#ff453a" stop-opacity=".75"/></linearGradient>
+    <linearGradient id="tl-good" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#0a84ff" stop-opacity=".1"/><stop offset="1" stop-color="#0a84ff" stop-opacity=".6"/></linearGradient></defs>`);
+  return plot;
 }
 
-/** Incertidumbre a la vista: el rango probable de la pendiente frente al cero ("sin cambio"). */
+/** Rango de la tendencia al estilo Apple Weather: cápsula con degradado, el punto en la estimación y el cero marcado. */
 export function uncertaintyBar(tr: Trend, digits: number, unit: string, width: number): SVGSVGElement | HTMLElement {
   const t = T();
   const [lo, hi] = tr.ic95_decada;
   const est = tr.pendiente_decada;
   const a = Math.min(lo, 0, est);
   const b = Math.max(hi, 0, est);
-  const pad = (b - a) * 0.12 || 1;
-  return Plot.plot({
-    ...base,
-    width,
-    height: 118,
-    marginLeft: 18,
-    marginRight: 18,
-    marginTop: 30,
-    marginBottom: 30,
-    x: { domain: [a - pad, b + pad], ticks: [], tickSize: 0, label: `${unit} ${t.factPerDecade}`, labelAnchor: "center", labelOffset: 22 },
-    y: { domain: [-1, 1], axis: null },
-    marks: [
-      Plot.ruleX([0], { stroke: C.muted, strokeDasharray: "3,3" }),
-      // "0 = sin cambio" debajo de la barra, del lado que tenga sitio (arriba van los extremos del rango)
-      Plot.text([0], { x: (d: number) => d, y: -0.95, text: () => t.uncZero, textAnchor: 0 > (a + b) / 2 ? "end" : "start", dx: 0 > (a + b) / 2 ? -6 : 6, fill: C.muted, fontSize: 12 }),
-      Plot.link([{ x1: lo, x2: hi }], { x1: "x1", x2: "x2", y1: 0, y2: 0, stroke: C.data, strokeOpacity: 0.38, strokeWidth: 16, strokeLinecap: "round" }),
-      Plot.dot([est], { x: (d: number) => d, y: 0, r: 8, fill: C.data, stroke: C.ground, strokeWidth: 2 }),
-      Plot.text([lo, hi], { x: (d: number) => d, y: 0, text: (d: number) => fmtSigned(d, digits), dy: -20, fill: C.second, fontSize: 12 }),
-    ],
-  });
+  const pad = (b - a) * 0.08 || 1;
+  const d0 = a - pad, d1 = b + pad;
+  const L = 14, R = width - 14, H = 92, cy = 40;
+  const X = (v: number) => L + ((v - d0) / (d1 - d0)) * (R - L);
+  const neg = est < 0;
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${width} ${H}`);
+  svg.setAttribute("width", String(width));
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", `${t.uncH}: ${fmtSigned(lo, digits)} ${t.to} ${fmtSigned(hi, digits)} ${unit}`);
+  svg.innerHTML = `
+    <defs><linearGradient id="ub-g" x1="0" x2="1"><stop offset="0" stop-color="${neg ? "#ff453a" : "#0a84ff"}"/><stop offset="1" stop-color="${neg ? "#ff9f0a" : "#64d2ff"}"/></linearGradient></defs>
+    <rect x="${L}" y="${cy - 5}" width="${R - L}" height="10" rx="5" fill="rgba(120,120,128,.24)"/>
+    <rect class="ub-fill" x="${X(lo)}" y="${cy - 5}" width="${Math.max(10, X(hi) - X(lo))}" height="10" rx="5" fill="url(#ub-g)"/>
+    <line x1="${X(0)}" x2="${X(0)}" y1="${cy - 14}" y2="${cy + 14}" stroke="rgba(235,235,245,.6)" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="${X(0)}" y="${cy - 20}" text-anchor="${X(0) > width - 70 ? "end" : X(0) < 70 ? "start" : "middle"}" font-size="11" fill="rgba(235,235,245,.6)">${t.uncZero}</text>
+    <circle class="ub-dot" cx="${X(est)}" cy="${cy}" r="7" fill="#fff" stroke="#000" stroke-width="2.5"/>
+    <text x="${X(lo)}" y="${cy + 26}" text-anchor="start" font-size="12" font-weight="600" fill="#fff">${fmtSigned(lo, digits)}</text>
+    <text x="${X(hi)}" y="${cy + 26}" text-anchor="end" font-size="12" font-weight="600" fill="#fff">${fmtSigned(hi, digits)}</text>
+    <text x="${(L + R) / 2}" y="${H - 4}" text-anchor="middle" font-size="11" fill="rgba(235,235,245,.6)">${unit} ${t.factPerDecade}</text>`;
+  return svg;
 }

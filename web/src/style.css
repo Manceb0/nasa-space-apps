@@ -12,8 +12,8 @@
   --text: #ffffff;
   --muted: #b4b4b4;
   --faint: #949494;
-  --data: #f2b33d;
-  --data-soft: rgba(242, 179, 61, 0.16);
+  --data: #ff9f0a;
+  --data-soft: rgba(255, 159, 10, 0.16);
   --second: #e6e6e6;
   --negative: #e5484d;
   --radius-card: 20px;
@@ -32,7 +32,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--ground); color: var(--text); }
 body {
-  font-family: "Public Sans", Inter, system-ui, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   font-size: var(--fs-body);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -102,7 +102,7 @@ details.card { display: block; }
 .map-card { display: flex; flex-direction: column; }
 .map-card figcaption, .caption { margin-top: 10px; font-size: var(--fs-small); color: var(--muted); }
 .leaflet-container { font-family: inherit; background: var(--raised); }
-.leaflet-container, .leaflet-container * { font-family: "Public Sans", Inter, system-ui, sans-serif; }
+.leaflet-container, .leaflet-container * { font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
 
 /* Predicción */
 .q { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; margin-top: 4px; }
@@ -323,9 +323,9 @@ details.card summary { cursor: pointer; font-weight: 600; font-size: var(--fs-se
   --text: #ffffff;
   --muted: #a9abb0;
   --faint: #8a8c92;
-  --data: #f2b33d;
-  --accent: #f2b33d;
-  --negative: #e5566f;
+  --data: #ff9f0a;
+  --accent: #ff9f0a;
+  --negative: #ff453a;
   --positive: #44a282;
   --radius-card: 6px;
   --gap: 24px;
@@ -386,7 +386,7 @@ main { max-width: 1480px; padding: 24px 32px 64px; }
 .map-pnl .leaflet-control-attribution { background: var(--surface); color: var(--faint); font-size: 11px; }
 .map-pnl .leaflet-control-attribution a { color: var(--muted); }
 .zone-tip { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 4px; box-shadow: none;
-  font: 600 12px/1.3 "Public Sans", Inter, system-ui, sans-serif; font-variant-numeric: tabular-nums; padding: 4px 8px; }
+  font: 600 12px/1.3 "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-variant-numeric: tabular-nums; padding: 4px 8px; }
 .zone-tip.on { border-bottom-color: var(--accent); }
 .zone-tip::before { display: none; }
 
@@ -610,19 +610,19 @@ main { padding-top: 88px; }
   background: rgba(28, 28, 34, 0.62); -webkit-backdrop-filter: blur(20px) saturate(1.6); backdrop-filter: blur(20px) saturate(1.6);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), inset 0 1px 0 rgba(255,255,255,.07), 0 14px 30px -18px rgba(0,0,0,.8); }
 .pill-select { gap: 8px; padding: 0 14px 0 14px; color: #f4f4f5; cursor: pointer; }
-.pill-select:focus-within { box-shadow: inset 0 0 0 1px rgba(242,179,61,.7), 0 14px 30px -18px rgba(0,0,0,.8); }
+.pill-select:focus-within { box-shadow: inset 0 0 0 1px rgba(255,159,10,.7), 0 14px 30px -18px rgba(0,0,0,.8); }
 .pill-select select { appearance: none; -webkit-appearance: none; border: 0; background: transparent; color: #f4f4f5; font: 600 14px/1 inherit;
   padding: 0 22px 0 0; height: 100%; cursor: pointer; outline: none; margin-right: -18px; }
 .pill-select select option, .pill-select select optgroup { background: #17171b; color: #f4f4f5; }
 .pill-lab { font-size: 12px; color: rgba(244,244,245,.6); }
 .pill-chev { width: 12px; height: 12px; color: rgba(244,244,245,.7); pointer-events: none; }
-.pill-ico { width: 15px; height: 15px; color: #f2b33d; }
+.pill-ico { width: 15px; height: 15px; color: #ff9f0a; }
 .icon-seg { padding: 4px; gap: 2px; }
 .icon-seg button { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent;
   color: rgba(244,244,245,.64); font: 500 13px/1 inherit; transition: background .25s, color .25s; }
 .icon-seg button svg { width: 17px; height: 17px; }
 .icon-seg button:hover { color: #f4f4f5; }
-.icon-seg button.on { background: #f2b33d; color: #121016; }
+.icon-seg button.on { background: #ff9f0a; color: #121016; }
 .con-head .pills { margin-left: auto; }
 
 /* ══════ Línea de tiempo de sequías ══════ */
@@ -636,7 +636,7 @@ main { padding-top: 88px; }
 .rb-ev span { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); white-space: nowrap; font: 600 12px/1 inherit; color: #fff;
   background: rgba(18,20,24,.85); padding: 4px 7px; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity .2s; }
 .rb-ev:hover span, .rb-ev:focus-visible span, .rb-ev.on span { opacity: 1; }
-.rb-ev.on i { transform: scale(1.6); box-shadow: 0 0 0 3px rgba(18,20,24,.9), 0 0 0 5px #f2b33d; }
+.rb-ev.on i { transform: scale(1.6); box-shadow: 0 0 0 3px rgba(18,20,24,.9), 0 0 0 5px #ff9f0a; }
 .rb-bottom .rb-lanes { display: none; }
 
 /* Mapa visible: imagen nítida, tinte suave y menos velo */
@@ -648,7 +648,7 @@ main { padding-top: 88px; }
   .icon-seg button span { display: none; }
   .pills { width: 100%; }
 }
-.rb .zone-tip.on, .map-pnl .zone-tip.on { color: #fff; background: rgba(18,20,24,.88); border-color: rgba(255,255,255,.12); border-bottom-color: #f2b33d; }
+.rb .zone-tip.on, .map-pnl .zone-tip.on { color: #fff; background: rgba(18,20,24,.88); border-color: rgba(255,255,255,.12); border-bottom-color: #ff9f0a; }
 
 /* Paneles flotantes que se contraen */
 .col-btn { display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 999px; vertical-align: middle;
@@ -700,7 +700,7 @@ main { padding-top: 88px; }
 .story { position: absolute; z-index: 4; left: 32px; bottom: 40px; width: min(560px, calc(100% - 64px)); padding: 22px 24px 20px; border-radius: 20px;
   background: rgba(14, 15, 18, 0.72); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border: 1px solid #23252a; }
 .story-bar { height: 2px; background: rgba(255,255,255,.12); border-radius: 2px; overflow: hidden; margin-bottom: 16px; }
-.story-bar span { display: block; height: 100%; width: 0; background: #f2b33d; transition: width .9s cubic-bezier(.22,1,.36,1); }
+.story-bar span { display: block; height: 100%; width: 0; background: #ff9f0a; transition: width .9s cubic-bezier(.22,1,.36,1); }
 .story-h { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
 .story-p { margin-top: 8px; font-size: 16px; line-height: 1.5; color: #e6e6e6; min-height: 1.5em; }
 .story .txt-btn { margin-top: 16px; }
@@ -714,7 +714,7 @@ main { padding-top: 88px; }
 .st-draw { stroke-dasharray: 2400; stroke-dashoffset: 2400; animation: stDraw 2s cubic-bezier(.65,0,.35,1) forwards; }
 @keyframes stDraw { to { stroke-dashoffset: 0; } }
 .st-ring { pointer-events: none; }
-.st-ring::before, .st-ring::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid #f2b33d; animation: stRing 2.2s cubic-bezier(.22,1,.36,1) infinite; }
+.st-ring::before, .st-ring::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid #ff9f0a; animation: stRing 2.2s cubic-bezier(.22,1,.36,1) infinite; }
 .st-ring::after { animation-delay: 1.1s; }
 @keyframes stRing { from { transform: scale(.2); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
 .rb-map path.leaflet-interactive { transition: fill-opacity .45s ease, fill .45s ease; }
@@ -807,15 +807,15 @@ main { padding-top: 88px; }
 .t3-site { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .t3-dot { display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; cursor: pointer; }
 .t3-dot i { position: relative; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(14,15,18,.85); }
-.t3-site.on .t3-dot i { background: #f2b33d; }
+.t3-site.on .t3-dot i { background: #ff9f0a; }
 .t3-dot i::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid currentColor; color: #fff; animation: t3Pulse 2s cubic-bezier(.22,1,.36,1) infinite; }
-.t3-site.on .t3-dot i::after { color: #f2b33d; }
+.t3-site.on .t3-dot i::after { color: #ff9f0a; }
 @keyframes t3Pulse { from { transform: scale(.6); opacity: 1; } to { transform: scale(2.2); opacity: 0; } }
-.t3-dot span { font: 600 12px/1 "Public Sans", sans-serif; color: #fff; background: rgba(14,15,18,.82); padding: 6px 9px; border-radius: 999px; white-space: nowrap; transition: background .2s; }
-.t3-dot:hover span, .t3-dot:focus-visible span { background: #f2b33d; color: #121016; }
-.t3-go { display: none; margin-left: 22px; font: 600 12px/1 "Public Sans", sans-serif; color: #121016; background: #f2b33d; padding: 7px 11px; border-radius: 999px; text-decoration: none; white-space: nowrap; animation: panelIn .5s cubic-bezier(.22,1,.36,1) both; }
+.t3-dot span { font: 600 12px/1 "Inter", -apple-system, sans-serif; color: #fff; background: rgba(14,15,18,.82); padding: 6px 9px; border-radius: 999px; white-space: nowrap; transition: background .2s; }
+.t3-dot:hover span, .t3-dot:focus-visible span { background: #ff9f0a; color: #121016; }
+.t3-go { display: none; margin-left: 22px; font: 600 12px/1 "Inter", -apple-system, sans-serif; color: #121016; background: #ff9f0a; padding: 7px 11px; border-radius: 999px; text-decoration: none; white-space: nowrap; animation: panelIn .5s cubic-bezier(.22,1,.36,1) both; }
 .t3-site.open .t3-go { display: inline-block; }
-.t3-pop .maplibregl-popup-content { background: rgba(14,15,18,.9); color: #fff; font: 600 12px/1.3 "Public Sans", sans-serif; padding: 7px 10px; border-radius: 10px; box-shadow: none; border: 1px solid #23252a; }
+.t3-pop .maplibregl-popup-content { background: rgba(14,15,18,.9); color: #fff; font: 600 12px/1.3 "Inter", -apple-system, sans-serif; padding: 7px 10px; border-radius: 10px; box-shadow: none; border: 1px solid #23252a; }
 .t3-pop .maplibregl-popup-tip { display: none; }
 .t3-hint { position: absolute; z-index: 6; left: 50%; bottom: 360px; transform: translateX(-50%); display: flex; align-items: center; gap: 12px;
   background: rgba(14,15,18,.72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid #23252a; border-radius: 999px;
@@ -829,3 +829,75 @@ main { padding-top: 88px; }
 .console .maplibregl-ctrl-top-right .maplibregl-ctrl-group { margin: 250px 440px 0 0 !important; }
 .console .t3-hint { left: 32px; transform: none; bottom: 360px; }
 @media (max-width: 900px) { .console .t3-hint { left: 12px; bottom: 12px; } .console .maplibregl-ctrl-top-right .maplibregl-ctrl-group { margin: 12px 12px 0 0 !important; } }
+
+/* ══════════════ Sistema de diseño · estilo Apple (modo oscuro) ══════════════
+   Tipo: Inter con tracking negativo en tamaños grandes. Colores de sistema de Apple.
+   Materiales: vidrio con desenfoque y saturación, borde de 0,5 px. Movimiento: curva tipo resorte. */
+:root {
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --label: #ffffff; --label2: rgba(235, 235, 245, .62); --label3: rgba(235, 235, 245, .32);
+  --sep: rgba(84, 84, 88, .55); --fill: rgba(120, 120, 128, .2);
+  --sys-orange: #ff9f0a; --sys-red: #ff453a; --sys-blue: #0a84ff; --sys-green: #30d158;
+  --material: rgba(28, 28, 30, .58); --material-thick: rgba(22, 22, 24, .78);
+  --spring: cubic-bezier(.32, .72, 0, 1);
+  --data: #ff9f0a; --accent: #ff9f0a; --negative: #ff453a; --positive: #30d158;
+  --muted: rgba(235, 235, 245, .62); --faint: rgba(235, 235, 245, .45);
+  --ground: #000000;
+}
+html, body { background: #000; }
+body, button, select, input { font-family: var(--font); font-feature-settings: "cv11", "ss01", "tnum"; }
+body { letter-spacing: -0.006em; }
+h1, h2, .story-h, .field-month, .fig b, .rb-verdict, .claim { letter-spacing: -0.028em; }
+h1 { font-weight: 700; }
+.field-month { font-weight: 800; letter-spacing: -0.045em; }
+
+/* Materiales: todas las superficies flotantes comparten el mismo vidrio */
+.console .pnl:not(.map-pnl), .rb-panel, .rb-bottom, .rb-big, .story, .pill-select, .icon-seg, .t3-hint,
+.pill-nav__surface, .maplibregl-ctrl-group {
+  background: var(--material) !important; -webkit-backdrop-filter: blur(30px) saturate(1.8) !important; backdrop-filter: blur(30px) saturate(1.8) !important;
+  border: .5px solid rgba(255, 255, 255, .14) !important;
+}
+.console .pnl:not(.map-pnl), .rb-panel, .rb-bottom, .rb-big, .story { border-radius: 24px !important; }
+.pnl-h h2 { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+.meta { color: var(--label2); }
+
+/* Controles: píldoras de iOS */
+.pred-b { height: 46px; border: 0; background: var(--fill); font-weight: 600; transition: background .3s var(--spring), transform .3s var(--spring); }
+.pred-b:hover { background: rgba(120, 120, 128, .32); }
+.pred-b:active { transform: scale(.97); }
+.pred-b .arw { color: var(--sys-orange); }
+.txt-btn { border: 0 !important; background: var(--fill) !important; font-weight: 600; transition: background .3s var(--spring), transform .3s var(--spring); }
+.txt-btn:hover:not(:disabled) { background: rgba(120, 120, 128, .32) !important; }
+.txt-btn:active { transform: scale(.97); }
+.icon-seg button.on { background: #fff; color: #000; }
+.pill-nav { --pn-pill: #ffffff; --pn-pill-ink: #000000; --pn-dot: #ff9f0a; }
+
+/* Cifras grandes como en las apps de Apple */
+.fig b { font-size: 44px; font-weight: 700; color: #fff; }
+.fig span { color: var(--label2); font-size: 15px; }
+.fb.yes { color: var(--sys-green); }
+.kstrip { border-top: .5px solid var(--sep); }
+.kstrip p + p { border-left: .5px solid var(--sep); }
+.kstrip b { font-size: 22px; letter-spacing: -0.02em; }
+.notice { background: rgba(255, 159, 10, .14); color: #ffb340; border-radius: 12px; }
+
+/* Matriz de sequías: celdas redondeadas como en Salud/Actividad */
+.console .dm-row { height: 13px; gap: 0; }
+.console .dm { height: 13px; }
+.console .dm::before { width: 11px; height: 11px; border-radius: 3.5px; transform: translate(-50%, -50%); transition: transform .35s var(--spring), box-shadow .2s; }
+.console .dm:hover::before { transform: translate(-50%, -50%) scale(1.35); }
+.console .dm.on::before { transform: translate(-50%, -50%) scale(1.35); box-shadow: 0 0 0 2px #000, 0 0 0 3.5px #fff; }
+.dm.dry::before { animation: none; }
+.dm-y, .dm-m { color: var(--label3); font-size: 11px; }
+
+/* Leyenda del campo con las muestras del degradado */
+.field-key i { width: 22px; height: 8px; border-radius: 4px; margin-right: 0; }
+.field-month.flip { animation: flip .55s var(--spring); }
+
+/* Gráficas: entrada que se dibuja con la curva de Apple */
+.tl-plot.draw svg { animation: wipe 1.8s var(--spring) both; }
+#unc .ub-fill { transform-origin: left center; animation: ubGrow 1s var(--spring) .2s both; }
+#unc .ub-dot { animation: ubPop .6s var(--spring) 1s both; transform-box: fill-box; transform-origin: center; }
+@keyframes ubGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes ubPop { from { transform: scale(0); } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { #unc .ub-fill, #unc .ub-dot { animation: none; } }

@@ -16,8 +16,8 @@ const D0 = -90;
 const D1 = 540;
 const ZLO = -4;
 const ZHI = 3;
-export const GREEN = "#8ef0c6";
-export const FUNC = "#f2b33d";
+export const GREEN = "#30d158";
+export const FUNC = "#ff9f0a";
 const L = (es: string, en: string) => (getLang() === "es" ? es : en);
 
 export type Fn = "gpp_modelo" | "lst_menos_aire" | "ndii_agua";
@@ -137,7 +137,7 @@ export function ribbonStage(host: HTMLElement, onSelect: (i: number) => void, on
     ctx.clearRect(0, 0, W, H);
     labelHits.length = 0;
     if (!lanes.length) return;
-    ctx.font = "12px 'Public Sans', Inter, system-ui, sans-serif";
+    ctx.font = "12px Inter, -apple-system, system-ui, sans-serif";
 
     // Suelo: una retícula de puntos cada 30 días por sequía (el entramado real de tiempo × sequías)
     for (let i = 0; i < lanes.length; i++) {
@@ -150,9 +150,9 @@ export function ribbonStage(host: HTMLElement, onSelect: (i: number) => void, on
     // El lugar en el mapa, unido al inicio de su cinta elegida
     if (anchor) {
       const o = project(X(0), FLOOR, Zl(sel));
-      line([[anchor[0], anchor[1], 0], o], "rgba(242,179,61,0.55)", 1, [4, 4]);
+      line([[anchor[0], anchor[1], 0], o], "rgba(255,159,10,0.55)", 1, [4, 4]);
       ctx.beginPath(); ctx.arc(anchor[0], anchor[1], 13, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(242,179,61,0.6)"; ctx.lineWidth = 1; ctx.stroke();
+      ctx.strokeStyle = "rgba(255,159,10,0.6)"; ctx.lineWidth = 1; ctx.stroke();
     }
     // Eje de días al frente
     const front = Zl(lanes.length - 1) + 0.25;
@@ -203,14 +203,14 @@ export function ribbonStage(host: HTMLElement, onSelect: (i: number) => void, on
       const lp = project(X(D0) - 0.06, FLOOR, z);
       ctx.textAlign = "right";
       ctx.fillStyle = on ? "#ffffff" : "rgba(169,171,176,0.8)";
-      ctx.font = `${on ? 600 : 400} 12px 'Public Sans', Inter, system-ui, sans-serif`;
+      ctx.font = `${on ? 600 : 400} 12px Inter, -apple-system, system-ui, sans-serif`;
       if (on || i === 0 || i === lanes.length - 1) ctx.fillText(ln.label, lp[0], lp[1] + 4);
       labelHits.push({ x: lp[0] - 24, y: lp[1], i });
     }
     // La escala de z en la cinta elegida
     {
       const z = Zl(sel);
-      ctx.textAlign = "right"; ctx.font = "11px 'Public Sans', Inter, system-ui, sans-serif";
+      ctx.textAlign = "right"; ctx.font = "11px Inter, -apple-system, system-ui, sans-serif";
       for (const v of [-2, -1, 0, 2]) {
         const p = project(X(D0) - 0.02, Y(v), z);
         const q = project(X(D0), Y(v), z);
@@ -276,7 +276,7 @@ export function ribbonStage(host: HTMLElement, onSelect: (i: number) => void, on
 export function ribbon2D(ln: Lane, fnLabel: string, width: number, height = 300): SVGSVGElement | HTMLElement {
   const rows = ln.rows;
   const marks: Plot.Markish[] = [
-    Plot.rectX([0], { x1: 0, x2: Math.min(D1, ln.endDay), fill: "#e5566f", fillOpacity: 0.16 }),
+    Plot.rectX([0], { x1: 0, x2: Math.min(D1, ln.endDay), fill: "#ff453a", fillOpacity: 0.16 }),
     Plot.ruleY([-1], { stroke: "#ffffff", strokeOpacity: 0.35, strokeDasharray: "3,4" }),
     Plot.differenceY(rows, { x: "day", y1: "f", y2: "g", positiveFill: GREEN, negativeFill: FUNC, fillOpacity: 0.32, stroke: "none" }),
     Plot.line(rows, { x: "day", y: "f", stroke: FUNC, strokeWidth: 2 }),
@@ -295,7 +295,7 @@ export function ribbon2D(ln: Lane, fnLabel: string, width: number, height = 300)
     marginLeft: 40,
     marginTop: 26,
     marginBottom: 34,
-    style: { background: "transparent", color: "#8a8c92", fontFamily: "Public Sans, Inter, system-ui, sans-serif", fontSize: "12px" },
+    style: { background: "transparent", color: "#8a8c92", fontFamily: "Inter, -apple-system, system-ui, sans-serif", fontSize: "12px" },
     x: { domain: [D0, D1], label: L("días desde el inicio de la sequía →", "days since the drought began →"), ticks: [0, 90, 180, 270, 360, 450, 540] },
     y: { domain: [ZLO, ZHI], label: L("↑ z (desviación de lo normal)", "↑ z (departure from normal)"), ticks: [-4, -2, -1, 0, 2], grid: true },
     marks,

@@ -48,7 +48,7 @@ const POINT_ORDER = ["montecristimontesecoa", "montecristimontesecob", "sierramo
 const pointName = (id: string) => POINT_NAMES[id.replace(/_/g, "")] ?? id;
 const NAMES = Object.fromEntries(POINT_ORDER.map((id) => [id, pointName(id)]));
 const WORSE_IS_HIGH: Record<string, boolean> = { modis_ndvi: false, modis_gpp: false, modis_lst: true };
-const AMBER = "#f2b33d";
+const AMBER = "#ff9f0a";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 
@@ -160,8 +160,10 @@ async function viewInvestigate() {
   const dmCell = (m: string) => {
     const v = spiOf.get(m) ?? null;
     const dry = v !== null && v <= -1;
-    const col = v === null ? "#3a3a3e" : dry ? (v <= -2 ? "#e5566f" : "#ee8a5a") : v < 0 ? "#f2b33d" : "#6b6f74";
-    const size = v === null ? 0.35 : Math.min(1, 0.35 + Math.abs(v) / 2.6);
+    const col = v === null ? "rgba(120,120,128,.2)" : v < 0
+      ? `rgba(${v <= -1 ? "255,69,58" : "255,159,10"},${Math.min(1, 0.25 + (-v) / 2.2).toFixed(2)})`
+      : `rgba(10,132,255,${Math.min(0.5, 0.08 + v / 4).toFixed(2)})`;
+    const size = 1;
     return `<button class="dm ${dry ? "dry" : ""}" data-month="${m}" style="--s:${size.toFixed(2)};--c:${col}" title="${m} · SPI-3 ${v === null ? "—" : fmt(v, 2)}" aria-label="${m} SPI-3 ${v === null ? "—" : fmt(v, 2)}"></button>`;
   };
 
@@ -190,7 +192,7 @@ async function viewInvestigate() {
         <div class="field-hud" aria-live="polite">
           <p class="field-month num" id="f-month"></p>
           <p class="field-leg">${esc(LL("Lluvia del mes frente a lo normal. Cada punto es una celda IMERG de 0,1° (unos 11 km).", "Monthly rain against normal. Each dot is one 0.1° IMERG cell (about 11 km)."))}</p>
-          <p class="field-key"><i style="background:#e5566f"></i>${esc(LL("mucho más seca", "much drier"))}<i style="background:#f2b33d"></i>${esc(LL("más seca", "drier"))}<i style="background:#8ef0c6"></i>${esc(LL("más húmeda", "wetter"))}</p>
+          <p class="field-key"><i style="background:#ff453a"></i>${esc(LL("mucho más seca", "much drier"))}<i style="background:#ff9f0a"></i>${esc(LL("más seca", "drier"))}<i style="background:#0a84ff"></i>${esc(LL("más húmeda", "wetter"))}</p>
           <p class="field-src">NASA GPM IMERG V07 · Huffman et al. 2023</p>
         </div>
       </section>
@@ -309,7 +311,7 @@ async function viewInvestigate() {
     const stress = v !== null && (stressHigh ? v > 0 : v < 0);
     const k = v === null ? 0 : Math.min(1, Math.abs(v) / lim);
     for (const p of zone.paths) p.setStyle({ fillColor: stress ? AMBER : "#ffffff", fillOpacity: 0.12 + 0.6 * k });
-    t3?.tintZone(stress ? "#e5566f" : "#8ef0c6", 0.08 + 0.5 * k);
+    t3?.tintZone(stress ? "#ff453a" : "#0a84ff", 0.08 + 0.45 * k);
     if (zone.label) (zone.label as L.Rectangle).setTooltipContent(`${esc(zone.name)} · ${months[i]} · ${esc(val)}`);
   };
   const clearMonth = () => {
@@ -686,7 +688,7 @@ async function viewRibbon() {
           <span><i class="ln" style="background:${FUNC}"></i>${esc(fLabel)}</span>
           <span><i class="sq" style="background:${GREEN};opacity:.5"></i>${esc(LL("brecha: el verdor va delante", "gap: greenness leads"))}</span>
           <span><i class="sq" style="background:${FUNC};opacity:.5"></i>${esc(LL("brecha: la función va delante", "gap: function leads"))}</span>
-          <span><i class="sq" style="background:#e5566f;opacity:.7"></i>${esc(LL("sequía (SPI-3)", "drought (SPI-3)"))}</span>
+          <span><i class="sq" style="background:#ff453a;opacity:.7"></i>${esc(LL("sequía (SPI-3)", "drought (SPI-3)"))}</span>
           <span><i class="ln dash"></i>${esc(LL("recuperado: z ≥ −1", "recovered: z ≥ −1"))}</span>
         </div>
         <div class="rb-tools">
@@ -813,7 +815,7 @@ async function viewRibbon() {
     const cd = pp?.caja_datos && pp.caja_datos[0] !== pp.caja_datos[2] ? pp.caja_datos : pp?.caja_pedida ?? null;
     zoneLayer?.remove(); reqLayer?.remove();
     if (pp?.caja_pedida) reqLayer = L.rectangle(toB(pp.caja_pedida), { color: "#ffffff", weight: 1.5, dashArray: "5 6", fill: false, className: "st-draw" }).addTo(map);
-    if (cd) zoneLayer = L.rectangle(toB(cd), { color: FUNC, weight: 2.5, fillColor: "#e5566f", fillOpacity: 0, className: "st-draw" }).addTo(map);
+    if (cd) zoneLayer = L.rectangle(toB(cd), { color: FUNC, weight: 2.5, fillColor: "#ff453a", fillOpacity: 0, className: "st-draw" }).addTo(map);
     if (cd && region) {
       map.flyToBounds(toB(pp?.caja_pedida ?? cd).pad(0.9), { duration: dur });
       caption(LL(`${regionMeta(index, region).nombre}: aquí se midió la lluvia`, `${regionMeta(index, region).nombre}: where the rain was measured`),
@@ -829,7 +831,7 @@ async function viewRibbon() {
       for (let i = Math.max(0, a - 3); i <= Math.min(spi.meses.length - 1, b + 3); i++) {
         const v = spi.valores[i];
         const dry = v !== null && v < -1;
-        zoneLayer.setStyle({ fillColor: dry ? "#e5566f" : "#8a8c92", fillOpacity: v === null ? 0.05 : v < 0 ? Math.min(0.72, -v * 0.3) : 0.06 });
+        zoneLayer.setStyle({ fillColor: dry ? "#ff453a" : "#8a8c92", fillOpacity: v === null ? 0.05 : v < 0 ? Math.min(0.72, -v * 0.3) : 0.06 });
         stP.textContent = `${spi.meses[i]} · SPI-3 ${v === null ? "—" : fmtSigned(v, 2)}${dry ? LL(" · en sequía", " · in drought") : ""}`;
         if (!(await wait(560, my))) return;
       }
