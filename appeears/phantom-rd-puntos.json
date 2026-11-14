@@ -1,0 +1,26 @@
+{
+  "task_type": "point",
+  "task_name": "phantom-rd-puntos-v2",
+  "params": {
+    "dates": [
+      { "startDate": "01-01-2001", "endDate": "12-31-2024" }
+    ],
+    "layers": [
+      { "product": "MOD13Q1.061", "layer": "_250m_16_days_NDVI" },
+      { "product": "MOD13Q1.061", "layer": "_250m_16_days_EVI" },
+      { "product": "MOD13Q1.061", "layer": "_250m_16_days_pixel_reliability" },
+      { "product": "MOD11A2.061", "layer": "LST_Day_1km" },
+      { "product": "MOD11A2.061", "layer": "QC_Day" },
+      { "product": "MOD17A2HGF.061", "layer": "Gpp_500m" },
+      { "product": "MOD17A2HGF.061", "layer": "Psn_QC_500m" },
+      { "product": "MCD12Q1.061", "layer": "LC_Type1" }
+    ],
+    "coordinates": [
+      { "id": "montecristi_monte_seco_a", "category": "noroeste", "latitude": 19.87, "longitude": -71.50 },
+      { "id": "montecristi_monte_seco_b", "category": "noroeste", "latitude": 19.86, "longitude": -71.46 },
+      { "id": "sierra_montecristi", "category": "noroeste", "latitude": 19.80, "longitude": -71.42 },
+      { "id": "jaragua_comparacion_seco", "category": "comparacion", "latitude": 17.74, "longitude": -71.45 },
+      { "id": "cordillera_comparacion_humedo", "category": "comparacion", "latitude": 19.03, "longitude": -70.84 }
+    ]
+  }
+}

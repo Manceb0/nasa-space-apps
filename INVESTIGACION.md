@@ -66,6 +66,10 @@ tarda de minutos a horas en procesar una solicitud grande. Pidan primero un solo
 
 ## 3. Dónde mirar
 
+> Actualizado: los puntos ya verificados en imagen satelital, las fechas reales de cada producto,
+> los filtros de calidad y el ID del pedido enviado están en [appeears/METODO.md](appeears/METODO.md).
+> Lo de esta sección es el razonamiento inicial.
+
 El evento es en Santiago. Candidatos, de más a menos fuerte:
 
 1. **Línea Noroeste (Montecristi, Dajabón, Valverde):** bosque seco, sequías frecuentes, poca
