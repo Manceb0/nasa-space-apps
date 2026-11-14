@@ -1,0 +1,10 @@
+# PHANTOM · un solo comando en cmd, PowerShell o bash:
+#   docker compose run --rm phantom
+# Las rutas son relativas a esta carpeta; no hace falta $PWD ni %cd%.
+services:
+  phantom:
+    build: .
+    image: phantom:latest
+    volumes:
+      - ./out:/app/out                        # results/, figures/ y RESULTS.md
+      - ./data/appeears:/app/data/appeears    # CSV de AppEEARS (si ya están)

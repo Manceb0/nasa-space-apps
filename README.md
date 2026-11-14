@@ -35,21 +35,21 @@ La imagen corre las 22 pruebas durante el build: si alguna falla, no se construy
 La salida es idéntica byte a byte a la corrida local (comprobado en CSV y JSON; `RESULTS.md`
 solo cambia en la fecha de generación).
 
+Desde la carpeta del proyecto, igual en cmd, PowerShell o bash:
+
 ```bash
-docker build -t phantom .
+docker compose build
 ```
 
 ```bash
-docker run --rm -v "$PWD/out:/app/out" phantom
+docker compose run --rm phantom
 ```
 
-Con los datos MODIS, se monta además la carpeta de AppEEARS:
+Queda todo en `out/`: `results/`, `figures/` y `RESULTS.md`. Si `data/appeears/` ya tiene los CSV
+de AppEEARS, el mismo comando procesa también MODIS (la carpeta se monta en el contenedor).
 
-```bash
-docker run --rm -v "$PWD/out:/app/out" -v "$PWD/data/appeears:/app/data/appeears" phantom
-```
-
-Queda todo en `out/`: `results/`, `figures/` y `RESULTS.md`.
+Si `docker` responde "being used by another process", Docker Desktop todavía está arrancando:
+espera unos segundos y repite.
 
 El pipeline encuentra solo los archivos `*-MOD13Q1-061-results.csv`, `*-MOD11A2-061-results.csv`,
 `*-MOD17A2HGF-061-results.csv` y `*-MCD12Q1-061-results.csv`.
