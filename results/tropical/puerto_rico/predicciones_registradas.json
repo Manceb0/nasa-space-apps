@@ -1,0 +1,8 @@
+{
+  "registradas_utc": "2026-11-15T19:13:45.507545+00:00",
+  "corte": "2018-02-01",
+  "PR1": "En al menos 2 de cada 3 pluviómetros de PR con registro completo, la frecuencia de días >= 1 mm de IMERG (celda que contiene la estación) cae más que la del pluviómetro (después - antes de 2018-02).",
+  "PR2": "Mediana de (cambio IMERG - cambio pluviómetro) <= -3 pp.",
+  "PR3": "Los pluviómetros cambian poco: mediana de su cambio entre -2 y +2 pp.",
+  "refutacion": "Si los pluviómetros de PR caen tanto como IMERG, la pérdida de días no es del instrumento sino de la lluvia (o común a la región), y la conclusión de la RD se debilita."
+}

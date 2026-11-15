@@ -1,0 +1,19 @@
+{
+  "estaciones": 19,
+  "corte": "2018-02-01",
+  "imerg_cae_mas": 18,
+  "mediana_cambio_pp": {
+    "cambio_pluvio_pp_0.1": 1.7783119021306637,
+    "cambio_imerg_pp_0.1": -11.683270159731196,
+    "cambio_pluvio_pp_1.0": 0.6277313048508704,
+    "cambio_imerg_pp_1.0": -7.434940518315885,
+    "cambio_pluvio_pp_5.0": -0.9530608520702033,
+    "cambio_imerg_pp_5.0": -3.022867684489197
+  },
+  "mediana_diferencia_1mm_pp": -8.263419172133279,
+  "veredicto": {
+    "PR1": true,
+    "PR2": true,
+    "PR3": true
+  }
+}
