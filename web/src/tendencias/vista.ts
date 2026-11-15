@@ -7,9 +7,9 @@ import "./tendencias.css";
 import type maplibregl from "maplibre-gl";
 import { fmt } from "../text";
 import { terrain3d } from "../terrain3d";
-import { esc, LL, digits, loadTrends, num, sgn, type Sel, type TrendData } from "./datos";
-import { cellAt, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
-import { capsule, forest, seriesChart } from "./graficas";
+import { esc, LL, digits, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
+import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
+import { capsule, forest, PROD_COLOR, seriesChart } from "./graficas";
 import { bottomSheet, PEEK } from "./hoja";
 import { finding, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { timeline } from "./tiempo";
@@ -18,7 +18,7 @@ type Style = "3d" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { style: "oscuro" as Style, year: null as number | null };
+const ui = { style: "oscuro" as Style, year: null as number | null, show: "" as string };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -40,6 +40,7 @@ export async function viewTrends(view: HTMLElement) {
   view.innerHTML = `<div class="wx"><p class="wx-loading">${esc(LL("Cargando tendencias…", "Loading trends…"))}</p></div>`;
   const d = await loadTrends();
   if (!d.prods.includes(sel.src)) sel.src = d.prods[0];
+  if (!ui.show || (ui.show === "acuerdo" && !d.both)) ui.show = d.both ? "acuerdo" : sel.src;
   render(view, d);
 }
 
@@ -89,6 +90,10 @@ function render(view: HTMLElement, d: TrendData) {
       </aside>
       <section class="wx-mapcol" aria-label="${esc(LL("Mapa de tendencias", "Trend map"))}">
         <div id="map"></div>
+        <div class="seg map-data" role="radiogroup" aria-label="${esc(LL("Qué muestra el mapa", "What the map shows"))}">
+          ${d.both ? `<button data-show="acuerdo" role="radio">${esc(LL("¿Coinciden?", "Agree?"))}</button>` : ""}
+          ${d.prods.map((p) => `<button data-show="${p}" role="radio">${p}</button>`).join("")}
+        </div>
         <div class="seg map-sty" role="radiogroup" aria-label="${esc(LL("Estilo del mapa", "Map style"))}">
           ${([["oscuro", LL("Oscuro", "Dark")], ["3d", LL("Relieve", "Terrain")], ["plano", LL("Satélite", "Satellite")]] as const).map(([k, l]) => `<button data-sty="${k}" role="radio">${esc(l)}</button>`).join("")}
         </div>
@@ -111,13 +116,14 @@ function render(view: HTMLElement, d: TrendData) {
   const regName = () => (sel.reg === "DO" ? LL("República Dominicana", "Dominican Republic") : d.regName(sel.reg));
 
   // ── Región y hallazgo ──
+  const both = () => d.prods.map((p) => ({ p, t: d.tr(sel, p) })).filter((x): x is { p: string; t: Tr } => !!x.t);
   const renderHead = () => {
     $("wx-h1").textContent = regName();
     ($("r-sel") as HTMLSelectElement).value = sel.reg;
     $("finding").textContent = finding(d, sel, pick);
     if (layout === "phone") {
-      const t = d.tr(sel), ti = d.tier(sel), q = questionOf(sel.ind);
-      $("peek-ans").innerHTML = t ? `<span class="pa-q">${esc(LL(q.es, q.en))}</span><b class="num">${sgn(t.pendiente_decada)}</b> <span>${esc(vm().unidad_tendencia)}</span> <span class="chip" style="--c:${ti.color}">${esc(ti.label)}</span>` : "";
+      const ti = d.tier(sel), q = questionOf(sel.ind);
+      $("peek-ans").innerHTML = `<span class="pa-q">${esc(LL(q.es, q.en))}</span>${both().map(({ p, t }) => `<span class="pa-w"><i style="background:${PROD_COLOR[p]}"></i>${p} <b class="num">${sgn(t.pendiente_decada)}</b></span>`).join("")}<span class="chip" style="--c:${ti.color}">${esc(ti.label)}</span>`;
     }
   };
 
@@ -126,17 +132,16 @@ function render(view: HTMLElement, d: TrendData) {
     const q0 = questionOf(sel.ind);
     $("qs").innerHTML = QUESTIONS.map((q) => {
       const v = verdict(d, sel, pick[q.id]), on = q.id === q0.id;
-      const col = v.sig ? (v.dry ? "var(--dry)" : "var(--wet)") : "var(--faint)";
       return `<button class="q ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}">
         <span class="q-t">${esc(LL(q.es, q.en))}</span>
-        <span class="q-v ${v.sig ? "sig" : ""}" style="--c:${col}">${v.sig ? `<i>${v.up ? "▲" : "▼"}</i>` : ""}${esc(v.text)}</span>
+        <span class="q-v ${v.strong ? "sig" : ""}" style="--c:${v.color}"><i></i>${esc(v.text)}</span>
       </button>`;
     }).join("");
   };
 
-  // ── La respuesta: cifra, frase, escalera de evidencia, cápsula y números de la prueba ──
-  const countUp = (el: HTMLElement | null) => {
-    if (!el || RM()) return;
+  // ── La respuesta: los dos testigos, la frase según su acuerdo, la escalera de evidencia y la prueba ──
+  const countUp = (root: HTMLElement) => root.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
+    if (RM()) return;
     const to = Number(el.dataset.count), dg = Number(el.dataset.d), t0 = performance.now();
     const step = (now: number) => {
       const k = Math.min(1, (now - t0) / 700), v = to * (1 - Math.pow(1 - k, 3));
@@ -144,9 +149,9 @@ function render(view: HTMLElement, d: TrendData) {
       if (k < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
-  };
+  });
   const renderAnswer = () => {
-    const q = questionOf(sel.ind), v = vm(), t = d.tr(sel);
+    const q = questionOf(sel.ind), v = vm(), ws = both(), row = d.row(sel), cls = row?.clase ?? "";
     const ctl = `
       <div class="ans-ctl">
         <label class="pick"><span>${esc(LL("Medido como", "Measured as"))}</span><select id="v-sel">${q.vars.map((id) => `<option value="${id}" ${id === sel.ind ? "selected" : ""}>${esc(shortName(id))}</option>`).join("")}</select>${CHEV}</label>
@@ -154,36 +159,42 @@ function render(view: HTMLElement, d: TrendData) {
           ${Object.keys(d.V.periodos).map((k) => `<button data-per="${k}" role="radio" aria-checked="${k === sel.per}" class="${k === sel.per ? "on" : ""}" title="${esc(v.periodos.includes(k) ? d.lab(d.V.periodos[k]) : LL("El SPI solo existe para el año completo", "SPI exists for the whole year only"))}" ${v.periodos.includes(k) ? "" : "disabled"}>${esc(LL(...SEASON[k]))}</button>`).join("")}
         </div>
       </div>`;
-    if (!t) { $("ans").innerHTML = `${ctl}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
-    const sig = d.isSig(t, sel.reg), ti = d.tier(sel);
-    const up = t.pendiente_decada > 0, zero = t.pendiente_decada === 0;
-    const sentence = sig
-      ? LL(`${zero ? "No cambia" : up ? "Sube" : "Baja"} ${num(Math.abs(t.pendiente_decada))} ${v.unidad} por década: ${sgn(t.pendiente_pct_decada, 0)} % sobre su media de ${num(t.media)}. Más de lo que el azar explicaría.`, `${zero ? "No change" : up ? "Rising" : "Falling"} ${num(Math.abs(t.pendiente_decada))} ${v.unidad} per decade: ${sgn(t.pendiente_pct_decada, 0)} % of its mean of ${num(t.media)}. More than chance would explain.`)
-      : t.detectable
-        ? LL(`La tendencia es grande (${sgn(t.pendiente_decada)} ${v.unidad} por década) pero no se distingue del azar.`, `The trend is large (${sgn(t.pendiente_decada)} ${v.unidad} per decade) but indistinguishable from chance.`)
-        : LL(`No se detecta tendencia. Con 24 años solo se vería un cambio mayor de ${num(t.mdt)} ${v.unidad} por década: «sin señal» no es «sin cambio».`, `No trend detected. With 24 years only a change beyond ${num(t.mdt)} ${v.unidad} per decade would show: "no signal" is not "no change".`);
+    if (!ws.length) { $("ans").innerHTML = `${ctl}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
+    const ti = d.tier(sel), unit = v.unidad;
+    const sigW = ws.filter((w) => d.isSig(w.t, sel.reg));
+    const mdt = Math.max(...ws.map((w) => w.t.mdt));
+    const s0 = ws[0].t, up = (sigW[0] ?? ws[0]).t.pendiente_decada > 0;
+    const says = (lang: "es" | "en") => ws.map((w) => `${w.p} ${lang === "es" ? "dice" : "says"} ${sgn(w.t.pendiente_decada)}`).join(lang === "es" ? " y " : " and ");
+    const sentence =
+      cls === "robusta" ? LL(`Las dos fuentes coinciden: ${up ? "sube" : "baja"} entre ${ws.map((w) => num(Math.abs(w.t.pendiente_decada))).join(" y ")} ${unit} por década. Es lo que sabemos.`, `Both sources agree: ${up ? "rising" : "falling"} by ${ws.map((w) => num(Math.abs(w.t.pendiente_decada))).join(" to ")} ${unit} per decade. This is what we know.`)
+      : cls === "consistente" ? LL(`Las dos apuntan a que ${up ? "sube" : "baja"}, pero solo ${sigW.map((w) => w.p).join(" y ")} lo confirma. Es probable, todavía no seguro.`, `Both point to it ${up ? "rising" : "falling"}, but only ${sigW.map((w) => w.p).join(" and ")} confirms it. Likely, not yet certain.`)
+      : cls === "en disputa" ? LL(`${says("es")} ${unit} por década: direcciones opuestas y al menos una significativa. No se puede afirmar una tendencia; hay que investigar por qué discrepan.`, `${says("en")} ${unit} per decade: opposite directions, at least one significant. No trend can be claimed; why they disagree needs checking.`)
+      : cls === "sin dato" ? LL("Faltan años en alguna serie, así que no se calcula la tendencia.", "Some years are missing, so no trend is computed.")
+      : cls === "un solo producto" && sigW.length ? LL(`${s0.pendiente_decada > 0 ? "Sube" : "Baja"} ${num(Math.abs(s0.pendiente_decada))} ${unit} por década según ${ws[0].p}; falta la segunda fuente para confirmarlo.`, `${s0.pendiente_decada > 0 ? "Rising" : "Falling"} ${num(Math.abs(s0.pendiente_decada))} ${unit} per decade according to ${ws[0].p}; a second source is needed to confirm it.`)
+      : LL(`Ninguna fuente detecta una tendencia. «Sin señal» no es «sin cambio»: con 24 años solo se vería un cambio mayor de ±${num(mdt)} ${unit} por década.`, `Neither source detects a trend. "No signal" is not "no change": with 24 years only a change beyond ±${num(mdt)} ${unit} per decade would show.`);
     const tierIdx = TIERS.findIndex(([k]) => k === ti.tier);
-    const crosses = t.ic95[0] <= 0 && t.ic95[1] >= 0;
+    const pFmt = (t: Tr) => (t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3));
     $("ans").innerHTML = `${ctl}
-      <div class="ans-fig"><b class="num" id="ans-n" data-count="${t.pendiente_decada}" data-d="${digits(t.pendiente_decada)}">${sgn(t.pendiente_decada)}</b><span>${esc(v.unidad_tendencia)}</span></div>
+      <div class="wits">${ws.map(({ p, t }) => { const sg = d.isSig(t, sel.reg); return `<div class="wit">
+        <p class="wit-p"><i style="background:${PROD_COLOR[p]}"></i>${p}</p>
+        <p class="wit-n"><b class="num" data-count="${t.pendiente_decada}" data-d="${digits(t.pendiente_decada)}">${sgn(t.pendiente_decada)}</b></p>
+        <p class="wit-s">${esc(v.unidad_tendencia)} · ${esc(sg ? LL("significativa", "significant") : LL("no significativa", "not significant"))}</p>
+      </div>`; }).join("")}</div>
       <p class="ans-sent">${esc(sentence)}</p>
       <div class="ladder" role="img" aria-label="${esc(`${LL("Evidencia", "Evidence")}: ${ti.label}`)}">${TIERS.map(([, es, en], i) => `<span class="${i === tierIdx ? "on" : ""}" style="--c:${ti.color}"><i></i>${esc(LL(es, en))}</span>`).join("")}</div>
       <p class="ans-why"><span class="chip" style="--c:${ti.color}">${esc(ti.label)}</span>${esc(ti.why)}</p>
-      ${capsule(d, sel, t)}
-      <p class="cap-note">${esc(crosses ? LL("El intervalo del 95 % cruza el cero: con estos datos podría subir o bajar.", "The 95 % interval crosses zero: with these data it could go up or down.") : LL("El intervalo del 95 % no toca el cero: la dirección es clara.", "The 95 % interval does not touch zero: the direction is clear."))}</p>
-      <dl class="stats">
-        <div title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}"><dt>p</dt><dd class="num">${t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3)}</dd></div>
-        <div title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}"><dt>q (FDR)</dt><dd class="num">${t.q === null ? "—" : num(t.q, 3)}</dd></div>
-        <div title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}"><dt>${esc(LL("Mín. detectable", "Min. detectable"))}</dt><dd class="num">±${num(t.mdt)}</dd></div>
-        <div><dt>${esc(LL("Media", "Mean"))}</dt><dd class="num">${num(t.media)}</dd></div>
-      </dl>
-      <p class="rule">${esc(LL(`Cambio claro si ${d.sigRule(sel.reg)}.`, `Clear change if ${d.sigRule(sel.reg)}.`))}</p>
-      <div class="srcs">${["IMERG", "CHIRPS"].map((p) => { const m = d.V.productos[p], tt = d.tr(sel, p); return `<button class="src ${p === sel.src ? "on" : ""}" data-src="${p}" ${m ? "" : "disabled"}><b>${p}</b><span>${esc(m ? m.tipo_fuente : LL("satélite + estaciones · llega en la próxima corrida", "satellite + stations · arrives in the next run"))}</span><em class="num">${tt ? sgn(tt.pendiente_decada) : "—"}</em></button>`; }).join("")}</div>
+      ${capsule(d, sel)}
+      <table class="stats-t">
+        <thead><tr><th></th><th class="num" title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}">p</th><th class="num" title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}">q (FDR)</th><th class="num" title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}">${esc(LL("Mín. detect.", "Min. detect."))}</th><th class="num">${esc(LL("Media", "Mean"))}</th></tr></thead>
+        <tbody>${ws.map(({ p, t }) => `<tr><th scope="row"><i style="background:${PROD_COLOR[p]}"></i>${p}</th><td class="num">${pFmt(t)}</td><td class="num">${t.q === null ? "—" : num(t.q, 3)}</td><td class="num">±${num(t.mdt)}</td><td class="num">${num(t.media)}</td></tr>`).join("")}</tbody>
+      </table>
+      <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))} ${ws.map((w) => `${w.p}: ${esc(d.V.productos[w.p]?.tipo_fuente ?? "")}`).join(" · ")}.</p>
       <details class="why"><summary>${esc(LL("Por qué importa y qué no dice", "Why it matters and what it does not say"))}</summary>
         <p>${esc(v.descripcion)} ${esc(v.por_que_importa)}</p>
-        <p>${esc(LL("IMERG y CHIRPS no son testigos totalmente independientes: comparten infrarrojo geoestacionario y pluviómetros.", "IMERG and CHIRPS are not fully independent: they share geostationary infrared and rain gauges."))}</p>
+        <p>${esc(LL("IMERG y CHIRPS no son testigos totalmente independientes: comparten infrarrojo geoestacionario y pluviómetros. Cuando discrepan no es que el satélite mienta: cada producto interpreta distinto la misma lluvia, y eso es lo que hay que investigar.", "IMERG and CHIRPS are not fully independent: they share geostationary infrared and rain gauges. When they disagree it is not that a satellite lies: each product reads the same rain differently, and that is what needs checking."))}</p>
+        <p>${esc(d.V.nota_causalidad)}</p>
       </details>`;
-    countUp($("ans-n"));
+    countUp($("ans"));
   };
 
   // ── Año a año y las 32 provincias ──
@@ -213,7 +224,10 @@ function render(view: HTMLElement, d: TrendData) {
   const renderRank = () => {
     const el = $("r-plot"), f = forest(d, sel, plotW(el));
     el.innerHTML = f.svg;
-    $("r-meta").textContent = LL(`${f.nSig} de 32 con cambio claro`, `${f.nSig} of 32 with a clear change`);
+    const c = f.counts, n = (k: string) => c[k] ?? 0;
+    $("r-meta").textContent = d.both
+      ? LL(`${n("robusta")} robustas · ${n("consistente")} consistentes · ${n("en disputa")} en disputa`, `${n("robusta")} robust · ${n("consistente")} consistent · ${n("en disputa")} disputed`)
+      : LL(`${n("un solo producto")} con una sola fuente`, `${n("un solo producto")} with one source`);
   };
 
   // ── El mapa ──
@@ -235,6 +249,23 @@ function render(view: HTMLElement, d: TrendData) {
     if (!t3) return;
     const map = t3.map;
     wx.dataset.mode = ui.year === null ? "trend" : "year";
+    if (ui.year === null && ui.show === "acuerdo") {
+      const cl = d.cellClass(sel), codes = d.R.clases_codigo ?? [];
+      if (!cl) return;
+      const colors = codes.map((k) => d.V.clases[k]?.color ?? "#6b6f75");
+      const f = classField(d.R, cl, colors, d.fc);
+      t3.setCells(f.px, f.w, f.h, f.bounds);
+      t3.setLayer("cells");
+      if (map.getLayer("stip")) map.setLayoutProperty("stip", "visibility", "none");
+      const clear: Record<string, string> = {}, zero: Record<string, number> = {};
+      d.provs.forEach((r) => { const id = d.isoToShape[r.id]; if (id) { clear[id] = "rgba(0,0,0,0)"; zero[id] = 0; } });
+      t3.setChoro(clear, zero);
+      map.setLayoutProperty("prov-fill", "visibility", "visible");
+      const counts = codes.map((_, i) => cl.filter((x, k) => x === i && d.R.incluida[k]).length);
+      $("wx-legend").innerHTML = `<p class="lg-w"><span>${esc(LL("Celdas de 11 km según el acuerdo de IMERG y CHIRPS", "11 km cells by IMERG–CHIRPS agreement"))}</span></p>
+        <p class="lg-cls">${codes.map((k, i) => `<span><i style="background:${colors[i]}"></i>${esc(d.V.clases[k] ? d.lab(d.V.clases[k]) : k)} <b class="num">${counts[i]}</b></span>`).join("")}</p>`;
+      return;
+    }
     if (ui.year === null) {
       const lay = d.cells(sel);
       if (!lay) return;
@@ -277,7 +308,10 @@ function render(view: HTMLElement, d: TrendData) {
     const b = sel.reg === "DO" ? RD : d.bbox(sel.reg) ?? RD;
     t3.map.fitBounds(b, { padding: fitPad(), pitch: ui.style === "3d" ? 52 : 0, bearing: ui.style === "3d" ? -14 : 0, duration: fly && !RM() ? 1500 : 0, maxZoom: 10 });
   };
-  const renderStyle = () => wx.querySelectorAll<HTMLButtonElement>("[data-sty]").forEach((b) => { const on = b.dataset.sty === ui.style; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
+  const renderStyle = () => {
+    wx.querySelectorAll<HTMLButtonElement>("[data-sty]").forEach((b) => { const on = b.dataset.sty === ui.style; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
+    wx.querySelectorAll<HTMLButtonElement>("[data-show]").forEach((b) => { const on = b.dataset.show === ui.show; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
+  };
 
   // ── Qué cambia con cada acción ──
   const renderPanels = () => { renderHead(); renderQuestions(); renderAnswer(); renderSeries(); renderRank(); };
@@ -299,6 +333,12 @@ function render(view: HTMLElement, d: TrendData) {
     if (per && !per.disabled) { sel.per = per.dataset.per!; tl.setYears(years()); renderPanels(); renderMap(); return; }
     const src = el.closest<HTMLButtonElement>("[data-src]");
     if (src && !src.disabled) { sel.src = src.dataset.src!; renderPanels(); renderMap(); return; }
+    const show = el.closest<HTMLButtonElement>("[data-show]");
+    if (show) {
+      ui.show = show.dataset.show!;
+      if (ui.show !== "acuerdo") sel.src = ui.show;
+      renderStyle(); renderPanels(); renderMap(); return;
+    }
     const sty = el.closest<HTMLButtonElement>("[data-sty]");
     if (sty) { ui.style = sty.dataset.sty as Style; renderStyle(); t3?.setMode(ui.style); frame(false); return; }
     const fr = el.closest<SVGGElement>(".fr");
@@ -346,7 +386,13 @@ function render(view: HTMLElement, d: TrendData) {
       if (!f) { tip.hidden = true; return; }
       const iso = d.shapeToIso[String(f.id)];
       let line = "";
-      if (ui.year === null) {
+      if (ui.year === null && ui.show === "acuerdo") {
+        const k = cellAt(d.R, e.lngLat.lng, e.lngLat.lat), cl = d.cellClass(sel), code = k >= 0 && cl ? cl[k] : null;
+        if (code !== null && code !== undefined && d.R.incluida[k]) {
+          const name = (d.R.clases_codigo ?? [])[code];
+          line = `<b>${esc(d.V.clases[name] ? d.lab(d.V.clases[name]) : name)}</b> · ${d.prods.map((p) => { const v = d.cells(sel, p)?.pendiente_decada[k]; return `${p} ${v === null || v === undefined ? "—" : sgn(v)}`; }).join(" · ")}`;
+        }
+      } else if (ui.year === null) {
         const lay = d.cells(sel), k = cellAt(d.R, e.lngLat.lng, e.lngLat.lat);
         const v = lay && k >= 0 && d.R.incluida[k] ? lay.pendiente_decada[k] : null;
         if (v !== null && lay) line = `<b class="num">${sgn(v)}</b> ${esc(vm().unidad_tendencia)} · ${esc((lay.q[k] ?? 1) <= d.V.umbral_significancia.q_fdr ? LL("cambio claro", "clear change") : LL("no se distingue del azar", "indistinguishable from chance"))}`;

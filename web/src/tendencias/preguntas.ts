@@ -44,23 +44,37 @@ export const shortName = (id: string) => LL(...(SHORT[id] ?? [id, id]));
 
 export const questionOf = (ind: string) => QUESTIONS.find((q) => q.vars.includes(ind)) ?? QUESTIONS[0];
 
-/** Respuesta corta de una pregunta en una región: dirección, cuánto por década y si es significativa. */
+/** Respuesta corta de una pregunta en una región, desde la clase de confianza de las dos fuentes. */
 export function verdict(d: TrendData, s: Sel, ind: string) {
-  const t = d.tr({ ...s, ind, per: d.perFor(ind, s.per) });
-  if (!t) return { sig: false, text: "—", dry: false, up: false };
-  const sig = d.isSig(t, s.reg), up = t.pendiente_decada > 0;
-  const pct = Number.isFinite(t.pendiente_pct_decada) ? `${sgn(t.pendiente_pct_decada, 0)} %` : sgn(t.pendiente_decada);
-  return {
-    sig, up, dry: d.towardDry(ind, t.pendiente_decada),
-    text: sig ? LL(`${up ? "Sube" : "Baja"} ${pct} por década`, `${up ? "Rising" : "Falling"} ${pct} per decade`) : LL("Sin señal detectable", "No detectable signal"),
-  };
+  const s2 = { ...s, ind, per: d.perFor(ind, s.per) };
+  const row = d.row(s2), cls = row?.clase ?? "";
+  const ts = d.prods.map((p) => d.tr(s2, p)).filter((t): t is NonNullable<typeof t> => !!t);
+  const sigT = ts.filter((t) => d.isSig(t, s.reg));
+  const lead = sigT[0] ?? ts[0];
+  const up = lead ? lead.pendiente_decada > 0 : false;
+  const pct = lead && Number.isFinite(lead.pendiente_pct_decada) ? `${sgn(lead.pendiente_pct_decada, 0)} %` : "";
+  const color = d.V.clases[cls]?.color ?? "#6b6f75";
+  const dir = up ? LL("Sube", "Rising") : LL("Baja", "Falling");
+  const text =
+    cls === "robusta" ? LL(`${dir} ${pct} por década · las dos fuentes coinciden`, `${dir} ${pct} per decade · both sources agree`)
+    : cls === "consistente" ? LL(`Probablemente ${up ? "sube" : "baja"} · una fuente lo confirma`, `Probably ${up ? "rising" : "falling"} · one source confirms`)
+    : cls === "en disputa" ? LL("En disputa · las fuentes no coinciden", "Disputed · the sources disagree")
+    : cls === "un solo producto" ? (sigT.length ? LL(`${dir} ${pct} por década · una sola fuente`, `${dir} ${pct} per decade · one source only`) : LL("Sin señal detectable", "No detectable signal"))
+    : cls === "sin dato" ? LL("Sin dato", "No data")
+    : LL("Sin señal detectable", "No detectable signal");
+  return { cls, color, up, text, strong: cls === "robusta" || cls === "consistente" || cls === "en disputa" || (cls === "un solo producto" && sigT.length > 0) };
 }
 
-/** La frase que resume la región: qué cambia de verdad y qué no se distingue del azar. */
+/** La frase que resume la región: qué se sabe, qué está en disputa y qué no se distingue del azar. */
 export function finding(d: TrendData, s: Sel, pick: Record<string, string>) {
-  const sig = QUESTIONS.map((q) => ({ q, v: verdict(d, s, pick[q.id] ?? q.vars[0]) })).filter((x) => x.v.sig);
-  if (!sig.length) return LL("Con 24 años de datos, ningún cambio se distingue del azar en esta región. Eso no quiere decir que no haya cambio.", "With 24 years of data, no change stands out from chance here. That does not mean there is no change.");
-  const parts = sig.map(({ q, v }) => `${v.up ? LL("más", "more") : LL("menos", "less")} ${LL(...q.noun)}`);
-  const s0 = parts.join(LL(" y ", " and "));
-  return LL(`Cambio claro: ${s0}. Lo demás no se distingue del azar con 24 años.`, `Clear change: ${s0}. The rest is indistinguishable from chance over 24 years.`);
+  const all = QUESTIONS.map((q) => ({ q, v: verdict(d, s, pick[q.id] ?? q.vars[0]) }));
+  const name = (q: Question) => LL(...q.noun);
+  const rob = all.filter((x) => x.v.cls === "robusta"), con = all.filter((x) => x.v.cls === "consistente"), dis = all.filter((x) => x.v.cls === "en disputa");
+  const parts: string[] = [];
+  if (rob.length) parts.push(LL(`Las dos fuentes coinciden: ${rob.map((x) => `${x.v.up ? "más" : "menos"} ${name(x.q)}`).join(" y ")}.`, `Both sources agree: ${rob.map((x) => `${x.v.up ? "more" : "less"} ${name(x.q)}`).join(" and ")}.`));
+  if (con.length) parts.push(LL(`Probable, con una sola fuente significativa: ${con.map((x) => `${x.v.up ? "más" : "menos"} ${name(x.q)}`).join(" y ")}.`, `Likely, with only one source significant: ${con.map((x) => `${x.v.up ? "more" : "less"} ${name(x.q)}`).join(" and ")}.`));
+  if (dis.length) parts.push(LL(`En disputa (IMERG y CHIRPS dicen lo contrario): ${dis.map((x) => name(x.q)).join(" y ")}.`, `Disputed (IMERG and CHIRPS say the opposite): ${dis.map((x) => name(x.q)).join(" and ")}.`));
+  if (!rob.length) parts.unshift(LL("Ninguna tendencia es robusta todavía.", "No trend is robust yet."));
+  if (!con.length && !dis.length && !rob.length) return LL("Ninguna tendencia es robusta todavía: con 24 años de datos ningún cambio se distingue del azar aquí. Eso no quiere decir que no haya cambio.", "No trend is robust yet: with 24 years of data no change stands out from chance here. That does not mean there is no change.");
+  return parts.join(" ");
 }

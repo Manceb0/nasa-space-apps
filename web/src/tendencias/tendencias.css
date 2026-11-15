@@ -68,7 +68,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .q.on { background: var(--raised); color: var(--text); }
 .q-t { font-size: 14px; font-weight: 500; }
 .q-v { font-size: 13px; color: var(--faint); }
-.q-v.sig { color: var(--c); font-weight: 600; }
+.q-v.sig { color: color-mix(in srgb, var(--c), #fff 38%); font-weight: 600; }
 .q-v i { font-style: normal; margin-right: 4px; }
 .q:focus-visible, .seg button:focus-visible, .src:focus-visible, .wx-play:focus-visible, .wx-trendbtn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
@@ -223,3 +223,40 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 @media (prefers-reduced-motion: reduce) {
   .wx *, .wx *::after { transition: none !important; }
 }
+
+/* Dos testigos: IMERG (blanco) y CHIRPS (celeste) siempre juntos */
+.wits { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 2px; margin-top: 18px; border-radius: 12px; overflow: hidden; }
+.wit { padding: 12px 14px; background: var(--raised); }
+.wit-p { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+.wit-p i, .stats-t th i, .pa-w i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+.wit-n b { font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+.wit-s { font-size: 12px; color: var(--muted); }
+.q-v i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; background: var(--c); vertical-align: 1px; }
+.q-v:not(.sig) i { background: transparent; box-shadow: inset 0 0 0 1.5px var(--faint); }
+.cap-p { font-size: 12px; font-weight: 600; fill: var(--text); font-family: inherit; }
+.cap-v { font-size: 12px; fill: var(--text); font-family: inherit; }
+.stats-t { width: 100%; margin-top: 14px; border-collapse: collapse; font-size: 13px; }
+.stats-t th, .stats-t td { padding: 7px 0; text-align: right; font-weight: 500; }
+.stats-t thead th { font-size: 12px; font-weight: 400; color: var(--faint); cursor: help; }
+.stats-t thead th:first-child { cursor: default; }
+.stats-t tbody th { text-align: left; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.stats-t tbody tr + tr > * { border-top: 1px solid var(--rule); }
+.pa-w { display: inline-flex; align-items: center; gap: 5px; margin-right: 6px; color: var(--muted); }
+.pa-w b { font-size: 17px !important; }
+.map-data { position: absolute; z-index: 3; top: 12px; left: 12px; background: var(--surface); }
+.map-data button { flex: none; }
+.wx .maplibregl-ctrl-top-right { top: 60px; }
+.lg-cls { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; font-size: 12px; color: var(--muted); }
+.lg-cls span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.lg-cls i { width: 10px; height: 10px; border-radius: 2px; }
+.lg-cls b { color: var(--text); font-weight: 600; }
+.wx-legend:has(.lg-cls) { width: 300px; }
+@media (max-width: 1179px) { .wx-legend:has(.lg-cls) { width: 100%; } }
+@media (max-width: 759px) {
+  .map-data { top: 10px; left: 10px; }
+  .map-sty { top: 54px; }
+  .wx .maplibregl-ctrl-bottom-right { top: 98px; }
+  .wit-n b { font-size: 24px; }
+}
+
+.blk-rank .blk-h { flex-direction: column; align-items: flex-start; gap: 2px; }

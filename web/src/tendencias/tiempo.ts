@@ -30,7 +30,9 @@ export function timeline(root: HTMLElement, onPick: (i: number | null) => void) 
   const setYears = (y: number[]) => {
     const cur = idx === null ? null : yrs[idx];
     yrs = y;
-    track.innerHTML = `${yrs.map((yr, k) => `<span class="tk ${k === 0 || k === yrs.length - 1 || yr % 5 === 0 ? "lb" : ""}" data-y="${yr}"><i></i>${k === 0 || k === yrs.length - 1 || yr % 5 === 0 ? `<em>${yr}</em>` : ""}</span>`).join("")}<span class="wx-knob"><b></b></span>`;
+    // Rótulos: los extremos y cada 5 años, salvo los que quedan a menos de 5 marcas de un extremo (se pisarían)
+    const lab = (yr: number, k: number) => k === 0 || k === yrs.length - 1 || (yr % 5 === 0 && k >= 5 && yrs.length - 1 - k >= 5);
+    track.innerHTML = `${yrs.map((yr, k) => `<span class="tk ${yr % 5 === 0 || lab(yr, k) ? "lb" : ""}" data-y="${yr}"><i></i>${lab(yr, k) ? `<em>${yr}</em>` : ""}</span>`).join("")}<span class="wx-knob"><b></b></span>`;
     track.setAttribute("aria-valuemin", String(yrs[0])); track.setAttribute("aria-valuemax", String(yrs[yrs.length - 1]));
     if (cur !== null) { const k = yrs.indexOf(cur); idx = k >= 0 ? k : Math.min(idx!, yrs.length - 1); }
     paint();

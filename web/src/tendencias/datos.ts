@@ -32,6 +32,7 @@ export interface Prov {
 export interface CellLayer { pendiente_decada: (number | null)[]; q: (number | null)[] }
 export interface Rej {
   nx: number; ny: number; lat: number[]; lon: number[]; lat_bordes: number[]; lon_bordes: number[]; incluida: number[];
+  clases_codigo?: string[];
   capas: Record<string, Record<string, Record<string, CellLayer | (number | null)[]>>>;
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,7 +77,9 @@ export class TrendData {
   series(s: Sel, src = s.src, reg = s.reg) { return this.P.series[s.ind]?.[this.perFor(s.ind, s.per)]?.[src]?.[reg] ?? null; }
   row(s: Sel, reg = s.reg) { return this.P.tendencias[s.ind]?.[this.perFor(s.ind, s.per)]?.[reg] ?? null; }
   tr(s: Sel, src = s.src, reg = s.reg) { return (this.row(s, reg)?.[src] as Tr | undefined) ?? null; }
-  cells(s: Sel) { return this.R.capas[s.ind]?.[this.perFor(s.ind, s.per)]?.[s.src] as CellLayer | undefined; }
+  cells(s: Sel, src = s.src) { return this.R.capas[s.ind]?.[this.perFor(s.ind, s.per)]?.[src] as CellLayer | undefined; }
+  /** Clase de confianza por celda (índice en clases_codigo) o null. */
+  cellClass(s: Sel) { return (this.R.capas[s.ind]?.[this.perFor(s.ind, s.per)]?.clase as (number | null)[] | undefined) ?? null; }
   /** En DO hay una sola serie y una sola prueba: p < 0,05. En provincias: q ≤ 0,10 (FDR entre las 32). */
   isSig(t: Tr, reg: string) { return reg === "DO" ? (t.sig_p05 ?? t.p < 0.05) : t.sig === true; }
   sigRule(reg: string) { return reg === "DO" ? LL("p < 0,05 (una sola serie)", "p < 0.05 (single series)") : LL("q ≤ 0,10 (FDR entre 32 provincias)", "q ≤ 0.10 (FDR across 32 provinces)"); }
@@ -90,7 +93,8 @@ export class TrendData {
     if (c === "robusta") return { tier: "sabemos", label: this.lab(cl), color: cl.color, why: cl.descripcion };
     if (c === "consistente") return { tier: "creemos", label: this.lab(cl), color: cl.color, why: cl.descripcion };
     if (c === "en disputa") return { tier: "comprobar", label: this.lab(cl), color: cl.color, why: cl.descripcion };
-    if (c === "sin señal detectable") return { tier: "nada", label: this.lab(cl), color: "#8e8e93", why: cl.descripcion };
+    if (c === "sin señal detectable") return { tier: "nada", label: this.lab(cl), color: cl.color, why: cl.descripcion };
+    if (c === "sin dato") return { tier: "nada", label: LL("Sin dato", "No data"), color: "#6b6f75", why: LL("Faltan años en alguna de las dos series (por ejemplo, años sin sequía): no se calcula la tendencia.", "One of the two series has missing years (for example, years with no drought): no trend is computed.") };
     // «un solo producto»: todavía no hay segunda opinión
     const t = this.tr(s, s.src, reg);
     return t && this.isSig(t, reg)

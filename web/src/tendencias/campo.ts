@@ -107,3 +107,24 @@ export const cellAt = (R: Rej, lon: number, lat: number) => {
   const i = R.lat_bordes.findIndex((b, k) => k < R.ny && lat >= b && lat < R.lat_bordes[k + 1]);
   return i < 0 || j < 0 ? -1 : i * R.nx + j;
 };
+
+/** La clase de confianza por celda (robusta, consistente, en disputa, sin señal) como imagen de celdas nítidas,
+ *  recortada a la costa: es una categoría, así que no se interpola. */
+export function classField(R: Rej, clase: (number | null)[], colors: string[], land: FC | null, S = 12) {
+  const W = R.nx * S, H = R.ny * S;
+  const lon0 = R.lon_bordes[0], lon1 = R.lon_bordes[R.nx], lat0 = R.lat_bordes[0], lat1 = R.lat_bordes[R.ny];
+  const rgb = colors.map((c) => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)]);
+  const alpha = [0.9, 0.85, 0.9, 0.16];
+  const px = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    const i = R.ny - 1 - Math.floor(y / S);
+    for (let x = 0; x < W; x++) {
+      const k = i * R.nx + Math.floor(x / S), c = clase[k];
+      if (!R.incluida[k] || c === null || c === undefined) continue;
+      const o = 4 * (y * W + x);
+      px[o] = rgb[c][0]; px[o + 1] = rgb[c][1]; px[o + 2] = rgb[c][2]; px[o + 3] = Math.round(255 * alpha[c]);
+    }
+  }
+  if (land) clipToLand(px, W, H, land, (lon) => ((lon - lon0) / (lon1 - lon0)) * W, (lat) => ((lat1 - lat) / (lat1 - lat0)) * H);
+  return { px, w: W, h: H, bounds: [lon0, lat0, lon1, lat1] as [number, number, number, number] };
+}

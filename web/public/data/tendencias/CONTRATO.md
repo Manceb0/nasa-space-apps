@@ -2,14 +2,14 @@
 
 Versión del esquema: **1.0**. Lo genera `python -m earthmemory.tendencias.run` (`earthmemory/tendencias/web.py`).
 Todos los archivos son JSON UTF-8 compactos. Números redondeados a 3-4 cifras significativas; **`null` = sin dato**
-(mar, celda fuera del país, periodo sin eventos o estadístico no aplicable). Total < 6 MB (`tamanos.json` lo dice).
+(mar, celda fuera del país, periodo sin eventos o estadístico no aplicable). Total ≈ 2.9 MB (`tamanos.json` da los bytes exactos).
 
 | archivo | para qué pantalla | tamaño aprox. |
 |---|---|---|
 | `variables.json` | selector de variable / periodo, leyendas, textos de ayuda | ~11 kB |
-| `provincias.json` | ficha de provincia: serie anual de cada índice y producto + tendencia | ~0.8 MB |
-| `rejilla.json` | mapa por celdas de 0.1° (pendiente, q y clase de confianza) | ~1.3 MB |
-| `resumen.json` | titulares nacionales, conteos de celdas/provincias, falsos positivos medidos | ~60 kB |
+| `provincias.json` | ficha de provincia: serie anual de cada índice y producto + tendencia | ~1.4 MB |
+| `rejilla.json` | mapa por celdas de 0.1° (pendiente, q y clase de confianza) | ~1.4 MB |
+| `resumen.json` | titulares nacionales, conteos de celdas/provincias, falsos positivos medidos | ~105 kB |
 
 Ids que se repiten en todos los archivos:
 
@@ -77,8 +77,9 @@ Ids que se repiten en todos los archivos:
     "CDD": {"anual": {"DO": {
         "IMERG":  {"pendiente_decada": -0.455, "ic95": [-5.54, 4.40], "p": 0.901, "q": null, "sig": null, "sig_p05": false,
                    "mdt": 8.82, "media": 39.31, "detectable": false, "pendiente_pct_decada": -1.16},
-        "CHIRPS": {…},
-        "clase": "sin señal detectable"},
+        "CHIRPS": {"pendiente_decada": -2.727, "ic95": [-4.602, -1.023], "p": 0.00193, "q": null, "sig": null, "sig_p05": true,
+                   "mdt": 3.5, "media": 25.36, "detectable": false, "pendiente_pct_decada": -10.8},
+        "clase": "consistente"},
       "DO-02": {…}}}}
 }
 ```
@@ -92,6 +93,8 @@ Ids que se repiten en todos los archivos:
   `sig` = `q ≤ 0.10` (`null` en `DO`), `sig_p05` = `p < 0.05` (úsese para `DO`), `mdt` = tendencia mínima
   detectable (misma unidad que la pendiente; 80 % de potencia, α = 0.05), `detectable` = `|pendiente| ≥ mdt`,
   `media` = media 2001-2024 del índice, `pendiente_pct_decada` = pendiente / media × 100.
+  Ojo: `detectable` dice si la MAGNITUD supera la MDT (cambio que se detectaría con ≥ 80 % de potencia); una tendencia
+  puede ser significativa con `detectable = false` (se detectó aunque la potencia era baja) y viceversa.
 - `clase`: clase de confianza de dos productos para esa región. En provincias, "significativo" = `sig` (q ≤ 0.10
   entre las 32 provincias). En `DO` (una sola serie, una sola prueba) "significativo" = `sig_p05` (p < 0.05).
 
@@ -128,9 +131,9 @@ Ids que se repiten en todos los archivos:
 ```json
 {
   "version": "1.0",
-  "calibracion": {"fpr_nominal": 0.05, "fpr_local_celdas_fases": 0.06, "fpr_local_celdas_bloques": 0.04,
-                  "fpr_local_provincias_fases": 0.06, "fpr_local_provincias_bloques": 0.04,
-                  "fraccion_mapas_nulos_con_celda_fdr_media": 0.05, "n_sustitutos": 1000},
+  "calibracion": {"fpr_nominal": 0.05, "fpr_local_celdas_fases": 0.0632, "fpr_local_celdas_bloques": 0.0515,
+                  "fpr_local_provincias_fases": 0.0593, "fpr_local_provincias_bloques": 0.054,
+                  "fraccion_mapas_nulos_con_celda_fdr_media": 0.0559, "n_sustitutos": 1000},
   "indices": [
     {"indice": "CDD", "periodo": "anual", "fuente": "IMERG", "celdas": 442, "celdas_sig_fdr": 0,
      "celdas_sig_fdr_aumento": 0, "celdas_sig_fdr_descenso": 0, "celdas_p05_sin_fdr": 50,
@@ -138,17 +141,18 @@ Ids que se repiten en todos los archivos:
      "celdas_pendiente_mayor_mdt": 2, "provincias_sig_fdr": 0,
      "nacional_pendiente_decada": -0.455, "nacional_ic95_inf": -5.54, "nacional_ic95_sup": 4.40, "nacional_p": 0.901,
      "nacional_mdt": 8.82, "nacional_media": 39.31,
-     "celdas_robusta": 0, "provincias_robusta": 0, "celdas_consistente": 0, "provincias_consistente": 0,
-     "celdas_en_disputa": 0, "provincias_en_disputa": 0, "celdas_sin_senal_detectable": 442,
-     "provincias_sin_senal_detectable": 32, "celdas_robusta_aumento": 0, "celdas_robusta_descenso": 0,
-     "clase_nacional": "sin señal detectable",
-     "p_campo_fase": 0.27, "fpr_fase": 0.048, "p_campo_bloques": 0.09, "fpr_bloques": 0.015}
+     "celdas_robusta": 0, "provincias_robusta": 0, "celdas_consistente": 21, "provincias_consistente": 13,
+     "celdas_en_disputa": 16, "provincias_en_disputa": 5, "celdas_sin_senal_detectable": 405,
+     "provincias_sin_senal_detectable": 14, "celdas_robusta_aumento": 0, "celdas_robusta_descenso": 0,
+     "clase_nacional": "consistente",
+     "p_campo_fase": 0.098, "fpr_fase": 0.043, "p_campo_bloques": 0.058, "fpr_bloques": 0.030, "prueba_liberal": false}
   ]
 }
 ```
 
 - Una fila por índice × periodo × producto. Los conteos de clase (`celdas_robusta`, …) son por celda y valen lo mismo
   en la fila IMERG y en la CHIRPS (la clase combina los dos).
+- `prueba_liberal`: la tasa de falsos positivos medida con sustitutos supera 0.075 para ese índice (hoy: SPI-12 y algunos SPI-3, PRCPTOT y R1mm de IMERG); mostrar un aviso junto a su significancia.
 - `p_campo_*`, `fpr_*` solo existen en filas `periodo = "anual"` (la calibración se hizo con índices anuales).
 - `campo_significativo_wilks`: hay al menos una celda con q ≤ 0.10 (criterio de Wilks 2016).
 
