@@ -5,9 +5,8 @@
 // Cara de la pantalla: el campo de tendencia sobre la isla con su punteado de significancia; y la escalera de evidencia.
 import "./tendencias.css";
 import type maplibregl from "maplibre-gl";
-import { fmt } from "../text";
 import { terrain3d } from "../terrain3d";
-import { esc, LL, digits, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
+import { esc, LL, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
 import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
 import { capsule, forest, PROD_COLOR, seriesChart } from "./graficas";
 import { cellProvinces, ridges, type RGBA } from "./crestas";
@@ -152,16 +151,6 @@ function render(view: HTMLElement, d: TrendData) {
   };
 
   // ── La respuesta: época, medidas con su veredicto, los dos testigos, la frase, la escalera y la prueba ──
-  const countUp = (root: HTMLElement) => root.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
-    if (RM()) return;
-    const to = Number(el.dataset.count), dg = Number(el.dataset.d), t0 = performance.now();
-    const step = (now: number) => {
-      const k = Math.min(1, (now - t0) / 700), v = to * (1 - Math.pow(1 - k, 3));
-      el.textContent = (v > 0 ? "+" : "") + fmt(v, dg);
-      if (k < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  });
   const renderAnswer = () => {
     const box = $("ans");
     const q = questionOf(sel.ind), v = vm(), ws = both(), cls = d.row(sel)?.clase ?? "";
@@ -187,20 +176,14 @@ function render(view: HTMLElement, d: TrendData) {
     const tierIdx = TIERS.findIndex(([k]) => k === ti.tier);
     const pFmt = (t: Tr) => (t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3));
     box.innerHTML = `${ctl}
-      <div class="wits">${ws.map(({ p, t }) => `<div class="wit">
-        <p class="wit-p"><i style="background:${PROD_COLOR[p]}"></i>${p}</p>
-        <p class="wit-n"><b class="num" data-count="${t.pendiente_decada}" data-d="${digits(t.pendiente_decada)}">${sgn(t.pendiente_decada)}</b></p>
-        <p class="wit-s">${esc(v.unidad_tendencia)}${d.isSig(t, sel.reg) ? "" : ` · ${esc(LL("no signif.", "not signif."))}`}</p>
-      </div>`).join("")}</div>
+      ${capsule(d, sel)}
       <p class="ans-sent">${esc(sentence)}</p>
       <div class="ladder" role="img" aria-label="${esc(`${LL("Evidencia", "Evidence")}: ${ti.label}`)}">${TIERS.map(([, es, en], i) => `<span class="${i === tierIdx ? "on" : ""}" style="--c:${ti.color}"><i></i>${esc(LL(es, en))}</span>`).join("")}</div>
-      ${capsule(d, sel)}
       <table class="stats-t">
         <thead><tr><th></th><th class="num" title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}">p</th><th class="num" title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}">q (FDR)</th><th class="num" title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}">${esc(LL("Mín. detect.", "Min. detect."))}</th><th class="num">${esc(LL("Media", "Mean"))}</th></tr></thead>
         <tbody>${ws.map(({ p, t }) => `<tr><th scope="row"><i style="background:${PROD_COLOR[p]}"></i>${p}</th><td class="num">${pFmt(t)}</td><td class="num">${t.q === null ? "—" : num(t.q, 3)}</td><td class="num">±${num(t.mdt)}</td><td class="num">${num(t.media)}</td></tr>`).join("")}</tbody>
       </table>
       <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))} ${esc(v.descripcion)}</p>`;
-    countUp(box);
   };
 
   // ── Año a año y las 32 provincias (plegables) ──

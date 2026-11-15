@@ -5,29 +5,41 @@ import { esc, LL, num, sgn, type TrendData, type Sel, type Tr } from "./datos";
 export const PROD_COLOR: Record<string, string> = { IMERG: "#ffffff", CHIRPS: "#8fd3ff" };
 const pc = (p: string) => PROD_COLOR[p] ?? "#bbbbbb";
 
-/** Cápsula de los dos testigos: cada fuente en su fila con su IC 95 %, en un eje común con el cero
- *  y la banda de lo que 24 años no permiten detectar (la mayor de las dos tendencias mínimas detectables). */
+/** Las dos flechas: cada fuente es una flecha que sale de «sin cambio» hacia el lado al que apunta, sobre un eje
+ *  cuyos extremos dicen en palabras qué significa cada lado (con los colores del mapa). Sólida = cambio claro;
+ *  discontinua = puede ser azar. La barra fina es el intervalo del 95 %. Debajo, una frase que lo lee. */
 export function capsule(d: TrendData, s: Sel) {
   const rows = d.prods.map((p) => ({ p, t: d.tr(s, p) })).filter((x): x is { p: string; t: Tr } => !!x.t);
   if (!rows.length) return "";
-  const W = 340, pad = 14, rh = 30, top = 18, H = top + rows.length * rh + 18;
-  const mdt = Math.max(...rows.map((x) => x.t.mdt));
-  const ext = Math.max(mdt, ...rows.flatMap((x) => [Math.abs(x.t.ic95[0]), Math.abs(x.t.ic95[1]), Math.abs(x.t.pendiente_decada)])) * 1.12 || 1;
-  const L = 64, x = (v: number) => L + ((v + ext) / (2 * ext)) * (W - L - pad);
-  const unit = d.vm(s.ind).unidad_tendencia;
-  return `<svg class="tr-cap" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(rows.map(({ p, t }) => `${p} ${sgn(t.pendiente_decada)} ${unit} (IC ${num(t.ic95[0])} a ${num(t.ic95[1])})`).join("; "))}">
-    <rect class="cap-mdt" x="${x(-mdt)}" y="${top - 6}" width="${x(mdt) - x(-mdt)}" height="${rows.length * rh + 2}" rx="8"/>
-    <line x1="${x(0)}" x2="${x(0)}" y1="${top - 10}" y2="${top + rows.length * rh}" class="cap-zero"/>
-    <text x="${x(0)}" y="${top - 12}" text-anchor="middle" class="cap-t">0</text>
-    ${rows.map(({ p, t }, i) => {
-      const y = top + i * rh + rh / 2 - 4, sig = d.isSig(t, s.reg), lo = x(t.ic95[0]), hi = x(t.ic95[1]);
-      return `<text x="0" y="${y + 4}" class="cap-p">${p}</text>
-        <rect x="${lo}" y="${y - 4}" width="${Math.max(2, hi - lo)}" height="8" rx="4" fill="${pc(p)}" fill-opacity="${sig ? 0.55 : 0.22}"/>
-        <circle cx="${x(t.pendiente_decada)}" cy="${y}" r="6" fill="${sig ? pc(p) : "#15171a"}" stroke="${pc(p)}" stroke-width="2"/>
-        <text x="${W}" y="${y + 4}" text-anchor="end" class="cap-v num">${sgn(t.pendiente_decada)}</text>`;
-    }).join("")}
-    <text x="${x(-mdt) + 4}" y="${H - 2}" class="cap-t">${esc(LL(`no detectable con 24 años (±${num(mdt)})`, `undetectable with 24 years (±${num(mdt)})`))}</text>
-  </svg>`;
+  const W = 340, top = 30, rh = 46, H = top + rows.length * rh + 4;
+  const ext = Math.max(...rows.flatMap((x) => [Math.abs(x.t.ic95[0]), Math.abs(x.t.ic95[1]), Math.abs(x.t.pendiente_decada)])) * 1.08 || 1;
+  const L = 70, R = 10, x = (v: number) => L + ((v + ext) / (2 * ext)) * (W - L - R), x0 = x(0);
+  const v = d.vm(s.ind), dry = v.tipo === "seco";
+  const DRY = "#ff9f0a", WET = "#28a0f0";
+  const right = dry ? LL("más seco", "drier") : LL("más lluvia", "more rain"), left = dry ? LL("menos seco", "less dry") : LL("menos lluvia", "less rain");
+  const cR = dry ? DRY : WET, cL = dry ? WET : DRY;
+  const sig = rows.map((r) => d.isSig(r.t, s.reg));
+  const arrows = rows.map(({ p, t }, i) => {
+    const y = top + i * rh + rh / 2, xe = x(t.pendiente_decada), dir = Math.sign(xe - x0) || 1, c = pc(p), solid = sig[i];
+    const lo = x(t.ic95[0]), hi = x(t.ic95[1]), head = Math.abs(xe - x0) > 10 ? 9 : 0;
+    const tx = xe + dir * 6, anchor = dir > 0 ? "start" : "end";
+    const fits = dir > 0 ? tx + 44 < W : tx - 44 > 0;
+    return `<text x="0" y="${y + 4}" class="cap-p">${p}</text>
+      <line x1="${lo}" x2="${hi}" y1="${y + 11}" y2="${y + 11}" stroke="${c}" stroke-opacity=".45" stroke-width="2"/>
+      <line x1="${lo}" x2="${lo}" y1="${y + 8}" y2="${y + 14}" stroke="${c}" stroke-opacity=".45" stroke-width="2"/>
+      <line x1="${hi}" x2="${hi}" y1="${y + 8}" y2="${y + 14}" stroke="${c}" stroke-opacity=".45" stroke-width="2"/>
+      <line class="cap-arrow" x1="${x0}" x2="${xe - dir * head}" y1="${y}" y2="${y}" stroke="${c}" stroke-width="4" stroke-linecap="round" ${solid ? "" : 'stroke-dasharray="5 5" stroke-opacity=".7"'}/>
+      ${head ? `<path d="M${xe},${y} L${xe - dir * 11},${y - 7} L${xe - dir * 11},${y + 7} Z" fill="${c}" ${solid ? "" : 'fill-opacity=".7"'}/>` : `<circle cx="${xe}" cy="${y}" r="4" fill="${c}"/>`}
+      <text x="${fits ? tx : xe - dir * 6}" y="${y - 9}" text-anchor="${fits ? anchor : dir > 0 ? "end" : "start"}" class="cap-v num">${sgn(t.pendiente_decada)}</text>`;
+  }).join("");
+  return `<svg class="tr-cap" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(rows.map(({ p, t }) => `${p} ${sgn(t.pendiente_decada)} ${v.unidad_tendencia} (IC ${num(t.ic95[0])} a ${num(t.ic95[1])})`).join("; "))}">
+    <text x="${L}" y="12" class="cap-end" fill="${cL}">◀ ${esc(left)}</text>
+    <text x="${W - R}" y="12" text-anchor="end" class="cap-end" fill="${cR}">${esc(right)} ▶</text>
+    <line x1="${x0}" x2="${x0}" y1="${top - 8}" y2="${H}" class="cap-zero"/>
+    <text x="${x0}" y="${top - 12}" text-anchor="middle" class="cap-t">${esc(LL("sin cambio", "no change"))}</text>
+    ${arrows}
+  </svg>
+  <p class="cap-note"><span>${esc(LL(`Flecha: ${v.unidad_tendencia}. Sólida: cambio claro · discontinua: puede ser azar · barra fina: intervalo del 95 %.`, `Arrow: ${v.unidad_tendencia}. Solid: clear change · dashed: may be chance · thin bar: 95 % interval.`))}</span></p>`;
 }
 
 /** Las 32 provincias en un mismo eje: arriba IMERG, debajo CHIRPS; el punto relleno es significativo

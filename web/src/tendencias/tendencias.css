@@ -98,12 +98,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .seg button:hover:not(:disabled) { color: var(--text); }
 .seg button.on { background: var(--text); color: #000; }
 .seg button:disabled { opacity: .35; cursor: not-allowed; }
-.wits { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 2px; margin-top: 14px; border-radius: 12px; overflow: hidden; }
-.wit { padding: 10px 12px; background: var(--raised); }
-.wit-p { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
-.wit-p i, .stats-t th i, .pa-w i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
-.wit-n b { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
-.wit-s { font-size: 12px; color: var(--muted); }
+.stats-t th i, .pa-w i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
 .ans-sent { margin-top: 10px; font-size: 14px; line-height: 1.45; text-wrap: pretty; }
 .ladder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 12px; }
 .ladder span { position: relative; padding-top: 12px; font-size: 12px; line-height: 1.3; color: var(--faint); }
@@ -117,13 +112,14 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .pr-why b { color: var(--text); font-weight: 600; }
 .pr-txt { margin-top: 10px; }
 .chip { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #000; background: var(--c); white-space: nowrap; }
-.tr-cap { width: 100%; height: auto; display: block; margin-top: 12px; overflow: visible; }
-.cap-mdt { fill: var(--raised); }
-.cap-zero { stroke: var(--muted); }
+.tr-cap { width: 100%; height: auto; display: block; margin-top: 16px; overflow: visible; }
+.cap-zero { stroke: var(--muted); stroke-dasharray: 2 3; }
+.cap-end { font-size: 12px; font-weight: 600; font-family: inherit; }
 .cap-t { font-size: 11px; fill: var(--faint); font-family: inherit; }
-.cap-p, .cap-v { font-size: 12px; fill: var(--text); font-family: inherit; }
-.cap-p { font-weight: 600; }
-.cap-note { font-size: 13px; color: var(--muted); }
+.cap-p { font-size: 13px; font-weight: 600; fill: var(--text); font-family: inherit; }
+.cap-v { font-size: 16px; font-weight: 700; fill: var(--text); font-family: inherit; }
+.cap-note { margin-top: 6px; font-size: 14px; line-height: 1.45; color: var(--text); }
+.cap-note span { display: block; margin-top: 4px; font-size: 13px; color: var(--faint); }
 .stats-t { width: 100%; margin-top: 12px; border-collapse: collapse; font-size: 13px; }
 .stats-t th, .stats-t td { padding: 7px 0; text-align: right; font-weight: 500; }
 .stats-t thead th { font-size: 12px; font-weight: 400; color: var(--faint); cursor: help; }
@@ -263,7 +259,6 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
   .map-sty span { display: none; }
   .wx .maplibregl-ctrl-top-right { display: none; }
   .wx .maplibregl-ctrl-bottom-right { bottom: auto; top: 56px; }
-  .wit-n b { font-size: 24px; }
 }
 
 /* ── Crestas: relieve en perfiles, coloreado por lo que muestra el mapa ── */
