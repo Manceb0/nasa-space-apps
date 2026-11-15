@@ -1,0 +1,24 @@
+{
+  "fuentes": [
+    {
+      "sha256": "93670741f3a7e590efaaf70326da67007dc92b1a9513c62035b7ad937143366b",
+      "archivo": "Beaulieu_Killick_2018_manuscrito_aceptado.pdf",
+      "url": "https://eprints.lancs.ac.uk/id/eprint/127585/1/Beaulieu_Killick_JC_revised.pdf",
+      "titulo": "Distinguishing Trends and Shifts from Memory in Climate Data",
+      "doi": "10.1175/JCLI-D-17-0863.1",
+      "version": "Manuscrito aceptado, repositorio de Lancaster",
+      "bytes": 9351343
+    },
+    {
+      "sha256": "1effbc7bc6a7058c72a40e76ad18f555873b90d5d19f8c35ee7dcebdc58fb3f2",
+      "url_version": "https://arxiv.org/pdf/2201.06606v3",
+      "doi_publicacion": "10.1080/00401706.2024.2365730",
+      "archivo": "Wu_et_al_Drift_vs_Shift_arxiv_2201.06606.pdf",
+      "bytes": 2429498,
+      "url": "https://arxiv.org/pdf/2201.06606",
+      "titulo": "Drift vs Shift: Decoupling Trends and Changepoint Analysis",
+      "version": "arXiv:2201.06606v3, 2024-01-07"
+    }
+  ],
+  "fecha_descarga": "2026-11-15"
+}
