@@ -1,0 +1,333 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stellar Horizons · Respaldo de demo</title><style>
+body{max-width:920px;margin:auto;padding:24px;background:#111315;color:#eee;font:16px/1.6 system-ui}
+h1,h2{line-height:1.2}section{margin:36px 0;padding-top:12px;border-top:1px solid #666}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid #444;padding:10px 4px}
+.note{border-left:3px solid #f2cf83;padding:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
+</style><h1>Stellar Horizons</h1><p>Investigamos cómo cambia el agua y qué evidencia respalda las señales con las que nos preparamos.</p>
+<p>Respaldo local de resultados calculados. No emite alertas en vivo.</p>
+<section><h2>1. Investigar · República Dominicana, 2001–2024</h2><p>SDII: lluvia por día húmedo, umbral de 1 mm.</p>
+<table><tr><th>Producto</th><th>Cambio (mm/día húmedo/década)</th><th>p</th></tr><tr><th>IMERG</th><td>+0.7267</td><td>0.035</td></tr><tr><th>CHIRPS</th><td>-1.0510</td><td>0.05</td></tr></table>
+<p>Una tendencia de un producto no basta para confirmar un cambio físico. Pendiente Theil–Sen y prueba Mann–Kendall con autocorrelación.</p></section>
+<section><h2>2. Comprobar la definición</h2><table><tr><th>Día húmedo</th><th>Signos contrarios, al menos una significativa</th><th>Ambas significativas</th></tr><tr><th>0.5 mm</th><td>202/442</td><td>54/442</td></tr><tr><th>1 mm</th><td>160/442</td><td>29/442</td></tr><tr><th>2 mm</th><td>64/442</td><td>0/442</td></tr><tr><th>5 mm</th><td>0/442</td><td>0/442</td></tr></table>
+<p class="note">0 disputas no demuestra acuerdo: al subir el umbral disminuye la potencia para detectar tendencias. Comparaciones por celda con FDR.</p></section>
+<section><h2>3. Aplicar · Yuna, 2016–2024</h2><p>8 inundaciones catalogadas; disparador &gt;100 mm/48 h.</p>
+<table><tr><th>Regla</th><th>Eventos detectados</th><th>Episodios sin evento catalogado</th><th>Señal anterior al inicio</th></tr><tr><th>IMERG</th><td>7/8</td><td>39</td><td>0/8</td></tr><tr><th>Confirmacion hoy/ayer, misma celda</th><td>6/8</td><td>16</td><td>0/8</td></tr></table>
+<p class="note">Confirmar reduce episodios de 39 a 16, pero pierde septiembre de 2022: detecciones 7/8→6/8.
+Ninguna primera señal precede estrictamente al inicio catalogado. CHIRPS llega tarde; el catálogo puede omitir inundaciones.</p>
+<p>Uso propuesto: evaluar filtros de monitoreo para la preparación. No se ha demostrado anticipación ni reducción de daños.
+Fuentes: NASA GPM IMERG V07 Final y CHC CHIRPS v2.0, parcialmente dependientes. GOES: sin resolver.</p></section>
+<details><summary>Datos y trazabilidad (incluye los 8 eventos)</summary><pre>{
+  &quot;umbrales&quot;: [
+    {
+      &quot;umbral_mm&quot;: 0.5,
+      &quot;metrica&quot;: &quot;SDII&quot;,
+      &quot;significativas_imerg&quot;: 130,
+      &quot;significativas_chirps&quot;: 138,
+      &quot;opuestas_al_menos_una_sig&quot;: 202,
+      &quot;opuestas_ambas_sig&quot;: 54,
+      &quot;mediana_pendiente_imerg&quot;: 0.6716560547017152,
+      &quot;mediana_pendiente_chirps&quot;: -1.2333892107868296
+    },
+    {
+      &quot;umbral_mm&quot;: 1,
+      &quot;metrica&quot;: &quot;SDII&quot;,
+      &quot;significativas_imerg&quot;: 122,
+      &quot;significativas_chirps&quot;: 72,
+      &quot;opuestas_al_menos_una_sig&quot;: 160,
+      &quot;opuestas_ambas_sig&quot;: 29,
+      &quot;mediana_pendiente_imerg&quot;: 0.7067065327218749,
+      &quot;mediana_pendiente_chirps&quot;: -1.1804768746241867
+    },
+    {
+      &quot;umbral_mm&quot;: 2,
+      &quot;metrica&quot;: &quot;SDII&quot;,
+      &quot;significativas_imerg&quot;: 64,
+      &quot;significativas_chirps&quot;: 0,
+      &quot;opuestas_al_menos_una_sig&quot;: 64,
+      &quot;opuestas_ambas_sig&quot;: 0,
+      &quot;mediana_pendiente_imerg&quot;: 0.7475898247957335,
+      &quot;mediana_pendiente_chirps&quot;: -1.1316867792727376
+    },
+    {
+      &quot;umbral_mm&quot;: 5,
+      &quot;metrica&quot;: &quot;SDII&quot;,
+      &quot;significativas_imerg&quot;: 0,
+      &quot;significativas_chirps&quot;: 0,
+      &quot;opuestas_al_menos_una_sig&quot;: 0,
+      &quot;opuestas_ambas_sig&quot;: 0,
+      &quot;mediana_pendiente_imerg&quot;: 0.8278473508128776,
+      &quot;mediana_pendiente_chirps&quot;: -1.2867385017560224
+    }
+  ],
+  &quot;yuna&quot;: {
+    &quot;titulo&quot;: &quot;¿Qué cambia al pedir confirmación?&quot;,
+    &quot;periodo&quot;: &quot;2016-2024&quot;,
+    &quot;tipo&quot;: &quot;comparacion_historica_no_operativa&quot;,
+    &quot;regla&quot;: &quot;&gt;100 mm/48 h; CHIRPS acumulado en misma celda; confirmacion hoy o ayer&quot;,
+    &quot;resumen&quot;: [
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;h&quot;: 7,
+        &quot;m&quot;: 1,
+        &quot;fa&quot;: 39,
+        &quot;ep&quot;: 48,
+        &quot;POD&quot;: 0.875,
+        &quot;FAR&quot;: 0.8125,
+        &quot;CSI&quot;: 0.14893617021276595,
+        &quot;eventos_senal_fecha_anterior&quot;: 0,
+        &quot;eventos_senal_durante&quot;: 7,
+        &quot;eventos_sin_senal&quot;: 1,
+        &quot;eventos_margen_ideal_positivo_sin_latencia&quot;: 0
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;h&quot;: 6,
+        &quot;m&quot;: 2,
+        &quot;fa&quot;: 16,
+        &quot;ep&quot;: 24,
+        &quot;POD&quot;: 0.75,
+        &quot;FAR&quot;: 0.6666666666666666,
+        &quot;CSI&quot;: 0.25,
+        &quot;eventos_senal_fecha_anterior&quot;: 0,
+        &quot;eventos_senal_durante&quot;: 6,
+        &quot;eventos_sin_senal&quot;: 2,
+        &quot;eventos_margen_ideal_positivo_sin_latencia&quot;: 0
+      }
+    ],
+    &quot;eventos&quot;: [
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;evento&quot;: &quot;2016-11&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2016-10-29&quot;,
+        &quot;fin_catalogo&quot;: &quot;2016-11-24&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2016-11-13&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -384.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;evento&quot;: &quot;2017-04&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2017-04-19&quot;,
+        &quot;fin_catalogo&quot;: &quot;2017-05-02&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2017-04-24&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -144.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;evento&quot;: &quot;2017-09&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2017-09-21&quot;,
+        &quot;fin_catalogo&quot;: &quot;2017-09-26&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2017-09-21&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -24.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;evento&quot;: &quot;2020-07&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2020-07-30&quot;,
+        &quot;fin_catalogo&quot;: &quot;2020-08-02&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2020-07-30&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -24.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;evento&quot;: &quot;2022-09&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2022-09-18&quot;,
+        &quot;fin_catalogo&quot;: &quot;2022-09-22&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2022-09-19&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -48.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;evento&quot;: &quot;2023-11&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2023-11-17&quot;,
+        &quot;fin_catalogo&quot;: &quot;2023-11-22&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2023-11-18&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -48.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;evento&quot;: &quot;2024-11&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2024-11-11&quot;,
+        &quot;fin_catalogo&quot;: &quot;2024-11-20&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;&quot;,
+        &quot;fase_por_fecha&quot;: &quot;sin_senal&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: null,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;IMERG&quot;,
+        &quot;evento&quot;: &quot;2024-12&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2024-12-19&quot;,
+        &quot;fin_catalogo&quot;: &quot;2024-12-26&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2024-12-23&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -120.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;evento&quot;: &quot;2016-11&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2016-10-29&quot;,
+        &quot;fin_catalogo&quot;: &quot;2016-11-24&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2016-11-13&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -384.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;evento&quot;: &quot;2017-04&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2017-04-19&quot;,
+        &quot;fin_catalogo&quot;: &quot;2017-05-02&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2017-04-24&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -144.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;evento&quot;: &quot;2017-09&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2017-09-21&quot;,
+        &quot;fin_catalogo&quot;: &quot;2017-09-26&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2017-09-21&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -24.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;evento&quot;: &quot;2020-07&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2020-07-30&quot;,
+        &quot;fin_catalogo&quot;: &quot;2020-08-02&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2020-07-31&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -48.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;evento&quot;: &quot;2022-09&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2022-09-18&quot;,
+        &quot;fin_catalogo&quot;: &quot;2022-09-22&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;&quot;,
+        &quot;fase_por_fecha&quot;: &quot;sin_senal&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: null,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;evento&quot;: &quot;2023-11&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2023-11-17&quot;,
+        &quot;fin_catalogo&quot;: &quot;2023-11-22&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2023-11-18&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -48.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;evento&quot;: &quot;2024-11&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2024-11-11&quot;,
+        &quot;fin_catalogo&quot;: &quot;2024-11-20&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;&quot;,
+        &quot;fase_por_fecha&quot;: &quot;sin_senal&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: null,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      },
+      {
+        &quot;periodo&quot;: &quot;2016-2024&quot;,
+        &quot;regla&quot;: &quot;acuerdo_misma_celda_hoy_o_ayer&quot;,
+        &quot;evento&quot;: &quot;2024-12&quot;,
+        &quot;inicio_catalogo&quot;: &quot;2024-12-19&quot;,
+        &quot;fin_catalogo&quot;: &quot;2024-12-26&quot;,
+        &quot;primera_fecha_senal&quot;: &quot;2024-12-23&quot;,
+        &quot;fase_por_fecha&quot;: &quot;durante&quot;,
+        &quot;anticipacion_ideal_horas_sin_latencia&quot;: -120.0,
+        &quot;anticipacion_operativa&quot;: &quot;NO EVALUADA: faltan fechas de disponibilidad y hora de inicio&quot;
+      }
+    ],
+    &quot;avisos_obligatorios&quot;: [
+      &quot;Menos episodios sin evento catalogado: 39 a 16; detectados: 7/8 a 6/8.&quot;,
+      &quot;Ninguna primera senal en fecha estrictamente anterior al inicio catalogado.&quot;,
+      &quot;Son productos retrospectivos. No son avisos en vivo ni instrucciones de evacuacion.&quot;,
+      &quot;El catalogo puede omitir inundaciones; no se ha demostrado reduccion de danos.&quot;
+    ],
+    &quot;fuente&quot;: &quot;reports_nacional/CIERRE_ALERTAS.md&quot;
+  },
+  &quot;nacional&quot;: {
+    &quot;IMERG&quot;: {
+      &quot;pendiente_decada&quot;: 0.7267,
+      &quot;ic95&quot;: [
+        0.04506,
+        1.591
+      ],
+      &quot;p&quot;: 0.035,
+      &quot;q&quot;: null,
+      &quot;sig&quot;: null,
+      &quot;sig_p05&quot;: true,
+      &quot;mdt&quot;: 1.06,
+      &quot;media&quot;: 10.89,
+      &quot;detectable&quot;: false,
+      &quot;pendiente_pct_decada&quot;: 6.67
+    },
+    &quot;clase&quot;: &quot;en disputa&quot;,
+    &quot;CHIRPS&quot;: {
+      &quot;pendiente_decada&quot;: -1.051,
+      &quot;ic95&quot;: [
+        -2.203,
+        0.07515
+      ],
+      &quot;p&quot;: 0.05,
+      &quot;q&quot;: null,
+      &quot;sig&quot;: null,
+      &quot;sig_p05&quot;: false,
+      &quot;mdt&quot;: 2.19,
+      &quot;media&quot;: 11.58,
+      &quot;detectable&quot;: false,
+      &quot;pendiente_pct_decada&quot;: -9.08
+    }
+  },
+  &quot;procedencia&quot;: [
+    {
+      &quot;archivo&quot;: &quot;results/cierre/resumen.json&quot;,
+      &quot;sha256&quot;: &quot;0d9bf8a136c94f4224fe4012aa2cea250fa2f745d2c0e1a8b90367c978a90603&quot;
+    },
+    {
+      &quot;archivo&quot;: &quot;results/tropical/cierre_alertas/demo_yuna.json&quot;,
+      &quot;sha256&quot;: &quot;9d591a601a4b4fbb858cf9f50c8d81fef678b924582da69e0f72267076fe7556&quot;
+    },
+    {
+      &quot;archivo&quot;: &quot;web/public/data/tendencias/provincias.json&quot;,
+      &quot;sha256&quot;: &quot;cdf8ec1caf5d9e290a051ca22bc399e1f40a640ab2cc06c88a6f6cb909e35852&quot;
+    }
+  ]
+}</pre></details></html>

@@ -1,0 +1,314 @@
+{
+  "umbrales": [
+    {
+      "umbral_mm": 0.5,
+      "metrica": "SDII",
+      "significativas_imerg": 130,
+      "significativas_chirps": 138,
+      "opuestas_al_menos_una_sig": 202,
+      "opuestas_ambas_sig": 54,
+      "mediana_pendiente_imerg": 0.6716560547017152,
+      "mediana_pendiente_chirps": -1.2333892107868296
+    },
+    {
+      "umbral_mm": 1,
+      "metrica": "SDII",
+      "significativas_imerg": 122,
+      "significativas_chirps": 72,
+      "opuestas_al_menos_una_sig": 160,
+      "opuestas_ambas_sig": 29,
+      "mediana_pendiente_imerg": 0.7067065327218749,
+      "mediana_pendiente_chirps": -1.1804768746241867
+    },
+    {
+      "umbral_mm": 2,
+      "metrica": "SDII",
+      "significativas_imerg": 64,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 64,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": 0.7475898247957335,
+      "mediana_pendiente_chirps": -1.1316867792727376
+    },
+    {
+      "umbral_mm": 5,
+      "metrica": "SDII",
+      "significativas_imerg": 0,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 0,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": 0.8278473508128776,
+      "mediana_pendiente_chirps": -1.2867385017560224
+    }
+  ],
+  "yuna": {
+    "titulo": "¿Qué cambia al pedir confirmación?",
+    "periodo": "2016-2024",
+    "tipo": "comparacion_historica_no_operativa",
+    "regla": ">100 mm/48 h; CHIRPS acumulado en misma celda; confirmacion hoy o ayer",
+    "resumen": [
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "h": 7,
+        "m": 1,
+        "fa": 39,
+        "ep": 48,
+        "POD": 0.875,
+        "FAR": 0.8125,
+        "CSI": 0.14893617021276595,
+        "eventos_senal_fecha_anterior": 0,
+        "eventos_senal_durante": 7,
+        "eventos_sin_senal": 1,
+        "eventos_margen_ideal_positivo_sin_latencia": 0
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "h": 6,
+        "m": 2,
+        "fa": 16,
+        "ep": 24,
+        "POD": 0.75,
+        "FAR": 0.6666666666666666,
+        "CSI": 0.25,
+        "eventos_senal_fecha_anterior": 0,
+        "eventos_senal_durante": 6,
+        "eventos_sin_senal": 2,
+        "eventos_margen_ideal_positivo_sin_latencia": 0
+      }
+    ],
+    "eventos": [
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "evento": "2016-11",
+        "inicio_catalogo": "2016-10-29",
+        "fin_catalogo": "2016-11-24",
+        "primera_fecha_senal": "2016-11-13",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -384.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "evento": "2017-04",
+        "inicio_catalogo": "2017-04-19",
+        "fin_catalogo": "2017-05-02",
+        "primera_fecha_senal": "2017-04-24",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -144.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "evento": "2017-09",
+        "inicio_catalogo": "2017-09-21",
+        "fin_catalogo": "2017-09-26",
+        "primera_fecha_senal": "2017-09-21",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -24.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "evento": "2020-07",
+        "inicio_catalogo": "2020-07-30",
+        "fin_catalogo": "2020-08-02",
+        "primera_fecha_senal": "2020-07-30",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -24.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "evento": "2022-09",
+        "inicio_catalogo": "2022-09-18",
+        "fin_catalogo": "2022-09-22",
+        "primera_fecha_senal": "2022-09-19",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -48.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "evento": "2023-11",
+        "inicio_catalogo": "2023-11-17",
+        "fin_catalogo": "2023-11-22",
+        "primera_fecha_senal": "2023-11-18",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -48.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "evento": "2024-11",
+        "inicio_catalogo": "2024-11-11",
+        "fin_catalogo": "2024-11-20",
+        "primera_fecha_senal": "",
+        "fase_por_fecha": "sin_senal",
+        "anticipacion_ideal_horas_sin_latencia": null,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "IMERG",
+        "evento": "2024-12",
+        "inicio_catalogo": "2024-12-19",
+        "fin_catalogo": "2024-12-26",
+        "primera_fecha_senal": "2024-12-23",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -120.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "evento": "2016-11",
+        "inicio_catalogo": "2016-10-29",
+        "fin_catalogo": "2016-11-24",
+        "primera_fecha_senal": "2016-11-13",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -384.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "evento": "2017-04",
+        "inicio_catalogo": "2017-04-19",
+        "fin_catalogo": "2017-05-02",
+        "primera_fecha_senal": "2017-04-24",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -144.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "evento": "2017-09",
+        "inicio_catalogo": "2017-09-21",
+        "fin_catalogo": "2017-09-26",
+        "primera_fecha_senal": "2017-09-21",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -24.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "evento": "2020-07",
+        "inicio_catalogo": "2020-07-30",
+        "fin_catalogo": "2020-08-02",
+        "primera_fecha_senal": "2020-07-31",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -48.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "evento": "2022-09",
+        "inicio_catalogo": "2022-09-18",
+        "fin_catalogo": "2022-09-22",
+        "primera_fecha_senal": "",
+        "fase_por_fecha": "sin_senal",
+        "anticipacion_ideal_horas_sin_latencia": null,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "evento": "2023-11",
+        "inicio_catalogo": "2023-11-17",
+        "fin_catalogo": "2023-11-22",
+        "primera_fecha_senal": "2023-11-18",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -48.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "evento": "2024-11",
+        "inicio_catalogo": "2024-11-11",
+        "fin_catalogo": "2024-11-20",
+        "primera_fecha_senal": "",
+        "fase_por_fecha": "sin_senal",
+        "anticipacion_ideal_horas_sin_latencia": null,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      },
+      {
+        "periodo": "2016-2024",
+        "regla": "acuerdo_misma_celda_hoy_o_ayer",
+        "evento": "2024-12",
+        "inicio_catalogo": "2024-12-19",
+        "fin_catalogo": "2024-12-26",
+        "primera_fecha_senal": "2024-12-23",
+        "fase_por_fecha": "durante",
+        "anticipacion_ideal_horas_sin_latencia": -120.0,
+        "anticipacion_operativa": "NO EVALUADA: faltan fechas de disponibilidad y hora de inicio"
+      }
+    ],
+    "avisos_obligatorios": [
+      "Menos episodios sin evento catalogado: 39 a 16; detectados: 7/8 a 6/8.",
+      "Ninguna primera senal en fecha estrictamente anterior al inicio catalogado.",
+      "Son productos retrospectivos. No son avisos en vivo ni instrucciones de evacuacion.",
+      "El catalogo puede omitir inundaciones; no se ha demostrado reduccion de danos."
+    ],
+    "fuente": "reports_nacional/CIERRE_ALERTAS.md"
+  },
+  "nacional": {
+    "IMERG": {
+      "pendiente_decada": 0.7267,
+      "ic95": [
+        0.04506,
+        1.591
+      ],
+      "p": 0.035,
+      "q": null,
+      "sig": null,
+      "sig_p05": true,
+      "mdt": 1.06,
+      "media": 10.89,
+      "detectable": false,
+      "pendiente_pct_decada": 6.67
+    },
+    "clase": "en disputa",
+    "CHIRPS": {
+      "pendiente_decada": -1.051,
+      "ic95": [
+        -2.203,
+        0.07515
+      ],
+      "p": 0.05,
+      "q": null,
+      "sig": null,
+      "sig_p05": false,
+      "mdt": 2.19,
+      "media": 11.58,
+      "detectable": false,
+      "pendiente_pct_decada": -9.08
+    }
+  },
+  "procedencia": [
+    {
+      "archivo": "results/cierre/resumen.json",
+      "sha256": "0d9bf8a136c94f4224fe4012aa2cea250fa2f745d2c0e1a8b90367c978a90603"
+    },
+    {
+      "archivo": "results/tropical/cierre_alertas/demo_yuna.json",
+      "sha256": "9d591a601a4b4fbb858cf9f50c8d81fef678b924582da69e0f72267076fe7556"
+    },
+    {
+      "archivo": "web/public/data/tendencias/provincias.json",
+      "sha256": "cdf8ec1caf5d9e290a051ca22bc399e1f40a640ab2cc06c88a6f6cb909e35852"
+    }
+  ]
+}

@@ -17,7 +17,10 @@ que afecte a lo mostrado. No sustituir investigación pendiente por afirmaciones
 
 ## 2. Cerrar un recorrido y su utilidad
 
-**Guion fijado; pendiente comprobarlo en la interfaz renderizada.** Un recorrido principal, tres momentos:
+**Hecho:** recorrido implementado en Tendencias, entrada «Recorrido · 90 s». Comprobado en la compilación
+de producción a 1280×800, 390×844 y 360×740 (móvil emulado). Resultado guardado en
+`reports_nacional/VERIFICACION_RECORRIDO.json`; capturas `reports_nacional/recorrido-yuna-*.png`.
+Un recorrido principal, tres momentos:
 
 | Momento | Qué muestra | Para qué sirve |
 |---|---|---|
@@ -27,11 +30,11 @@ que afecte a lo mostrado. No sustituir investigación pendiente por afirmaciones
 
 Frase de producto: **«Investigamos cómo cambia el agua y qué evidencia respalda las señales con las que nos preparamos».**
 
-La serie sintética del 74,6 % queda en «Poner a prueba el método», como evidencia opcional; no ocupa otro paso obligatorio.
+La serie sintética del 74,6 % queda documentada en la revisión científica, fuera del recorrido obligatorio.
 La comparación de reglas es histórica. La web no emite recomendaciones operativas de evacuación ni avisos en vivo.
 No se afirma que IMERG y CHIRPS sean testigos totalmente independientes.
 
-Criterios para dar esta meta por terminada:
+Criterios comprobados:
 
 - El recorrido puede completarse en móvil y escritorio sin cambiar de aplicación.
 - Cada cifra lleva periodo, denominador, unidad y fuente accesibles.
@@ -41,14 +44,28 @@ Criterios para dar esta meta por terminada:
 
 ## 3. Verificar y preparar la entrega
 
-**Hecho:** `npm run build` pasó (TypeScript y Vite). Esto no prueba la experiencia visual.
+**Hecho:** `npm run build` pasó (TypeScript y Vite), seguido de pruebas del recorrido en navegador sobre `vite preview`.
+La advertencia de tamaño del paquete persiste; no impidió cargar ni completar las pruebas.
 
-Pendiente antes de declarar la versión lista:
+Entregables verificados para la versión local:
 
-- Revisar el recorrido renderizado en móvil y escritorio: controles, textos, fuentes y navegación.
-- Comprobar que README, demo y pitch cuentan la misma historia y usan el resultado de cierre.
-- Preparar un guion de 90 s y una copia de respaldo que funcione con resultados locales.
-- Verificar el estado de Git y la versión concreta a entregar. Publicación y visibilidad se resuelven
-  dentro de las instrucciones explícitas del usuario; este documento no las ejecuta.
+- Recorrido renderizado: cuatro umbrales, comparación base/confirmación, ocho eventos, descarga JSON,
+  ausencia de desbordamiento horizontal en la comparación, Escape y restitución de foco. Inglés comprobado.
+- README, recorrido y `reports_nacional/GUION_ENTREGA_90S.md` usan el mismo resultado 39→16 y 7/8→6/8,
+  con ausencia de anticipación demostrada. El antiguo pitch sigue marcado como superado.
+- `reports_nacional/RESPALDO_DEMO.html` se abre desde disco con cero peticiones HTTP:
+  `reports_nacional/VERIFICACION_RESPALDO.json`. Se genera desde las mismas salidas con
+  `python scripts/exportar_recorrido.py`.
+- Cambios de cierre registrados en Git. No se hizo push ni se cambió la visibilidad del repositorio.
+
+La versión local está lista para ensayo y entrega al responsable. No equivale a una evaluación por usuarios
+externos, prueba en teléfono físico ni publicación en el portal del concurso.
+
+## Repetir la comprobación
+
+1. `python scripts/exportar_recorrido.py`
+2. En `web/`: `npm run build` y `npm run preview -- --host 127.0.0.1` (puerto 4180).
+3. Desde la raíz: `npx --yes --package @playwright/cli playwright-cli -s=stellar-cierre open http://127.0.0.1:4180 --browser msedge`
+4. `npx --yes --package @playwright/cli playwright-cli -s=stellar-cierre --raw run-code --filename=scripts/verificar_recorrido.js`
 
 No añadir módulos, nuevos competidores ni más casos al recorrido hasta superar estas tres metas.

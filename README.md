@@ -3,8 +3,8 @@
 NASA Space Apps 2026 · reto **«Be An Earth System Trend Detective!»** · Santiago, República Dominicana.
 Cierre de la entrega: **domingo 15 de noviembre de 2026, 23:59 (hora de RD)**. Meta interna: 20:00.
 
-> **Pregunta guía:** ¿qué conclusión aparentemente correcta sobre sequías e inundaciones en República
-> Dominicana podría resultar equivocada cuando incorporamos la información que faltaba?
+> **Pregunta guía:** ¿cómo cambia el agua en República Dominicana y qué evidencia respalda las señales
+> con las que nos preparamos?
 >
 > **Regla de lenguaje:** nunca decimos que «el satélite miente». Distintas fuentes científicas pueden
 > ofrecer interpretaciones contradictorias del mismo territorio, y nuestro sistema investiga por qué.
@@ -13,17 +13,19 @@ Este README es la guía para el líder y el equipo: qué hay, qué leer primero 
 
 ## La historia en tres piezas
 
-1. **Mapa nacional de tendencias (P0, obligatorio por el reto).** Variable, región, serie, ritmo de cambio y
-   significancia para toda la RD, 2001-2024, con IMERG (NASA) y CHIRPS. Resultado: casi ninguna tendencia es
-   robusta cuando se exige que las dos fuentes estén de acuerdo; la lluvia extrema no es detectable en 24 años;
-   y las fuentes discrepan en la intensidad de la lluvia diaria en 160 de 442 celdas.
-2. **Auditoría de confianza (el momento central).** Cuatro productos de lluvia que parecen independientes
-   comparten pluviómetros. Solo en 275 de 3.111 provincia-meses con alarma de sequía coinciden los cuatro; en el
-   39 % otro producto dice «normal o húmedo». El 67 % de los disparos de inundación (> 100 mm en 48 h) de un
-   producto no los confirma el otro.
-3. **Caso Yuna.** Lluvia y memoria del suelo arriba → presa de Hatillo → inundación de arrozales abajo, contrastado
-   con agua observada por MODIS (MCDWD): confirma 12 de 15 eventos; 228 km² inundados al menos una vez y 50 km²
-   en tres o más eventos.
+1. **Investigar.** Variable, región, serie, ritmo de cambio y significancia para RD, 2001–2024, con NASA IMERG y
+   CHIRPS. El recorrido muestra SDII: una tendencia de un producto no basta para confirmar un cambio físico.
+2. **Comprobar.** Cuatro definiciones de día húmedo (0,5/1/2/5 mm) producen 202/160/64/0 celdas SDII en disputa
+   de 442. Son pendientes opuestas con al menos una significativa; a 1 mm solo 29 tienen ambas significativas.
+   Cero disputas a 5 mm no prueba acuerdo: disminuye la potencia.
+3. **Aplicar al monitoreo del Yuna.** En la comparación histórica 2016–2024, pedir confirmación de CHIRPS de
+   hoy/ayer y acumulado de la misma celda reduce episodios sin inundación catalogada de 39 a 16, pero detecta
+   6/8 eventos frente a 7/8. Ninguna primera señal precede estrictamente al inicio catalogado. Es una evaluación
+   retrospectiva de un filtro para mejorar el monitoreo, no una alerta operativa ni prevención de daños demostrada.
+
+En Tendencias, abrir **«Recorrido · 90 s»**. La auditoría y la vegetación siguen disponibles para explorar después.
+Guion: `reports_nacional/GUION_ENTREGA_90S.md`. Respaldo sin internet: abrir `reports_nacional/RESPALDO_DEMO.html`.
+Metas y comprobaciones: `METAS_CIERRE.md`. Evidencia principal: `reports_nacional/CIERRE_ALERTAS.md`.
 
 ## Qué leer primero (unos 20 minutos)
 
@@ -39,7 +41,8 @@ Este README es la guía para el líder y el equipo: qué hay, qué leer primero 
 Para leer sin instalar nada: los cuadernos ya ejecutados en `reports_nacional/notebooks_html/` (abrir en el
 navegador). Los mismos cuadernos editables están en `notebooks/`.
 
-Todos los números de los informes los genera el código desde los datos; ninguno está escrito a mano.
+Los resultados proceden de salidas del motor. Los textos de cierre seleccionan y redondean esas cifras;
+la descarga de evidencia del recorrido incluye datos y procedencia. Regenerar el paquete con `python scripts/exportar_recorrido.py`.
 
 ## Mapa del repositorio
 

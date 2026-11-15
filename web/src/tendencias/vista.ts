@@ -15,6 +15,7 @@ import { bottomSheet, PEEK } from "./hoja";
 import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
 import { timeline } from "./tiempo";
+import { wireTour } from "./recorrido";
 
 type Style = "crestas" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
@@ -76,7 +77,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const pp = (v: number) => `${sgn(v, 1)} pp`;
   const warn13 = S13 ? `<ul class="s13-w">
         <li>${esc(LL("El conmutador es una prueba de sensibilidad, no una corrección: el resultado publicado sigue siendo el principal.", "The switch is a sensitivity test, not a correction: the published result remains the main one."))}</li>
-        ${era ? `<li>${esc(LL(`Frente a ERA5 (${era.n_puntos} puntos), IMERG pierde días de lluvia de forma gradual; el punto de cambio está en ${era.punto_de_cambio_IMERG_menos_ERA5}, no es un escalón en 2013-10. Cambio medio: IMERG ${pp(era.cambio_medio_pp.IMERG)}, ERA5 ${pp(era.cambio_medio_pp.ERA5)}, CHIRPS ${pp(era.cambio_medio_pp.CHIRPS)}. ERA5 no es del todo independiente de IMERG.`, `Against ERA5 (${era.n_puntos} points), IMERG loses rain days gradually; the change point is ${era.punto_de_cambio_IMERG_menos_ERA5}, not a step in 2013-10. Mean change: IMERG ${pp(era.cambio_medio_pp.IMERG)}, ERA5 ${pp(era.cambio_medio_pp.ERA5)}, CHIRPS ${pp(era.cambio_medio_pp.CHIRPS)}. ERA5 is not fully independent of IMERG.`))}</li>` : ""}
+        ${era ? `<li>${esc(LL(`Frente a ERA5 (${era.n_puntos} puntos), IMERG pierde de media más días de lluvia. La prueba sitúa un cambio en ${era.punto_de_cambio_IMERG_menos_ERA5}, pero no identifica su forma ni su causa. Cambio medio: IMERG ${pp(era.cambio_medio_pp.IMERG)}, ERA5 ${pp(era.cambio_medio_pp.ERA5)}, CHIRPS ${pp(era.cambio_medio_pp.CHIRPS)}. IMERG usa ERA5 como dato auxiliar: la dependencia es parcial.`, `Against ERA5 (${era.n_puntos} points), IMERG loses more rain days on average. The test locates a change in ${era.punto_de_cambio_IMERG_menos_ERA5}, but does not identify its shape or cause. Mean change: IMERG ${pp(era.cambio_medio_pp.IMERG)}, ERA5 ${pp(era.cambio_medio_pp.ERA5)}, CHIRPS ${pp(era.cambio_medio_pp.CHIRPS)}. IMERG uses ERA5 as ancillary input: dependence is partial.`))}</li>` : ""}
         ${rev ? `<li>${esc(LL(`El ajuste hacia CHIRPS le quita el ${num(rev.reduccion_pendiente_sintetica_pct, 1)} % a una tendencia sintética sin ningún salto: no distingue una deriva de un escalón. Por eso las disputas que desaparecen miden la sensibilidad al ajuste, no un mecanismo.`, `The adjustment towards CHIRPS removes ${num(rev.reduccion_pendiente_sintetica_pct, 1)} % of a synthetic trend with no jump: it cannot tell a drift from a step. The disputes that vanish measure sensitivity to the adjustment, not a mechanism.`))}</li>` : ""}
         <li>${esc(LL("La variante ajustada tiene valores imposibles (rachas o intensidades negativas): no es lluvia.", "The adjusted variant has impossible values (negative spells or intensities): it is not rainfall."))}</li>
         <li>${esc(LL("Parte del acuerdo lo induce el propio ajuste: en esa capa no se muestra «robusta».", "Part of the agreement is induced by the adjustment itself: that layer shows no \"robust\"."))}</li>
@@ -87,6 +88,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-land="${ui.land ? "on" : "off"}" data-sty="${ui.style}" data-d3="${ui.d3 ? "on" : "off"}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
     <header class="wx-top">
       <a class="wx-brand" href="#tendencias">${MARK}<b>Stellar Horizons</b><span>${esc(LL("Detective de tendencias", "Trend detective"))}</span></a>
+      <button class="tour-open" id="tour-open">${esc(LL("Recorrido · 90 s", "90-second tour"))}</button>
       ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}"><i></i>${esc(LL("Preliminar: solo IMERG", "Preliminary: IMERG only"))}</p>`}
     </header>
     <div class="wx-main">
@@ -136,7 +138,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     <dialog class="s13-lb" id="s13-lb" aria-labelledby="s13-lb-h">
       <button class="s13-x" aria-label="${esc(LL("Cerrar", "Close"))}">×</button>
       <h2 id="s13-lb-h">${esc(LL("¿IMERG cuenta menos días de lluvia?", "Is IMERG counting fewer rain days?"))}</h2>
-      <p>${esc(LL("Los testigos (pluviómetros, CHIRPS y ERA5) indican que IMERG pierde días de lluvia que ellos no pierden, sin que la cantidad cambie de forma detectable. No está confirmado ni fechado: es una posible deriva. Arriba, el tercer testigo; abajo, el mapa publicado frente al ajuste hacia CHIRPS.", "The witnesses (gauges, CHIRPS and ERA5) suggest IMERG loses rain days they do not, with no detectable change in amount. It is neither confirmed nor dated: a possible drift. Top, the third witness; bottom, the published map against the adjustment towards CHIRPS."))}</p>
+      <p>${esc(LL("En los lugares comparados, IMERG pierde de media más días de lluvia que las referencias. No se detectó un cambio en la relación de cantidad IMERG/ERA5; eso no demuestra que la lluvia total sea constante. El origen y la forma temporal siguen abiertos. Arriba, la comparación con ERA5; abajo, el mapa publicado frente al ajuste hacia CHIRPS.", "At the compared sites, IMERG loses more rain days on average than the references. No change was detected in the IMERG/ERA5 amount ratio; that does not prove total rainfall is constant. The origin and temporal shape remain unresolved. Top, the ERA5 comparison; bottom, the published map versus adjustment towards CHIRPS."))}</p>
       ${warn13}
       <img data-src="figuras/09_tercer_testigo_era5_dark.png" alt="${esc(LL("Diferencia de días de lluvia de IMERG y de CHIRPS frente a ERA5 en seis puntos de República Dominicana, 2001-2024.", "Rain-day difference of IMERG and CHIRPS against ERA5 at six points in the Dominican Republic, 2001-2024."))}">
       <img data-src="figuras/08_after_the_correction_dark.png" alt="${esc(LL("Mapas de SDII y de rachas secas de 15 días, publicados y con el ajuste hacia CHIRPS, y celdas en disputa según el año de corte del ajuste.", "SDII and 15-day dry-spell maps, published and with the adjustment towards CHIRPS, and disputed cells by cut year of the adjustment."))}">
@@ -145,6 +147,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
 
   const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
   const wx = $("wx"), tip = $("tr-tip");
+  cleanup.push(wireTour($<HTMLButtonElement>("tour-open"), d));
   const vm = () => d.vm(sel.ind);
   const years = () => d.years(sel);
   const regName = () => (sel.reg === "DO" ? LL("República Dominicana", "Dominican Republic") : d.regName(sel.reg));
@@ -192,7 +195,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   };
 
   // ── La respuesta: época, medidas con su veredicto, los dos testigos, la frase, la escalera y la prueba ──
-  // ── Escalón de 2013-10: IMERG cambió su forma de contar días de lluvia; el mapa puede verse sin él ──
+  // Sensibilidad al ajuste hacia CHIRPS: no identifica ni elimina un mecanismo físico.
   const adjLever = () => {
     const S = d.s13;
     if (!S || !d.stepped(sel.ind)) return "";
