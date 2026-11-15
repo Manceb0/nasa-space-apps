@@ -102,9 +102,9 @@ export function forest(d: TrendData, s: Sel, width: number) {
         ${marks}
       </g>`;
     }).join("")}
-    <text x="${x(-ext)}" y="${H - 4}" class="fr-ax num">${num(-ext)}</text>
+    <text x="${x(-ext)}" y="${H - 4}" class="fr-ax num">${num(-ext)} · ${esc(LL("baja", "falls"))}</text>
     <text x="${x(0)}" y="${H - 4}" class="fr-ax" text-anchor="middle">0</text>
-    <text x="${x(ext)}" y="${H - 4}" class="fr-ax num" text-anchor="end">${sgn(ext)}</text>
+    <text x="${x(ext)}" y="${H - 4}" class="fr-ax num" text-anchor="end">${esc(LL("sube", "rises"))} · ${sgn(ext)}</text>
   </svg>`;
   return { svg, counts };
 }
@@ -149,5 +149,5 @@ export function seriesChart(d: TrendData, s: Sel, width: number, mark: number | 
     ${mark !== null ? `<line class="tr-cur" x1="${X(mark)}" x2="${X(mark)}" y1="${mt}" y2="${H - mb}"/>` : ""}
     <rect x="${ml}" y="0" width="${W - ml - mr}" height="${H}" fill="transparent" class="tr-hit" data-ml="${ml}" data-mr="${mr}" data-w="${W}"/>
   </svg>
-  <p class="tr-key">${lines.map((l) => `<span><i class="ln" style="background:${pc(l.p)}"></i>${esc(l.p)}${l.t ? ` ${sgn(l.t.pendiente_decada)}` : ""}</span>`).join("")}<span>${esc(LL("discontinua: no significativa", "dashed: not significant"))}</span></p>`;
+  <p class="tr-key">${lines.map((l) => `<span><i class="ln" style="background:${pc(l.p)}"></i>${esc(l.p)}${l.t ? ` ${sgn(l.t.pendiente_decada)} ${esc(d.vm(s.ind).unidad_tendencia)}` : ""}</span>`).join("")}<span>${esc(LL("discontinua: no significativa", "dashed: not significant"))}</span></p>`;
 }

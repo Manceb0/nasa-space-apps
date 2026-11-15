@@ -606,3 +606,10 @@ button.vd:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-r
 .cy-facts { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; }
 .cy-facts li { font-size: 14px; line-height: 1.4; color: var(--muted); }
 .cy-facts b { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* qué mide cada gráfico del panel derecho */
+.tr-what { margin: 0 0 8px; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.tr-what b { color: var(--text); font-weight: 600; }
+.tr-what span { display: block; margin-top: 2px; color: var(--faint); }
+.tr-read { margin: 8px 0 0; font-size: 13px; line-height: 1.45; color: #ffd60a; }
+.tr-forest .fz { stroke: #6b6f75; stroke-width: 1.5; }

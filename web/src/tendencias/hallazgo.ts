@@ -6,24 +6,36 @@ import "./hallazgo.css";
 
 const C_IMERG = "#ffffff", C_CHIRPS = "#8fd3ff", C_OTRO = "#ffb347";
 
-/** Barras divergentes en puntos porcentuales: una fila por categoría, una barra por producto. */
-function bars(rows: { k: string; v: [string, number, string][] }[], lo: number, hi: number, unit = "pp") {
-  const W = 360, L = 96, R = 44, rh = 15, gap = 10;
-  const H = rows.reduce((s, r) => s + r.v.length * rh + gap, 0) + 20;
+const nf = (v: number) => `${v > 0 ? "+" : ""}${v.toLocaleString(LL("es-DO", "en-US"))}`;
+
+/** Puntos sobre un eje (sin barras): una fila por producto, el punto en su cambio y la línea del cero. */
+function dots(rows: [string, number, string][], lo: number, hi: number, unit = "pp") {
+  const W = 360, L = 80, R = 24, rh = 26, T = 6, H = T + rows.length * rh + 22;
   const x = (v: number) => L + ((v - lo) / (hi - lo)) * (W - L - R), x0 = x(0);
-  let y = 4, out = "";
-  for (const r of rows) {
-    const h = r.v.length * rh;
-    out += `<text x="${L - 8}" y="${y + h / 2 + 4}" text-anchor="end" fill="#d6d6d6" font-size="12">${esc(r.k)}</text>`;
-    r.v.forEach(([name, v, col], i) => {
-      const yy = y + i * rh + 2, a = Math.min(x(v), x0), w = Math.max(2, Math.abs(x(v) - x0));
-      out += `<rect x="${a.toFixed(1)}" y="${yy}" width="${w.toFixed(1)}" height="${rh - 4}" rx="3" fill="${col}"><title>${esc(`${name}: ${v > 0 ? "+" : ""}${v.toLocaleString(LL("es-DO", "en-US"))} ${unit}`)}</title></rect>`;
-      out += `<text x="${(v < 0 ? a - 4 : a + w + 4).toFixed(1)}" y="${yy + rh - 6}" text-anchor="${v < 0 ? "end" : "start"}" fill="${col}" font-size="11" font-weight="600">${v > 0 ? "+" : ""}${v.toLocaleString(LL("es-DO", "en-US"))}</text>`;
-    });
-    y += h + gap;
+  let out = `<line x1="${x0}" x2="${x0}" y1="${T - 2}" y2="${H - 20}" stroke="#5b6066" stroke-width="1.5" stroke-linecap="round"/>`;
+  rows.forEach(([name, v, col], i) => {
+    const y = T + i * rh + rh / 2;
+    out += `<text x="${L - 10}" y="${y + 4}" text-anchor="end" fill="#d6d6d6" font-size="12">${esc(name)}</text>
+      <line x1="${x0}" x2="${x(v).toFixed(1)}" y1="${y}" y2="${y}" stroke="${col}" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 3" stroke-linecap="round"/>
+      <circle cx="${x(v).toFixed(1)}" cy="${y}" r="6" fill="${col}"><title>${esc(`${name}: ${nf(v)} ${unit}`)}</title></circle>
+      <text x="${(x(v) + (v < 0 ? -12 : 12)).toFixed(1)}" y="${y + 4}" text-anchor="${v < 0 ? "end" : "start"}" fill="${col}" font-size="12" font-weight="700">${nf(v)}</text>`;
+  });
+  out += `<text x="${x0}" y="${H - 6}" text-anchor="middle" fill="#949494" font-size="11">0 ${unit}</text>`;
+  return `<svg class="hz-c" viewBox="0 0 ${W} ${H}" role="img">${out}</svg>`;
+}
+
+/** Dos líneas con puntos: el cambio de cada producto según el umbral del día lluvioso, con la línea del cero. */
+function lines(xs: string[], series: [string, number[], string][], lo: number, hi: number) {
+  const W = 360, L = 40, R = 52, T = 12, B = 30, H = 200;
+  const x = (i: number) => L + (i / (xs.length - 1)) * (W - L - R), y = (v: number) => T + ((hi - v) / (hi - lo)) * (H - T - B);
+  let out = [hi, 0, lo].map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 0 ? "#5b6066" : "#2a2d31"}" stroke-width="${v === 0 ? 1.5 : 1}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" fill="#949494" font-size="11">${nf(v)}</text>`).join("");
+  out += xs.map((k, i) => `<text x="${x(i)}" y="${H - 10}" text-anchor="middle" fill="#949494" font-size="11">${esc(k)}</text>`).join("");
+  for (const [name, vs, col] of series) {
+    out += `<path d="${vs.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("")}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+    out += vs.map((v, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="4.5" fill="${col}"><title>${esc(`${name} · ${xs[i]}: ${nf(v)} pp`)}</title></circle>`).join("");
+    // el nombre va junto al primer punto, donde las líneas están más separadas
+    out += `<text x="${(x(0) + 10).toFixed(1)}" y="${(y(vs[0]) + (vs[0] < 0 ? 18 : -10)).toFixed(1)}" fill="${col}" font-size="12" font-weight="700">${esc(name)}</text>`;
   }
-  out += `<line x1="${x0}" x2="${x0}" y1="0" y2="${y - gap + 2}" stroke="#5b6066" stroke-width="1.5" stroke-linecap="round"/>`;
-  out += `<text x="${x0}" y="${y + 10}" text-anchor="middle" fill="#949494" font-size="11">0 ${unit}</text>`;
   return `<svg class="hz-c" viewBox="0 0 ${W} ${H}" role="img">${out}</svg>`;
 }
 
@@ -66,7 +78,6 @@ function puertoRico(pr: Hallazgos["pr"]) {
 }
 
 export function hallazgo(h: Hallazgos | null = null) {
-  const key = (items: [string, string][]) => `<p class="hz-key">${items.map(([c, l]) => `<span style="--k:${c}">${esc(l)}</span>`).join("")}</p>`;
   return `<section class="hz" aria-labelledby="hz-h">
     <h3 id="hz-h">${esc(LL("Lo que encontramos sobre IMERG", "What we found about IMERG"))}</h3>
     <p class="hz-lead">${esc(LL("Lo que más cambia en la lluvia medida por satélite en la RD es cómo IMERG cuenta los días de lluvia, no necesariamente la lluvia.", "What changes most in satellite-measured rain in the DR is how IMERG counts rain days, not necessarily the rain."))}</p>
@@ -74,21 +85,21 @@ export function hallazgo(h: Hallazgos | null = null) {
     <div class="hz-b">
       <h4>${esc(LL("La pérdida está en la lluvia ligera", "The loss is in light rain"))}</h4>
       <p>${esc(LL("Días con lluvia, después menos antes de 2018-02, celdas de tierra, según el umbral del día lluvioso:", "Rain days, after minus before 2018-02, land cells, by rain-day threshold:"))}</p>
-      ${key([[C_IMERG, "IMERG"], [C_CHIRPS, "CHIRPS"]])}
-      ${bars([["0,1 mm", -7.2, 1.4], ["0,5 mm", -5.8, 0.8], ["1 mm", -4.8, 0.3], ["2 mm", -3.6, -0.6], ["5 mm", -2.0, -1.4]].map(([k, a, b]) => ({ k: String(k), v: [["IMERG", a as number, C_IMERG], ["CHIRPS", b as number, C_CHIRPS]] as [string, number, string][] })), -8, 2)}
+      ${lines(["0,1 mm", "0,5 mm", "1 mm", "2 mm", "5 mm"], [["IMERG", [-7.2, -5.8, -4.8, -3.6, -2.0], C_IMERG], ["CHIRPS", [1.4, 0.8, 0.3, -0.6, -1.4], C_CHIRPS]], -8, 2)}
+      <p class="hz-n">${esc(LL("Cuanto más débil la lluvia que cuenta como día lluvioso, más se separan: la brecha se abre hacia la llovizna.", "The weaker the rain that counts as a rainy day, the wider the gap: it opens towards drizzle."))}</p>
       <p class="hz-n">${esc(LL("Crece hacia los días casi secos. El ajuste mensual con pluviómetros (GPCC) no cambia si llueve o no: no puede fabricar esta caída. CHIRPS diario a umbral muy bajo es poco fiable.", "It grows towards nearly dry days. The monthly gauge adjustment (GPCC) does not change whether it rains: it cannot create this drop. Daily CHIRPS at very low thresholds is unreliable."))}</p>
     </div>
 
     <div class="hz-b">
       <h4>${esc(LL("Mismo territorio, tres tendencias opuestas", "Same territory, three opposite trends"))}</h4>
       <p>${esc(LL("Días con 1 mm o más, después menos antes de 2018-02, en los 15 recuadros que cubren el país (mediana arriba):", "Days with 1 mm or more, after minus before 2018-02, in the 15 boxes covering the country (median above):"))}</p>
-      ${h ? tresMapas(h.merra2) : bars([{ k: "IMERG", v: [["IMERG", -5.1, C_IMERG]] }, { k: "CHIRPS", v: [["CHIRPS", 0.04, C_CHIRPS]] }, { k: "MERRA-2", v: [["MERRA-2", 8.6, C_OTRO]] }], -7, 10)}
+      ${h ? tresMapas(h.merra2) : dots([["IMERG", -5.1, C_IMERG], ["CHIRPS", 0.04, C_CHIRPS], ["MERRA-2", 8.6, C_OTRO]], -7, 10)}
       <p class="hz-n">${esc(LL("IMERG cae en las 15 celdas. MERRA-2 sube, pero tiene su propio salto en 2015-11: no sirve de testigo.", "IMERG drops in all 15 cells. MERRA-2 rises, but has its own jump in 2015-11: it cannot serve as a witness."))}</p>
     </div>
 
     <div class="hz-b">
       <h4>${esc(LL("Frente a ERA5, en 6 lugares", "Against ERA5, at 6 places"))}</h4>
-      ${bars([{ k: "IMERG", v: [["IMERG", -6.1, C_IMERG]] }, { k: "ERA5", v: [["ERA5", -1.9, C_OTRO]] }, { k: "CHIRPS", v: [["CHIRPS", -0.2, C_CHIRPS]] }], -7, 1)}
+      ${dots([["IMERG", -6.1, C_IMERG], ["ERA5", -1.9, C_OTRO], ["CHIRPS", -0.2, C_CHIRPS]], -7, 1)}
       <p class="hz-n">${esc(LL("Y en 4 pluviómetros dominicanos IMERG cae más en los 4. Son pocos lugares, e IMERG usa ERA5 como dato auxiliar.", "And at 4 Dominican rain gauges IMERG drops more at all 4. Few places, and IMERG uses ERA5 as ancillary input."))}</p>
     </div>
 

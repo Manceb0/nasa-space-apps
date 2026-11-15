@@ -337,7 +337,12 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     $("s-h").textContent = LL("Año a año", "Year by year");
     if (!isOpen("s")) { showYear(ui.year); return; }
     const el = $("s-plot");
-    el.innerHTML = seriesChart(d, sel, plotW(el), ui.year === null ? null : years()[ui.year], layout === "wide" ? 190 : 170);
+    const vv = vm(), unitY = vv.unidad.includes("/") ? vv.unidad : `${vv.unidad} ${sel.per === "anual" ? LL("por año", "per year") : LL("por temporada", "per season")}`;
+    const tI = d.tr(sel, "IMERG"), tC = d.tr(sel, "CHIRPS");
+    const reads = d.stepped(sel.ind) && tI && tC && Math.sign(tI.pendiente_decada) !== Math.sign(tC.pendiente_decada)
+      ? `<p class="tr-read">${esc(LL("IMERG cuenta menos días de llovizna desde 2018; por eso este índice puede cambiar en IMERG sin que cambie la lluvia. CHIRPS no lo confirma.", "IMERG has counted fewer drizzle days since 2018, so this index can change in IMERG without the rain changing. CHIRPS does not confirm it."))}</p>` : "";
+    el.innerHTML = `<p class="tr-what"><b>${esc(d.lab(vv))}</b> ${esc(vv.descripcion)} <span>${esc(LL(`Eje vertical: ${unitY}. Pendiente: ${vv.unidad_tendencia}.`, `Vertical axis: ${unitY}. Slope: ${vv.unidad_tendencia}.`))}</span></p>`
+      + seriesChart(d, sel, plotW(el), ui.year === null ? null : years()[ui.year], layout === "wide" ? 190 : 170) + reads;
     el.title = LL("Toca un año para verlo en el mapa", "Tap a year to see it on the map");
     const hit = el.querySelector<SVGRectElement>(".tr-hit");
     if (hit) {
@@ -356,7 +361,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       ? ([["robusta", "robustas", "robust"], ["consistente", "consistentes", "consistent"], ["en disputa", "en disputa", "disputed"]] as const).filter(([k]) => n(k)).map(([k, es, en]) => `${n(k)} ${LL(es, en)}`).join(" · ") || LL("ninguna con señal", "none with a signal")
       : LL(`${n("un solo producto")} con una fuente`, `${n("un solo producto")} with one source`);
     if (!isOpen("r")) return;
-    el.innerHTML = `<p class="hint">${esc(LL("Punto lleno: cambio claro · barra: intervalo del 95 % · toca una provincia", "Filled dot: clear change · bar: 95 % interval · tap a province"))}</p>${f.svg}`;
+    el.innerHTML = `<p class="tr-what"><b>${esc(d.lab(vm()))}</b> ${esc(LL(`Posición: cambio por década, en ${vm().unidad_tendencia}. A la izquierda del 0, baja; a la derecha, sube.`, `Position: change per decade, in ${vm().unidad_tendencia}. Left of 0 it falls; right of 0 it rises.`))}</p><p class="hint">${esc(LL("Punto lleno: cambio claro · línea: intervalo del 95 % · toca una provincia", "Filled dot: clear change · line: 95 % interval · tap a province"))}</p>${f.svg}`;
   };
   (["s", "r"] as const).forEach((id) => document.getElementById(`${id}-sec`)?.addEventListener("toggle", () => (id === "s" ? renderSeries() : renderRank())));
 
