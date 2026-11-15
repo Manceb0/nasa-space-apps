@@ -118,6 +118,13 @@ function render(view: HTMLElement, d: TrendData) {
       ${layout === "wide" ? `<aside class="wx-right" id="wx-right"><div class="wx-scroll">${extra}</div></aside>` : ""}
     </div>
     <div class="tr-tip" id="tr-tip" role="tooltip" hidden></div>
+    <dialog class="s13-lb" id="s13-lb" aria-labelledby="s13-lb-h">
+      <button class="s13-x" aria-label="${esc(LL("Cerrar", "Close"))}">×</button>
+      <h2 id="s13-lb-h">${esc(LL("El escalón de 2013-10 en IMERG", "The 2013-10 step in IMERG"))}</h2>
+      <p>${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia. Arriba, el escalón frente a CHIRPS y los 4 pluviómetros; abajo, los mapas antes y después de quitarlo y la sensibilidad al año de corte. Figuras del equipo, en inglés.", "IMERG changed in 2013 the way it counts rain days. Top, the step against CHIRPS and the 4 gauges; bottom, the maps before and after removing it and the sensitivity to the cut year. Team figures."))}</p>
+      <img data-src="figuras/07_the_step_in_2013_dark.png" alt="${esc(LL("Diferencia mensual de días húmedos entre IMERG y CHIRPS con el punto de cambio en 2013-10, y los cuatro pluviómetros GHCN-D antes y después de esa fecha.", "Monthly wet-day difference between IMERG and CHIRPS with the change point in 2013-10, and the four GHCN-D gauges before and after that date."))}">
+      <img data-src="figuras/08_after_the_correction_dark.png" alt="${esc(LL("Mapas de SDII y de rachas secas de 15 días antes y después de quitar el escalón, y número de celdas en disputa según el año de corte.", "SDII and 15-day dry-spell maps before and after removing the step, and disputed cells by cut year."))}">
+    </dialog>
   </div>`;
 
   const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -151,6 +158,39 @@ function render(view: HTMLElement, d: TrendData) {
   };
 
   // ── La respuesta: época, medidas con su veredicto, los dos testigos, la frase, la escalera y la prueba ──
+  // ── Escalón de 2013-10: IMERG cambió su forma de contar días de lluvia; el mapa puede verse sin él ──
+  const WARN = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8l6.6 11.6H1.4z" fill="#ffd60a"/><path d="M8 6v3.4" stroke="#000" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="11.4" r=".9" fill="#000"/></svg>';
+  const stepBlock = () => {
+    const S = d.s13;
+    if (!S || !d.stepped(sel.ind)) return "";
+    const per = d.perFor(sel.ind, sel.per), rc = S.recuentos[sel.ind]?.[per], nac = sel.reg === "DO" ? S.nacional_IMERG[sel.ind]?.[per] : undefined;
+    const pTxt = (p: number) => (p < 0.001 ? `p &lt;&#8239;${num(0.001, 3)}` : `p ${num(p, 3)}`);
+    const clsLab = (c: string) => esc(d.V.clases[c] ? d.lab(d.V.clases[c]) : c);
+    const r15 = S.recuentos.RACHAS15 ?? {};
+    const nuevas = ["humeda_tardia", "humeda_temprana"].map((k) => `${esc(LL(...SEASON[k]))}: ${r15[k]?.en_disputa_sin_escalon ?? 0}`).join(" · ");
+    const pair = (a: string, b: string, lab: string) => `<div class="s13-n"><p class="s13-l">${lab}</p><p class="s13-v"><span class="${d.fix ? "" : "on"}">${a}</span><i aria-hidden="true">→</i><span class="${d.fix ? "on" : ""}">${b}</span></p></div>`;
+    return `<section class="s13" aria-labelledby="s13-h">
+      <h3 class="s13-h" id="s13-h">${WARN}${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}</h3>
+      <p class="s13-t">${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia (≥ 1 mm). Los 4 pluviómetros GHCN-D y CHIRPS no muestran ese salto. Afecta a esta medida en IMERG.", "IMERG changed in 2013 the way it counts rain days (≥ 1 mm). The 4 GHCN-D gauges and CHIRPS show no such jump. It affects this measure in IMERG."))}</p>
+      <div class="seg s13-seg" role="radiogroup" aria-label="${esc(LL("Versión de IMERG en el mapa", "IMERG version on the map"))}">
+        <button data-fix="0" role="radio" aria-checked="${!d.fix}" class="${d.fix ? "" : "on"}">${esc(LL("Publicado", "Published"))}</button>
+        <button data-fix="1" role="radio" aria-checked="${d.fix}" class="${d.fix ? "on" : ""}">${esc(LL("Sin el escalón", "Without the step"))}</button>
+      </div>
+      <div class="s13-ns">
+        ${rc ? pair(String(rc.en_disputa_publicado), String(rc.en_disputa_sin_escalon), esc(LL("Celdas en disputa en el mapa", "Disputed cells on the map"))) : ""}
+        ${nac?.publicado && nac.sin_escalon ? pair(sgn(nac.publicado.pendiente_pct_decada, 1), sgn(nac.sin_escalon.pendiente_pct_decada, 1), esc(LL("IMERG nacional, % por década", "IMERG national, % per decade"))) : ""}
+      </div>
+      ${nac?.publicado && nac.sin_escalon ? `<p class="s13-t">${esc(LL("Nacional", "National"))}: ${pTxt(nac.publicado.p)}, ${clsLab(nac.publicado.clase)} → ${pTxt(nac.sin_escalon.p)}, ${clsLab(nac.sin_escalon.clase)}.</p>` : ""}
+      <button class="s13-fig" data-fig13>${esc(LL("Ver el escalón y la corrección", "See the step and the correction"))}</button>
+      ${d.fix ? `<ul class="s13-w">
+        <li>${esc(LL("Solo cambia el mapa. El medidor y la tabla siguen con lo publicado: el recálculo es por celda, no por provincia.", "Only the map changes. The gauge and table keep the published values: the recalculation is per cell, not per province."))}</li>
+        <li>${esc(LL("La corrección no fecha el escalón: cualquier año de corte entre 2010 y 2017 da casi el mismo resultado. La fecha sale de la prueba de Pettitt; que fue IMERG, de los pluviómetros.", "The correction does not date the step: any cut year from 2010 to 2017 gives almost the same result. The date comes from the Pettitt test; that it was IMERG, from the gauges."))}</li>
+        <li>${esc(LL("Parte del acuerdo es mecánico: se corrige usando CHIRPS como referencia.", "Part of the agreement is mechanical: the correction uses CHIRPS as reference."))}</li>
+        <li>${esc(LL(`Aparecen disputas nuevas en las rachas de 15 días de las temporadas lluviosas (${nuevas} celdas).`, `New disputes appear in 15-day spells in the rainy seasons (${nuevas} cells).`))}</li>
+        <li>${esc(LL("Las salidas publicadas no se tocaron; la variante está aparte.", "The published outputs were not touched; the variant is kept apart."))}</li>
+      </ul>` : ""}
+    </section>`;
+  };
   const renderAnswer = () => {
     const box = $("ans");
     const q = questionOf(sel.ind), v = vm(), ws = both(), cls = d.row(sel)?.clase ?? "";
@@ -161,7 +201,7 @@ function render(view: HTMLElement, d: TrendData) {
       <div class="ms" role="radiogroup" aria-label="${esc(LL("Medido como", "Measured as"))}">
         ${q.vars.map((id) => { const mv = verdict(d, sel, id), on = id === sel.ind; return `<button class="m ${on ? "on" : ""}" data-ind="${id}" role="radio" aria-checked="${on}" title="${esc(mv.text)}"><span class="m-t">${esc(shortName(id))}</span><span class="q-v ${mv.strong ? "sig" : ""}" style="--c:${mv.color}"><i></i>${esc(mv.short)}</span></button>`; }).join("")}
       </div>`;
-    if (!ws.length) { box.innerHTML = `${ctl}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
+    if (!ws.length) { box.innerHTML = `${ctl}${stepBlock()}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
     const ti = d.tier(sel), unit = v.unidad;
     const sigW = ws.filter((w) => d.isSig(w.t, sel.reg));
     const mdt = Math.max(...ws.map((w) => w.t.mdt));
@@ -177,6 +217,7 @@ function render(view: HTMLElement, d: TrendData) {
     const pFmt = (t: Tr) => (t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3));
     box.innerHTML = `${ctl}
       ${capsule(d, sel)}
+      ${stepBlock()}
       <p class="ans-sent">${esc(sentence)}</p>
       <div class="ladder" role="img" aria-label="${esc(`${LL("Evidencia", "Evidence")}: ${ti.label}`)}">${TIERS.map(([, es, en], i) => `<span class="${i === tierIdx ? "on" : ""}" style="--c:${ti.color}"><i></i>${esc(LL(es, en))}</span>`).join("")}</div>
       <table class="stats-t">
@@ -223,11 +264,12 @@ function render(view: HTMLElement, d: TrendData) {
   (["s", "r"] as const).forEach((id) => document.getElementById(`${id}-sec`)?.addEventListener("toggle", () => (id === "s" ? renderSeries() : renderRank())));
 
   // ── El mapa ──
+  const fixTag = () => (d.fix && d.stepped(sel.ind) && (ui.show === "acuerdo" || sel.src === "IMERG") ? ` · <b class="lg-fix">${esc(LL("IMERG sin el escalón de 2013", "IMERG without the 2013 step"))}</b>` : "");
   const renderLegend = (max: number, pct: boolean) => {
     const v = vm(), up = v.tipo === "seco" ? LL("más seco", "drier") : LL("más lluvia", "more rain"), dn = v.tipo === "seco" ? LL("menos seco", "less dry") : LL("menos lluvia", "less rain");
     const f = (x: number) => (pct ? `${sgn(x, 0)} %` : sgn(x));
     $("wx-legend").innerHTML = `
-      <div class="lg-w"><span>${esc(dn)}</span><span>${esc(pct ? LL("frente a su media", "vs its mean") : v.unidad_tendencia)}</span><span>${esc(up)}</span></div>
+      <div class="lg-w"><span>${esc(dn)}</span><span>${esc(pct ? LL("frente a su media", "vs its mean") : v.unidad_tendencia)}${pct ? "" : fixTag()}</span><span>${esc(up)}</span></div>
       <div class="lg-bar" style="background:${rampCss(d.warmIfUp(sel.ind))}"></div>
       <div class="lg-ax num"><span>${f(-max)}</span><span>0</span><span>${f(max)}</span></div>`;
   };
@@ -257,7 +299,7 @@ function render(view: HTMLElement, d: TrendData) {
       t3.setChoro(clear, zero);
       map.setLayoutProperty("prov-fill", "visibility", "visible");
       const counts = codes.map((_, i) => cl.filter((x, k) => x === i && d.R.incluida[k]).length);
-      $("wx-legend").innerHTML = `<p class="lg-w"><span>${esc(LL("Celdas de 11 km según el acuerdo de IMERG y CHIRPS", "11 km cells by IMERG–CHIRPS agreement"))}</span></p>
+      $("wx-legend").innerHTML = `<p class="lg-w"><span>${esc(LL("Celdas de 11 km según el acuerdo de IMERG y CHIRPS", "11 km cells by IMERG–CHIRPS agreement"))}${fixTag()}</span></p>
         <p class="lg-cls">${codes.map((k, i) => `<span><i style="background:${colors[i]}"></i>${esc(d.V.clases[k] ? d.lab(d.V.clases[k]) : k)} <b class="num">${counts[i]}</b></span>`).join("")}</p>`;
       describeRidge();
       return;
@@ -369,6 +411,14 @@ function render(view: HTMLElement, d: TrendData) {
       if (mi.dataset.ind !== sel.ind) setInd(mi.dataset.ind!);
       return;
     }
+    const fx = el.closest<HTMLButtonElement>("[data-fix]");
+    if (fx) { const on = fx.dataset.fix === "1"; if (on !== d.fix) { d.fix = on; renderAnswer(); renderMap(); } return; }
+    if (el.closest("[data-fig13]")) {
+      const lb = $<HTMLDialogElement>("s13-lb");
+      lb.querySelectorAll<HTMLImageElement>("img[data-src]").forEach((im) => { if (!im.getAttribute("src")) im.src = im.dataset.src!; });
+      lb.showModal(); return;
+    }
+    if (el.closest(".s13-x") || el.id === "s13-lb") { $<HTMLDialogElement>("s13-lb").close(); return; }
     const fo = el.closest<HTMLButtonElement>("[data-fold]");
     if (fo) { const side = fo.dataset.fold as "left" | "right"; ui[side] = !ui[side]; renderStyle(); return; }
     const per = el.closest<HTMLButtonElement>("[data-per]");

@@ -48,6 +48,7 @@ export function capsule(d: TrendData, s: Sel) {
       <p class="cr-p"><i style="background:${pc(p)}"></i>${p}</p>
       <p class="cr-v num">${sgn(t.pendiente_decada)}</p>
       <p class="cr-s"><b style="color:${sc}">${esc(side)}</b> · ${esc(sig[i] ? LL("cambio claro", "clear change") : LL("puede ser azar", "may be chance"))}</p>
+      ${p === "IMERG" && d.stepped(s.ind) ? `<p class="cr-flag" title="${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia", "IMERG changed in 2013 the way it counts rain days"))}">${esc(LL("posible artefacto de medición: escalón 2013-10", "possible measurement artefact: 2013-10 step"))}</p>` : ""}
     </div>`;
   }).join("");
   return `<svg class="tr-cap" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(rows.map(({ p, t }, i) => `${p} ${sgn(t.pendiente_decada)} ${v.unidad_tendencia} (IC ${num(t.ic95[0])} a ${num(t.ic95[1])})${sig[i] ? "" : `, ${LL("no significativa", "not significant")}`}`).join("; "))}">

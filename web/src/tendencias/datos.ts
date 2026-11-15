@@ -36,6 +36,14 @@ export interface Rej {
   clases_codigo?: string[];
   capas: Record<string, Record<string, Record<string, CellLayer | (number | null)[]>>>;
 }
+/** Variante «sin el escalón de 2013-10» (results/tropical/recalculo, A_frec): solo IMERG, solo índices de frecuencia. */
+export interface Nac13 { pendiente_decada: number; pendiente_pct_decada: number; p: number; clase: string }
+export interface Step13 {
+  indices: string[]; corte: number; total_en_disputa: { publicado: number; sin_escalon: number };
+  recuentos: Record<string, Record<string, { en_disputa_publicado: number; en_disputa_sin_escalon: number }>>;
+  nacional_IMERG: Record<string, Record<string, { publicado?: Nac13; sin_escalon?: Nac13 }>>;
+  capas: Record<string, Record<string, { IMERG: CellLayer; clase: (number | null)[] }>>;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FC = { features: any[] };
 
@@ -51,12 +59,13 @@ export interface Sel { ind: string; per: string; reg: string; src: string }
 export type Tier = "sabemos" | "creemos" | "comprobar" | "nada";
 
 export async function loadTrends() {
-  const [V, P, R, fc, rel] = await Promise.all([
+  const [V, P, R, fc, rel, s13] = await Promise.all([
     load<Vars>("tendencias/variables.json"), load<Prov>("tendencias/provincias.json"),
     load<Rej>("tendencias/rejilla.json"), load<FC>("limites/provincias.geojson").catch(() => null),
     load<Relieve>("tendencias/relieve.json").catch(() => null),
+    load<Step13>("tendencias/sin_escalon.json").catch(() => null),
   ]);
-  return new TrendData(V, P, R, fc, rel);
+  return new TrendData(V, P, R, fc, rel, s13);
 }
 
 export class TrendData {
@@ -64,7 +73,7 @@ export class TrendData {
   readonly provs: { id: string; nombre: string }[];
   readonly isoToShape: Record<string, string> = {};
   readonly shapeToIso: Record<string, string> = {};
-  constructor(readonly V: Vars, readonly P: Prov, readonly R: Rej, readonly fc: FC | null, readonly rel: Relieve | null = null) {
+  constructor(readonly V: Vars, readonly P: Prov, readonly R: Rej, readonly fc: FC | null, readonly rel: Relieve | null = null, readonly s13: Step13 | null = null) {
     this.prods = Object.keys(V.productos);
     this.provs = P.regiones.filter((r) => !r.es_nacional).sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
     fc?.features.forEach((f) => { this.isoToShape[f.properties.shapeISO] = f.properties.shapeID; this.shapeToIso[f.properties.shapeID] = f.properties.shapeISO; });
@@ -79,9 +88,14 @@ export class TrendData {
   series(s: Sel, src = s.src, reg = s.reg) { return this.P.series[s.ind]?.[this.perFor(s.ind, s.per)]?.[src]?.[reg] ?? null; }
   row(s: Sel, reg = s.reg) { return this.P.tendencias[s.ind]?.[this.perFor(s.ind, s.per)]?.[reg] ?? null; }
   tr(s: Sel, src = s.src, reg = s.reg) { return (this.row(s, reg)?.[src] as Tr | undefined) ?? null; }
-  cells(s: Sel, src = s.src) { return this.R.capas[s.ind]?.[this.perFor(s.ind, s.per)]?.[src] as CellLayer | undefined; }
+  /** true: el mapa usa IMERG sin el escalón de 2013-10 en los índices de frecuencia (el panel sigue con lo publicado). */
+  fix = false;
+  /** ¿Este índice es de los que IMERG cuenta distinto desde 2013-10? */
+  stepped(ind: string) { return !!this.s13?.indices.includes(ind) && this.prods.includes("IMERG"); }
+  private fixLayer(s: Sel) { return this.fix ? this.s13?.capas[s.ind]?.[this.perFor(s.ind, s.per)] : undefined; }
+  cells(s: Sel, src = s.src) { const f = this.fixLayer(s); if (f && src === "IMERG") return f.IMERG; return this.R.capas[s.ind]?.[this.perFor(s.ind, s.per)]?.[src] as CellLayer | undefined; }
   /** Clase de confianza por celda (índice en clases_codigo) o null. */
-  cellClass(s: Sel) { return (this.R.capas[s.ind]?.[this.perFor(s.ind, s.per)]?.clase as (number | null)[] | undefined) ?? null; }
+  cellClass(s: Sel) { const f = this.fixLayer(s); if (f) return f.clase; return (this.R.capas[s.ind]?.[this.perFor(s.ind, s.per)]?.clase as (number | null)[] | undefined) ?? null; }
   /** En DO hay una sola serie y una sola prueba: p < 0,05. En provincias: q ≤ 0,10 (FDR entre las 32). */
   isSig(t: Tr, reg: string) { return reg === "DO" ? (t.sig_p05 ?? t.p < 0.05) : t.sig === true; }
   sigRule(reg: string) { return reg === "DO" ? LL("p < 0,05 (una sola serie)", "p < 0.05 (single series)") : LL("q ≤ 0,10 (FDR entre 32 provincias)", "q ≤ 0.10 (FDR across 32 provinces)"); }
