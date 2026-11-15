@@ -201,7 +201,33 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
   const ro = new ResizeObserver(() => { if (on) { geom(); cancelAnimationFrame(raf); paint(performance.now()); } });
   ro.observe(host);
 
+  /** Las filas de crestas como líneas (lon, lat) con el color de su celda: MapLibre las tiende sobre el relieve 3D. */
+  const lines = () => {
+    const features: { type: "Feature"; properties: { c: string }; geometry: { type: "LineString"; coordinates: [number, number][] } }[] = [];
+    rel.filas.forEach((f, r) => {
+      const zs = f.z;
+      let i = 0;
+      while (i < zs.length) {
+        if (!zs[i]) { i++; continue; }
+        let j = i; while (j < zs.length && zs[j]) j++;
+        let s = i;
+        while (s < j - 1) {
+          const c0 = css(target(cellIdx[r][s]));
+          let e = s + 1;
+          while (e < j - 1 && css(target(cellIdx[r][e])) === c0) e++;
+          features.push({ type: "Feature", properties: { c: c0 }, geometry: { type: "LineString", coordinates: lons.slice(s, e + 1).map((x) => [x, f.lat]) } });
+          s = e;
+        }
+        i = j;
+      }
+    });
+    return { type: "FeatureCollection" as const, features };
+  };
+  const yunaLine = () => ({ type: "Feature" as const, properties: {}, geometry: { type: "LineString" as const, coordinates: rel.yuna.map(([x, y]) => [x, y] as [number, number]) } });
+
   return {
+    lines,
+    yunaLine,
     show(v: boolean) { on = v; cv.hidden = !v; if (v) draw(false); else cancelAnimationFrame(raf); },
     draw,
     reframe,

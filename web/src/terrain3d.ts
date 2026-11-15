@@ -206,6 +206,14 @@ export function terrain3d(el: HTMLElement, opts: {
     if (flat) map.fitBounds([[-72.05, 17.45], [-68.3, 19.98]], { padding: fitPad, pitch: 0, bearing: 0, duration: 1400 });
     else map.easeTo({ pitch: 52, bearing: -14, duration: 1400 });
   };
+  // Fondo (nada, oscuro o satélite) y cámara (2D o 3D) son decisiones distintas: con «nada» solo queda el
+  // fondo negro y un sombreado tenue, para que las crestas del dato se lean sobre el relieve 3D real
+  const setView = (base: "none" | "dark" | "sat", d3: boolean, exaggeration = 1.8) => {
+    map.setTerrain(d3 ? { source: "dem", exaggeration } : null);
+    map.setLayoutProperty("sat", "visibility", base === "sat" ? "visible" : "none");
+    map.setLayoutProperty("dark", "visibility", base === "dark" ? "visible" : "none");
+    map.setPaintProperty("shade", "hillshade-exaggeration", base === "sat" ? 0.55 : base === "dark" ? 0.25 : 0.2);
+  };
   let selProv: string | null = null;
   // Con relieve 3D, MapLibre guarda la escena en texturas y no las rehace al cambiar el feature-state:
   // hay que soltarlas para que el mapa pinte los colores nuevos (si no, se queda la variable anterior)
@@ -261,5 +269,5 @@ export function terrain3d(el: HTMLElement, opts: {
   };
   let fitPad = { top: 260, bottom: 340, left: 60, right: 460 };
   const setFitPadding = (p: typeof fitPad) => { fitPad = p; };
-  return { setMode, setLayer, setChoro, selectProvince, setCells, setFitPadding, map, ready, setGrid, setField, tintZone, country, flyToSite, destroy: () => { markers.forEach((m) => m.remove()); map.remove(); } };
+  return { setMode, setView, refresh3d, setLayer, setChoro, selectProvince, setCells, setFitPadding, map, ready, setGrid, setField, tintZone, country, flyToSite, destroy: () => { markers.forEach((m) => m.remove()); map.remove(); } };
 }

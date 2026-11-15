@@ -14,11 +14,11 @@ import { bottomSheet, PEEK } from "./hoja";
 import { finding, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { timeline } from "./tiempo";
 
-type Style = "crestas" | "3d" | "plano" | "oscuro";
+type Style = "crestas" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
+const ui = { d3: false, style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -60,7 +60,7 @@ function render(view: HTMLElement, d: TrendData) {
     ${sect("s", "")}
     ${sect("r", esc(LL("Dónde poner atención", "Where to look")))}
     <p class="fine">${esc(LL("NASA GPM IMERG V07 y CHC CHIRPS v2.0, 2001–2024. Theil-Sen con Mann-Kendall de Hamed y Rao; FDR de Benjamini-Hochberg. Describe; no atribuye causas.", "NASA GPM IMERG V07 and CHC CHIRPS v2.0, 2001–2024. Theil-Sen with Hamed & Rao Mann-Kendall; Benjamini-Hochberg FDR. Describes; does not attribute causes."))}</p>`;
-  const styles: [Style, string][] = [...(d.rel ? [["crestas", LL("Crestas", "Ridges")] as [Style, string]] : []), ["oscuro", LL("Oscuro", "Dark")], ["3d", LL("Relieve", "Terrain")], ["plano", LL("Satélite", "Satellite")]];
+  const styles: [Style, string][] = [...(d.rel ? [["crestas", LL("Crestas", "Ridges")] as [Style, string]] : []), ["oscuro", LL("Mapa oscuro", "Dark map")], ["plano", LL("Satélite", "Satellite")]];
   const fold = (side: "left" | "right") => layout === "phone" || (side === "right" && layout !== "wide") ? "" : `<button class="fold" data-fold="${side}" aria-controls="wx-${side}">${side === "left" ? PANEL_L : PANEL_R}</button>`;
 
   const r15 = d.s13?.recuentos.RACHAS15 ?? {};
@@ -77,7 +77,7 @@ function render(view: HTMLElement, d: TrendData) {
         <li>${esc(LL("Las salidas publicadas no se tocaron; la variante está aparte.", "The published outputs were not touched; the variant is kept apart."))}</li>
       </ul>` : "";
   view.innerHTML = `
-  <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-sty="${ui.style}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
+  <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-sty="${ui.style}" data-d3="${ui.d3 ? "on" : "off"}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
     <header class="wx-top">
       <a class="wx-brand" href="#tendencias">${MARK}<b>Stellar Horizons</b><span>${esc(LL("Detective de tendencias", "Trend detective"))}</span></a>
       ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}"><i></i>${esc(LL("Preliminar: solo IMERG", "Preliminary: IMERG only"))}</p>`}
@@ -117,7 +117,8 @@ function render(view: HTMLElement, d: TrendData) {
             ${d.prods.map((p) => `<button data-show="${p}" role="radio">${p}</button>`).join("")}
           </div>
           <span class="sp"></span>
-          <label class="pick map-sty"><span>${esc(LL("Vista", "View"))}</span><select id="sty-sel" aria-label="${esc(LL("Vista del mapa", "Map view"))}">${styles.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join("")}</select>${CHEV}</label>
+          <label class="pick map-sty"><span>${esc(LL("Vista", "View"))}</span><select id="sty-sel" aria-label="${esc(LL("Cómo se dibuja el mapa", "How the map is drawn"))}">${styles.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join("")}</select>${CHEV}</label>
+          <div class="seg map-cam" role="radiogroup" aria-label="${esc(LL("Cámara", "Camera"))}"><button data-cam="2d" role="radio">2D</button><button data-cam="3d" role="radio" title="${esc(LL("Inclinar: arrastra con el botón derecho o con dos dedos", "Tilt: drag with the right button or two fingers"))}">3D</button></div>
           ${fold("right")}
         </div>
         <div class="wx-time" id="wx-bar" data-mode="trend">
@@ -292,7 +293,8 @@ function render(view: HTMLElement, d: TrendData) {
   };
   const hexRGB = (h: string): [number, number, number] => { const n = parseInt(h.replace("#", ""), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
   let ridgeColor: (k: number) => RGBA | null = () => null;
-  const renderMap = (anim = true) => {
+  const renderMap = (anim = true) => { renderMap0(anim); if (ui.style === "crestas" && ui.d3) ridges3d(); };
+  const renderMap0 = (anim = true) => {
     wx.dataset.mode = ui.year === null ? "trend" : "year";
     paintRidge(anim);
     if (!t3) return;
@@ -376,7 +378,47 @@ function render(view: HTMLElement, d: TrendData) {
       return [...colorOf(Math.abs(a) / max, d.towardDry(sel.ind, a)), 0.95];
     };
   };
-  const paintRidge = (anim = true) => { ridgeColor = colorFor(); if (ui.style === "crestas") rg?.draw(anim && !RM()); };
+  const paintRidge = (anim = true) => {
+    ridgeColor = colorFor();
+    if (ui.style !== "crestas") return;
+    if (ui.d3) ridges3d(); else rg?.draw(anim && !RM());
+  };
+  // En 3D las crestas son líneas tendidas sobre el relieve real; el color lo lleva la línea, no la capa de celdas
+  const ridges3d = () => {
+    if (!t3 || !rg) return;
+    const m = t3.map, on = ui.style === "crestas" && ui.d3;
+    if (!m.isStyleLoaded() && !m.getSource("prov")) return;
+    if (on) {
+      const fc = rg.lines(), src = m.getSource("ridge3d") as maplibregl.GeoJSONSource | undefined;
+      if (src) src.setData(fc);
+      else {
+        m.addSource("ridge3d", { type: "geojson", data: fc });
+        m.addSource("yuna3d", { type: "geojson", data: rg.yunaLine() });
+        const before = m.getLayer("prov-line") ? "prov-line" : undefined;
+        m.addLayer({ id: "ridge3d", type: "line", source: "ridge3d", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["interpolate", ["linear"], ["zoom"], 7, 1.3, 10, 2.4] } }, before);
+        m.addLayer({ id: "yuna3d", type: "line", source: "yuna3d", paint: { "line-color": "#ffffff", "line-width": 1.6, "line-dasharray": [3, 2] } }, before);
+      }
+      if (m.getLayer("cells")) m.setLayoutProperty("cells", "visibility", "none");
+      if (m.getLayer("stip")) m.setLayoutProperty("stip", "visibility", "none");
+      const clear: Record<string, string> = {}, zero: Record<string, number> = {};
+      d.provs.forEach((r) => { const id = d.isoToShape[r.id]; if (id) { clear[id] = "rgba(0,0,0,0)"; zero[id] = 0; } });
+      t3.setChoro(clear, zero);
+    }
+    for (const id of ["ridge3d", "yuna3d"]) if (m.getLayer(id)) m.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+    t3.refresh3d();
+  };
+  const base = (): "none" | "dark" | "sat" => (ui.style === "plano" ? "sat" : ui.style === "oscuro" ? "dark" : "none");
+  // Fondo y cámara: crestas en 2D se dibujan en su lienzo; todo lo demás lo dibuja el mapa
+  const applyView = (fly: boolean) => {
+    const flatRidges = ui.style === "crestas" && !ui.d3;
+    rg?.show(flatRidges);
+    if (!flatRidges) tip.hidden = true;
+    if (!t3) return;
+    t3.setView(base(), ui.d3, ui.style === "crestas" ? 4 : 1.8);
+    lockCam();
+    renderMap(false);
+    frame(fly);
+  };
   const describeRidge = () => rg?.describe(`${LL("Perfiles de relieve de La Española apilados de norte a sur; cada tramo lleva el color de su celda en el mapa.", "Relief profiles of Hispaniola stacked north to south; each stretch takes its cell's map colour.")} ${$("wx-legend").textContent?.replace(/\s+/g, " ").trim() ?? ""}`);
   // El margen inferior sale de la altura real de la línea de tiempo (cambia cuando la leyenda baja a otra fila)
   const barH = () => document.getElementById("wx-bar")?.offsetHeight ?? 76;
@@ -385,18 +427,23 @@ function render(view: HTMLElement, d: TrendData) {
     if (!t3) return;
     t3.setFitPadding(fitPad());
     const b = sel.reg === "DO" ? RD : d.bbox(sel.reg) ?? RD;
-    t3.map.fitBounds(b, { padding: fitPad(), pitch: ui.style === "3d" ? 52 : 0, bearing: ui.style === "3d" ? -14 : 0, duration: fly && !RM() ? 1500 : 0, maxZoom: 10 });
+    const opts = { padding: fitPad(), pitch: ui.d3 ? 55 : 0, bearing: ui.d3 ? -14 : 0, maxZoom: 10 };
+    // inclinado, el encuadre de la caja deja la isla lejos: se acerca medio nivel
+    const cam = ui.d3 ? t3.map.cameraForBounds(b, opts) : undefined;
+    if (cam && cam.zoom !== undefined) t3.map.easeTo({ ...cam, zoom: Math.min(10, cam.zoom + 0.55), pitch: 55, bearing: -14, duration: fly && !RM() ? 1500 : 0 });
+    else t3.map.fitBounds(b, { ...opts, duration: fly && !RM() ? 1500 : 0 });
   };
   // Con las crestas el mapa no gira ni se inclina: el relieve se dibuja de frente
   const lockCam = () => {
     if (!t3) return;
-    const m = t3.map, flat = ui.style === "crestas";
+    const m = t3.map, flat = ui.style === "crestas" && !ui.d3;
     if (flat) { m.dragRotate.disable(); m.touchZoomRotate.disableRotation(); m.touchPitch.disable(); if (m.getPitch() || m.getBearing()) m.jumpTo({ pitch: 0, bearing: 0 }); }
     else { m.dragRotate.enable(); m.touchZoomRotate.enableRotation(); m.touchPitch.enable(); }
   };
   const renderStyle = () => {
-    wx.dataset.sty = ui.style; wx.dataset.left = ui.left ? "on" : "off"; wx.dataset.right = ui.right ? "on" : "off";
+    wx.dataset.sty = ui.style; wx.dataset.d3 = ui.d3 ? "on" : "off"; wx.dataset.left = ui.left ? "on" : "off"; wx.dataset.right = ui.right ? "on" : "off";
     ($("sty-sel") as HTMLSelectElement).value = ui.style;
+    wx.querySelectorAll<HTMLButtonElement>("[data-cam]").forEach((b) => { const on = (b.dataset.cam === "3d") === ui.d3; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
     wx.querySelectorAll<HTMLButtonElement>("[data-fold]").forEach((b) => {
       const open = ui[b.dataset.fold as "left" | "right"], t = open ? LL("Ocultar panel", "Hide panel") : LL("Mostrar panel", "Show panel");
       b.setAttribute("aria-expanded", String(open)); b.setAttribute("aria-label", t); b.title = t;
@@ -438,6 +485,8 @@ function render(view: HTMLElement, d: TrendData) {
       lb.showModal(); return;
     }
     if (el.closest(".s13-x") || el.id === "s13-lb") { $<HTMLDialogElement>("s13-lb").close(); return; }
+    const cam = el.closest<HTMLButtonElement>("[data-cam]");
+    if (cam) { const d3 = cam.dataset.cam === "3d" ? (layout === "phone" ? !ui.d3 : true) : false; if (d3 !== ui.d3) { ui.d3 = d3; renderStyle(); applyView(true); } return; }
     const fo = el.closest<HTMLButtonElement>("[data-fold]");
     if (fo) { const side = fo.dataset.fold as "left" | "right"; ui[side] = !ui[side]; renderStyle(); return; }
     const per = el.closest<HTMLButtonElement>("[data-per]");
@@ -462,10 +511,7 @@ function render(view: HTMLElement, d: TrendData) {
     if (t.id === "r-sel") pickRegion(t.value);
     else if (t.id === "v-sel") setInd(t.value);
     else if (t.id === "sty-sel") {
-      ui.style = t.value as Style; renderStyle();
-      rg?.show(ui.style === "crestas");
-      lockCam();
-      if (ui.style !== "crestas") { tip.hidden = true; t3?.setMode(ui.style); frame(false); }
+      ui.style = t.value as Style; renderStyle(); applyView(false);
     }
   });
 
@@ -530,7 +576,7 @@ function render(view: HTMLElement, d: TrendData) {
   mine.ready.then(() => {
     if (t3 !== mine) return;
     mine.setFitPadding(fitPad());
-    mine.setMode(ui.style === "crestas" ? "oscuro" : ui.style);
+    mine.setView(base(), ui.d3, ui.style === "crestas" ? 4 : 1.8);
     renderMap(false);
     if (sel.reg !== "DO") mine.selectProvince(d.isoToShape[sel.reg] ?? null);
     frame(true);
@@ -540,7 +586,7 @@ function render(view: HTMLElement, d: TrendData) {
     rg?.reframe();
     map.on("mousemove", (e) => {
       const r = map.getCanvas().getBoundingClientRect();
-      if (ui.style === "crestas" && rg) {
+      if (ui.style === "crestas" && !ui.d3 && rg) {
         const k = rg.cellAtPoint(e.point.x, e.point.y), iso = k >= 0 ? cellProv[k] : undefined;
         if (k < 0) { tip.hidden = true; return; }
         showTip(iso ? d.regName(iso) : LL("Celda de 11 km", "11 km cell"), lineFor(k, iso), r.left + e.point.x, r.top + e.point.y);

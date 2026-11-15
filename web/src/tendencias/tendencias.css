@@ -217,7 +217,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .map-data { background: var(--surface); }
 .map-data button { flex: none; }
 .map-sty { background: var(--surface); }
-.map-sty select { width: 86px; }
+.map-sty select { width: 104px; }
 .wx .maplibregl-ctrl-top-right { top: 60px; right: auto; left: 12px; }
 .wx .maplibregl-ctrl-group { margin: 0 !important; background: var(--surface) !important; border-radius: 12px !important; box-shadow: none !important; }
 .wx .maplibregl-ctrl-group button + button { border-top-color: var(--rule) !important; }
@@ -302,6 +302,11 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
   .wx-track { min-width: 0; height: 40px; padding-top: 8px; }
   .map-top { top: 10px; left: 10px; right: 10px; gap: 6px; }
   .map-sty span { display: none; }
+  .map-sty { padding: 0 10px; }
+  .map-sty select { width: 62px; }
+  .map-data button { padding: 0 8px; }
+  .map-cam [data-cam="2d"] { display: none; }
+  .map-cam button { width: 38px; }
   .wx .maplibregl-ctrl-top-right { display: none; }
   .wx .maplibregl-ctrl-bottom-right { bottom: auto; top: 56px; }
 }
@@ -309,9 +314,11 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 /* ── Crestas: relieve en perfiles, coloreado por lo que muestra el mapa ── */
 .ridge { position: absolute; inset: 0; z-index: 1; display: block; pointer-events: none; }
 .ridge[hidden] { display: none; }
-.wx[data-sty="crestas"] #map .maplibregl-canvas { opacity: 0; }
-.wx[data-sty="crestas"] .maplibregl-ctrl-attrib, .wx[data-sty="crestas"] .maplibregl-ctrl-compass { display: none; }
-.wx[data-sty="crestas"] .maplibregl-canvas { cursor: crosshair; }
+.wx[data-sty="crestas"][data-d3="off"] #map .maplibregl-canvas { opacity: 0; }
+.wx[data-sty="crestas"][data-d3="off"] .maplibregl-ctrl-attrib, .wx[data-sty="crestas"][data-d3="off"] .maplibregl-ctrl-compass { display: none; }
+.wx[data-sty="crestas"][data-d3="off"] .maplibregl-canvas { cursor: crosshair; }
+.map-cam { flex: none; background: var(--surface); }
+.map-cam button { flex: none; width: 40px; padding: 0; font-weight: 600; }
 
 @media (prefers-reduced-motion: reduce) {
   .cap-n { animation: none; }
