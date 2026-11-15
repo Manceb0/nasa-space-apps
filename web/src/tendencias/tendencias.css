@@ -359,19 +359,6 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 /* ── El caso: pregunta en fichas, veredicto, palancas, rastro y cierre ── */
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .blk-q > h2#q-h { padding: 0 8px 12px; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
-.qcs, .mcs { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 8px; }
-.mcs { margin-top: 10px; }
-.qc, .mc { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 13px; border: 0; border-radius: 999px; background: var(--raised); color: var(--dim); font: inherit; font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background .2s, color .2s, transform .15s var(--ease); }
-.mc { height: 30px; padding: 0 11px; background: none; box-shadow: inset 0 0 0 1.5px var(--raised); font-size: 12.5px; }
-.qc:hover, .mc:hover { color: var(--text); background: var(--hover); }
-.qc:active, .mc:active { transform: scale(.96); }
-.qc.on, .mc.on { background: var(--text); color: #000; box-shadow: none; }
-.qc i, .mc i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: none; }
-.qc i.no, .mc i.no { background: none; box-shadow: inset 0 0 0 1.5px var(--faint); }
-.qc.on i.no, .mc.on i.no { box-shadow: inset 0 0 0 1.5px #555; }
-.qc i.leaf { background: #30d158; }
-.qsep { width: 1px; align-self: stretch; margin: 6px 2px; background: var(--rule); }
-.qc:focus-visible, .mc:focus-visible, .adj:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .vd { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 2px; }
 .vd b { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; color: var(--c); }
 .vd span { font-size: 13px; color: var(--muted); }
@@ -402,3 +389,29 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .claims .yes::before { content: "✓"; background: #1f3b2a; color: #30d158; }
 .claims .no::before { content: "?"; background: #3b2f12; color: #ffd60a; }
 .claims .why::before { content: "→"; background: var(--raised); color: var(--muted); }
+
+/* ── Entrada: cuatro aspectos en cuadrícula, la medida en un selector, la vegetación al final ── */
+.qgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 0 8px; }
+.qt { display: grid; gap: 4px; min-height: 64px; padding: 10px 12px; border: 0; border-radius: 14px; background: var(--raised); color: var(--text); text-align: left; font: inherit; cursor: pointer; transition: background .2s, transform .15s var(--ease); }
+.qt:hover { background: #2f3337; }
+.qt:active { transform: scale(.98); }
+.qt.on { background: var(--text); color: #000; }
+.qt-l { font-size: 14px; font-weight: 600; line-height: 1.2; }
+.qt-v { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 500; color: color-mix(in srgb, var(--c), #fff 30%); }
+.qt-v i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: none; }
+.qt-v i.no { background: none; box-shadow: inset 0 0 0 1.5px var(--faint); }
+.qt.on .qt-v { color: color-mix(in srgb, var(--c), #000 35%); }
+.qt.on .qt-v i.no { box-shadow: inset 0 0 0 1.5px #666; }
+.qt:focus-visible, .ql:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.mpick { display: flex; margin: 10px 8px 0; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--raised); }
+.mpick select { flex: 1; }
+.blk-land { border-top: 1px solid var(--rule); padding: 16px 20px 18px; }
+.blk-land > h2 { padding: 0 0 10px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.lqs { display: grid; gap: 2px; }
+.ql { display: flex; align-items: center; gap: 10px; min-height: 42px; padding: 8px 12px; border: 0; border-radius: 12px; background: none; color: var(--dim); text-align: left; font: inherit; font-size: 14px; cursor: pointer; transition: background .2s, color .2s; }
+.ql i { width: 8px; height: 8px; border-radius: 50%; background: #30d158; flex: none; }
+.ql:hover { background: var(--hover); color: var(--text); }
+.ql.on { background: var(--raised); color: var(--text); font-weight: 500; }
+.qs { grid-template-columns: minmax(0, 1fr); }
+.mpick { min-width: 0; }
+.mpick select { min-width: 0; width: 100%; }

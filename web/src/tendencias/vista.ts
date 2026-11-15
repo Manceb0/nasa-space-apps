@@ -12,7 +12,7 @@ import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verd
 import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart, WARN } from "./graficas";
 import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
-import { chip, finding, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
+import { chip, finding, QUESTIONS, questionOf, verdict } from "./preguntas";
 import { timeline } from "./tiempo";
 
 type Style = "crestas" | "plano" | "oscuro";
@@ -110,6 +110,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
             <h2 id="ans-h" class="sr">${esc(LL("Qué dicen las dos fuentes", "What the two sources say"))}</h2>
             <div id="ans" aria-live="polite"></div>
           </section>
+          ${land ? `<section class="blk-land" aria-labelledby="lq-h"><h2 id="lq-h">${esc(LL("¿Y la vegetación?", "And the vegetation?"))}</h2><div class="lqs" id="lqs"></div></section>` : ""}
           ${layout === "wide" ? "" : extra}
         </div>
       </aside>
@@ -168,20 +169,19 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   // ── Preguntas: una lista de selección (un solo nivel); la respuesta de la elegida va siempre debajo ──
   const renderQuestions = () => {
     const q0 = questionOf(sel.ind);
-    const qChips = QUESTIONS.map((q) => {
+    // cuatro aspectos de la lluvia, cada uno con su veredicto: lo que está en disputa llama primero
+    const tiles = QUESTIONS.map((q) => {
       const v = verdict(d, sel, pick[q.id]), on = !ui.land && q.id === q0.id;
-      return `<button class="qc ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}" title="${esc(`${LL(q.es, q.en)} ${v.text}`)}"><i style="--c:${v.color}" class="${v.strong ? "" : "no"}"></i>${esc(chip(q.id))}</button>`;
+      return `<button class="qt ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}" title="${esc(`${LL(q.es, q.en)} ${v.text}`)}"><span class="qt-l">${esc(chip(q.id))}</span><span class="qt-v" style="--c:${v.color}"><i class="${v.strong ? "" : "no"}"></i>${esc(v.short)}</span></button>`;
     }).join("");
-    const lChips = land ? LAND_Q.map((q) => {
+    // la medida: un solo selector (las alternativas se consultan, no compiten por la vista)
+    const measure = ui.land ? "" : `<label class="pick mpick"><span>${esc(LL("Medido como", "Measured as"))}</span><select id="v-sel" aria-label="${esc(LL("Medido como", "Measured as"))}">${q0.vars.map((id) => `<option value="${id}" ${id === sel.ind ? "selected" : ""}>${esc(chip(id))} · ${esc(verdict(d, sel, id).short)}</option>`).join("")}</select>${CHEV}</label>`;
+    $("qs").innerHTML = `<div class="qgrid">${tiles}</div>${measure}`;
+    const lqs = document.getElementById("lqs");
+    if (lqs && land) lqs.innerHTML = LAND_Q.map((q) => {
       const on = ui.land === q.id;
-      return `<button class="qc ${on ? "on" : ""}" data-landq="${q.id}" role="radio" aria-checked="${on}" title="${esc(LL(q.es, q.en))}"><i class="leaf"></i>${esc(q.id === "verde" ? LL("Vegetación", "Vegetation") : LL("Recuperación", "Recovery"))}</button>`;
-    }).join("") : "";
-    const mChips = ui.land ? "" : `<div class="mcs" role="radiogroup" aria-label="${esc(LL("Medido como", "Measured as"))}">${q0.vars.map((id) => {
-      const mv = verdict(d, sel, id), on = id === sel.ind;
-      return `<button class="mc ${on ? "on" : ""}" data-ind="${id}" role="radio" aria-checked="${on}" title="${esc(`${shortName(id)}: ${mv.text}. ${d.vm(id).descripcion}`)}"><i style="--c:${mv.color}" class="${mv.strong ? "" : "no"}"></i>${esc(chip(id))}</button>`;
-    }).join("")}</div>`;
-    $("qs").innerHTML = `<div class="qcs">${qChips}${lChips}</div>${mChips}`;
-    $("q-h").textContent = ui.land ? LL("¿Y la vegetación?", "And the vegetation?") : LL("¿Está cambiando la lluvia?", "Is the rain changing?");
+      return `<button class="ql ${on ? "on" : ""}" data-landq="${q.id}" role="radio" aria-checked="${on}"><i></i>${esc(LL(q.es, q.en))}</button>`;
+    }).join("");
   };
 
   // ── El rastro: cómo cambió el veredicto mientras se interrogaba la respuesta ──
@@ -514,7 +514,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const el = e.target as Element;
     const lq = el.closest<HTMLElement>("[data-landq]");
     if (lq) {
-      if (ui.land !== lq.dataset.landq) { ui.land = lq.dataset.landq as LandQ; ui.year = null; ui.landSite = ""; renderStyle(); renderPanels(); renderMap(); frameSites(); }
+      if (ui.land !== lq.dataset.landq) { ui.land = lq.dataset.landq as LandQ; ui.year = null; ui.landSite = ""; renderStyle(); renderPanels(); renderMap(); frameSites(); $("ans").scrollIntoView({ block: "start", behavior: RM() ? "auto" : "smooth" }); }
       return;
     }
     const lv = el.closest<HTMLElement>("[data-landvar]");
