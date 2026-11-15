@@ -1,0 +1,2 @@
+# Preservar los bytes descargados para que coincidan con el SHA-256 del manifiesto.
+*.html -text
