@@ -223,6 +223,7 @@ function render(view: HTMLElement, d: TrendData) {
     box.innerHTML = `${ctl}
       ${capsule(d, sel)}
       <p class="ans-sent" style="--c:${ti.color}">${tierIdx >= 0 ? `<b>${esc(LL(TIERS[tierIdx][1], TIERS[tierIdx][2]))}.</b> ` : ""}${esc(sentence)}</p>
+      <p class="ans-why"><b>${esc(LL("Por qué importa", "Why it matters"))}</b> ${esc(v.por_que_importa)}</p>
       ${stepBlock()}
       <details class="ans-more">
       <summary>${esc(LL("Estadística y notas", "Statistics and notes"))}${CHEV}</summary>

@@ -101,6 +101,10 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .stats-t th i, .pa-w i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
 .ans-sent { margin-top: 14px; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
 .ans-sent b { color: var(--c); font-weight: 600; }
+.ans-why { margin-top: 8px; font-size: 14px; line-height: 1.45; color: var(--muted); }
+.ans-why b { display: block; font-size: 12px; font-weight: 600; color: var(--faint); }
+.cr-v small { margin-left: 6px; font-size: 14px; font-weight: 600; letter-spacing: 0; color: var(--muted); }
+.cr-s .num { color: var(--faint); }
 .ans-more { margin-top: 14px; }
 .ans-more summary { display: flex; align-items: center; justify-content: space-between; min-height: 40px; font-size: 13px; font-weight: 600; color: var(--muted); list-style: none; cursor: pointer; }
 .ans-more summary::-webkit-details-marker { display: none; }
