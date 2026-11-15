@@ -17,7 +17,7 @@ import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
 import { openPop } from "./pop";
 import { hallazgo, type Hallazgos } from "./hallazgo";
-import { startTour, stopTour } from "./tour";
+import { startTour, stopTour, tourBusy } from "./tour";
 import { destroyPreparation, viewPreparation } from "../preparacion/vista";
 import { openAuditAt } from "../auditoria/vista";
 import { hurricanes, type CyInfo } from "../preparacion/huracanes";
@@ -46,7 +46,7 @@ let hzData: Hallazgos | null = null;
 let cyApi: { setPlace: (p: string) => void } | null = null;
 export let autoTour = { on: false };
 export function destroyTrends() {
-  stopTour();
+  if (!tourBusy()) stopTour();
   cleanup.forEach((f) => f()); cleanup = [];
   t3?.destroy(); t3 = null;
   document.body.classList.remove("wx-on");
@@ -153,11 +153,10 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     <dialog class="s13-lb" id="s13-lb" aria-labelledby="s13-lb-h">
       <button class="s13-x" aria-label="${esc(LL("Cerrar", "Close"))}">×</button>
       <h2 id="s13-lb-h">${esc(LL("¿IMERG cuenta menos días de lluvia?", "Is IMERG counting fewer rain days?"))}</h2>
-      <p>${esc(LL("En los lugares comparados, IMERG pierde de media más días de lluvia que las referencias. No se detectó un cambio en la relación de cantidad IMERG/ERA5; eso no demuestra que la lluvia total sea constante. El origen y la forma temporal siguen abiertos. Arriba, la comparación con ERA5; abajo, el mapa publicado frente al ajuste hacia CHIRPS.", "At the compared sites, IMERG loses more rain days on average than the references. No change was detected in the IMERG/ERA5 amount ratio; that does not prove total rainfall is constant. The origin and temporal shape remain unresolved. Top, the ERA5 comparison; bottom, the published map versus adjustment towards CHIRPS."))}</p>
       ${hallazgo(hzData)}
-      ${warn13}
+      <details class="s13-more"><summary>${esc(LL("Notas sobre el ajuste y figuras del informe", "Notes on the adjustment and report figures"))}</summary>${warn13}
       <img data-src="figuras/09_tercer_testigo_era5_dark.png" alt="${esc(LL("Diferencia de días de lluvia de IMERG y de CHIRPS frente a ERA5 en seis puntos de República Dominicana, 2001-2024.", "Rain-day difference of IMERG and CHIRPS against ERA5 at six points in the Dominican Republic, 2001-2024."))}">
-      <img data-src="figuras/08_after_the_correction_dark.png" alt="${esc(LL("Mapas de SDII y de rachas secas de 15 días, publicados y con el ajuste hacia CHIRPS, y celdas en disputa según el año de corte del ajuste.", "SDII and 15-day dry-spell maps, published and with the adjustment towards CHIRPS, and disputed cells by cut year of the adjustment."))}">
+      <img data-src="figuras/08_after_the_correction_dark.png" alt="${esc(LL("Mapas de SDII y de rachas secas de 15 días, publicados y con el ajuste hacia CHIRPS, y celdas en disputa según el año de corte del ajuste.", "SDII and 15-day dry-spell maps, published and with the adjustment towards CHIRPS, and disputed cells by cut year of the adjustment."))}"></details>
     </dialog>
   </div>`;
 
@@ -779,7 +778,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const tour = () => {
     const ys = d.rel?.yuna ?? [];
     const yb: [[number, number], [number, number]] | null = ys.length ? [[Math.min(...ys.map((p) => p[0])), Math.min(...ys.map((p) => p[1]))], [Math.max(...ys.map((p) => p[0])), Math.max(...ys.map((p) => p[1]))]] : null;
-    startTour({ wx, map: () => (t3 ? t3.map as never : null), yuna: yb, reset: () => { if (sel.reg !== "DO") pickRegion("DO"); frame(true); } });
+    startTour({ map: () => (t3 ? t3.map as never : null), yuna: yb, reset: () => { if (sel.reg !== "DO") pickRegion("DO"); } });
   };
   $("tour-go").addEventListener("click", tour);
   mine.ready.then(() => {

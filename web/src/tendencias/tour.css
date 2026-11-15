@@ -27,3 +27,25 @@ body.touring .wx-time, body.touring .pill-nav { opacity: .35; transition: opacit
 .tour-start svg { width: 16px; height: 16px; }
 @media (max-width: 759px) { .tour-cap { bottom: 84px; padding: 14px 16px; } .tour-ctl button.x { font-size: 13px; } .tour-start span { display: none; } }
 @media (prefers-reduced-motion: reduce) { #wx { transition: none; } .tour-cap span { transition: none; opacity: 1; transform: none; } }
+
+/* Colores invertidos: sobre el fondo oscuro, subtítulo y controles en blanco */
+.tour-cap { background: #fff; color: #000; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+.tour-cap a { background: #000; color: #fff; }
+.tour-ctl button { background: #fff; color: #000; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
+.tour-ctl button:hover { background: #e6e6e6; }
+.tour-ctl button[data-t="play"] { background: #000; color: #fff; box-shadow: 0 0 0 2px #fff, 0 10px 30px rgba(0, 0, 0, .45); }
+.tour-bars i { background: rgba(255, 255, 255, .3); }
+/* El lente: todo se oscurece salvo lo que importa, con un borde blanco */
+.tour-lens { position: fixed; z-index: -1; border-radius: 20px; pointer-events: none; opacity: 0; box-shadow: 0 0 0 200vmax rgba(0, 0, 0, .66), 0 0 0 3px #fff; transition: opacity .5s cubic-bezier(.22, 1, .36, 1), left .6s cubic-bezier(.65, 0, .25, 1), top .6s cubic-bezier(.65, 0, .25, 1), width .6s cubic-bezier(.65, 0, .25, 1), height .6s cubic-bezier(.65, 0, .25, 1); }
+.tour-lens.on { opacity: 1; }
+#wx { transition: transform 1.4s cubic-bezier(.65, 0, .25, 1); will-change: transform; }
+/* el cursor del recorrido y su clic */
+.tour-cursor { position: fixed; left: 0; top: 0; z-index: 3; width: 30px; height: 30px; margin: -4px 0 0 -4px; pointer-events: none !important; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .55)); }
+.tour-cursor svg { width: 30px; height: 30px; }
+.tour-cursor i { position: absolute; left: -16px; top: -16px; width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; opacity: 0; transform: scale(.3); }
+.tour-cursor.hit i { animation: tour-hit .55s cubic-bezier(.22, 1, .36, 1); }
+@keyframes tour-hit { 0% { opacity: 1; transform: scale(.3); } 100% { opacity: 0; transform: scale(1.6); } }
+.tour-press { transform: scale(.94) !important; transition: transform .12s !important; }
+#au { transition: transform 1.4s cubic-bezier(.65, 0, .25, 1); }
+.tour-lens { z-index: 1; }
+.tour-bars, .tour-cap, .tour-ctl { z-index: 2; }

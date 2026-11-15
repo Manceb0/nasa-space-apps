@@ -25,3 +25,13 @@
 .hz-b h4 em.ok { background: #1f3b2a; color: #30d158; }
 .hz-big { font-size: 15px !important; color: #fff !important; }
 .hz-big b { font-size: 26px; font-weight: 700; margin-right: 4px; }
+/* tamaños contenidos: los gráficos no crecen con la ventana */
+.hz-maps { max-width: 520px; }
+.hz-c { max-width: 460px; }
+.s13-lb .hz { grid-template-columns: 1fr; gap: 12px; max-width: 640px; }
+.s13-lb .hz > h3, .s13-lb .hz > .hz-lead, .s13-lb .hz > .hz-open { grid-column: 1 / -1; }
+@media (max-width: 900px) { .s13-lb .hz { grid-template-columns: 1fr; } }
+.s13-more { margin-top: 12px; border-radius: 16px; background: #1d2024; padding: 0 16px; }
+.s13-more summary { padding: 14px 0; cursor: pointer; font-weight: 600; font-size: 14px; }
+.s13-more[open] { padding-bottom: 14px; }
+.s13-lb .hz-b { justify-items: start; }

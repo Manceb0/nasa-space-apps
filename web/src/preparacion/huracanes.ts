@@ -255,6 +255,16 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
       const w = c.wind;
       (map.getSource("field") as maplibregl.CanvasSource).setCoordinates([[w.lon0 - w.step / 2, w.lat0 + (w.ny - .5) * w.step], [w.lon0 + (w.nx - .5) * w.step, w.lat0 + (w.ny - .5) * w.step], [w.lon0 + (w.nx - .5) * w.step, w.lat0 - w.step / 2], [w.lon0 - w.step / 2, w.lat0 - w.step / 2]]);
     }
+    // Con viento, el mapa se queda dentro de la rejilla medida: nunca se ve el borde sin datos
+    if (c.wind) {
+      const w = c.wind, b: [[number, number], [number, number]] = [[w.lon0 + w.step * 2, w.lat0 + w.step * 2], [w.lon0 + (w.nx - 3) * w.step, w.lat0 + (w.ny - 3) * w.step]];
+      map.setMaxBounds(null); map.setMinZoom(0);
+      const c0 = map.getCanvas(), Wc = c0.clientWidth, Hc = c0.clientHeight;
+      const a = map.project(b[0]), bb = map.project(b[1]), pw = Math.abs(bb.x - a.x), ph = Math.abs(bb.y - a.y);
+      const zCover = map.getZoom() + Math.log2(Math.max(Wc / pw, Hc / ph));
+      map.setMinZoom(zCover); map.setMaxBounds(b);
+      map.jumpTo({ center: [(b[0][0] + b[1][0]) / 2, (b[0][1] + b[1][1]) / 2], zoom: zCover + 0.2 });
+    } else { map.setMaxBounds(null); map.setMinZoom(0); }
     applyLayer();
     (map.getSource("path") as maplibregl.GeoJSONSource).setData({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: c.track.map((p) => [p.lon, p.lat]) } });
     const fc = c.forecast;
