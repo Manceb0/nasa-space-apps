@@ -1,0 +1,22 @@
+{
+ "coordenadas_cortina": "19°02′00.91″N 70°12′01.49″W (19.0336, -70.2004); ~6 km SO de Cotuí, Sánchez Ramírez (Wikipedia)",
+ "año_inauguracion": 1984,
+ "construccion_inicio": "agosto 1977",
+ "capacidad_hm3": "710 hm3 volumen total (Wikipedia, Structurae); INDRHI usa 'volumen máximo' operativo de 374.88 MMC (hm3) con nivel máximo 86.50 msnm — son definiciones distintas, usar 374.88 para % de llenado",
+ "area_embalse_km2": 22,
+ "area_cuenca_km2": 5235,
+ "otros": "Presa de tierra y escollera, 60 m de altura; vertedor de canal controlado de capacidad 650 m3/s según Wikipedia (pero INDRHI dice que Hatillo opera en 'manejo vertido libre'); central de 8 MW (Wikipedia; INDRHI menciona 'dos unidades'). Cuenca total del Yuna 5,498 km2 (Wikipedia).",
+ "uso": "Hidroelectricidad, riego (Bajo Yuna), control de inundaciones; proyecto de trasvase para agua potable del Gran Santo Domingo en discusión (2026)",
+ "operador": "Propietario de la central: EGEHID (Empresa de Generación Hidroeléctrica Dominicana). El embalse lo gestiona INDRHI; las descargas se deciden en el COPRE (Comité de Operación de Presas y Embalses, reunión semanal).",
+ "registros_publicos_niveles": "No se halló serie diaria pública ni dataset en datos.gob.do. Fuentes prácticas: (1) notas/boletines INDRHI replicados en presidencia.gob.do y prensa (cota msnm, volumen MMC, %, Qe/Qs m3/s); (2) informes de situación del COE (coe.gob.do/phocadownload/...) que indican 'presa vertiendo'; (3) indrhi.gob.do/boletines-informativos/ (devolvió error 500); (4) informes COPRE semanales citados por prensa. Para serie histórica habría que pedirla a INDRHI/EGEHID (Ley 200-04 de libre acceso a información).",
+ "fuentes": [
+  "https://en.wikipedia.org/wiki/Hatillo_Dam",
+  "https://structurae.net/structures/20050720",
+  "https://en.wikipedia.org/wiki/Yuna_River",
+  "https://elnuevodiario.com.do/indrhi-informa-que-las-presas-presentan-niveles-normales-tras-tormenta-fred/",
+  "https://elnuevodiario.com.do/indrhi-presas-siguen-aumentando-de-nivel-por-escurrimiento-en-cuencas-hidrograficas/",
+  "https://elnuevodiario.com.do/indrhi-informa-que-embalses-tienen-disponibilidad-para-mitigar-inundaciones-en-areas-de-influencia/",
+  "https://indrhi.gob.do/",
+  "https://www.diariolibre.com/actualidad/ciudad/2026/06/10/el-trasvase-de-hatillo-reactiva-planes-de-agua-para-santo-domingo/3561144"
+ ]
+}

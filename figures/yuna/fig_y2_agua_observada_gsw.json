@@ -1,0 +1,12 @@
+{
+  "archivos": [
+    "fig_y2_agua_observada_gsw.pdf",
+    "fig_y2_agua_observada_gsw.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    105.0
+  ],
+  "fuente": "JRC GSW Monthly Water History v1.4 (Pekel et al. 2016)",
+  "nota": "meses con < 30 % (llanura) o < 50 % (embalse) de píxeles válidos no se usan"
+}

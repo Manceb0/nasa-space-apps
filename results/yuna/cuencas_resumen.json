@@ -1,0 +1,284 @@
+{
+ "niveles": {
+  "lev06": [
+   {
+    "HYBAS_ID": 7060070800,
+    "PFAF_ID": 764001,
+    "SUB_AREA_km2": 75584.6,
+    "frac_del_poligono_en_yuna": 0.075,
+    "frac_del_yuna_cubierta": 1.0
+   }
+  ],
+  "lev07": [
+   {
+    "HYBAS_ID": 7070072320,
+    "PFAF_ID": 7640016,
+    "SUB_AREA_km2": 5633.1,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 1.0
+   }
+  ],
+  "lev08": [
+   {
+    "HYBAS_ID": 7080081040,
+    "PFAF_ID": 76400160,
+    "SUB_AREA_km2": 138.4,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.025
+   },
+   {
+    "HYBAS_ID": 7080072320,
+    "PFAF_ID": 76400161,
+    "SUB_AREA_km2": 701.8,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.125
+   },
+   {
+    "HYBAS_ID": 7080842580,
+    "PFAF_ID": 76400162,
+    "SUB_AREA_km2": 314.5,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.056
+   },
+   {
+    "HYBAS_ID": 7080842570,
+    "PFAF_ID": 76400163,
+    "SUB_AREA_km2": 272.0,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.048
+   },
+   {
+    "HYBAS_ID": 7080842370,
+    "PFAF_ID": 76400164,
+    "SUB_AREA_km2": 2495.3,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.443
+   },
+   {
+    "HYBAS_ID": 7080842510,
+    "PFAF_ID": 76400165,
+    "SUB_AREA_km2": 259.9,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.046
+   },
+   {
+    "HYBAS_ID": 7080842900,
+    "PFAF_ID": 76400166,
+    "SUB_AREA_km2": 194.5,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.035
+   },
+   {
+    "HYBAS_ID": 7080842890,
+    "PFAF_ID": 76400167,
+    "SUB_AREA_km2": 548.2,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.097
+   },
+   {
+    "HYBAS_ID": 7080844060,
+    "PFAF_ID": 76400168,
+    "SUB_AREA_km2": 193.8,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.034
+   },
+   {
+    "HYBAS_ID": 7080844030,
+    "PFAF_ID": 76400169,
+    "SUB_AREA_km2": 514.6,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.091
+   }
+  ],
+  "lev09": [
+   {
+    "HYBAS_ID": 7090081040,
+    "PFAF_ID": 764001600,
+    "SUB_AREA_km2": 138.4,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.025
+   },
+   {
+    "HYBAS_ID": 7090072320,
+    "PFAF_ID": 764001610,
+    "SUB_AREA_km2": 701.8,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.125
+   },
+   {
+    "HYBAS_ID": 7090842580,
+    "PFAF_ID": 764001620,
+    "SUB_AREA_km2": 314.5,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.056
+   },
+   {
+    "HYBAS_ID": 7090842570,
+    "PFAF_ID": 764001630,
+    "SUB_AREA_km2": 272.0,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.048
+   },
+   {
+    "HYBAS_ID": 7090842370,
+    "PFAF_ID": 764001641,
+    "SUB_AREA_km2": 455.3,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.081
+   },
+   {
+    "HYBAS_ID": 7090842210,
+    "PFAF_ID": 764001642,
+    "SUB_AREA_km2": 220.9,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.039
+   },
+   {
+    "HYBAS_ID": 7090842360,
+    "PFAF_ID": 764001644,
+    "SUB_AREA_km2": 252.8,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.045
+   },
+   {
+    "HYBAS_ID": 7090842440,
+    "PFAF_ID": 764001645,
+    "SUB_AREA_km2": 200.2,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.036
+   },
+   {
+    "HYBAS_ID": 7090842140,
+    "PFAF_ID": 764001646,
+    "SUB_AREA_km2": 361.2,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.064
+   },
+   {
+    "HYBAS_ID": 7090842120,
+    "PFAF_ID": 764001647,
+    "SUB_AREA_km2": 205.6,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.037
+   },
+   {
+    "HYBAS_ID": 7090841550,
+    "PFAF_ID": 764001648,
+    "SUB_AREA_km2": 230.5,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.041
+   },
+   {
+    "HYBAS_ID": 7090841500,
+    "PFAF_ID": 764001649,
+    "SUB_AREA_km2": 560.8,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.1
+   },
+   {
+    "HYBAS_ID": 7090842510,
+    "PFAF_ID": 764001650,
+    "SUB_AREA_km2": 259.9,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.046
+   },
+   {
+    "HYBAS_ID": 7090842900,
+    "PFAF_ID": 764001660,
+    "SUB_AREA_km2": 194.5,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.035
+   },
+   {
+    "HYBAS_ID": 7090842890,
+    "PFAF_ID": 764001670,
+    "SUB_AREA_km2": 548.2,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.097
+   },
+   {
+    "HYBAS_ID": 7090844060,
+    "PFAF_ID": 764001680,
+    "SUB_AREA_km2": 193.8,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.034
+   },
+   {
+    "HYBAS_ID": 7090844030,
+    "PFAF_ID": 764001690,
+    "SUB_AREA_km2": 514.6,
+    "frac_del_poligono_en_yuna": 1.0,
+    "frac_del_yuna_cubierta": 0.091
+   }
+  ]
+ },
+ "salidas": {
+  "Yuna": {
+   "HYBAS_ID": 7100072320,
+   "UP_AREA_km2": 5494.8,
+   "centroide": [
+    19.2011,
+    -69.6859
+   ]
+  },
+  "Yaque del Norte": {
+   "HYBAS_ID": 7100072120,
+   "UP_AREA_km2": 7089.3,
+   "centroide": [
+    19.8038,
+    -71.6281
+   ]
+  },
+  "Yaque del Sur": {
+   "HYBAS_ID": 7100072760,
+   "UP_AREA_km2": 5218.0,
+   "centroide": [
+    18.2371,
+    -71.1561
+   ]
+  },
+  "Ozama": {
+   "HYBAS_ID": 7100072620,
+   "UP_AREA_km2": 3406.1,
+   "centroide": [
+    18.4922,
+    -69.8806
+   ]
+  }
+ },
+ "hatillo": {
+  "poligono_lev10": 7100842890,
+  "UP_AREA_lev10_km2": 1256.5,
+  "hydrorivers_tramo": 70892697,
+  "hydrorivers_UPLAND_km2": 1256.5,
+  "hydrorivers_caudal_medio_m3s": 24.035,
+  "dist_tramo_cortina_km": 0.26
+ },
+ "camu": {
+  "tramo_final": 70891553,
+  "UPLAND_km2": 2495.4,
+  "caudal_medio_m3s_hydrorivers": 38.386,
+  "confluencia_lonlat": [
+   -70.1063,
+   19.1521
+  ],
+  "tramo_receptor": 70891554,
+  "UPLAND_receptor_km2": 4210.8,
+  "poligono_lev10": 7100842370
+ },
+ "areas_km2": {
+  "yuna": 5608.0,
+  "alto_hatillo": 1250.9,
+  "camu": 2484.2,
+  "bajo_yuna": 1872.9,
+  "Yaque del Norte": 7057.5,
+  "Yaque del Sur": 8258.5,
+  "Ozama": 3390.7
+ },
+ "n_poligonos_lev10": {
+  "yuna": 41,
+  "alto_hatillo": 7,
+  "camu": 19,
+  "bajo_yuna": 15
+ }
+}

@@ -1,0 +1,86 @@
+{
+ "backtest_info": {
+  "a2_umbral": 115.0,
+  "c": {
+   "n_dias": 90,
+   "percentil": 0.95,
+   "umbral_mm": 722.7656214307216
+  },
+  "antecedente_p90_mm": 633.0667066505939,
+  "b2_umbral_bajo": 95.0
+ },
+ "presa_auc": {
+  "umbral_r48max_p99_mm": 135.40299316406268,
+  "n_episodios": 57,
+  "n_con_inundacion": 12,
+  "AUC_ant30_pct_alto_hatillo": 0.4083333333333333,
+  "AUC_ant30_pct_alto_hatillo_ic95": [
+   0.24814814814814815,
+   0.5852314814814812
+  ],
+  "AUC_ant30_pct_camu": 0.4425925925925926,
+  "AUC_ant30_pct_camu_ic95": [
+   0.27037037037037037,
+   0.6204166666666664
+  ],
+  "AUC_ant30_pct_bajo_yuna": 0.41944444444444445,
+  "AUC_ant30_pct_bajo_yuna_ic95": [
+   0.24074074074074073,
+   0.6018518518518519
+  ],
+  "dAUC_ant30_pct_alto_menos_camu": -0.03425925925925927,
+  "dAUC_ant30_pct_alto_menos_camu_ic95": [
+   -0.1396904761904762,
+   0.06719367588932806
+  ],
+  "AUC_gldas_z_alto_hatillo": 0.3888888888888889,
+  "AUC_gldas_z_alto_hatillo_ic95": [
+   0.22962962962962963,
+   0.5555555555555556
+  ],
+  "AUC_gldas_z_camu": 0.47962962962962963,
+  "AUC_gldas_z_camu_ic95": [
+   0.30550925925925926,
+   0.6666666666666666
+  ],
+  "AUC_gldas_z_bajo_yuna": 0.48518518518518516,
+  "AUC_gldas_z_bajo_yuna_ic95": [
+   0.31296296296296294,
+   0.6648148148148149
+  ],
+  "dAUC_gldas_z_alto_menos_camu": -0.09074074074074073,
+  "dAUC_gldas_z_alto_menos_camu_ic95": [
+   -0.2508972132518644,
+   0.03191489361702127
+  ],
+  "AUC_r48_alto_hatillo": 0.7185185185185186,
+  "AUC_r48_alto_hatillo_ic95": [
+   0.5296296296296297,
+   0.8852314814814812
+  ],
+  "AUC_r48_camu": 0.8222222222222222,
+  "AUC_r48_camu_ic95": [
+   0.6981481481481482,
+   0.924074074074074
+  ],
+  "AUC_r48_bajo_yuna": 0.7944444444444444,
+  "AUC_r48_bajo_yuna_ic95": [
+   0.6351851851851852,
+   0.9222685185185183
+  ],
+  "dAUC_r48_alto_menos_camu": -0.10370370370370363,
+  "dAUC_r48_alto_menos_camu_ic95": [
+   -0.24538229051310445,
+   0.020413832199546473
+  ]
+ },
+ "presa_embalse_mediana_km2": 25.764441021084462,
+ "embalse_vs_lluvia_alta": {
+  "n": 152,
+  "rho": -0.03079914433532214
+ },
+ "n_eventos_catalogo_cuenca": 16,
+ "n_eventos_usables": 14,
+ "n_eventos_calibracion": 6,
+ "n_eventos_prueba": 8
+}

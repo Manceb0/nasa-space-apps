@@ -1,0 +1,11 @@
+{
+  "archivos": [
+    "fig_y4_backtest_disparadores.pdf",
+    "fig_y4_backtest_disparadores.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    82.0
+  ],
+  "tabla": "results/yuna/backtest_disparadores.csv"
+}

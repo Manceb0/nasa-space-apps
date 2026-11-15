@@ -1,0 +1,30 @@
+{
+ "yuna_hatillo": {
+  "lat": 19.06875,
+  "lon": -70.18542,
+  "HYRIV_ID": 70892697,
+  "UPLAND_km2": 1256.5,
+  "DIS_AV_CMS_hydrorivers": 24.035
+ },
+ "camu_confluencia": {
+  "lat": 19.1625,
+  "lon": -70.11042,
+  "HYRIV_ID": 70891553,
+  "UPLAND_km2": 2495.4,
+  "DIS_AV_CMS_hydrorivers": 38.386
+ },
+ "yuna_villa_riva": {
+  "lat": 19.18125,
+  "lon": -69.85,
+  "HYRIV_ID": 70891265,
+  "UPLAND_km2": 4998.5,
+  "DIS_AV_CMS_hydrorivers": 89.857
+ },
+ "yuna_cotui": {
+  "lat": 19.10564,
+  "lon": -70.12769,
+  "HYRIV_ID": 70892079,
+  "UPLAND_km2": 1456.8,
+  "DIS_AV_CMS_hydrorivers": 27.935
+ }
+}

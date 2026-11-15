@@ -1,0 +1,28 @@
+id,zona,usable_backtest,motivo,IMERG_antecedente_y_evento,SMAP_L4,GEOGLOWS,GSW_mes_validos_llanura,GSW_observa
+2003-11,bajo_yuna,True,,True,False,True,0.7011009377065833,True
+2007-10,bajo_yuna,True,,True,False,True,0.8921375716559429,True
+2007-12,bajo_yuna,True,,True,False,True,0.9532600667270221,True
+2011-06,alto_yuna,True,,True,False,True,0.6584417825148837,True
+2012-08,cuenca_general,True,,True,False,True,0.0,False
+2012-10,cuenca_general,True,,True,False,True,0.8188813046082744,True
+2016-11,bajo_yuna,True,,True,True,True,0.9855961134708326,True
+2017-04,bajo_yuna,True,,True,True,True,0.9999883683285095,True
+2017-09,bajo_yuna,True,,True,True,True,0.8502247820515555,True
+2020-07,bajo_yuna,True,,True,True,True,0.926834847712341,True
+2022-09,bajo_yuna,True,,True,True,True,,False
+2023-11,bajo_yuna,True,,True,True,True,,False
+2024-11,bajo_yuna,True,,True,True,True,,False
+2024-12,bajo_yuna,True,,True,True,True,,False
+2025-10,bajo_yuna,False,fuera de 2001-2024 (sin IMERG diario local),False,False,False,,False
+2026-04,cuenca_general,False,fuera de 2001-2024 (sin IMERG diario local),False,False,False,,False
+H-2016-11-16,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,0.5839719444083648,True
+H-2017-04-24,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,0.8840942708202073,True
+H-2017-09-07,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,0.8502247820515555,True
+H-2017-09-22,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,0.8502247820515555,True
+H-2021-08-12,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,,False
+H-2022-09-20,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,,False
+H-2023-08-25,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,,False
+H-2023-11-21,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,,False
+H-2024-05,hatillo_operacion,False,no es evento de inundación en la cuenca,True,True,True,,False
+H-2026-04,hatillo_operacion,False,no es evento de inundación en la cuenca; fuera de 2001-2024 (sin IMERG diario local),False,False,False,,False
+PRECEDENTE-Tavera-2007-12,fuera_yuna_precedente_presa,False,otra cuenca (precedente de operación de presa),True,False,True,0.9532600667270221,True

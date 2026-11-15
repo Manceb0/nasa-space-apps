@@ -1,0 +1,14 @@
+{
+  "archivos": [
+    "fig_y5_presa_confusor.pdf",
+    "fig_y5_presa_confusor.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    72.0
+  ],
+  "tablas": [
+    "results/yuna/presa_episodios_lluvia_fuerte.csv",
+    "results/yuna/presa_correlaciones_mensuales.csv"
+  ]
+}

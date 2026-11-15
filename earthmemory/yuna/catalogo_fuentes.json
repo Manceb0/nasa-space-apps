@@ -1,0 +1,408 @@
+{
+ "meta": {
+  "fecha_investigacion": "2026-11-14",
+  "metodo": "WebSearch + WebFetch. 'leido' = página abierta y leída; 'solo_busqueda' = dato visto en resultados/snippets de búsqueda, la página no se pudo abrir (403/404) o no se abrió. Varias páginas de presidencia.gob.do, reliefweb.int, coe.gob.do y cepal.org devuelven 403 al fetch automático.",
+  "aviso": "No se inventó ningún dato. Fechas marcadas 'derivada' se calcularon a partir del texto del artículo (p.ej. 'el pasado martes')."
+ },
+ "eventos": [
+  {
+   "id": "2003-11",
+   "fecha_inicio": "2003-11-14",
+   "fecha_fin": "2003-11-26",
+   "fecha_precision": "semana",
+   "nombre": "Inundaciones del Cibao, cuencas Yaque del Norte y Yuna (noviembre 2003)",
+   "lugares": ["Bajo Yuna", "Villa Riva", "Limón del Yuna", "Duarte", "Santiago", "Montecristi", "Valverde"],
+   "zona": "bajo_yuna",
+   "impacto": "~10 muertos, ~65,000 afectados, ~47,270 evacuados; desbordes del Yaque del Norte y del Yuna y afluentes; daños+pérdidas Yuna+Yaque estimados en US$61.3 M (~0.2% PIB). CEPAL hizo evaluación oficial (LC/MEX/L.607, mar 2004).",
+   "fuentes": [
+    {"url": "https://disasterscharter.org/activations/flooding-in-the-dominican-republic", "tipo": "otro", "nota": "International Charter activado 27-nov-2003; desbordes Yaque del Norte y Yuna; 47,270 evacuados, ~65,000 afectados; Santiago, Montecristi, Valverde, Duarte. (leido)"},
+    {"url": "https://iri.columbia.edu/climate/cid/Dec2003/impacts.html", "tipo": "otro", "nota": "Lluvias desde 14-nov hasta 26-nov; 10 muertos; tierras del Yaque del Norte y Yuna las más afectadas. (solo_busqueda)"},
+    {"url": "https://www.cepal.org/es/publicaciones/25660-republica-dominicana-evaluacion-danos-ocasionados-inundaciones-cuencas-yaque", "tipo": "CEPAL", "nota": "Evaluación de daños por inundaciones en cuencas Yaque del Norte y Yuna, 2003; resumen cita tramo bajo del Yuna (Villa Riva a Limón de Yuna). (solo_busqueda; 403 y PDF >10MB)"},
+    {"url": "https://reliefweb.int/report/dominican-republic/dominican-republic-floods-ocha-situation-report-no-2", "tipo": "ReliefWeb", "nota": "OCHA Sitrep 2 (4-dic-2003): lluvias torrenciales desde mediados de noviembre, desbordes de ríos y presas; 10 muertos según CNE. (solo_busqueda)"},
+    {"url": "https://reliefweb.int/disaster/fl-2003-000571-dom", "tipo": "ReliefWeb", "nota": "Página de desastre GLIDE FL-2003-000571-DOM. (solo_busqueda, 403)"},
+    {"url": "https://eldinero.com.do/?p=71609", "tipo": "prensa", "nota": "Cita informe BM/MEPyD: inundaciones Yuna y Yaque 2003 = US$61.3 M en daños y pérdidas. (solo_busqueda)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "Charter (27-nov-2003): alerta roja y temor de que las presas de Monción y Hatillo 'may burst' (https://disasterscharter.org/activations/flooding-in-the-dominican-republic). No se encontró registro de apertura de compuertas; el informe CEPAL completo (no leído) podría contenerlo."
+  },
+  {
+   "id": "2007-10",
+   "fecha_inicio": "2007-10-28",
+   "fecha_fin": "2007-11-04",
+   "fecha_precision": "semana",
+   "nombre": "Tormenta tropical Noel",
+   "lugares": ["Villa Riva", "Arenoso", "Bajo Yuna", "Monseñor Nouel (Bonao)", "La Vega", "Duarte", "Castillo"],
+   "zona": "bajo_yuna",
+   "impacto": "Refugios en Bajo Yuna al 4-nov-2007: ~716 personas en Villa Riva (Esc. Luis Teo Molina) y 610 en Arenoso (Esc. Salomé Ureña); 'prácticamente toda esta área está inundada'. NASA: escorrentía cargó de sedimento al Yuna. Tabla del sEAP CRD: Noel 129 muertos y 79,728 afectados a nivel nacional (provincias incl. Duarte, La Vega, Monseñor Nouel). Villa Riva entre las comunidades más golpeadas por Noel y Olga (PNUD).",
+   "fuentes": [
+    {"url": "https://diariodigitalrd.com/2007/11/04/primeras-damas-pr-y-rd-visitan-refugios-en-el-bajo-yuna.html", "tipo": "prensa", "nota": "4-nov-2007: 716 refugiados en Villa Riva, 610 en Arenoso; área prácticamente toda inundada por Noel. (leido)"},
+    {"url": "https://go-api.ifrc.org/api/DownloadFile/94311/MDRDO020 sEAP Summary", "tipo": "IFRC", "nota": "Tabla histórica sEAP: Noel 2007, provincias incl. Duarte, La Vega, Monseñor Nouel; 129 muertes, 79,728 afectados. (leido)"},
+    {"url": "https://eldia.com.do/pnud-cambia-vida-damnificados/", "tipo": "prensa", "nota": "26-ago-2009: Villa Riva de las más golpeadas por Noel y Olga; >10,000 afectados directos; Castillo ~3,000 tareas de cacao dañadas. (leido)"},
+    {"url": "https://earthobservatory.nasa.gov/images/19298/tropical-storm-noel-floods-the-dominican-republic", "tipo": "otro", "nota": "NASA EO: imagen de inundaciones por Noel; río Yuna cargado de sedimentos. (solo_busqueda)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "No se encontró mención específica de vertido/compuertas de Hatillo en Noel. DR1 (2-jun-2008) dice que en la temporada 2007 las presas principales (Tavera, Valdesia, Sabana Yegua y Hatillo) estaban a nivel máximo: https://dr1.com/news/?p=19531"
+  },
+  {
+   "id": "2007-12",
+   "fecha_inicio": "2007-12-11",
+   "fecha_fin": "2007-12-14",
+   "fecha_precision": "dia",
+   "nombre": "Tormenta tropical Olga",
+   "lugares": ["Bajo Yuna", "Arenoso", "Villa Riva", "Bonao (Monseñor Nouel)", "La Vega", "Nagua", "Duarte"],
+   "zona": "bajo_yuna",
+   "impacto": "12-dic-2007: 'varias poblaciones incomunicadas' en el Bajo Yuna; ~3,500 familias evacuadas a nivel nacional. Tabla sEAP CRD: Olga afectó Bonao, Nagua, Arenoso, Villa Riva, La Vega, Santiago, etc.; 33 muertos y 61,605 afectados. El gran daño mortal fue en Santiago (Yaque del Norte, presa Tavera) - ver tavera_olga_2007.",
+   "fuentes": [
+    {"url": "https://expansion.mx/actualidad/2007/12/12/la-tormenta-olga-azota-a-dominicanos", "tipo": "prensa", "nota": "12-dic-2007: varias poblaciones incomunicadas en Bajo Yuna; 3,500 familias evacuadas; vertedor de Tavera abierto. (leido)"},
+    {"url": "https://go-api.ifrc.org/api/DownloadFile/94311/MDRDO020 sEAP Summary", "tipo": "IFRC", "nota": "Tabla sEAP: Olga 2007 en Bonao, Nagua, Arenoso, Villa Rivas, Santiago, La Vega...; 33 muertes, 61,605 afectados. (leido)"},
+    {"url": "https://eldia.com.do/pnud-cambia-vida-damnificados/", "tipo": "prensa", "nota": "Villa Riva entre las más golpeadas por Noel (oct) y Olga (dic) 2007. (leido)"},
+    {"url": "https://www.undp.org/sites/g/files/zskgke326/files/migration/do/pnud_do_marcoestrategicoduarte_portada.pdf", "tipo": "otro", "nota": "Marco estratégico PNUD de recuperación en Duarte tras Noel y Olga (Arenoso, Villa Riva). (solo_busqueda)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "Ninguna fuente encontrada menciona vertido de Hatillo en Olga (Expansión no lo menciona)."
+  },
+  {
+   "id": "2011-06",
+   "fecha_inicio": "2011-05-28",
+   "fecha_fin": "2011-06-04",
+   "fecha_precision": "semana",
+   "nombre": "Lluvias en Cotuí; colapso de alcantarilla en vía a la presa de Hatillo",
+   "lugares": ["Cotuí", "Quita Sueño", "Las Cruces", "La Isleta"],
+   "zona": "alto_yuna",
+   "impacto": "Colapso de alcantarilla en la carretera a la presa de Hatillo aisló >6 comunidades (Las Cruces, La Isleta, El Broque, El Cascajal...); suelo saturado por lluvias; residentes temían crecida del río Camacho. Evento local menor.",
+   "fuentes": [
+    {"url": "https://ensegundos.do/2011/06/04/en-cotui-seis-comunidades-y-presa-de-hatillo-estan-incomunicadas", "tipo": "prensa", "nota": "4-jun-2011: seis comunidades y acceso a presa de Hatillo incomunicados por colapso de alcantarilla tras lluvias. (leido)"}
+   ],
+   "confianza": "media",
+   "hatillo_menciones": "Solo acceso vial a la presa cortado; no dice si vertía."
+  },
+  {
+   "id": "2012-08",
+   "fecha_inicio": "2012-08-24",
+   "fecha_fin": "2012-08-28",
+   "fecha_precision": "dia",
+   "nombre": "Tormenta tropical Isaac",
+   "lugares": ["Bajo Yuna", "Duarte", "Sánchez Ramírez (Sonador, Palmar del Río, Sabana del Río)"],
+   "zona": "cuenca_general",
+   "impacto": "COE: alerta roja en 22 provincias incl. Sánchez Ramírez, Monseñor Nouel y Duarte; comunidades de Sánchez Ramírez incomunicadas por crecida del río Cevicos; 28-ago Duarte seguía en alerta 'especialmente el Bajo Yuna'. sEAP: Isaac afectó Sánchez Ramírez entre otras (5 muertos, 20,515 afectados nacional). Daños mayores en el suroeste.",
+   "fuentes": [
+    {"url": "https://dominicantoday.com/dr/local/2012/08/28/tropical-storm-leaves-downpours-calamity-in-its-wake/", "tipo": "prensa", "nota": "28-ago-2012: nueve provincias en alerta, incl. Duarte, especialmente el Bajo Yuna. (solo_busqueda)"},
+    {"url": "https://www.diariolibre.com/actualidad/ms-de-siete-mil-desplazados-74-pueblos-aislados-y-apagn-en-gran-parte-del-pas-GPDL349384", "tipo": "prensa", "nota": ">7,000 desplazados y 74 pueblos aislados por Isaac. (solo_busqueda)"},
+    {"url": "https://go-api.ifrc.org/api/DownloadFile/94311/MDRDO020 sEAP Summary", "tipo": "IFRC", "nota": "Tabla sEAP: Isaac 2012 en Azua, Monte Plata, Sánchez Ramírez, Barahona, San José de Ocoa. (leido)"}
+   ],
+   "confianza": "media",
+   "hatillo_menciones": ""
+  },
+  {
+   "id": "2012-10",
+   "fecha_inicio": "2012-10-23",
+   "fecha_fin": "2012-10-27",
+   "fecha_precision": "dia",
+   "nombre": "Huracán Sandy (bandas nubosas)",
+   "lugares": ["Duarte"],
+   "zona": "cuenca_general",
+   "impacto": "Lluvias >400 mm en el litoral sur; sEAP lista Duarte entre provincias afectadas (3 muertos, 22,000 afectados nacional). No se encontró confirmación específica de inundación en el Bajo Yuna.",
+   "fuentes": [
+    {"url": "https://dipecholac.net/docs/files/509-oxfamhistoriasresiliencia4-perfe-reyes.pdf", "tipo": "otro", "nota": "Oxfam: bandas de Sandy 23-27 oct 2012, >400 mm en litoral sur; zonas ya afectadas por Isaac. (solo_busqueda)"},
+    {"url": "https://go-api.ifrc.org/api/DownloadFile/94311/MDRDO020 sEAP Summary", "tipo": "IFRC", "nota": "Tabla sEAP: Sandy 2012 incluye Duarte, Monte Plata, Santo Domingo, etc. (leido)"}
+   ],
+   "confianza": "baja",
+   "hatillo_menciones": ""
+  },
+  {
+   "id": "2016-11",
+   "fecha_inicio": "2016-10-29",
+   "fecha_fin": "2016-11-24",
+   "fecha_precision": "semana",
+   "nombre": "Inundaciones del norte, noviembre 2016 (lluvias prolongadas / vaguadas)",
+   "lugares": ["Villa Riva", "Los Contreras", "Alto de Caipora", "Arenoso", "Los Peinados", "Juana Rodríguez", "Loma Colorada", "San Francisco de Macorís", "Bajo Yuna"],
+   "zona": "bajo_yuna",
+   "impacto": "~160 familias de Los Contreras (Villa Riva) incomunicadas 17 días al 15-nov (inicio derivado ~29-oct); preliminar Agricultura/COE: 10,327 tareas de arroz, 5,108 de plátano y 40,000 de pasto dañadas en Bajo Yuna; 24-nov: desborde del Jaya en SFM, 1 muerto, >120 casas inundadas; comunidades de Villa Riva y Arenoso incomunicadas. IFRC lanzó llamamiento MDRDO009 (provincias norte: MTS, Duarte, Santiago, Montecristi).",
+   "fuentes": [
+    {"url": "https://www.diariolibre.com/actualidad/17-dias-incomunicados-en-los-contreras-y-alto-de-caipora-KD5467419", "tipo": "prensa", "nota": "15-nov-2016: 160 familias en Los Contreras 17 días incomunicadas por crecida del Yuna; arroz muy afectado. (leido)"},
+    {"url": "https://eldinero.com.do/?p=32414", "tipo": "prensa", "nota": "21-nov-2016: reporte preliminar Bajo Yuna: 10,327 tareas arroz, 5,108 plátano, 40,000 pasto dañadas. (leido)"},
+    {"url": "https://acento.com.do/actualidad/muerto-casas-destruidas-decenas-familias-desplazadas-las-inundaciones-sfm-8404329.html", "tipo": "prensa", "nota": "24-nov-2016: 1 muerto por río Jaya en SFM; comunidades de Villa Riva y Arenoso incomunicadas. (leido)"},
+    {"url": "https://reliefweb.int/report/dominican-republic/dominican-republic-floods-emergency-appeal-n-mdrdo009", "tipo": "IFRC", "nota": "Llamamiento IFRC MDRDO009 por inundaciones de nov-2016 en provincias del norte. (solo_busqueda)"},
+    {"url": "https://reliefweb.int/disaster/fl-2016-000123-dom", "tipo": "ReliefWeb", "nota": "Página de desastre FL-2016-000123-DOM. (solo_busqueda, 403)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "Dominican Today 16-nov-2016: 'Hatillo dam has the highest level at 120% of capacity' (https://dominicantoday.com/dr/economy/2016/11/16/downpours-bring-calamity-but-also-water-bounty/ ; solo_busqueda, la URL dio 404 al abrir)."
+  },
+  {
+   "id": "2017-04",
+   "fecha_inicio": "2017-04-19",
+   "fecha_fin": "2017-05-02",
+   "fecha_precision": "semana",
+   "nombre": "Inundaciones de abril 2017 (vaguada)",
+   "lugares": ["Hostos", "Villa Riva", "Arenoso", "Barranquito", "Las Coles", "Los Contreras", "Los Peinados", "La Isleta", "Pimentel", "La Reforma"],
+   "zona": "bajo_yuna",
+   "impacto": "Decenas de comunidades de Duarte en emergencia por crecida del Yuna; cientos de familias aisladas; arroz listo para cosecha perdido; barrio Los Estudiantes (Arenoso) evacuado. >5,000 tareas de cultivos destruidas; municipios más afectados Villa Riva, Arenoso, Pimentel. DFO evento 4467 (19-24 abr 2017) lista el Yuna entre ríos desbordados; hasta 3,429 viviendas dañadas.",
+   "fuentes": [
+    {"url": "https://www.elcaribe.com.do/panorama/pais/comunidades-del-bajo-yuna-emergencia/", "tipo": "prensa", "nota": "25-abr-2017: comunidades del Bajo Yuna en emergencia por crecida del Yuna; cientos de familias aisladas. (leido)"},
+    {"url": "https://dr1.com/news/?p=98617", "tipo": "prensa", "nota": "2-may-2017: >5,000 tareas destruidas; Villa Riva, Arenoso, Pimentel entre los más afectados. (leido)"},
+    {"url": "https://floodobservatory.colorado.edu/Events/2017DominicanRepublic4467/2017DominicanRepublic4467.html", "tipo": "DFO", "nota": "DFO 4467, 19-24 abr 2017; Yuna, Ozama, Cevicos, Haina desbordados; 3,429 viviendas. (solo_busqueda; 404 al abrir)"},
+    {"url": "https://reliefweb.int/report/dominican-republic/dominican-republic-floods-emergency-appeal-final-report-n-mdrdo009", "tipo": "IFRC", "nota": "MDRDO009 cubrió respuesta a inundaciones de nov-2016 y abr-2017. (solo_busqueda)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "DR1 25-abr-2017 (citando Listín 24-abr): embalse de Hatillo en 89.7 m; director INDRHI Olgo Fernández pide a comunidades bajo el Yuna prepararse porque podrían abrirse compuertas: https://dr1.com/news/?p=98349"
+  },
+  {
+   "id": "2017-09",
+   "fecha_inicio": "2017-09-21",
+   "fecha_fin": "2017-09-26",
+   "fecha_precision": "dia",
+   "nombre": "Huracán María (tras Irma 7-sep)",
+   "lugares": ["Arenoso", "Los Estudiantes", "Los Peinados", "Los Contreras", "Ceiba de los Pájaros", "Manatí", "La Reforma", "Villa Riva", "El Ranchito (La Vega, río Camú)"],
+   "zona": "bajo_yuna",
+   "impacto": "23-sep: Arenoso amaneció inundado por desborde del Yuna; COE 19,844 desplazados nacional. 26-sep: comunidades del Bajo Yuna aisladas, carretera a Villa Riva destruida en tramos, ~50 viviendas cubiertas en Los Estudiantes; productor estimó >280,000 tareas de arroz sumergidas (no oficial). Camú inundó El Ranchito (La Vega). NOTA: las '20,000 tareas' de arroz por cosechar de esa nota son de Palo Verde (Línea Noroeste, Yaque), no del Bajo Yuna.",
+   "fuentes": [
+    {"url": "https://elnuevodiario.com.do/municipio-arenoso-esta-inundado-desbordamiento-del-rio-yuna/", "tipo": "prensa", "nota": "23-sep-2017: Arenoso inundado por desborde del Yuna (lluvias de María); 19,844 desplazados nacional. (leido)"},
+    {"url": "https://www.diariolibre.com/noticias/ciudad/situacion-es-critica-en-bajo-yuna-y-la-linea-producto-de-inundaciones-NX8246861", "tipo": "prensa", "nota": "26-sep-2017: Bajo Yuna aislado; >280,000 tareas arroz sumergidas (productor); Camú inunda El Ranchito. (leido)"},
+    {"url": "https://ensegundos.do/2017/09/26/la-situacion-es-critica-en-el-bajo-yuna", "tipo": "prensa", "nota": "26-sep-2017: situación crítica en Bajo Yuna. (solo_busqueda)"},
+    {"url": "https://go-api.ifrc.org/api/DownloadFile/94311/MDRDO020 sEAP Summary", "tipo": "IFRC", "nota": "Tabla sEAP: María 2017 incluye Duarte, Sánchez Ramírez, Monseñor Nouel, La Vega, Samaná; 26,000 afectados. (leido)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "22-sep-2017 INDRHI: Hatillo cota 87.57 msnm (+0.30 m/día), Qentrada 221.76 m3/s, Qsalida 87.37 m3/s (https://elnuevodiario.com.do/indrhi-informa-situacion-actual-los-embalses/). 7-sep-2017 (Irma): se aplicó en Hatillo la misma medida que en Tavera-Bao (desembalse preventivo) (https://elnuevodiario.com.do/indrhi-embalse-tavera-bao-14-mts/)."
+  },
+  {
+   "id": "2020-07",
+   "fecha_inicio": "2020-07-30",
+   "fecha_fin": "2020-08-02",
+   "fecha_precision": "dia",
+   "nombre": "Tormenta tropical Isaías",
+   "lugares": ["Los Contreras", "Los Peinados", "La Cole", "Villa Riva", "Castillo", "San Francisco de Macorís"],
+   "zona": "bajo_yuna",
+   "impacto": "Cuatro comunidades del Bajo Yuna (Los Contreras, Los Peinados, La Cole...) incomunicadas por inundación de cuencas que drenan al Yuna; acueductos Castillo-Los Cafés y Villa Rivas fuera de servicio; nacional: 5,010 evacuados, 1,168 viviendas dañadas.",
+   "fuentes": [
+    {"url": "https://elnuevodiario.com.do/organismos-de-seguridad-brindan-asistencia-en-el-bajo-yuna-tras-paso-de-isaias/", "tipo": "prensa", "nota": "2-ago-2020: Ejército, Defensa Civil y COE asisten 4 comunidades incomunicadas del Bajo Yuna. (leido)"},
+    {"url": "https://elnuevodiario.com.do/director-de-inapa-asegura-44-acueductos-estan-fuera-de-servicio-tras-paso-de-isaias/", "tipo": "prensa", "nota": "INAPA: acueductos Castillo-Los Cafés y Villa Rivas fuera de servicio. (solo_busqueda)"},
+    {"url": "https://go-api.ifrc.org/api/DownloadFile/94311/MDRDO020 sEAP Summary", "tipo": "IFRC", "nota": "Tabla sEAP: Isaías 2020 en Duarte, MTS, Samaná, etc.; 5,595 afectados. (leido)"}
+   ],
+   "confianza": "media",
+   "hatillo_menciones": ""
+  },
+  {
+   "id": "2022-09",
+   "fecha_inicio": "2022-09-18",
+   "fecha_fin": "2022-09-22",
+   "fecha_precision": "dia",
+   "nombre": "Huracán Fiona",
+   "lugares": ["Bajo Yuna", "Villa Riva", "Los Contreras", "Los Peinados", "Arenoso", "Cotuí", "Castillo", "La Reforma", "Guaraguao", "El Limón", "Nagua"],
+   "zona": "bajo_yuna",
+   "impacto": "COE: Duarte en alerta 'en especial el Bajo Yuna'; 5 personas albergadas en Arenoso; deslizamiento en Cotuí; riesgo de incomunicación de Los Contreras y Los Peinados por crecida del Yuna. INDRHI luego invirtió RD$399.7 M en Bajo Yuna (incl. 5 km de muros del Yuna en La Reforma, Guaraguao, El Limón) por daños de Fiona. sEAP: 1,434,802 afectados nacional.",
+   "fuentes": [
+    {"url": "https://www.coe.gob.do/phocadownload/2022/Informes-y-Herramientas/Informe%20de%20situacion%20No.%205%20Huracan%20Fiona%20200922%206pm%202%201.pdf", "tipo": "gobierno", "nota": "COE Informe 5 (20-sep-2022): Duarte alerta amarilla esp. Bajo Yuna; 'Presa de Hatillo... Está vertiendo'; Arenoso albergados. (leido)"},
+    {"url": "https://www.elcaribe.com.do/panorama/pais/fiona-deja-inundaciones-crecida-de-rios-y-cuantiosos-danos-en-provincia-duarte/", "tipo": "prensa", "nota": "19-sep-2022: crecida del Yuna amenaza incomunicar Los Contreras y Los Peinados (Villa Riva). (leido)"},
+    {"url": "https://acento.com.do/economia/indrhi-inicia-obras-en-bajo-yuna-por-rd-399-7-millones-para-solucionar-danos-ocasionados-por-fiona-9150814.html", "tipo": "prensa", "nota": "10-ene-2023: obras RD$399.7 M en Bajo Yuna por daños de Fiona. (leido)"},
+    {"url": "https://presidencia.gob.do/noticias/indrhi-presas-mantienen-capacidad-de-regular-los-niveles-de-lluvias-dejados-por-huracan", "tipo": "gobierno", "nota": "INDRHI: solo Rincón y Hatillo vertiendo hacia el Bajo Yuna tras Fiona. (solo_busqueda, 403)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "Hatillo vertiendo el 19-20 sep 2022 (COE Informe 5, enlace arriba); INDRHI: 'solo las presas de Rincón y de Hatillo están vertiendo hacia la cuenca del Bajo Yuna' y antes de Fiona se procedía con vertido en Hatillo y Rincón para regular nivel (presidencia.gob.do, solo_busqueda)."
+  },
+  {
+   "id": "2023-11",
+   "fecha_inicio": "2023-11-17",
+   "fecha_fin": "2023-11-22",
+   "fecha_precision": "dia",
+   "nombre": "Lluvias récord 17-19 noviembre 2023 (vaguada / potencial ciclón)",
+   "lugares": ["Bajo Yuna", "Duarte", "Samaná (Jurungo, Palmar Nuevo)", "Monte Plata (Cañada Yuna)"],
+   "zona": "bajo_yuna",
+   "impacto": ">400 mm en un día (récord); Duarte 3,193 viviendas afectadas (de ~10,281 evaluadas); ~2,500 personas rescatadas en Duarte 'especialmente en el Bajo Yuna'; miles de arrozales arrasados en Bajo Yuna; desborde del Yuna incomunicó Jurungo y Palmar Nuevo (Samaná). 24 muertos nacional (mayoría Santo Domingo).",
+   "fuentes": [
+    {"url": "https://go-api.ifrc.org/api/DownloadFile/86070/MDRDO016", "tipo": "IFRC", "nota": "DREF MDRDO016: lluvias 17-18 nov; Duarte 3,193 viviendas; 2,500 rescatados en Bajo Yuna; Yuna desbordado en Samaná. (leido)"},
+    {"url": "https://www.diariolibre.com/actualidad/salud/2023/11/22/salud-publica-interviene-el-bajo-yuna/2530841", "tipo": "prensa", "nota": "22-nov-2023: Ministro de Salud recorre zonas inundadas del Bajo Yuna. (leido)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "21-nov-2023 INDRHI: Hatillo a 87.51 msnm (>100%), vertiendo con Qsalida 167.80 m3/s; 'dejará de verter cuando baje a la cota 86.50 msnm' (https://elnuevodiario.com.do/indrhi-presas-siguen-aumentando-de-nivel-por-escurrimiento-en-cuencas-hidrograficas/)."
+  },
+  {
+   "id": "2024-11",
+   "fecha_inicio": "2024-11-11",
+   "fecha_fin": "2024-11-20",
+   "fecha_precision": "semana",
+   "nombre": "Sistema frontal + vaguadas (TS Sara indirecta), noviembre 2024",
+   "lugares": ["Bajo Yuna", "Los Peinados", "Villa Riva", "Duarte", "Samaná", "María Trinidad Sánchez"],
+   "zona": "bajo_yuna",
+   "impacto": "COE alerta amarilla 14-nov a Duarte 'especialmente el Bajo Yuna'; INDOMET 14-nov pronosticó 60-100 mm en 24-48 h; DREF IFRC MDRDO018 (17-nov-2024 a 28-feb-2025) repartió kits en Los Peinados (Villa Riva). Daño concreto en Bajo Yuna no cuantificado.",
+   "fuentes": [
+    {"url": "https://go-api.ifrc.org/api/downloadfile/89427/MDRDO018-FR", "tipo": "IFRC", "nota": "Informe final DREF MDRDO018: lluvias por frentes/vaguadas; apertura de compuertas aumentó caudales; kits en Los Peinados, Villa Riva. (leido)"},
+    {"url": "https://www.diariodigital.com.do/2024/11/14/nueve-provincias-en-alerta-amarilla-y-siete-en-verde-por-lluvias.html", "tipo": "prensa", "nota": "14-nov-2024: Duarte (especialmente Bajo Yuna) en alerta amarilla. (solo_busqueda)"}
+   ],
+   "confianza": "media",
+   "hatillo_menciones": "IFRC MDRDO018 dice genéricamente que 'the opening of dam floodgates increased river and stream flows' sin nombrar Hatillo. No se halló boletín de Hatillo para nov-2024."
+  },
+  {
+   "id": "2024-12",
+   "fecha_inicio": "2024-12-19",
+   "fecha_fin": "2024-12-26",
+   "fecha_precision": "dia",
+   "nombre": "Desborde del Yuna en Villa Riva, diciembre 2024",
+   "lugares": ["Villa Riva", "Los Rieles Arriba", "Los Contreras (Cristo Rey de Guaraguao)", "Arenoso", "Loma Colorada", "Los Peinados", "Juana Rodríguez"],
+   "zona": "bajo_yuna",
+   "impacto": "Los Contreras incomunicada desde el 'jueves pasado' (derivado 19-dic) y Yuna desbordado desde el 'martes' (derivado 24-dic); COE alerta amarilla Duarte con atención al Bajo Yuna; Plan Social entregó raciones 26-dic en Los Rieles. Sin cifras.",
+   "fuentes": [
+    {"url": "https://elnuevodiario.com.do/desborde-de-rio-yuna-genera-preocupacion-en-villa-riva-y-comunidades-cercanas/", "tipo": "prensa", "nota": "25-dic-2024: Yuna desbordado en Los Rieles Arriba; Los Contreras incomunicada; alerta amarilla Bajo Yuna. (leido)"},
+    {"url": "https://elnuevodiario.com.do/plan-social-entrega-ayuda-a-familias-afectadas-por-desbordamiento-del-rio-yuna-en-villa-riva/", "tipo": "prensa", "nota": "26-dic-2024: raciones a familias afectadas por desborde del Yuna en Villa Riva y Arenoso. (leido)"}
+   ],
+   "confianza": "media",
+   "hatillo_menciones": ""
+  },
+  {
+   "id": "2025-10",
+   "fecha_inicio": "2025-10-21",
+   "fecha_fin": "2025-10-30",
+   "fecha_precision": "semana",
+   "nombre": "Huracán / tormenta Melissa",
+   "lugares": ["Arenoso", "Villa Riva", "Bajo Yuna"],
+   "zona": "bajo_yuna",
+   "impacto": "Medidas preventivas en Arenoso, Villa Riva y comunidades del Bajo Yuna; Presidente: Hatillo 'pudiera verter si continúa llenándose y afectaría el Bajo Yuna'. No se encontró confirmación de inundación en el Bajo Yuna.",
+   "fuentes": [
+    {"url": "https://acento.com.do/actualidad/abinader-supervisa-niveles-de-presas-de-hatillo-moncion-taveras-y-rincon-ante-el-paso-del-huracan-melissa-9569203.html", "tipo": "prensa", "nota": "26-oct-2025: Hatillo cota 84.74, ~88%; Qentrada 104 m3/s, salida por generación 14 m3/s; riesgo para Bajo Yuna. (leido)"},
+    {"url": "https://eldia.com.do/presas-casi-al-limite-de-su-capacidad-tras-lluvias-de-la-tormenta-melissa/", "tipo": "prensa", "nota": "26-oct-2025: Hatillo 328.89 MMC = 87.77% de 374.88; 84.74 msnm; no vertiendo. (leido)"}
+   ],
+   "confianza": "baja",
+   "hatillo_menciones": "No vertió al 26-oct-2025 (84.74 msnm vs máximo 86.50); salida solo por generación 14 m3/s. No se encontró nota de vertido posterior."
+  },
+  {
+   "id": "2026-04",
+   "fecha_inicio": "2026-04-08",
+   "fecha_fin": "2026-05-02",
+   "fecha_precision": "semana",
+   "nombre": "Lluvias de abril 2026 (fuera del rango 2001-2025, contexto reciente)",
+   "lugares": ["Bonao", "Los Contreras", "Los Peinados", "Duarte", "Bajo Yuna"],
+   "zona": "cuenca_general",
+   "impacto": "20-abr-2026: crecida del Yuna en Bonao arrastró a 3 personas (1 desaparecido); Caño Azul afectó Los Contreras y Los Peinados; 2-may-2026 Duarte en alerta amarilla 'en especial el Bajo Yuna'.",
+   "fuentes": [
+    {"url": "https://eldia.com.do/coe-informa-buscan-desaparecido-en-yuna-tras-lluvias/", "tipo": "prensa", "nota": "20-abr-2026: crecida del Yuna en Bonao; 1 desaparecido; Los Contreras y Los Peinados afectados. (leido)"},
+    {"url": "https://zolfm.com/noticia/lluvias-elevan-presas-al-88-y-varias-superan-su-capacidad", "tipo": "prensa", "nota": "2-may-2026: Hatillo 415.92 MMC (110.9%); Duarte alerta amarilla esp. Bajo Yuna. (leido)"}
+   ],
+   "confianza": "alta",
+   "hatillo_menciones": "Ver entradas hatillo_operacion H-2026-04/05."
+  },
+
+  {
+   "id": "H-2016-11-16",
+   "fecha_inicio": "2016-11-16", "fecha_fin": "2016-11-16", "fecha_precision": "dia",
+   "nombre": "Hatillo al 120% de capacidad",
+   "lugares": ["Presa de Hatillo"], "zona": "hatillo_operacion",
+   "impacto": "Hatillo la presa con mayor nivel: 120% de capacidad durante las inundaciones de nov-2016.",
+   "fuentes": [{"url": "https://dominicantoday.com/dr/economy/2016/11/16/downpours-bring-calamity-but-also-water-bounty/", "tipo": "prensa", "nota": "Hatillo 120% de capacidad. (solo_busqueda; 404 al abrir)"}],
+   "confianza": "media", "hatillo_menciones": "120% capacidad"
+  },
+  {
+   "id": "H-2017-04-24",
+   "fecha_inicio": "2017-04-24", "fecha_fin": "2017-04-25", "fecha_precision": "dia",
+   "nombre": "INDRHI anuncia posible apertura de compuertas de Hatillo",
+   "lugares": ["Presa de Hatillo", "Bajo Yuna"], "zona": "hatillo_operacion",
+   "impacto": "Embalse a 89.7 m; director INDRHI pide a comunidades aguas abajo prepararse para inundaciones; Valdesia abrió compuertas la noche anterior.",
+   "fuentes": [{"url": "https://dr1.com/news/?p=98349", "tipo": "prensa", "nota": "25-abr-2017 (Listín 24-abr): Hatillo 89.7 m; se abrirían compuertas si seguía lloviendo. (leido)"}],
+   "confianza": "alta", "hatillo_menciones": "89.7 m; apertura anunciada/condicional, no confirmada en la fuente"
+  },
+  {
+   "id": "H-2017-09-07",
+   "fecha_inicio": "2017-09-07", "fecha_fin": "2017-09-07", "fecha_precision": "dia",
+   "nombre": "Desembalse preventivo de Hatillo ante Irma",
+   "lugares": ["Presa de Hatillo"], "zona": "hatillo_operacion",
+   "impacto": "La misma medida de desembalse aplicada en Tavera-Bao se aplicó en Hatillo antes de Irma.",
+   "fuentes": [{"url": "https://elnuevodiario.com.do/indrhi-embalse-tavera-bao-14-mts/", "tipo": "prensa", "nota": "7-sep-2017: medida de bajar nivel aplicada también en Hatillo. (leido)"}],
+   "confianza": "media", "hatillo_menciones": "Desembalse preventivo, sin cifras"
+  },
+  {
+   "id": "H-2017-09-22",
+   "fecha_inicio": "2017-09-22", "fecha_fin": "2017-09-22", "fecha_precision": "dia",
+   "nombre": "Estado de Hatillo tras María",
+   "lugares": ["Presa de Hatillo"], "zona": "hatillo_operacion",
+   "impacto": "Cota 87.57 msnm (+0.30 m), Qe 221.76 m3/s, Qs 87.37 m3/s.",
+   "fuentes": [{"url": "https://elnuevodiario.com.do/indrhi-informa-situacion-actual-los-embalses/", "tipo": "prensa", "nota": "22-sep-2017 boletín INDRHI de embalses tras María. (leido)"}],
+   "confianza": "alta", "hatillo_menciones": "87.57 msnm; Qs 87.37 m3/s"
+  },
+  {
+   "id": "H-2021-08-12",
+   "fecha_inicio": "2021-08-12", "fecha_fin": "2021-08-12", "fecha_precision": "dia",
+   "nombre": "INDRHI: Hatillo opera en 'manejo vertido libre' (tras Fred)",
+   "lugares": ["Presa de Hatillo"], "zona": "hatillo_operacion",
+   "impacto": "Declaración de protocolo: Hatillo con manejo de vertido libre, distinto a presas reguladas; Bajo Yuna con equipos de respuesta.",
+   "fuentes": [{"url": "https://elnuevodiario.com.do/indrhi-informa-que-las-presas-presentan-niveles-normales-tras-tormenta-fred/", "tipo": "prensa", "nota": "12-ago-2021: Hatillo 'manejo vertido libre'. (leido)"}],
+   "confianza": "alta", "hatillo_menciones": "Vertido libre (protocolo)"
+  },
+  {
+   "id": "H-2022-09-20",
+   "fecha_inicio": "2022-09-19", "fecha_fin": "2022-09-22", "fecha_precision": "dia",
+   "nombre": "Hatillo vertiendo durante Fiona",
+   "lugares": ["Presa de Hatillo", "Bajo Yuna"], "zona": "hatillo_operacion",
+   "impacto": "COE: Hatillo vertiendo caudales del río Yuna; INDRHI: solo Rincón y Hatillo vertían hacia el Bajo Yuna.",
+   "fuentes": [{"url": "https://www.coe.gob.do/phocadownload/2022/Informes-y-Herramientas/Informe%20de%20situacion%20No.%205%20Huracan%20Fiona%20200922%206pm%202%201.pdf", "tipo": "gobierno", "nota": "COE 20-sep-2022: Presa de Hatillo, Cotuí, está vertiendo. (leido)"}],
+   "confianza": "alta", "hatillo_menciones": "Vertiendo, sin caudal"
+  },
+  {
+   "id": "H-2023-08-25",
+   "fecha_inicio": "2023-08-25", "fecha_fin": "2023-08-25", "fecha_precision": "dia",
+   "nombre": "Franklin: Hatillo recibe 21.92 MMC (sin vertido)",
+   "lugares": ["Presa de Hatillo"], "zona": "hatillo_operacion",
+   "impacto": "Hatillo recibió el mayor aporte (21.92 MMC) y subió a cota 78.28 msnm (muy por debajo de 86.50): absorbió la crecida.",
+   "fuentes": [{"url": "https://eldinero.com.do/?p=244014", "tipo": "prensa", "nota": "25-ago-2023: Hatillo +21.92 MMC, cota 78.28. (leido)"}],
+   "confianza": "alta", "hatillo_menciones": "78.28 msnm, sin vertido"
+  },
+  {
+   "id": "H-2023-11-21",
+   "fecha_inicio": "2023-11-21", "fecha_fin": "2023-11-21", "fecha_precision": "dia",
+   "nombre": "Hatillo vertiendo 167.8 m3/s",
+   "lugares": ["Presa de Hatillo"], "zona": "hatillo_operacion",
+   "impacto": "Cota 87.51 msnm (>100%), Qs 167.80 m3/s; dejará de verter bajo 86.50 msnm.",
+   "fuentes": [{"url": "https://elnuevodiario.com.do/indrhi-presas-siguen-aumentando-de-nivel-por-escurrimiento-en-cuencas-hidrograficas/", "tipo": "prensa", "nota": "21-nov-2023 INDRHI: Hatillo y Sabaneta vertiendo. (leido)"}],
+   "confianza": "alta", "hatillo_menciones": "87.51 msnm; 167.80 m3/s"
+  },
+  {
+   "id": "H-2024-05",
+   "fecha_inicio": "2024-05-11", "fecha_fin": "2024-05-24", "fecha_precision": "dia",
+   "nombre": "Hatillo y Rincón vertiendo hacia el Bajo Yuna (mayo 2024)",
+   "lugares": ["Presa de Hatillo", "Duarte", "María Trinidad Sánchez"], "zona": "hatillo_operacion",
+   "impacto": "11-may: cota 88.12 msnm, Qe 232.87, Qs 246.32 m3/s (24 h); >300 MMC aportados desde 15-abr. 23-may: 383.34 MMC (102.3%), 86.82 msnm, vertiendo; brigadas limpiando canales en Duarte y MTS. 24-may: 386.89 MMC (103.2%), 86.95 msnm, vertiendo, dos unidades generando.",
+   "fuentes": [
+    {"url": "https://presidencia.gob.do/noticias/indrhi-informa-que-las-presas-hatillo-y-rincon-continuan-vertiendo-hacia-el-bajo-yuna", "tipo": "gobierno", "nota": "13-may-2024 (informe 11-may): Hatillo 88.12 msnm, Qs 246.32 m3/s, vertiendo al Bajo Yuna. (leido)"},
+    {"url": "https://acento.com.do/actualidad/indrhi-mantiene-monitoreo-en-presas-de-hatillo-rincon-y-tavera-por-presencia-de-vaguada-9343415.html", "tipo": "prensa", "nota": "23-may-2024: 102.3%, 86.82 msnm, vertiendo. (leido)"},
+    {"url": "https://eldinero.com.do/279888/reciente-vaguada-aporto-al-sistema-de-presas-11-millones-de-metros-cubicos-de-agua/", "tipo": "prensa", "nota": "24-may-2024: 103.2%, 86.95 msnm, vertiendo. (leido)"}
+   ],
+   "confianza": "alta", "hatillo_menciones": "Vertido sostenido ≥2 semanas; pico reportado 246.32 m3/s"
+  },
+  {
+   "id": "H-2026-04",
+   "fecha_inicio": "2026-04-08", "fecha_fin": "2026-05-02", "fecha_precision": "dia",
+   "nombre": "Hatillo sobre su volumen máximo, abril-mayo 2026",
+   "lugares": ["Presa de Hatillo", "Bajo Yuna"], "zona": "hatillo_operacion",
+   "impacto": "8-abr: 410.44 MMC (109.5%), salida 208.21 m3/s (COPRE). 13-abr: 389.97 MMC (104%), 87.06 msnm, salida regulada 101.2 m3/s. 2-may: 415.92 MMC (110.9%), Bajo Yuna en alerta amarilla.",
+   "fuentes": [
+    {"url": "https://diariolibre.com/planeta/medioambiente/2026/04/08/nivel-de-almacenamiento-presas-alcanza-7349--en-el-pais/3495791", "tipo": "prensa", "nota": "8-abr-2026: Hatillo 109.5%, salida 208.21 m3/s. (leido)"},
+    {"url": "https://elnuevodiario.com.do/indrhi-informa-que-embalses-tienen-disponibilidad-para-mitigar-inundaciones-en-areas-de-influencia/", "tipo": "prensa", "nota": "13-abr-2026: Hatillo 87.06 msnm, 104%, salida 101.2 m3/s. (leido)"},
+    {"url": "https://zolfm.com/noticia/lluvias-elevan-presas-al-88-y-varias-superan-su-capacidad", "tipo": "prensa", "nota": "2-may-2026: Hatillo 110.9%. (leido)"}
+   ],
+   "confianza": "alta", "hatillo_menciones": "Salidas 101-208 m3/s"
+  }
+ ],
+ "hatillo": {
+  "coordenadas_cortina": "19°02′00.91″N 70°12′01.49″W (19.0336, -70.2004); ~6 km SO de Cotuí, Sánchez Ramírez (Wikipedia)",
+  "año_inauguracion": 1984,
+  "construccion_inicio": "agosto 1977",
+  "capacidad_hm3": "710 hm3 volumen total (Wikipedia, Structurae); INDRHI usa 'volumen máximo' operativo de 374.88 MMC (hm3) con nivel máximo 86.50 msnm — son definiciones distintas, usar 374.88 para % de llenado",
+  "area_embalse_km2": 22,
+  "area_cuenca_km2": 5235,
+  "otros": "Presa de tierra y escollera, 60 m de altura; vertedor de canal controlado de capacidad 650 m3/s según Wikipedia (pero INDRHI dice que Hatillo opera en 'manejo vertido libre'); central de 8 MW (Wikipedia; INDRHI menciona 'dos unidades'). Cuenca total del Yuna 5,498 km2 (Wikipedia).",
+  "uso": "Hidroelectricidad, riego (Bajo Yuna), control de inundaciones; proyecto de trasvase para agua potable del Gran Santo Domingo en discusión (2026)",
+  "operador": "Propietario de la central: EGEHID (Empresa de Generación Hidroeléctrica Dominicana). El embalse lo gestiona INDRHI; las descargas se deciden en el COPRE (Comité de Operación de Presas y Embalses, reunión semanal).",
+  "registros_publicos_niveles": "No se halló serie diaria pública ni dataset en datos.gob.do. Fuentes prácticas: (1) notas/boletines INDRHI replicados en presidencia.gob.do y prensa (cota msnm, volumen MMC, %, Qe/Qs m3/s); (2) informes de situación del COE (coe.gob.do/phocadownload/...) que indican 'presa vertiendo'; (3) indrhi.gob.do/boletines-informativos/ (devolvió error 500); (4) informes COPRE semanales citados por prensa. Para serie histórica habría que pedirla a INDRHI/EGEHID (Ley 200-04 de libre acceso a información).",
+  "fuentes": [
+   "https://en.wikipedia.org/wiki/Hatillo_Dam",
+   "https://structurae.net/structures/20050720",
+   "https://en.wikipedia.org/wiki/Yuna_River",
+   "https://elnuevodiario.com.do/indrhi-informa-que-las-presas-presentan-niveles-normales-tras-tormenta-fred/",
+   "https://elnuevodiario.com.do/indrhi-presas-siguen-aumentando-de-nivel-por-escurrimiento-en-cuencas-hidrograficas/",
+   "https://elnuevodiario.com.do/indrhi-informa-que-embalses-tienen-disponibilidad-para-mitigar-inundaciones-en-areas-de-influencia/",
+   "https://indrhi.gob.do/",
+   "https://www.diariolibre.com/actualidad/ciudad/2026/06/10/el-trasvase-de-hatillo-reactiva-planes-de-agua-para-santo-domingo/3561144"
+  ]
+ },
+ "camu": "Sí. El Camú de La Vega es afluente principal (margen izquierda) del Yuna: nace en la Cordillera Central, pasa por Concepción de La Vega y confluye con el Yuna cerca de Pimentel, en el límite Duarte/Sánchez Ramírez, ~11.6 km al NE de Cotuí, a ~30 m de altitud, es decir AGUAS ABAJO de la presa de Hatillo (su caudal no está regulado por Hatillo). Afluentes del Camú: Licey, Jima, arroyos Yamí, Bayacanes, Pontón, Guaigüí, Cenoví (EcuRed). Longitud varía por fuente (Wikipedia 141.83 km; Britannica ~80 km). Fuentes: https://en.wikipedia.org/wiki/Cam%C3%BA_River ; https://en.wikipedia.org/wiki/Yuna_River ; https://www.ecured.cu/Río_Camú ; https://www.britannica.com/place/Camu-River . Ojo: existe otro río Camú en Puerto Plata (Villa Montellano / San Felipe, puente en km 14 carretera Luperón colapsado en abril 2026) que drena a la costa atlántica norte y NO pertenece a la cuenca del Yuna (https://elnuevodiario.com.do/alcalde-de-villa-montellano-confia-en-recuperacion-del-municipio-tras-riadas-del-rio-camu/ ; https://eldia.com.do/lluvias-provocan-desbordamiento-del-rio-camu-y-causa-inundaciones-en-montellano/). La desembocadura atlántica del Camú de Puerto Plata no la confirmé con una fuente leída. Evento Camú-La Vega encontrado: sep-2017 (María) inundó El Ranchito, La Vega (Diario Libre 26-sep-2017).",
+ "tavera_olga_2007": "Olga tocó tierra cerca de Punta Cana el 11-dic-2007 (18 UTC). Ante el llenado de Tavera (Yaque del Norte, Santiago) se abrieron las seis compuertas a las 04:00 UTC del 12-dic (≈medianoche local); testigos dijeron haber tenido ~15 min para prepararse; Wikipedia atribuye ~20 de las muertes a la descarga y cita 1.6 M galones/s (≈6,000 m3/s, cifra dudosa). Expansión (12-dic-2007) habla de >300 m3/s (redacción ambigua) y un documento del Senado RD cita desfogue de >5,200 m3/s (solo visto en búsqueda). Acento: cifra oficial 40 muertos en Santiago. DR1 (jun-2008): un informe técnico concluyó que el agua no se liberó a tiempo por priorizar la generación (ingresos), mientras una comisión gubernamental dijo que la presa se manejó 'adecuadamente'; las presas principales (Tavera, Valdesia, Sabana Yegua, Hatillo) estaban a nivel máximo. Fuentes: https://en.wikipedia.org/wiki/Tropical_Storm_Olga_(2007) ; https://expansion.mx/actualidad/2007/12/12/la-tormenta-olga-azota-a-dominicanos ; https://dr1.com/news/?p=19531 ; https://acento.com.do/actualidad/la-realidad-de-la-crisis-de-agua-radiografia-presa-tavera-bao-8191776.html (solo_busqueda) ; https://www.heraldnet.com/2007/12/12/tropical-storm-blamed-for-8-deaths-widespread-flooding-in-caribbean/ (solo_busqueda) ; https://memoriahistorica.senadord.gob.do/bitstreams/2ba59904-958d-4a9c-b572-704bfed93ab5/download (solo_busqueda).",
+ "sEAP": "CONFIRMADO, con matiz. sEAP2025DO01 / Operación MDRDO020 'Heavy rains associated with tropical cyclones', aprobado 05/02/2026, 2 años, lead time 2 días, 2,000 personas, CHF 219,901; áreas priorizadas: Duarte, Barahona, Santo Domingo, Distrito Nacional, La Altagracia. Trigger 1: boletín INDOMET de posible formación ciclónica a 2-5 días (con NHC). Trigger 2 (activa): alerta INDOMET de lluvias asociadas a tormenta tropical o huracán 'exceeding 100 mm accumulated over a 2-day period between May and November'. Es decir: >100 mm/48 h PRONOSTICADOS por INDOMET y SOLO ligados a ciclón tropical (mayo-noviembre); no es un umbral observado ni para frentes/vaguadas. URL: https://go-api.ifrc.org/api/DownloadFile/94311/MDRDO020 sEAP Summary (leído; PDF). La tabla histórica del sEAP lista Olga 2007 en Arenoso y Villa Riva, y María 2017/Isaías 2020/Fiona 2022 en Duarte.",
+ "notas": "1) EM-DAT: no consultado (requiere cuenta). 2) DesInventar DOM solo cubre 1966-2000 (2,112 fichas; Duarte 103, Sánchez Ramírez 48) -> no sirve para 2001-2025: https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=dom&continue=y . 3) DFO: el sitio floodobservatory.colorado.edu devolvió 404 para el MasterList y la página del evento 4467; solo se pudo citar DFO 4467 (abr-2017) por resultados de búsqueda. 4) ReliefWeb bloquea fetch (403) y su API exige appname aprobado. 5) Eventos revisados SIN evidencia de inundación en la cuenca del Yuna: Odette dic-2003 (sur y Santiago), Jeanne sep-2004 (este/nordeste, Samaná; no se encontró Bajo Yuna), Hanna 2008 (Montecristi, Puerto Plata según sEAP), Irene 2011 (sur), Matthew 2016 (sEAP lista Monseñor Nouel, Sánchez Ramírez, La Vega, sin detalle), Franklin 2023 (sur; Hatillo absorbió +21.92 MMC sin verter), Fred 2021. 6) Patrón útil: Hatillo vierte cuando supera 86.50 msnm / 374.88 MMC; vertidos documentados: sep-2022, nov-2023 (167.8 m3/s), may-2024 (hasta 246 m3/s), abr-2026 (101-208 m3/s). En nov-2016 llegó a 120% y en abr-2017 a 89.7 m. 7) Arenoso/Villa Riva/Los Contreras/Los Peinados se inundan o incomunican casi cada evento (nov-2016, abr-2017, sep-2017, jul-2020, sep-2022, nov-2023, dic-2024): buenos puntos de validación satelital. 8) Laguna: no se encontró cifra oficial '20,000 tareas de arroz' para Bajo Yuna en Irma/María 2017; la cifra de 20,000 tareas de esa nota de Diario Libre es de Palo Verde (Montecristi). Una nota sin fecha cita '146 mil tareas aptas para arroz' afectadas por inundaciones recurrentes en Bajo Yuna (dragado ordenado ene-2013; solo_busqueda, diariodigital). 9) Posible marcador Hatillo nov-2018 (presidencia.gob.do 'mejora de embalses ... más de 60 millones') no verificado por fecha. 10) Páginas leídas con curl (presidencia 13-may-2024 y COE Fiona Informe 5) porque WebFetch dio 403; el resto con WebFetch."
+}

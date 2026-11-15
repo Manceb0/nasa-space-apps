@@ -1,0 +1,17 @@
+{
+  "archivos": [
+    "fig_y1_cuenca_yuna.pdf",
+    "fig_y1_cuenca_yuna.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    90.0
+  ],
+  "fuentes": [
+    "HydroBASINS v1c",
+    "HydroRIVERS v1.0",
+    "Copernicus DEM GLO-90",
+    "JRC GSW v1.4",
+    "geoBoundaries ADM1"
+  ]
+}
