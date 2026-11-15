@@ -1,0 +1,286 @@
+{
+  "estado": "ok",
+  "anios_chirps_usados": [
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+  ],
+  "periodo": [
+    "2001-01-01",
+    "2019-12-31"
+  ],
+  "n_episodios_con_ventana_completa": 494,
+  "r_spearman_fraccion_chirps_vs_imerg": 0.1676881189008541,
+  "r_spearman_max_chirps_vs_imerg": 0.13544614170214683,
+  "tabla": [
+    {
+      "resultado": "z_retorno_SM_RAIZ",
+      "factor": "fracción en días/péntadas intensas",
+      "fuente": "CHIRPS diario",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.01012099303998892,
+      "ic95": [
+        -0.1576437491618218,
+        0.20096878728204218
+      ],
+      "p": 0.9127648799412498,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_RAIZ",
+      "factor": "máximo en 1 día / 5 días",
+      "fuente": "CHIRPS diario",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.006421166479222829,
+      "ic95": [
+        -0.14767278631415864,
+        0.15336187311228547
+      ],
+      "p": 0.9322885140442687,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_RAIZ",
+      "factor": "fracción en días intensos",
+      "fuente": "IMERG diario (mismos episodios)",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.06607168575817347,
+      "ic95": [
+        -0.21085341785790504,
+        0.09628203155106035
+      ],
+      "p": 0.3937116070543989,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_RAIZ",
+      "factor": "máximo en 1 día",
+      "fuente": "IMERG diario (mismos episodios)",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": 0.006479461887729306,
+      "ic95": [
+        -0.14228136373860173,
+        0.16044101973776084
+      ],
+      "p": 0.9345089032935916,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_0_10",
+      "factor": "fracción en días/péntadas intensas",
+      "fuente": "CHIRPS diario",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.01710618421258321,
+      "ic95": [
+        -0.12471970717514928,
+        0.1043539293098001
+      ],
+      "p": 0.763304104739192,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_0_10",
+      "factor": "máximo en 1 día / 5 días",
+      "fuente": "CHIRPS diario",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.025962430287198395,
+      "ic95": [
+        -0.1443759299295904,
+        0.08463750836079191
+      ],
+      "p": 0.6489467662715347,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_0_10",
+      "factor": "fracción en días intensos",
+      "fuente": "IMERG diario (mismos episodios)",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": 0.008677167121360171,
+      "ic95": [
+        -0.12593781384980662,
+        0.15999374777712114
+      ],
+      "p": 0.9067387873874351,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_0_10",
+      "factor": "máximo en 1 día",
+      "fuente": "IMERG diario (mismos episodios)",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": 0.07249261736699088,
+      "ic95": [
+        -0.09986850100915483,
+        0.23101673517088572
+      ],
+      "p": 0.3945957306213297,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "contradiccion_A_SM_RAIZ",
+      "factor": "fracción en días/péntadas intensas",
+      "fuente": "CHIRPS diario",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": 0.003428070333069315,
+      "ic95": [
+        -0.06719025738309783,
+        0.06870491462608001
+      ],
+      "p": 0.9225495951639666,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "contradiccion_A_SM_RAIZ",
+      "factor": "máximo en 1 día / 5 días",
+      "fuente": "CHIRPS diario",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.005019062473118035,
+      "ic95": [
+        -0.05084805366777683,
+        0.04645274004518673
+      ],
+      "p": 0.8396339213074513,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "contradiccion_A_SM_RAIZ",
+      "factor": "fracción en días intensos",
+      "fuente": "IMERG diario (mismos episodios)",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.002740151863759014,
+      "ic95": [
+        -0.036198631203233016,
+        0.024757098344581563
+      ],
+      "p": 0.8591965899101233,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "contradiccion_A_SM_RAIZ",
+      "factor": "máximo en 1 día",
+      "fuente": "IMERG diario (mismos episodios)",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.019507507271399323,
+      "ic95": [
+        -0.05687123765158692,
+        0.007742732113004307
+      ],
+      "p": 0.222416840616519,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_RAIZ",
+      "factor": "fracción en días/péntadas intensas",
+      "fuente": "CHIRPS péntada",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": 0.06767767685618302,
+      "ic95": [
+        -0.07114150328516566,
+        0.23083121111926352
+      ],
+      "p": 0.36639184982890427,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_RAIZ",
+      "factor": "máximo en 1 día / 5 días",
+      "fuente": "CHIRPS péntada",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": 0.0030184156207348116,
+      "ic95": [
+        -0.11303667271236457,
+        0.1668854310323677
+      ],
+      "p": 0.9665551821052274,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_0_10",
+      "factor": "fracción en días/péntadas intensas",
+      "fuente": "CHIRPS péntada",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": 0.04945025241922403,
+      "ic95": [
+        -0.06212292154768522,
+        0.15908268817994015
+      ],
+      "p": 0.37901524092590044,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "z_retorno_SM_0_10",
+      "factor": "máximo en 1 día / 5 días",
+      "fuente": "CHIRPS péntada",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.010259039174836953,
+      "ic95": [
+        -0.09911580538839695,
+        0.10515817032182025
+      ],
+      "p": 0.8395764934084828,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "contradiccion_A_SM_RAIZ",
+      "factor": "fracción en días/péntadas intensas",
+      "fuente": "CHIRPS péntada",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.02405534569025299,
+      "ic95": [
+        -0.07674913152883521,
+        0.02473276623461501
+      ],
+      "p": 0.35361028591240995,
+      "q_bh": 0.9665551821052275
+    },
+    {
+      "resultado": "contradiccion_A_SM_RAIZ",
+      "factor": "máximo en 1 día / 5 días",
+      "fuente": "CHIRPS péntada",
+      "n": 494,
+      "n_conglomerados": 16,
+      "beta": -0.011736314764457861,
+      "ic95": [
+        -0.04585599233036947,
+        0.018685154943178222
+      ],
+      "p": 0.4908073335167278,
+      "q_bh": 0.9665551821052275
+    }
+  ],
+  "nota": "CHIRPS v2 diario reparte el total de la péntada entre sus días con un modelo: el factor diario no es una observación diaria independiente; la versión por péntadas es la escala anclada a estaciones."
+}

@@ -1,0 +1,80 @@
+{
+  "n_pixeles_caja": 1677,
+  "n_pixeles_tierra_rd": 596,
+  "dias": [
+    "2015-03-31",
+    "2024-12-31"
+  ],
+  "n_dias": 3481,
+  "frac_recomendado_mediana_tierra": 0.0,
+  "frac_recomendado_de_intentados_mediana_am": 0.0,
+  "pixeles_tierra_sin_ningun_recomendado": 440,
+  "pixeles_tierra_menos_10pct_recomendado": 444,
+  "vwc_mediana_tierra": 5.566422939300537,
+  "puntos": {
+    "GLDAS_A": {
+      "nombre": "Monseñor Nouel (Bonao)",
+      "n_pixeles_9km": 9,
+      "frac_dias_con_dato_am": 1.0,
+      "frac_exito_am": 0.3579112004851735,
+      "frac_recomendado_am": 0.0,
+      "frac_recomendado_pm": 0.0,
+      "frac_recomendado_am_pm": 0.0,
+      "frac_recomendado_de_intentados_am": 0.0,
+      "vwc_mediana_am": 10.834853013356527,
+      "frac_vwc_mayor_5_am": 1.0,
+      "bandera_montana_am": 0.0,
+      "bandera_vegetacion_densa_am": 1.0,
+      "bandera_costa_am": 0.0,
+      "bandera_urbano_am": 0.3333333333333333
+    },
+    "GLDAS_B": {
+      "nombre": "Santiago / La Vega",
+      "n_pixeles_9km": 9,
+      "frac_dias_con_dato_am": 1.0,
+      "frac_exito_am": 0.36183727536787,
+      "frac_recomendado_am": 0.0,
+      "frac_recomendado_pm": 0.0,
+      "frac_recomendado_am_pm": 0.0,
+      "frac_recomendado_de_intentados_am": 0.0,
+      "vwc_mediana_am": 5.42375636100769,
+      "frac_vwc_mayor_5_am": 0.5555555555555556,
+      "bandera_montana_am": 0.0,
+      "bandera_vegetacion_densa_am": 0.5555555555555556,
+      "bandera_costa_am": 0.0,
+      "bandera_urbano_am": 1.0
+    },
+    "HR_A": {
+      "nombre": "Cordillera Central (bosque, ~2400 m)",
+      "n_pixeles_9km": 1,
+      "frac_dias_con_dato_am": 1.0,
+      "frac_exito_am": 0.36311404768744615,
+      "frac_recomendado_am": 0.0,
+      "frac_recomendado_pm": 0.0,
+      "frac_recomendado_am_pm": 0.0,
+      "frac_recomendado_de_intentados_am": 0.0,
+      "vwc_mediana_am": 10.146050453186035,
+      "frac_vwc_mayor_5_am": 1.0,
+      "bandera_montana_am": 0.0,
+      "bandera_vegetacion_densa_am": 1.0,
+      "bandera_costa_am": 0.0,
+      "bandera_urbano_am": 0.0
+    },
+    "HR_B": {
+      "nombre": "La Vega (valle del Cibao)",
+      "n_pixeles_9km": 1,
+      "frac_dias_con_dato_am": 1.0,
+      "frac_exito_am": 0.3375466819879345,
+      "frac_recomendado_am": 0.0,
+      "frac_recomendado_pm": 0.0,
+      "frac_recomendado_am_pm": 0.0,
+      "frac_recomendado_de_intentados_am": 0.0,
+      "vwc_mediana_am": 7.672244548797607,
+      "frac_vwc_mayor_5_am": 1.0,
+      "bandera_montana_am": 0.0,
+      "bandera_vegetacion_densa_am": 1.0,
+      "bandera_costa_am": 0.0,
+      "bandera_urbano_am": 0.0
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "n_episodios": 813,
+  "reproduccion_original": {
+    "z_retorno_SM_RAIZ": {
+      "n": 714,
+      "beta_suelo_M2": 0.46349820107437534,
+      "beta_suelo_M2_ic95": [
+        0.24762430335263433,
+        0.601214125077668
+      ],
+      "p_beta_suelo_M2": 1.2794800915157547e-07
+    },
+    "z_retorno_SM_0_10": {
+      "n": 714,
+      "beta_suelo_M2": 0.22353939749830598,
+      "beta_suelo_M2_ic95": [
+        0.03509621213978358,
+        0.3667329276560675
+      ],
+      "p_beta_suelo_M2": 0.010280392178663632
+    },
+    "contradiccion_A_SM_RAIZ": {
+      "n": 714,
+      "beta_suelo_M2": -0.11016691471165299,
+      "beta_suelo_M2_ic95": [
+        -0.14550185933569648,
+        -0.03919922378062786
+      ],
+      "p_beta_suelo_M2": 2.039753930993676e-05
+    }
+  },
+  "resumen_principal": {
+    "n_especificaciones": 44,
+    "beta_suelo_M3_rango": [
+      0.1710848345829315,
+      0.4041663263837425
+    ],
+    "r2p_suelo_dado_lluvia_rango": [
+      0.015917559885227413,
+      0.1804192417045455
+    ],
+    "r2p_lluvia_dado_suelo_rango": [
+      2.9899496482499468e-06,
+      0.040150545498023896
+    ],
+    "especificaciones_suelo_q05": 43,
+    "especificaciones_lluvia_q05": 0,
+    "veredictos": {
+      "sostiene": 40,
+      "se debilita": 3,
+      "se cae": 1
+    }
+  },
+  "correlaciones_suelo_api": {
+    "API IMERG diario k=0.85 W=30 d": 0.06418017594929827,
+    "API IMERG diario k=0.85 W=60 d": 0.06394917809626233,
+    "API IMERG diario k=0.85 W=90 d": 0.06396405628095823,
+    "API IMERG diario k=0.90 W=30 d": 0.07369268397714625,
+    "API IMERG diario k=0.90 W=60 d": 0.07530136070099097,
+    "API IMERG diario k=0.90 W=90 d": 0.0756458882739364,
+    "API IMERG diario k=0.95 W=30 d": 0.07655362661914195,
+    "API IMERG diario k=0.95 W=60 d": 0.07322587114837913,
+    "API IMERG diario k=0.95 W=90 d": 0.08510174768679647,
+    "API IMERG mensual k=0.90 W=90 d": 0.02743399273062194,
+    "API lluvia del forzante GLDAS (GPCP) k=0.85 W=90 d": 0.35092321704522483,
+    "API lluvia del forzante GLDAS (GPCP) k=0.90 W=90 d": 0.36018646963450845,
+    "API lluvia del forzante GLDAS (GPCP) k=0.95 W=90 d": 0.4196005219315356,
+    "SPI-3 IMERG (mes previo)": 0.15993231358758334,
+    "SPI-6 IMERG (mes previo)": 0.36160989549925965,
+    "SPI-6 lluvia del forzante GLDAS (mes previo)": 0.7927546513341772,
+    "SPI-12 IMERG (mes previo)": 0.3962539918430624,
+    "SPI-12 lluvia del forzante GLDAS (mes previo)": 0.6982793666287007,
+    "SPI-3 lluvia del forzante GLDAS (mes previo)": 0.5878241772043502
+  }
+}
