@@ -785,7 +785,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const ys = d.rel?.yuna ?? [];
     const yb: [[number, number], [number, number]] | null = ys.length ? [[Math.min(...ys.map((p) => p[0])), Math.min(...ys.map((p) => p[1]))], [Math.max(...ys.map((p) => p[0])), Math.max(...ys.map((p) => p[1]))]] : null;
     let pins: maplibregl.Marker[] = [];
-    const rivers = (names: string[] | null) => {
+    const rivers = (names: string[] | null) => { try { riv(names); } catch { /* el mapa ya no existe */ } };
+    const riv = (names: string[] | null) => {
       const m = t3?.map; if (!m) return;
       pins.forEach((p) => p.remove()); pins = [];
       const fc = { type: "FeatureCollection" as const, features: (names ? (rios ?? []).filter((r) => names.includes(r.name)) : []).map((r) => ({ type: "Feature" as const, properties: {}, geometry: { type: "MultiLineString" as const, coordinates: r.parts } })) };
@@ -808,7 +809,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       if (d.rel?.hatillo) pin(LL("Presa de Hatillo", "Hatillo dam"), d.rel.hatillo.lon, d.rel.hatillo.lat, "presa");
     };
     const pad = () => { const L = document.getElementById("wx-left")?.getBoundingClientRect(), R = document.getElementById("wx-right")?.getBoundingClientRect(); return { left: (L && L.width ? L.right : 0) + 40, right: (R && R.width ? innerWidth - R.left : 0) + 40, top: 90, bottom: 230 }; };
-    startTour({ map: () => (t3 ? t3.map as never : null), yuna: yb, pad, rivers, reset: () => { if (sel.reg !== "DO") pickRegion("DO"); } });
+    startTour({ map: () => (t3 ? t3.map as never : null), yuna: yb, hatillo: d.rel?.hatillo ? [d.rel.hatillo.lon, d.rel.hatillo.lat] : null, pad, rivers, reset: () => { if (sel.reg !== "DO") pickRegion("DO"); } });
   };
   $("tour-go").addEventListener("click", tour);
   mine.ready.then(() => {

@@ -1,0 +1,28 @@
+/* Portada: fondo negro, el logo grande, una sola cosa que se mueve (la estrella) */
+.intro { position: fixed; inset: 0; z-index: 1000; display: grid; place-content: center; justify-items: center; padding: 24px 16px; background: #000; color: #fff; text-align: center; overflow: hidden; }
+body.intro-on { overflow: hidden; }
+.in-mark { position: relative; width: min(56vh, 88vw, 620px); display: grid; justify-items: center; }
+.in-star { width: 100%; height: auto; transform-origin: 50% 50%; animation: in-spin 16s linear infinite; will-change: transform; position: relative; z-index: 2; }
+.in-arc { width: 100%; height: auto; margin-top: -13%; }
+.in-name { margin: clamp(14px, 2.4vh, 28px) 0 0; font-size: clamp(38px, min(6vw, 9vh), 84px); line-height: 1; font-weight: 700; letter-spacing: -.035em; }
+.in-tag { margin: 14px 0 0; font-size: clamp(17px, 1.7vw, 22px); line-height: 1.4; color: #c8c8c8; max-width: 46ch; text-wrap: balance; }
+.in-go { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: clamp(28px, 5vh, 48px); }
+.in-go button { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 26px; border: 0; border-radius: 999px; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; transition: transform .18s cubic-bezier(.22, 1, .36, 1), background .2s; }
+.in-go button:active { transform: scale(.96); }
+.in-go button:focus-visible { outline: 3px solid #f2b33d; outline-offset: 3px; }
+.in-tour { background: #fff; color: #000; }
+.in-tour:hover { background: #e6e6e6; }
+.in-tour svg { width: 16px; height: 16px; }
+.in-free { background: #1d2024; color: #fff; }
+.in-free:hover { background: #2a2d31; }
+/* entrada: el arco y el texto suben una vez; la estrella ya está girando */
+.in-arc, .in-name, .in-tag, .in-go { animation: in-up .8s cubic-bezier(.22, 1, .36, 1) both; }
+.in-name { animation-delay: .12s; }
+.in-tag { animation-delay: .2s; }
+.in-go { animation-delay: .3s; }
+.intro.out .in-arc, .intro.out .in-name, .intro.out .in-tag, .intro.out .in-go { animation: in-fade .35s ease-out forwards; }
+@keyframes in-spin { to { transform: rotate(360deg); } }
+@keyframes in-up { from { opacity: 0; transform: translateY(18px); } }
+@keyframes in-fade { to { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { .in-star, .in-arc, .in-name, .in-tag, .in-go { animation: none; } }
+@media (max-width: 480px) { .in-go button { height: 48px; padding: 0 20px; font-size: 16px; } }

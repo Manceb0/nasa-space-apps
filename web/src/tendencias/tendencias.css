@@ -630,3 +630,4 @@ dl.cy-facts dd { margin: 0; font-size: 14px; line-height: 1.35; color: var(--tex
 dl.cy-facts dd span { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
 .cy-list .hxl-h, .cy-list .hxl-sub { padding: 0 10px; }
 .cy-over .hx-cats { display: none; }
+.prep-over * { scroll-margin-top: 96px; scroll-margin-bottom: 120px; }

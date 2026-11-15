@@ -15,6 +15,7 @@ import { destroyAudit, viewAudit } from "./auditoria/vista";
 import { destroyPreparation, viewPreparation } from "./preparacion/vista";
 import { viewMethodV2 } from "./metodo/vista";
 import { viewAnswer } from "./respuesta/vista";
+import { intro } from "./intro";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
@@ -1413,6 +1414,16 @@ async function start() {
     clearTimeout(timer);
     timer = window.setTimeout(() => route(false), 250);
   });
+  // Portada al entrar por la puerta principal: elige recorrido o explorar; #recorrido entra solo al recorrido
+  if (["", "#tendencias", "#recorrido"].includes(location.hash)) {
+    const auto = location.hash === "#recorrido";
+    const shown = intro((tour) => {
+      if (!tour) return;
+      const t0 = Date.now(), tryGo = () => { const b = document.getElementById("tour-go"); if (b) b.click(); else if (Date.now() - t0 < 15000) setTimeout(tryGo, 150); };
+      tryGo();
+    }, auto);
+    if (shown && auto) history.replaceState(null, "", "#tendencias");
+  }
   await route();
 }
 

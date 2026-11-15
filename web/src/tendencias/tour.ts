@@ -1,16 +1,19 @@
-// Recorrido automático para el pitch: se ve la herramienta usándose. Un cursor toca cada vista y cada botón, la cámara
-// centra lo que se investiga (los ríos Yuna y Camú, Villa Riva, Hatillo) en el hueco libre entre paneles, y un rótulo
-// corto nombra la interacción. Dentro de capas con desplazamiento propio (Preparar, huracanes) nunca mueve la página:
-// solo ilumina. Orden: el país en 3D, los ríos, dos satélites en el mismo mapa y en el tiempo, ponerlo a prueba,
-// el ciclón, qué vigilar hoy, la sequía en la Auditoría y la respuesta del reto. Todo son datos reales.
+// Recorrido automático para el pitch: se ve la herramienta usándose mientras se habla, sin tocar nada. Dura lo mismo
+// que el guion (unos 4:20) y sigue su orden: el país y sus ríos, río arriba, qué vigilar hoy, dos satélites que se
+// contradicen, la alarma de sequía, el ciclón con su aviso, el expediente de Villa Riva (comprobaciones, sequía y
+// retirar una fuente), la prueba del ajuste, las predicciones y el cierre sobre el país. Un cursor toca cada vista y
+// cada botón; la cámara se mueve despacio para que ningún plano quede quieto; dentro de capas con desplazamiento
+// propio (Preparar, huracanes) solo ilumina. Si alguien toca la página mientras tanto, el recorrido sigue igual.
+// Todo son datos reales.
 import { esc, LL } from "./datos";
 import "./tour.css";
 
 type Pad = { left: number; right: number; top: number; bottom: number };
-type Cam = { flyTo: (o: object) => void; fitBounds: (b: [[number, number], [number, number]], o: object) => void };
+type Cam = { flyTo: (o: object) => void; easeTo: (o: object) => void; fitBounds: (b: [[number, number], [number, number]], o: object) => void; getBearing: () => number };
 export interface TourApi {
   map: () => Cam | null;
   yuna: [[number, number], [number, number]] | null;
+  hatillo: [number, number] | null;
   pad: () => Pad;
   rivers: (names: string[] | null) => void;
   reset: () => void;
@@ -21,53 +24,88 @@ interface Scene { dur: number; text: string; run: (api: TourApi, c: Ctx) => Prom
 const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const vis = (sel: string) => [...document.querySelectorAll<HTMLElement>(sel)].find((x) => x.offsetParent || x.getClientRects().length);
 const RIOS = ["Río Yuna", "Río Camú"];
+const VR: [number, number] = [-69.908, 19.176];
 let busy = false;
 export const tourBusy = () => busy;
 
 function scenes(): Scene[] {
   const ms = (n: number) => (RM() ? 0 : n);
-  const home = (a: TourApi) => ({ center: [-70.3, 18.75], zoom: 7.3, pitch: 58, bearing: -16, padding: a.pad(), duration: ms(4500), essential: true });
+  const home = (a: TourApi, d = 4500) => ({ center: [-70.3, 18.75], zoom: 7.3, pitch: 58, bearing: -16, padding: a.pad(), duration: ms(d), essential: true });
+  // giro lento de la cámara: el plano nunca se queda quieto mientras se habla
+  const drift = (a: TourApi, deg: number, d: number) => { const m = a.map(); if (m) m.easeTo({ bearing: m.getBearing() + deg, duration: ms(d), easing: (t: number) => t, essential: true }); };
+  const prepClose = async (c: Ctx) => { c.look("", 1); if (vis("[data-prepq].on")) await c.tap("[data-prepq]"); };
+  const sdii = async (c: Ctx) => { if (vis('[data-q="fuerte"].on') && vis("#s13-h")) return; await c.tap('[data-q="fuerte"]'); await c.wait(400); await c.tap("#m-btn"); await c.wait(450); await c.tap('.menu .mi[data-v="SDII"]'); await c.wait(700); };
   return [
-    { dur: 8000, text: LL("Toca 3D: el país, con su relieve", "Tap 3D: the country, with its relief"),
-      run: async (a, c) => { a.reset(); await c.wait(400); await c.tap('[data-cam="3d"]'); await c.wait(900); a.map()?.flyTo(home(a)); } },
-    { dur: 12000, text: LL("El Yuna y el Camú, hasta Villa Riva", "The Yuna and the Camú, down to Villa Riva"),
+    // 0:00 · el problema: el país y sus dos extremos
+    { dur: 12000, text: LL("Toca 3D: el país, con su relieve", "Tap 3D: the country, with its relief"),
+      run: async (a, c) => { a.reset(); await c.wait(400); await c.tap('[data-cam="3d"]'); await c.wait(900); a.map()?.flyTo(home(a, 5500)); await c.wait(5800); drift(a, 14, 5500); } },
+    { dur: 23000, text: LL("El Yuna y el Camú, hasta Villa Riva", "The Yuna and the Camú, down to Villa Riva"),
       run: async (a, c) => {
         a.rivers(RIOS);
-        if (a.yuna) a.map()?.fitBounds(a.yuna, { padding: a.pad(), pitch: 60, bearing: -24, duration: ms(4500), essential: true });
-        await c.wait(5600);
-        a.map()?.flyTo({ center: [-70.0, 19.12], zoom: 9.3, pitch: 64, bearing: 10, padding: a.pad(), duration: ms(4500), essential: true });
+        if (a.yuna) a.map()?.fitBounds(a.yuna, { padding: a.pad(), pitch: 60, bearing: -24, duration: ms(5000), essential: true });
+        await c.wait(7500);
+        a.map()?.flyTo({ center: VR, zoom: 9.6, pitch: 64, bearing: 10, padding: a.pad(), duration: ms(5500), essential: true });
+        await c.wait(6000); drift(a, 30, 9000);
       } },
-    { dur: 10000, text: LL("Toca IMERG: la lluvia se intensifica", "Tap IMERG: rain is intensifying"),
+    // 0:35 · la solución: río arriba no llueve igual
+    { dur: 15000, text: LL("Río arriba: la presa de Hatillo", "Upstream: the Hatillo dam"),
       run: async (a, c) => {
-        a.rivers(null); a.map()?.flyTo(home(a));
-        await c.tap('[data-q="fuerte"]'); await c.wait(400); await c.tap("#m-btn"); await c.wait(450); await c.tap('.menu .mi[data-v="SDII"]'); await c.wait(700);
-        await c.tap('[data-show="IMERG"]');
+        if (a.hatillo) a.map()?.flyTo({ center: a.hatillo, zoom: 9.8, pitch: 66, bearing: -30, padding: a.pad(), duration: ms(6000), essential: true });
+        await c.wait(6500); drift(a, 22, 8000);
       } },
-    { dur: 12000, text: LL("Toca CHIRPS: se debilita. Míralo año a año", "Tap CHIRPS: it weakens. Watch it year by year"),
-      run: async (_a, c) => { await c.tap('[data-show="CHIRPS"]'); await c.wait(2600); await c.tap(".wx-play"); await c.wait(6000); await c.tap(".wx-play"); await c.wait(500); await c.tap(".wx-trendbtn"); } },
+    { dur: 25000, text: LL("¿Qué municipio vigilar hoy?", "Which municipality to watch today?"),
+      run: async (a, c) => {
+        a.rivers(null);
+        await c.tap("[data-prepq]"); await c.wait(1800); c.look(".prep-over .pb-head", 1);
+        await c.wait(7000); c.look(".prep-over .pb-list", 1);
+        await c.wait(8000); c.look(".prep-over .pb-list li:first-child", 1);
+      } },
+    // 1:15 · el descubrimiento: dos satélites, dos historias
+    { dur: 10000, text: LL("Toca IMERG: la lluvia se intensifica", "Tap IMERG: rain is intensifying"),
+      run: async (a, c) => { await prepClose(c); a.map()?.flyTo(home(a)); await sdii(c); await c.tap('[data-show="IMERG"]'); } },
+    { dur: 17000, text: LL("Toca CHIRPS: se debilita. Míralo año a año", "Tap CHIRPS: it weakens. Watch it year by year"),
+      run: async (_a, c) => { await c.tap('[data-show="CHIRPS"]'); await c.wait(5200); await c.tap(".wx-play"); await c.wait(8500); await c.tap(".wx-play"); await c.wait(500); await c.tap(".wx-trendbtn"); } },
     { dur: 9000, text: LL("Veredicto: dónde se contradicen", "Verdict: where they contradict"),
-      run: async (a, c) => { await c.tap('[data-show="acuerdo"]'); a.map()?.flyTo({ center: [-70.45, 18.95], zoom: 8.1, pitch: 55, bearing: -10, padding: a.pad(), duration: RM() ? 0 : 5000, essential: true }); } },
-    { dur: 11000, text: LL("¿Y si IMERG contara bien los días de lluvia?", "What if IMERG counted rain days right?"),
-      run: async (_a, c) => {
-        c.look("", 1);
-        if (!vis("#s13-h.on")) await c.tap("#s13-h");
-        await c.wait(900); c.look(".adj-res", 1);
-      } },
-    { dur: 16000, text: LL("Vista Huracanes: el aviso del NHC, 103 h antes", "Hurricanes view: the NHC warning, 103 h ahead"),
-      run: async (_a, c) => {
-        c.look("", 1); if (vis("#s13-h.on")) await c.tap("#s13-h");
-        await c.tap("#sty-btn"); await c.wait(500); await c.tap('.menu .mi[data-v="ciclones"]'); await c.wait(2400);
-        await c.tap('[data-cy-yuna="yuna"]'); await c.wait(2200); c.look(".cy-over .hx-top", 1); await c.wait(5200); c.look(".cy-over .hx-time", 1);
-      } },
-    { dur: 11000, text: LL("¿Qué municipio vigilar hoy?", "Which municipality to watch today?"),
-      run: async (_a, c) => {
-        c.look("", 1); await c.tap("#sty-btn"); await c.wait(450); await c.tap('.menu .mi[data-v="crestas"]'); await c.wait(900);
-        await c.tap("[data-prepq]"); await c.wait(1800); c.look(".prep-over .pb-list", 1);
-      } },
-    { dur: 11000, text: LL("Sequía: la alarma depende del satélite", "Drought: the alarm depends on the satellite"),
+      run: async (a, c) => { await c.tap('[data-show="acuerdo"]'); a.map()?.flyTo({ center: [-70.45, 18.95], zoom: 8.1, pitch: 55, bearing: -10, padding: a.pad(), duration: ms(5000), essential: true }); await c.wait(5200); drift(a, 8, 3500); } },
+    { dur: 12000, text: LL("Sequía: la alarma depende del satélite", "Drought: the alarm depends on the satellite"),
       run: async (_a, c) => { c.look("", 1); await c.go("#auditoria", "#au-kpi .au-lead"); await c.wait(500); c.look("#au-kpi", 1.3); } },
-    { dur: 10000, text: LL("La respuesta del reto, en una vista", "The challenge's answer, in one view"),
-      run: async (_a, c) => { c.look("", 1); await c.go("#respuesta", ".rs-four"); await c.wait(400); c.look(".rs-four", 1); } },
+    // 2:00 · la demostración: el caso del Yuna
+    { dur: 20000, text: LL("Si es un ciclón: el aviso del NHC, 103 h antes", "If it is a cyclone: the NHC warning, 103 h ahead"),
+      run: async (_a, c) => {
+        c.look("", 1); await c.go("#tendencias", "#sty-btn"); await c.wait(900);
+        await c.tap("#sty-btn"); await c.wait(500); await c.tap('.menu .mi[data-v="ciclones"]'); await c.wait(2400);
+        await c.tap('[data-cy-yuna="yuna"]');
+      } },
+    { dur: 18000, text: LL("Villa Riva: qué comprobar primero", "Villa Riva: what to check first"),
+      run: async (_a, c) => {
+        c.look("", 1); await c.tap("[data-prepq]"); await c.wait(1800);
+        await c.tap('.prep-over [data-pick="villa-riva"]'); await c.wait(1500); c.look(".prep-over .prep-cards .prep-card", 1);
+        await c.wait(7000); c.look(".prep-over .prep-tasks", 1);
+      } },
+    { dur: 12000, text: LL("Sequía: 90 días de lluvia frente a 24 años", "Drought: 90 days of rain against 24 years"),
+      run: async (_a, c) => { c.look(".prep-over .prep-cards .prep-card:last-child", 1); } },
+    { dur: 25000, text: LL("Retira una fuente: recalcula su respaldo", "Remove a source: it recalculates its support"),
+      run: async (_a, c) => {
+        c.look(".prep-over .prep-sources", 1); await c.wait(3500);
+        await c.tap('.prep-over .source-toggle:has([data-source="ERA5"])'); await c.wait(600);
+        c.look(".prep-over .prep-sources", 1); await c.wait(5000);
+        c.look(".prep-over .prep-cards", 1); await c.wait(9000);
+        // se devuelve la fuente para no dejar el expediente cambiado
+        c.look(".prep-over .prep-sources", 1); await c.wait(1200);
+        if (vis('.prep-over [data-source="ERA5"]:not(:checked)')) await c.tap('.prep-over .source-toggle:has([data-source="ERA5"])');
+      } },
+    // 3:15 · el avance: ponemos a prueba nuestras propias hipótesis
+    { dur: 15000, text: LL("¿Y si IMERG contara bien los días de lluvia?", "What if IMERG counted rain days right?"),
+      run: async (_a, c) => { await prepClose(c); await sdii(c); if (!vis("#s13-h.on")) await c.tap("#s13-h"); await c.wait(900); c.look(".adj-res", 1); } },
+    { dur: 15000, text: LL("34 predicciones, escritas antes de calcular", "34 predictions, written before computing"),
+      run: async (_a, c) => { c.look("", 1); if (vis("#s13-h.on")) await c.tap("#s13-h"); await c.go("#respuesta", ".rs-preds"); await c.wait(500); c.look(".rs-preds", 1); } },
+    // 3:45 · el cierre, sobre el país
+    { dur: 32000, text: LL("Investigar el agua para preparar a nuestra gente", "Investigating water to prepare our people"),
+      run: async (a, c) => {
+        c.look("", 1); await c.go("#tendencias", "#sty-btn"); await c.wait(1200);
+        if (!vis('[data-cam="3d"][aria-checked="true"]')) await c.tap('[data-cam="3d"]');
+        await c.wait(900); a.rivers(RIOS); a.map()?.flyTo(home(a, 6000)); await c.wait(6500); drift(a, 60, 23000);
+      } },
   ];
 }
 
@@ -124,7 +162,7 @@ export function startTour(api: TourApi) {
     const host = el.closest<HTMLElement>("#wx, #au"), inOverlay = !!el.closest(".prep-over, .cy-over");
     followEl = el;
     if (!host || inOverlay || RM() || scale <= 1.05) {
-      if (!inOverlay) el.scrollIntoView({ block: "center", behavior: RM() ? "auto" : "smooth" });
+      el.scrollIntoView({ block: inOverlay && el.getBoundingClientRect().height > innerHeight * 0.5 ? "start" : "center", behavior: RM() ? "auto" : "smooth" });
       track();
       return;
     }
@@ -145,7 +183,9 @@ export function startTour(api: TourApi) {
   const tap = async (sel: string) => {
     const t = token, el = vis(sel);
     if (!el || t !== token) return false;
-    const r = el.getBoundingClientRect(), x = r.left + Math.min(r.width / 2, 40), y = r.top + r.height / 2;
+    let r = el.getBoundingClientRect();
+    if (r.bottom > innerHeight - 200 || r.top < 70) { el.scrollIntoView({ block: "center", behavior: RM() ? "auto" : "smooth" }); await wait(RM() ? 0 : 650); r = el.getBoundingClientRect(); }
+    const x = r.left + Math.min(r.width / 2, 40), y = r.top + r.height / 2;
     const dist = Math.hypot(x - cx, y - cy), d = RM() ? 0 : Math.min(900, 250 + dist * 0.6);
     cur.style.transition = `transform ${d}ms cubic-bezier(.65, 0, .25, 1)`;
     cur.style.transform = `translate(${x}px, ${y}px)`; cx = x; cy = y;
@@ -166,7 +206,12 @@ export function startTour(api: TourApi) {
   };
   const ctx = (): Ctx => { const t = token; return { tap, wait, go, look: (s, sc) => { if (t === token) look(s, sc); } }; };
 
-  const caption = (t: string) => {
+  let capT = 0, idleT = 0;
+  const wake = () => { root.classList.remove("idle"); clearTimeout(idleT); idleT = window.setTimeout(() => root.classList.add("idle"), 2500); };
+  document.addEventListener("pointermove", wake); wake();
+  const caption = (t: string, stay = false) => {
+    clearTimeout(capT); cap.classList.remove("gone");
+    if (!stay) capT = window.setTimeout(() => cap.classList.add("gone"), 5500);
     cap.classList.remove("in");
     cap.innerHTML = t.split(" ").map((w, k) => `<span style="--k:${k}">${esc(w)}</span>`).join(" ");
     requestAnimationFrame(() => requestAnimationFrame(() => cap.classList.add("in")));
@@ -192,12 +237,14 @@ export function startTour(api: TourApi) {
   };
   const end = () => {
     clearTimeout(timer); token++; look("", 1);
+    clearTimeout(capT); cap.classList.remove("gone");
     cap.innerHTML = `<span class="end">${esc(LL("Ahora, explóralo tú.", "Now, explore it yourself."))}</span> <a href="#tendencias">${esc(LL("Ir al mapa", "Go to the map"))}</a>`;
     cap.classList.add("in"); paused = true; syncPlay();
   };
   const stop = () => {
     clearTimeout(timer); token++; look("", 1);
     try { api.rivers(null); } catch { /* el mapa ya no existe */ }
+    clearTimeout(capT); clearTimeout(idleT); document.removeEventListener("pointermove", wake);
     root.remove(); document.body.classList.remove("touring"); document.removeEventListener("keydown", key); stopCur = null; busy = false;
   };
   const key = (e: KeyboardEvent) => {
