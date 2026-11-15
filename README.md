@@ -103,8 +103,16 @@ Pendiente:
       llevarían marca de agua; la idea es del equipo).
 - [ ] Actualizar la página del equipo en Space Apps y pulsar **«Submit for Judging»** antes de las 23:59.
 - [ ] Hacer público este repositorio antes del cierre (Space Apps exige un enlace público).
-- [ ] Hipótesis tropicales sin correr: ciclones frente a convección local, barlovento/sotavento respecto al
-      alisio, y los 28 desacuerdos sin explicar en la estación seca.
+- [x] Pruebas tropicales corridas (`reports_nacional/PRUEBAS_TROPICALES.md`). Con una revisión independiente
+      (`REVISION_JANE.md`) y un tercer testigo (ERA5), la conclusión que se sostiene es esta: IMERG cuenta cada vez
+      menos días de lluvia que los pluviómetros, CHIRPS y ERA5, así que sus tendencias de intensidad y de rachas secas
+      no se pueden confirmar. **No** está demostrado un «escalón en octubre de 2013», y el «82 %» del recálculo es
+      una sensibilidad a un ajuste, no un mecanismo.
+- [ ] Pendiente de esas pruebas:
+  - Comparar tendencia gradual, escalón y ambos, con incertidumbre de fecha y magnitud.
+  - Repetir con ERA5 en todas las celdas, no solo en 6 puntos.
+  - Conseguir estaciones de INDOMET.
+  - Usar vientos medidos en vez del alisio fijo.
 - [ ] Revisar la anomalía de MERRA-2 después de 2016 (auditoría, fig04c) y la pérdida de bosque de 2005 (Hansen)
       antes de mostrarlas.
 

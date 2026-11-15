@@ -2,7 +2,15 @@
 
 *Stellar Horizons · NASA Space Apps 2026. Código: `earthmemory/tropical/run.py` y `figuras.py`
 (`docker compose run --rm tropical`). Resultados: `results/tropical/`. Figura: `figures/tropical/07_the_step_in_2013_{dark,light}.png`.
-Las predicciones se escribieron en el código ANTES de correrlo (`results/tropical/predicciones_registradas.json`).*
+Las predicciones se escribieron en el código ANTES de correrlo (`results/tropical/predicciones_registradas.json`).
+Es un registro local: el código y el resultado entran en el mismo commit, así que la cronología no es verificable
+desde fuera. No es un pre-registro externo.*
+
+> **Aviso (15-nov, tarde).** Este informe conserva el razonamiento tal como se hizo, con correcciones en línea. Hubo
+> una revisión independiente (`REVISION_JANE.md`) y un tercer testigo (ERA5). Antes de citar nada, lee el
+> **veredicto actual** al final. En corto: IMERG cuenta cada vez menos días de lluvia que sus testigos (eso se
+> sostiene), pero no está demostrado que sea un escalón en octubre de 2013. El 82 % mide la sensibilidad a un
+> ajuste, no un mecanismo.
 
 ## La deducción
 
@@ -16,7 +24,8 @@ tres cosas medibles:**
    IMERG muestra es, con mucha probabilidad, ese escalón: intensidad = lluvia total ÷ días húmedos.
 2. **El relieve frente al alisio.** En las laderas que suben en la dirección del alisio del ENE, CHIRPS da un 14 %
    más de lluvia media que IMERG; en las que bajan (sotavento), un 12 % menos (ρ = 0,56 con el ascenso forzado;
-   p = 0,002 con desplazamientos toroidales).
+   p exhaustiva 0,012 con las 82 traslaciones toroidales distintas; el 0,002 original contaba sorteos repetidos). El
+   alisio se supuso fijo del ENE (70°); no se usaron vientos medidos de cada episodio.
 3. **El tipo de tormenta.** Con un ciclón tropical a menos de 500 km, los dos productos coinciden mucho más en dónde
    cae la lluvia fuerte (CSI ≥ 50 mm: 0,27 frente a 0,10 en días sin ciclón de agosto a noviembre). Sin ciclón, la
    lluvia fuerte es convectiva y local, y casi no coinciden. Pero ni con ciclón coinciden en **cuánta** llueve: el
@@ -29,11 +38,11 @@ tres cosas medibles:**
 | P1 | Con ciclón a < 500 km los productos coinciden más en lluvia fuerte | CSI ≥ 50 mm 0,268 frente a 0,101 (diferencia +0,167; IC 95 % por años 0,094-0,234). CSI ≥ 20 mm 0,52 frente a 0,20 | **Confirmada** |
 | P1 | … y el disparador de 100 mm/48 h queda menos veces sin confirmar | 74,5 % sin confirmar con ciclón frente a 79,4 % sin ciclón (ago-nov) | **No en lo sustancial**: coinciden en dónde, no en cuánto |
 | P1b | Los máximos anuales (Rx1day) caen sobre todo en días de ciclón | IMERG: 37,6 % de los Rx1day en días de ciclón (±1 d), que son el 4,1 % de los días (×9,2). CHIRPS: 15,3 % (×3,7) | **Confirmada**, y los productos discrepan en cuánto pesan los ciclones |
-| P2 | En barlovento CHIRPS da más lluvia que IMERG | ρ = 0,56, p toroidal 0,002. Tercil barlovento: CHIRPS/IMERG = 1,14; sotavento: 0,88 | **Confirmada** |
-| P2 | … y el acuerdo diario es menor en barlovento | ρ = +0,15 (p 0,06): al revés. El acuerdo es menor en la sombra de lluvia (ρ = −0,39 con la sombra, p 0,017) | **Refutada**; el desacuerdo diario está a sotavento |
-| P2b | Las celdas con SDII en disputa son las que más difieren en frecuencia de días húmedos | ρ = 0,41, p toroidal 0,006. La disputa de SDII no se relaciona con el relieve (p ≥ 0,18) | **Confirmada** |
+| P2 | En barlovento CHIRPS da más lluvia que IMERG | ρ = 0,56, p toroidal 0,012 (exhaustiva; antes 0,002). Tercil barlovento: CHIRPS/IMERG = 1,14; sotavento: 0,88 | **Confirmada** |
+| P2 | … y el acuerdo diario es menor en barlovento | ρ = +0,15 (p 0,06): al revés. El acuerdo es menor en la sombra de lluvia (ρ = −0,39 con la sombra, p exhaustiva 0,036; antes 0,017) | **Refutada**; el desacuerdo diario está a sotavento |
+| P2b | Las celdas con SDII en disputa son las que más difieren en frecuencia de días húmedos | ρ = 0,41, p toroidal 0,024 (exhaustiva; antes 0,006). La disputa de SDII no se relaciona con el relieve (p ≥ 0,18) | **Confirmada** |
 | P3 | Los 28 episodios sin explicar se concentran en retornos de la estación seca | Seca 15 de 51, tardía 9 de 36, temprana 4 de 9; p por permutación 0,62. Lluvia del mes de retorno: 0,93 de la climatología frente a 1,39 en el resto (p 0,08). Sin relación con ciclones | **Refutada** (indicio débil: retornos con lluvia normal, no abundante) |
-| P4 | La diferencia de frecuencia de días húmedos cambia cerca de 2014-2015 | Punto de cambio 2013-10, p 0,001. En la cantidad de lluvia no hay salto claro (p 0,10) | **Confirmada**, con fecha algo anterior a la esperada |
+| P4 | La diferencia de frecuencia de días húmedos cambia cerca de 2014-2015 | Punto de cambio 2013-10, p 0,001. En la cantidad de lluvia la prueba no detectó un salto (p 0,10; no prueba que no lo haya) | **Confirmada** como cambio, pero Pettitt también da p 0,0003 con una tendencia gradual sin salto: no prueba que sea abrupto ni fecha la causa (ver veredicto) |
 | P5* | ¿Quién cambió? (añadida tras ver P4; no registrada antes) | Cambio medio después/antes en días húmedos: pluviómetros +0,2 pp; IMERG −8,5 pp (de −4,0 a −12,2 en las 4); CHIRPS −0,2 pp (pero −5,4 en Barahona) | Apunta a IMERG |
 
 \* P5 es una prueba exploratoria posterior; se presenta como tal.
@@ -67,15 +76,20 @@ la primera mitad ya tiene una prueba; la segunda (territorio) sigue abierta.
 
 ## Jugar en contra
 
-- **Solo cuatro pluviómetros**, y los cuatro alimentan a CHIRPS (circular para CHIRPS). Para IMERG no es circular en
-  frecuencia: GPCC le corrige el total mensual, no cuántos días llueve. Hace falta la red de INDOMET para cerrarlo.
+- **Solo cuatro pluviómetros**, y los cuatro alimentan a CHIRPS (circular para CHIRPS). *Corregido:* antes decía que
+  para IMERG no era circular en frecuencia porque GPCC solo corrige el total mensual. Es falso. El ajuste
+  multiplica la lluvia de cada media hora y puede mover días a través del umbral de 1 mm (0,8 × 1,5 = 1,2 mm;
+  documentación técnica de IMERG V07, postprocesado). Hace falta la red de INDOMET para cerrarlo.
 - **Pettitt siempre encuentra un punto**; el valor p viene de permutar bloques de 12 meses (conserva la estación y la
   autocorrelación). Un cambio gradual también daría un punto. La figura muestra la serie completa para juzgarlo.
 - **No atribuimos el escalón a un sensor concreto.** 2013-10 es anterior al lanzamiento de GPM (feb-2014); coincide
   con la ventana de transiciones del sistema de observación que documenta Zhu et al. 2026, pero no lo hemos probado.
 - **El CSI depende de la frecuencia del evento**: en días de ciclón hay más celdas con lluvia fuerte y el CSI sube un
-  poco por azar. Falta repetirlo con una medida corregida por azar (ETS).
-- **La rejilla solo admite 466 desplazamientos toroidales válidos**, así que el p más pequeño posible es 0,002.
+  poco por azar. *Hecho en la revisión:* con ETS y los dos grupos en agosto-noviembre, el acuerdo sigue siendo mayor
+  cerca de ciclones (ETS ≥ 50 mm 0,239 frente a 0,097; sin IC). «Sin ciclón» no equivale a convección local, porque
+  también hay frentes, vaguadas y ondas.
+- *Corregido:* los «466 desplazamientos» eran sorteos aceptados con repetición. Hay **82 traslaciones distintas**,
+  así que la resolución mínima es 1/83 y los p exhaustivos son 0,012, 0,024 y 0,036, sin corregir por multiplicidad.
 
 ## Qué cambia para la entrega
 
@@ -121,7 +135,9 @@ RACHAS15), porque el escalón está en la frecuencia y no en la cantidad. Por ce
 **Lo que se concluye:** las dos tendencias nacionales significativas de IMERG que más llamaban la atención («llueve
 más intenso» y «las rachas secas de la estación seca se alargan») no sobreviven a quitar un solo escalón. Los
 productos no describían dos climas distintos. P0 queda igual en lo esencial: **ninguna tendencia robusta** de
-frecuencia o intensidad; las «disputas» pasan de ser un misterio a ser, con mucha probabilidad, un artefacto de medición.
+frecuencia o intensidad; las «disputas» pasan de ser un misterio a ser, con mucha probabilidad, un artefacto de medición. *(Matizado tras la
+revisión: lo que muestra el recálculo es que esas tendencias son sensibles a un ajuste hacia CHIRPS. Que la causa
+sea un artefacto lo sostienen los testigos, no el recálculo.)*
 
 **Jugar en contra (lo que NO se puede afirmar):**
 - **La corrección no fecha el escalón.** Con casi cualquier año de corte entre 2010 y 2017 las disputas anuales caen de
@@ -137,8 +153,11 @@ frecuencia o intensidad; las «disputas» pasan de ser un misterio a ser, con mu
   prueba de por qué hacen falta testigos independientes.
 - El índice SPI-12 queda igual (no depende de contar días) y su prueba sigue siendo liberal según la calibración de P0.
 
-**Frase para el jurado:** «Quitamos un solo escalón del registro del satélite y el 82 % de las contradicciones
-desaparece. No eran dos climas: era una forma distinta de contar los días de lluvia.»
+~~**Frase para el jurado:** «Quitamos un solo escalón del registro del satélite y el 82 % de las contradicciones
+desaparece. No eran dos climas: era una forma distinta de contar los días de lluvia.»~~ **Retirada:** con una
+tendencia gradual sintética, sin salto, el mismo ajuste le quita el 74,6 % de la pendiente. El 82 % mide la
+sensibilidad al ajuste, no demuestra el mecanismo. Además, la variante ajustada tiene 8.375 valores imposibles
+(rachas o intensidades negativas): es una sensibilidad estadística, no lluvia corregida.
 
 ## Tercer testigo: ERA5 (15-nov, tarde)
 

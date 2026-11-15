@@ -1,5 +1,15 @@
 # Pasada Jane completa: qué contamos al jurado
 
+> **Superado (15-nov, tarde). No usar este guion tal cual.** La deducción «un solo cambio de octubre de 2013 fabrica
+> las dos tendencias» y las frases «The trend that wasn't» y «82 % of the contradictions disappear» van por delante de
+> la evidencia:
+> - El tercer testigo (ERA5) sitúa la separación en 2016 y de forma gradual.
+> - Una revisión independiente mostró que el ajuste y Pettitt no distinguen un escalón de una deriva.
+>
+> Lo defendible es esto: IMERG cuenta cada vez menos días de lluvia que sus testigos, y por eso sus tendencias de
+> intensidad y de rachas secas no se pueden confirmar. Título candidato: **«The trend we cannot yet confirm»**. Ver
+> el veredicto en `PRUEBAS_TROPICALES.md` y `REVISION_JANE.md`. El razonamiento de abajo se conserva como registro.
+
 Fecha: 15-nov-2026, mañana. Modo `hackathon`. Esta es la primera pasada con la regla dura del método: los 7
 movimientos y al menos una skill por fila, cada una con su archivo abierto. Todos los números salen de los informes
 del repo (`PRUEBAS_TROPICALES.md`, `README.md`). Aquí no se calcula nada nuevo.
