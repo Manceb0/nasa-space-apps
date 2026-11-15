@@ -302,3 +302,32 @@ simulado se etiqueta «escalón» el 45 %.
 - No se simularon una deriva curva ni varios saltos, y cualquiera de las dos podría producir un «escalón en 2018».
 - *Pista sin comprobar:* cotejar 2018 con la cronología de sensores de entrada de IMERG V07 (documentación técnica de
   NASA). No se ha hecho y no se atribuye nada a ningún sensor.
+
+**Límites añadidos por la revisión** (verificados aquí):
+- El escalón le gana a la tendencia recta por 7,1 de BIC, pero a tendencia + escalón solo por 2,3. Es el mejor de los
+  modelos probados, no un ganador indiscutible. La revisión optimizó la autocorrelación en cada fecha candidata y
+  obtuvo la misma fecha (2018-02) y casi los mismos BIC.
+- Que solo el 5 % de las tendencias simuladas salgan como escalón **no** equivale a un 95 % de certeza sobre el
+  resultado real. Con ruido nacional y 4,5 pp, el método acierta la forma el 27 % de las veces.
+- Las 265 celdas son selecciones de modelo, no rechazos corregidos por multiplicidad. Si se exige más ventaja de BIC
+  frente a «sin cambio», quedan 219 (más de 2) o 161 (más de 6); lo comprobé en `celdas.csv`. Son sensibilidades del
+  criterio, no nuevos umbrales de significancia.
+- La ventana candidata es todo el intervalo febrero-noviembre de 2018 del perfil del modelo. No es un intervalo de
+  confianza.
+
+**Pista candidata (sin atribución): el paso de GOES-13 a GOES-16.** La búsqueda la hizo la revisión; aquí se
+registra sin haber cotejado las fuentes por mi cuenta.
+- GOES-16 pasó a ser GOES-East el 18-dic-2017 (cronología de NOAA).
+- La documentación técnica de IMERG V07 muestra esa transición en sus entradas infrarrojas de 2017-2018.
+- Todo el registro se reprocesó con V07, pero las entradas infrarrojas vienen del procesamiento operativo de cada
+  época. Un cambio de esas entradas podría quedar dentro del registro reprocesado.
+- Esto hace plausible la hipótesis, pero no demuestra que explique el resultado.
+
+Coincidencias que **no** sirven como explicación:
+- La nota de documentación del 7-feb-2018 (procesamiento V05B).
+- El corte infrarrojo del 21-22 de agosto de 2018, que afectó a Early/Late en tiempo real, no a V07 Final.
+
+**Prueba que la discriminaría (sin hacer).** Ver si alrededor de la transición cambia la frecuencia de lluvia débil
+sobre todo cuando domina la información infrarroja, y no en las observaciones directas de microondas. IMERG trae
+campos para separarlo: influencia del infrarrojo, fuente de microondas y precipitación sin el ajuste final con
+pluviómetros. Si el cambio aparece igual en las microondas, la pista de GOES pierde fuerza.
