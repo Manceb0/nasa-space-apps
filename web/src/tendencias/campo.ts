@@ -4,10 +4,10 @@
 import type { CellLayer, FC, Rej } from "./datos";
 
 export type RGB = [number, number, number];
-const GREY: RGB = [150, 150, 160];
+const GREY: RGB = [120, 124, 130];
 // Escalas divergentes: hacia lo seco (cálida) y hacia lo húmedo (fría), con gris en el cero
 const WARM: [number, RGB][] = [[0, GREY], [0.25, [255, 214, 10]], [0.55, [255, 159, 10]], [0.8, [255, 69, 58]], [1, [200, 30, 70]]];
-const COOL: [number, RGB][] = [[0, GREY], [0.25, [100, 210, 255]], [0.55, [10, 132, 255]], [0.8, [94, 92, 230]], [1, [140, 70, 230]]];
+const COOL: [number, RGB][] = [[0, GREY], [0.25, [120, 214, 245]], [0.55, [40, 160, 240]], [0.8, [10, 110, 220]], [1, [8, 78, 170]]];
 const ramp = (stops: [number, RGB][], t: number): RGB => {
   for (let k = 1; k < stops.length; k++) if (t <= stops[k][0]) {
     const [a, ca] = stops[k - 1], [b, cb] = stops[k], u = (t - a) / (b - a);
