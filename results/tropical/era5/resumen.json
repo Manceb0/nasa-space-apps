@@ -1,0 +1,72 @@
+{
+  "puntos": {
+    "Santo Domingo": [
+      18.5,
+      -69.75
+    ],
+    "Punta Cana": [
+      18.5,
+      -68.5
+    ],
+    "Puerto Plata": [
+      19.75,
+      -70.5
+    ],
+    "Barahona": [
+      18.25,
+      -71.0
+    ],
+    "Santiago": [
+      19.5,
+      -70.75
+    ],
+    "Constanza": [
+      19.0,
+      -70.75
+    ]
+  },
+  "corte": "2013-10-01",
+  "pettitt": {
+    "IMERG_menos_ERA5": {
+      "punto_de_cambio": "2016-10",
+      "p_bloques_12m": 0.0006666666666666666,
+      "media_antes": 0.02342684758802609,
+      "media_despues": -0.0447239817589589
+    },
+    "CHIRPS_menos_ERA5": {
+      "punto_de_cambio": "2013-01",
+      "p_bloques_12m": 0.5393333333333333,
+      "media_antes": -0.011967404994379411,
+      "media_despues": 0.011967404994379411
+    },
+    "ERA5_solo": {
+      "punto_de_cambio": "2022-02",
+      "p_bloques_12m": 0.4593333333333333,
+      "media_antes": -0.009726684931169379,
+      "media_despues": 0.07031003678816726
+    },
+    "IMERG_solo": {
+      "punto_de_cambio": "2013-11",
+      "p_bloques_12m": 0.0023333333333333335,
+      "media_antes": 0.029629263581422736,
+      "media_despues": -0.03405154172790372
+    },
+    "log_cantidad_IMERG_sobre_ERA5": {
+      "punto_de_cambio": "2018-10",
+      "p_bloques_12m": 0.5433333333333333,
+      "media_antes": 0.03702864510793399,
+      "media_despues": -0.10516135210653253
+    }
+  },
+  "cambio_medio_pp": {
+    "CHIRPS": 0.010832894373792127,
+    "ERA5": -1.8592967450104922,
+    "IMERG": -6.318268659961038
+  },
+  "veredicto": {
+    "E1": false,
+    "E2": true,
+    "E3": true,
+    "E4": true
+  }
+}

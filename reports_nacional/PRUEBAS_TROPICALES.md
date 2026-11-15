@@ -139,3 +139,73 @@ frecuencia o intensidad; las «disputas» pasan de ser un misterio a ser, con mu
 
 **Frase para el jurado:** «Quitamos un solo escalón del registro del satélite y el 82 % de las contradicciones
 desaparece. No eran dos climas: era una forma distinta de contar los días de lluvia.»
+
+## Tercer testigo: ERA5 (15-nov, tarde)
+
+Código: `earthmemory/tropical/era5_testigo.py` y `figura_era5.py`. Salidas: `results/tropical/era5/`. Figura:
+`figures/tropical/09_tercer_testigo_era5_{dark,light}.png`.
+
+**Por qué ERA5.** Es el reanálisis europeo (ECMWF). No usa el algoritmo de IMERG ni los pluviómetros que alimentan a
+CHIRPS, así que rompe la circularidad de P5. Se bajó la lluvia diaria (`models=era5`, día UTC) de la API de archivo
+de Open-Meteo para 6 celdas de 0,25°: las 4 estaciones GHCN-D más Santiago y Constanza. IMERG y CHIRPS se promedian
+dentro de cada celda de ERA5. Las predicciones se escribieron a disco antes de bajar nada
+(`predicciones_registradas.json`).
+
+| Predicción | Resultado | Veredicto |
+|---|---|---|
+| E1: IMERG − ERA5 salta entre 2012-10 y 2014-12 | Salta, pero en **2016-10** (p 0,001) | **No se cumple** |
+| E2: ERA5 cambia < 2 pp e IMERG baja ≥ 4 pp (antes/después de 2013-10) | ERA5 −1,9 pp, IMERG −6,3 pp, CHIRPS +0,0 pp | Se cumple, por poco en ERA5 |
+| E3: CHIRPS − ERA5 no salta en esa ventana | Sin salto (p 0,54) | Se cumple |
+| E4: la cantidad de lluvia (IMERG/ERA5) no salta | Sin salto (p 0,54) | Se cumple |
+
+**Qué queda en pie.**
+- La hipótesis de fondo resiste con un testigo que no comparte nada con CHIRPS: IMERG pierde días de lluvia que ni
+  ERA5 ni CHIRPS pierden, y la cantidad de lluvia no cambia.
+- CHIRPS se mantiene estable frente a ERA5, así que no fue CHIRPS quien cambió.
+
+**Qué se cae.**
+- La palabra «escalón» y la fecha de octubre de 2013 no aguantan frente a ERA5. Frente a ERA5, IMERG se separa de forma
+  gradual: el punto de cambio está en 2016-10 y la separación se profundiza otra vez desde 2022 (figura 09, panel a).
+- El salto de 2013-10 se detectó frente a CHIRPS. Frente a ERA5, en 2013-2016 las dos diferencias suben a la vez, así
+  que en esos años ERA5 cuenta menos días de lluvia que ambos productos.
+- Es coherente con lo que ya mostraba la sensibilidad del recálculo: cualquier año de corte entre 2010 y 2017
+  funcionaba. Una deriva gradual se comporta así; un escalón limpio, no.
+- Lenguaje corregido: «IMERG cuenta cada vez menos días de lluvia desde mediados de la década de 2010», no «un
+  escalón en octubre de 2013».
+
+**Límites.**
+- Son solo 6 puntos, no las 442 celdas.
+- ERA5 baja 4-5 pp en Puerto Plata, Santiago y Constanza, en el norte y la montaña. Ahí parte de la caída de IMERG
+  podría ser real o compartida.
+- ERA5 también cambia con las observaciones que asimila a lo largo de los años.
+- El recálculo de P0 corrigió con un escalón en 2014. Una corrección por deriva gradual sería más fiel, aunque se
+  espera que las disputas bajen parecido, porque cualquier corte entre 2010 y 2017 funcionaba.
+
+## Veredicto actual de la hipótesis (tras ERA5 y la revisión independiente)
+
+En paralelo, otra sesión escribió una revisión independiente (`reports_nacional/REVISION_JANE.md`, no es de este
+chat). Llega por otro camino a lo mismo que ERA5:
+- Con una serie sintética que sube en línea recta y no tiene ningún salto, el ajuste A_frec quita el 74,6 % de la
+  pendiente y Pettitt da p 0,0003. Es decir, ni la corrección ni Pettitt distinguen un escalón de una deriva gradual.
+- La variante corregida produce 8.375 valores imposibles (rachas e intensidades negativas).
+- ERA5 se usa como información auxiliar en GPROF (IMERG Final), así que no es un testigo del todo independiente.
+
+Verifiqué dos puntos de esa revisión:
+- El umbral del motor es q = 0,10 (`ALPHA_FDR = 2·α`, Wilks 2016) y no 0,05. Se corrigió el pie de la figura 08.
+- El contraejemplo sintético está en `results/tropical/revision/resumen.json`.
+
+**Hipótesis original:** «Un escalón de IMERG en octubre de 2013 explica el 82 % de las contradicciones».
+**No se sostiene así.** La fecha falla frente a ERA5 (2016-10), la forma (escalón frente a deriva) no está
+identificada y el 82 % mide la sensibilidad a un ajuste, no un mecanismo demostrado.
+
+**Hipótesis reformulada:** «IMERG cuenta cada vez menos días de lluvia que sus testigos, sin que la cantidad cambie
+de forma detectable; por eso no se pueden confirmar sus tendencias de intensidad y de rachas secas».
+**Se sostiene, con límites.** Tiene tres testigos, ninguno perfecto:
+- **Pluviómetros:** IMERG cae más que la estación en los 4 sitios.
+- **CHIRPS:** estable frente a ERA5.
+- **ERA5:** IMERG −6,3 pp, ERA5 −1,9 pp.
+
+**Cambios que esto pide:**
+- La figura 08 y el conmutador de la web deben presentarse como *sensibilidad*: «ajuste hacia CHIRPS», no «sin el
+  escalón».
+- En los textos, «escalón de 2013» pasa a «posible deriva de IMERG en la frecuencia de días de lluvia».

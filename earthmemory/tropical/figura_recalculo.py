@@ -88,7 +88,7 @@ def figura(t):
              f"{rs1['pendiente_pct_decada']:+.1f} % (p = {rs1['p']:.2f}). The two products were not describing two "
              "different climates.\nOnly the frequency-based indices are corrected; rain amounts are left untouched.",
              ts=19, ss=10.5)
-    pie(fig, t, "Same P0 engine (Theil-Sen, Hamed-Rao Mann-Kendall, BH-FDR at q = 0.05, 442 cells, 2001-2024). Correction: per cell "
+    pie(fig, t, "Same P0 engine (Theil-Sen, Hamed-Rao Mann-Kendall, BH-FDR at q = 0.10 (2α, Wilks 2016), 442 cells, 2001-2024). Correction: per cell "
                "and index, the IMERG − CHIRPS mean difference\nafter vs before 2014 is subtracted from IMERG from 2014 on "
                "(CHIRPS as reference, supported by 4 GHCN-Daily gauges). Without a reference series the step and the trend\n"
                "cannot be separated (variant B fabricates trends). NASA GPM IMERG V07 · CHIRPS v2.0 · Stellar Horizons · "

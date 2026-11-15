@@ -1,0 +1,8 @@
+{
+  "registradas_utc": "2026-11-15T13:17:40.654221+00:00",
+  "E1": "La serie mensual desestacionalizada de frecuencia de días húmedos IMERG − ERA5 tiene un punto de cambio entre 2012-10 y 2014-12 con p < 0,05 (permutación de bloques de 12 meses).",
+  "E2": "En ERA5 la frecuencia de días húmedos después − antes de 2013-10 cambia menos de 2 pp (media de puntos), mientras IMERG baja al menos 4 pp en los mismos puntos.",
+  "E3": "CHIRPS − ERA5 no tiene un punto de cambio significativo (p ≥ 0,05) entre 2012-10 y 2014-12.",
+  "E4": "En la CANTIDAD de lluvia (log IMERG/ERA5) no hay un salto significativo en esa ventana.",
+  "refutacion": "Si ERA5 baja tanto como IMERG (E2 falla) o CHIRPS − ERA5 salta igual (E3 falla), el escalón no es solo de IMERG."
+}
