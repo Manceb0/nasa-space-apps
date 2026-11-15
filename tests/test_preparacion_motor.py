@@ -22,6 +22,28 @@ def site(records):
 
 
 class ScientificMotorTests(unittest.TestCase):
+    def test_cyclone_calendar_does_not_gate_rain_attention_or_imply_active_storm(self):
+        guide = m.decision_guidance("villa-riva", "2026-01-15T00:00:00Z", "watch", False)
+        self.assertFalse(guide["atlantic_climatological_season"])
+        self.assertEqual(guide["decisions_to_verify"][0]["id"], "verify_heavy_rain_preparedness")
+        self.assertEqual(guide["current_cyclone_status"], "not_ingested_calendar_is_not_an_active_storm")
+
+    def test_yuna_requires_camu_and_dam_inputs_instead_of_assuming_total_regulation(self):
+        guide = m.decision_guidance("villa-riva", AT, "below_rule", False)
+        self.assertIn("upstream_camu_rain_and_river_status", guide["domain_information_missing"])
+        self.assertIn("Hatillo does not regulate the entire Yuna basin", guide["hydrological_connections"])
+        self.assertTrue(guide["no_threshold_exceedance_is_not_flood_clearance"])
+
+    def test_deficit_does_not_cancel_heavy_rain_attention(self):
+        guide = m.decision_guidance("bonao", AT, "watch", True)
+        self.assertEqual({d["id"] for d in guide["decisions_to_verify"]}, {"verify_heavy_rain_preparedness", "verify_water_availability"})
+        self.assertFalse(guide["operational_benefit_validated"])
+
+    def test_unknown_territory_does_not_inherit_yuna_hydrology(self):
+        guide = m.decision_guidance("unknown", AT, "insufficient", False)
+        self.assertEqual(guide["territorial_profile"], "not_characterized")
+        self.assertEqual(guide["hydrological_connections"], [])
+
     def test_dependencies_follow_shared_upstream_inputs_without_independence_claims(self):
         graph = {"edges": [["IMERG", "ERA5", "auxiliary"], ["ERA5", "SATELLITES", "assimilation"],
                            ["GFS", "SATELLITES", "assimilation"]]}

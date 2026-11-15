@@ -1,7 +1,7 @@
 {
-  "validated_at": "2026-11-15T17:19:11.359Z",
+  "validated_at": "2026-11-15T17:36:00.601Z",
   "package_sha256": "90b9b43d1e9c7141d23d281068b4580f7da54859bad2bce019b92bfb647c8dad",
-  "engine_sha256": "bd1b1c5a4fc5b8062458c3cfe425df76583524f1706dce8bb297251d642dfb1f",
+  "engine_sha256": "71d83df4c4852c5302c0fed2a6b0533381af5cec580d2016dc567a8b09776b67",
   "external_network_used": false,
   "checks": [
     {
@@ -63,13 +63,13 @@
   ],
   "scenarios": {
     "baseline": {
-      "decision_at": "2026-11-15T17:19:11.359Z",
+      "decision_at": "2026-11-15T17:36:00.601Z",
       "disabled_sources": [],
       "cases": [
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "bonao",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -634,6 +634,38 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "upper_yuna_above_hatillo",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -663,9 +695,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "cotui",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -1230,6 +1262,38 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "lower_yuna",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -1259,9 +1323,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "villa-riva",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -1826,6 +1890,50 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "lower_yuna",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [
+              {
+                "id": "verify_water_availability",
+                "status": "requires_verification",
+                "question": "¿El déficit de lluvia está afectando la disponibilidad de agua o las necesidades de riego?",
+                "needed": [
+                  "water_storage_and_supply",
+                  "local_measurement",
+                  "crop_stage_and_water_demand_if_relevant"
+                ],
+                "rule": "eligible_30_or_90_day_ERA5_percentile_at_or_below_20_not_measured_impact"
+              }
+            ],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -1859,9 +1967,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "monte-cristi",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -2426,6 +2534,31 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "monte_cristi_rainfall_deficit_pilot",
+            "hydrological_connections": [],
+            "territorial_source": null,
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -2457,15 +2590,15 @@
       ]
     },
     "sin_gfs": {
-      "decision_at": "2026-11-15T17:19:11.359Z",
+      "decision_at": "2026-11-15T17:36:00.601Z",
       "disabled_sources": [
         "GFS"
       ],
       "cases": [
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "bonao",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -2963,6 +3096,38 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "upper_yuna_above_hatillo",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -2998,9 +3163,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "cotui",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -3498,6 +3663,38 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "lower_yuna",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -3533,9 +3730,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "villa-riva",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -4032,6 +4229,50 @@
             ],
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "lower_yuna",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [
+              {
+                "id": "verify_water_availability",
+                "status": "requires_verification",
+                "question": "¿El déficit de lluvia está afectando la disponibilidad de agua o las necesidades de riego?",
+                "needed": [
+                  "water_storage_and_supply",
+                  "local_measurement",
+                  "crop_stage_and_water_demand_if_relevant"
+                ],
+                "rule": "eligible_30_or_90_day_ERA5_percentile_at_or_below_20_not_measured_impact"
+              }
+            ],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
           },
           "supporting": [
             {
@@ -4072,9 +4313,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "monte-cristi",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -4572,6 +4813,31 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "monte_cristi_rainfall_deficit_pilot",
+            "hydrological_connections": [],
+            "territorial_source": null,
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -4609,15 +4875,15 @@
       ]
     },
     "sin_era5": {
-      "decision_at": "2026-11-15T17:19:11.359Z",
+      "decision_at": "2026-11-15T17:36:00.601Z",
       "disabled_sources": [
         "ERA5"
       ],
       "cases": [
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "bonao",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -4764,6 +5030,38 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "upper_yuna_above_hatillo",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -4799,9 +5097,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "cotui",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -4948,6 +5246,38 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "lower_yuna",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -4983,9 +5313,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "villa-riva",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -5132,6 +5462,38 @@
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
           },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "lower_yuna",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
+          },
           "supporting": [
             {
               "claim": "provincial_historical_context",
@@ -5167,9 +5529,9 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "monte-cristi",
-          "decision_at": "2026-11-15T17:19:11.359Z",
+          "decision_at": "2026-11-15T17:36:00.601Z",
           "rain": {
             "state": "below_rule",
             "agreement": "below_exploratory_rule",
@@ -5315,6 +5677,31 @@
             ],
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "monte_cristi_rainfall_deficit_pilot",
+            "hydrological_connections": [],
+            "territorial_source": null,
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
           },
           "supporting": [
             {
@@ -5357,7 +5744,7 @@
       "disabled_sources": [],
       "cases": [
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "bonao",
           "decision_at": "2026-11-15T16:34:08.362Z",
           "rain": {
@@ -5386,6 +5773,38 @@
             "pairs": [],
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "upper_yuna_above_hatillo",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
           },
           "supporting": [],
           "contradictions": [],
@@ -5438,7 +5857,7 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "cotui",
           "decision_at": "2026-11-15T16:34:08.362Z",
           "rain": {
@@ -5467,6 +5886,38 @@
             "pairs": [],
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "lower_yuna",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
           },
           "supporting": [],
           "contradictions": [],
@@ -5519,7 +5970,7 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "villa-riva",
           "decision_at": "2026-11-15T16:34:08.362Z",
           "rain": {
@@ -5548,6 +5999,38 @@
             "pairs": [],
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "lower_yuna",
+            "hydrological_connections": [
+              "Hatillo does not regulate the entire Yuna basin",
+              "Camu joins the Yuna downstream of Hatillo",
+              "Municipal point rainfall does not measure upstream basin rainfall"
+            ],
+            "territorial_source": "reports_nacional/CASO_YUNA.md",
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability",
+              "upstream_camu_rain_and_river_status",
+              "upstream_yuna_rain_and_river_status",
+              "hatillo_storage_inflow_outflow"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
           },
           "supporting": [],
           "contradictions": [],
@@ -5600,7 +6083,7 @@
           ]
         },
         {
-          "rule_version": "municipal-evidence-1.0",
+          "rule_version": "municipal-evidence-1.1",
           "site_id": "monte-cristi",
           "decision_at": "2026-11-15T16:34:08.362Z",
           "rain": {
@@ -5629,6 +6112,31 @@
             "pairs": [],
             "probability_estimated": false,
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "decision_support": {
+            "intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": true,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": "monte_cristi_rainfall_deficit_pilot",
+            "hydrological_connections": [],
+            "territorial_source": null,
+            "decisions_to_verify": [],
+            "domain_information_missing": [
+              "current_official_cyclone_bulletin",
+              "verified_local_exposure_and_vulnerability"
+            ],
+            "rainfall_deficit_and_flood_potential_can_coexist": true,
+            "no_threshold_exceedance_is_not_flood_clearance": true,
+            "operational_benefit_validated": false,
+            "unmodeled_hazards": [
+              "wind",
+              "storm_surge",
+              "landslides",
+              "urban_drainage_failure"
+            ],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"
           },
           "supporting": [],
           "contradictions": [],

@@ -37,7 +37,7 @@ Cada `EvidenceRecord` lleva `id`, `source_id`, `kind`, `site_id`, coordenadas `r
 
 `kind` distingue `forecast`, `reanalysis` y `observation`. `issued_at=null` significa emisión desconocida: no se sustituye por la captura. La captura es un límite conservador de disponibilidad en nuestro sistema, no una reconstrucción de la publicación original del proveedor.
 
-`InvestigationCase` devuelve `rain`, `drought`, `historical_context_sources`, `local`, `supporting`, `contradictions`, `missing`, `excluded`, `dependencies`, `tasks` y `limits`, con `rule_version` y `decision_at`. Las envolturas CLI/API identifican además el motor cargado y el paquete mediante SHA-256.
+`InvestigationCase` devuelve `rain`, `drought`, `historical_context_sources`, `local`, `supporting`, `contradictions`, `missing`, `excluded`, `dependencies`, `decision_support`, `tasks` y `limits`, con `rule_version` y `decision_at`. Las envolturas CLI/API identifican además el motor cargado y el paquete mediante SHA-256.
 
 Las fechas de entrada necesitan zona explícita. Se normalizan a UTC. El motor excluye captura o recuperación posteriores a la decisión, emisión futura, observaciones cuyo intervalo aún no terminó y registros inválidos. Pronósticos con recuperación de hace más de 12 horas o periodo terminado se excluyen; reanálisis con final del periodo de hace más de ocho días también. Son políticas conservadoras del prototipo, no estándares meteorológicos validados.
 
@@ -122,8 +122,16 @@ Se limita el cuerpo a 1 MB y cada lote a 100 mediciones nuevas; se exige `applic
 
 ## Validación y lo que sigue abierto
 
-**20 pruebas automatizadas aprobadas**, sin proveedores externos: calendario, umbrales, ausentes/cero, continuidad horaria, ventanas simultáneas, selección sin maximizar acuerdo, disponibilidad temporal, vencimiento, coordenadas, duplicados, conflictos, dependencias, sensibilidad de referencia, mediciones y contrato HTTP. Incluyen una caída simulada de proveedor.
+**24 pruebas automatizadas aprobadas**, sin proveedores externos: calendario, umbrales, ausentes/cero, continuidad horaria, ventanas simultáneas, selección sin maximizar acuerdo, disponibilidad temporal, vencimiento, coordenadas, duplicados, conflictos, dependencias, sensibilidad de referencia, mediciones y contrato HTTP. Incluyen una caída simulada de proveedor y cuatro controles de conexión territorial y decisiones.
 
 **14 comprobaciones aprobadas con el paquete real**, archivadas en `results/preparacion/VALIDACION_CIENTIFICA.json`: cuatro pilotos, ingestión sin errores, referencias verificadas, percentiles recalculados, retirada de GFS/ERA5, reproducción anterior a captura, dependencias e igualdad entre API y motor puro. La validación levanta un servidor efímero y lo cierra; no necesita acceso externo. Al repetirla con una captura vencida, los controles de cobertura pueden fallar deliberadamente: hay que actualizar el paquete, no relajar las reglas.
 
 Esto valida el funcionamiento y coherencia del prototipo, no la exactitud de sus pronósticos. Quedan pendientes una evaluación prospectiva con archivos de corridas realmente capturados antes de las decisiones, verificación territorial/hidrológica, calibración de reglas con responsables locales, validación de mediciones y evaluación de costes de actuar o esperar. Un hindcast o una hora de inicialización no demuestra disponibilidad histórica: véase [Single Runs API](https://open-meteo.com/en/docs/single-runs-api).
+
+## Conexión territorial y decisión (reglas 1.1)
+
+`decision_support` conecta señales con preguntas de preparación, no con órdenes automáticas. Conserva por separado la temporada climatológica atlántica (junio–noviembre), el estado ciclónico actual (`not_ingested`) y el peligro de lluvia previsto. Estar en temporada no prueba un ciclón activo; estar fuera no suprime una señal de lluvia. Viento, marejada, deslizamientos y drenaje urbano se identifican como peligros no modelados.
+
+Para los tres puntos del Yuna se explicitan aportes de aguas arriba y del Camú, y la información faltante de entradas/salidas/almacenamiento de Hatillo. La presa no regula toda la cuenca. No hay pronóstico de caudal ni tiempos de propagación. Monte Cristi no hereda esas conexiones del Yuna. El conocimiento territorial es contexto actual y se etiqueta como tal; no se presenta como información disponible en una reproducción operacional histórica.
+
+Una señal de lluvia en cualquiera de los modelos genera la pregunta de qué preparativos verificar, aunque falte confirmación. Un déficit genera la pregunta de disponibilidad de agua y demanda, no una recomendación de riego. Ambas preguntas pueden coexistir. Los datos de comunidades, rutas, vulnerabilidad y estado real de agua siguen faltando: no se inventa exposición. La aceptación del expediente por responsables municipales y su beneficio operacional siguen sin validar. El razonamiento territorial y la ruta de evaluación se detallan en `SOLUCION_LIMITES_Y_PREPARACION.md`.

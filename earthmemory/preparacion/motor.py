@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from hashlib import sha256
 
-RULE_VERSION = "municipal-evidence-1.0"
+RULE_VERSION = "municipal-evidence-1.1"
 ENGINE_SHA256 = sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -177,6 +177,43 @@ def dependencies(graph: dict | None, sources: list[str]) -> dict:
             "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"}
 
 
+def decision_guidance(site_id: str, decision: str, rain_state: str, deficit: bool) -> dict:
+    """Conecta señales con preguntas municipales, sin fabricar exposición ni acciones validadas."""
+    yuna = site_id in {"bonao", "cotui", "villa-riva"}
+    decisions = []
+    if rain_state == "watch":
+        decisions.append({"id": "verify_heavy_rain_preparedness", "status": "requires_verification",
+            "question": "¿Qué preparativos deben revisar los responsables ante la lluvia prevista?",
+            "needed": ["official_bulletin", "forecast_interval", "local_rain_or_river_measurement",
+                       "exposed_communities_and_access_routes"],
+            "rule": "any_eligible_model_above_exploratory_rule_even_without_confirmation"})
+    if deficit:
+        decisions.append({"id": "verify_water_availability", "status": "requires_verification",
+            "question": "¿El déficit de lluvia está afectando la disponibilidad de agua o las necesidades de riego?",
+            "needed": ["water_storage_and_supply", "local_measurement", "crop_stage_and_water_demand_if_relevant"],
+            "rule": "eligible_30_or_90_day_ERA5_percentile_at_or_below_20_not_measured_impact"})
+    missing = ["current_official_cyclone_bulletin", "verified_local_exposure_and_vulnerability"]
+    if yuna:
+        missing.extend(["upstream_camu_rain_and_river_status", "upstream_yuna_rain_and_river_status", "hatillo_storage_inflow_outflow"])
+    return {"intended_user": "municipal_technical_team_with_official_agencies",
+            "context_basis": "current_domain_knowledge_not_a_historical_operational_replay",
+            "atlantic_climatological_season": 6 <= instant(decision).month <= 11,
+            "cyclone_calendar_source": "https://www.nhc.noaa.gov/climo/index.php",
+            "current_cyclone_status": "not_ingested_calendar_is_not_an_active_storm",
+            "territorial_profile": ("upper_yuna_above_hatillo" if site_id == "bonao" else "lower_yuna" if yuna else
+                                    "monte_cristi_rainfall_deficit_pilot" if site_id == "monte-cristi" else "not_characterized"),
+            "hydrological_connections": (["Hatillo does not regulate the entire Yuna basin",
+                                           "Camu joins the Yuna downstream of Hatillo",
+                                           "Municipal point rainfall does not measure upstream basin rainfall"] if yuna else []),
+            "territorial_source": "reports_nacional/CASO_YUNA.md" if yuna else None,
+            "decisions_to_verify": decisions, "domain_information_missing": missing,
+            "rainfall_deficit_and_flood_potential_can_coexist": True,
+            "no_threshold_exceedance_is_not_flood_clearance": True,
+            "operational_benefit_validated": False,
+            "unmodeled_hazards": ["wind", "storm_surge", "landslides", "urban_drainage_failure"],
+            "planning_question": "¿Dónde conviene verificar o mejorar mediciones antes de confiar en una tendencia?"}
+
+
 def investigate(site: dict, decision: str, disabled=(), local=(), graph=None) -> dict:
     instant(decision)  # Una fecha inválida detiene el análisis, no se sustituye por ahora.
     excluded, eligible = [], []
@@ -271,6 +308,9 @@ def investigate(site: dict, decision: str, disabled=(), local=(), graph=None) ->
                         "metrics": metrics, "record_id": era["id"] if era else None, "metric_errors": metric_errors},
             "historical_context_sources": sorted(set(context)), "local": reports, "missing": missing,
             "dependencies": dependencies(graph, [*latest.keys(), *context]),
+            "decision_support": decision_guidance(site["id"], decision,
+                "insufficient" if not covered else "watch" if watch else "below_rule",
+                any(m["percentile"] <= 20 for m in metrics)),
             "supporting": ([{"claim": "same_window_exceedance", "sources": [m["source"] for m in models if m["same_window_mm"] is not None and m["same_window_mm"] > 100],
                              "independence": "not_assumed"}] if watch else []) +
                           ([{"claim": "provincial_historical_context", "sources": sorted(set(context))}] if context else []),

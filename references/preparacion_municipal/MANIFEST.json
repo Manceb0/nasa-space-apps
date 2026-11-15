@@ -1,0 +1,52 @@
+[
+  {
+    "url": "https://gdex.ucar.edu/datasets/d084001/",
+    "retrieved_at": "2026-11-15T17:32:03.738436+00:00",
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "final_url": "https://gdex.ucar.edu/datasets/d084001/",
+    "path": "ncar_gfs.html",
+    "bytes": 71013,
+    "sha256": "70b0c9f3ec5e806ac17fe5fc35cbad0fc7f9eb7fc3f37dc5537dc81185ef8999"
+  },
+  {
+    "url": "https://www.ecmwf.int/en/forecasts/datasets/tigge-global-medium-range-ensemble-forecasts-multiple-nwp-centres-2006",
+    "retrieved_at": "2026-11-15T17:32:04.644035+00:00",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.ecmwf.int/en/forecasts/datasets/tigge-global-medium-range-ensemble-forecasts-multiple-nwp-centres-2006",
+    "path": "ecmwf_tigge.html",
+    "bytes": 46777,
+    "sha256": "b993bc7cb89ae37e94bfd386b387d03ef4d35f136f8390c9b03f947bf835788d"
+  },
+  {
+    "url": "https://gpm.nasa.gov/node/3328",
+    "retrieved_at": "2026-11-15T17:32:05.607735+00:00",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://gpm.nasa.gov/node/3328",
+    "path": "nasa_imerg_acceso.html",
+    "bytes": 30792,
+    "sha256": "aa74e2c7b750dae41f8b0fd9b59fae415ea5a6878b7490616249d58e97b996d0"
+  },
+  {
+    "url": "https://gpm.nasa.gov/data/imerg",
+    "retrieved_at": "2026-11-15T17:32:06.099763+00:00",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://gpm.nasa.gov/data/imerg",
+    "path": "nasa_imerg_documentacion.html",
+    "bytes": 86245,
+    "sha256": "b6e3940f9bb5f4ad082b38662d015eef8ca2454c4ddc9cedd8036b48aa50500c"
+  },
+  {
+    "url": "https://meetingorganizer.copernicus.org/EGU25/EGU25-17698.html",
+    "retrieved_at": "2026-11-15T17:32:06.615070+00:00",
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "final_url": "https://meetingorganizer.copernicus.org/EGU25/EGU25-17698.html",
+    "path": "egu25_17698.html",
+    "bytes": 148139,
+    "sha256": "57d629ffd67d4bcf7dd350ec37e1905cc591b16883fc7dad56723ed9aa2977d3"
+  }
+]

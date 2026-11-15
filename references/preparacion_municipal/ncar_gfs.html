@@ -1,0 +1,1621 @@
+
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="NSF NCAR GDEX">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta class="foundation-mq">
+        <link rel="canonical" href="https://gdex.ucar.edu">
+        
+<link rel="icon" type="image/png" href="/static/img/app-favicons/gdex/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/static/img/app-favicons/gdex/favicon.svg" />
+<link rel="shortcut icon" href="/static/img/app-favicons/gdex/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/static/img/app-favicons/gdex/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="GDEX" />
+<link rel="manifest" href="/static/img/app-favicons/gdex/site.webmanifest" />
+
+        
+        
+        <!-- Load Font Awesome v6 core styles and the Solid and Brands styles -->
+        <link rel="preload" href="/static/unity/lib/fontawesome/css/fontawesome.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="/static/unity/lib/fontawesome/css/fontawesome.css">
+        <link rel="preload" href="/static/unity/lib/fontawesome/css/brands.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="/static/unity/lib/fontawesome/css/brands.css">
+        <link rel="preload" href="/static/unity/lib/fontawesome/css/solid.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="/static/unity/lib/fontawesome/css/solid.css">
+
+        <!-- Font Awesome v5 backward compatability -->
+        <link rel="preload" href="/static/unity/lib/fontawesome/css/v5-font-face.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link href="/static/unity/lib/fontawesome/css/v5-font-face.css" rel="stylesheet" />
+
+        <noscript>
+        <link rel="stylesheet" href="/static/unity/lib/fontawesome/css/fontawesome.css">
+        <link rel="stylesheet" href="/static/unity/lib/fontawesome/css/brands.css">
+        <link rel="stylesheet" href="/static/unity/lib/fontawesome/css/solid.css">
+        </noscript>
+
+        
+        <link rel="preload" href="/static/unity/lib/icomoon/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="/static/unity/lib/icomoon/style.css" as="style">
+        <noscript><link rel="stylesheet" href="/static/unity/lib/icomoon/style.css"></noscript>
+
+        
+        <link rel="preload" href="/static/unity/lib/icomoon2/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="/static/unity/lib/icomoon2/style.css" as="style">
+        <noscript><link rel="stylesheet" href="/static/unity/lib/icomoon2/style.css"></noscript>
+
+        
+        <link rel="preload" href="/static/unity/css/main.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="/static/unity/css/main.min.css">
+        <noscript><link rel="stylesheet" href="/static/unity/css/main.min.css"></noscript>
+        <link rel="preload" href="/static/unity/css/print.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" media="print">
+        <link rel="stylesheet" href="/static/unity/css/print.min.css" media="print">
+        <noscript><link rel="stylesheet" href="/static/unity/css/print.min.css" media="print"></noscript>
+
+        
+        <link rel="stylesheet" href="/static/css/gdexwebserver.css" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="/static/css/gdex-theme-vars.css" media="print" onload="this.media='all'">
+
+        
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap">
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"></noscript>
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap">
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"></noscript>
+        
+        
+        <link rel="stylesheet" href="/static/css/jquery-ui.min.css">
+        
+
+        <title>
+            
+NSF NCAR GDEX Dataset d084001
+
+            
+                
+                
+            
+        </title>
+
+        
+        
+
+
+
+<script type="text/javascript" src="/static/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
+
+<script language="javascript">
+    var gmap3_loaded = false;
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1Q6C0RXMYP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-1Q6C0RXMYP'); 
+</script>
+
+
+<script language="javascript">
+    const mapped_urls = new Map();
+    mapped_urls.set('about', "/support/about-the-rda/");
+    mapped_urls.set('apps_api_desc', "/resources/web-services/rda-external-application-api/");
+    mapped_urls.set('daas', "/resources/daas/");
+    mapped_urls.set('data-citation', "/resources/citations/");
+    mapped_urls.set('metrics', "/resources/metrics/");
+    mapped_urls.set('services', "/resources/ancillary-services/");
+    mapped_urls.set('rda_web_services', "/resources/web-services/");
+
+    window.onload=respondToHashChange;
+    function respondToHashChange() {
+      var hash = document.location.hash.substr(1);
+      if (hash.charAt(0) == '!') {
+        hash = hash.substr(1);
+      }
+      if (hash.length > 0 && document.location.pathname.indexOf("ajax") < 0) {
+        var hash0 = hash;
+        var hash1 = "";
+        var idx = hash0.indexOf("/");
+        if (idx > 0) {
+          hash0 = hash0.substr(0, idx);
+          hash1 = hash0.substr(idx);
+        }
+        var m_url = mapped_urls.get(hash0);
+        if (m_url != undefined) {
+          alert("NOTICE: You are using a legacy URL that will not be supported in the future. If this was a bookmark, you should replace it with the new URL, to which you will now be redirected.");
+          document.location = m_url + hash1;
+        } else {
+          document.location = document.location.pathname + "ajax/#" + hash;
+        }
+      }
+    }
+</script>
+
+
+
+        
+        
+
+        
+        
+    </head>
+
+    <body class="ncar">
+        
+
+
+
+<header>
+    <nav class="navbar navbar-expand-md navbar-light align-items-start py-0">
+        <div class="container-fluid px-0">
+            <div class="row gx-0 flex-grow-1">
+                
+                <div class="col-12">
+    <div class="container-lg">
+        <div class="row gx-0 py-md-1">
+                
+                <div class="col col-md-8 py-md-1">
+<div class="d-flex">
+    <div class="my-1 py-md-0 align-self-center logo-ncar">
+        <div class="mb-0">
+            <a href="/">
+                
+
+
+<picture>
+    <source srcset="/media/original_images/logo-ncar-2026.webp" type="image/webp">
+    <source srcset="/media/original_images/logo-ncar-2026.png"  type="image/jpeg+png">
+    <img class="img-fluid" src="/media/original_images/logo-ncar-2026.png" alt="NSF NCAR">
+</picture>
+
+            </a>
+        </div>
+    </div>
+    <div class="site-name mx-1 mx-md-2">
+        <a href="/">Geoscience Data Exchange (GDEX)</a>
+    </div>
+    <div class="ms-auto px-0 py-md-0 d-md-none justify-content-end mobile-toggler">
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Mobile Menu" class="navbar-toggler collapsed btn border-start" data-bs-target="#navbarSupportedContent1,#navbarSupportedContent2" data-bs-toggle="collapse" id="menuIcon" type="button"></button>
+    </div>
+</div>
+</div>
+                
+
+                
+                <div class="utility-menu col collapse d-none d-md-flex justify-content-end align-items-center pe-0">
+    <div class="px-2">
+        <a href="mailto:datahelp@ucar.edu">Contact Us</a>
+    </div>
+    
+        <div class="ps-2">
+            <a href="/accounts/login/?next=/datasets/d084001/" class="btn btn-pill btn-primary px-2 py-1 border-1" aria-label="Sign In">Sign In</a>
+        </div>
+    
+</div>
+
+                
+
+        </div>
+    </div>
+</div>
+                
+
+                
+                
+
+<div class="col-12 navbar-wrapper border-top">
+    <div class="container-lg collapse navbar-collapse" id="navbarSupportedContent1">
+        
+
+<ul class="menu navbar-nav me-auto mb-2 mb-md-0 align-items-center">
+    
+        <li class="nav-item dropdown d-flex flex-wrap justify-content-between">
+            
+                
+                    <a class="nav-link" aria-current="page" href="/gsearch/dataset-search/">Find Data</a>
+                
+            
+            
+                <button aria-expanded="false" aria-label="Expand/Collapse" class="btn dropdown-toggle px-3 px-md-0 mx-md-1" data-bs-toggle="dropdown" id="find-data" role="button" href="#"></button>
+                <ul class="dropdown-menu" aria-labelledby="find-data">
+                    
+                    <li>
+                        <a class="dropdown-item" href="/gsearch/dataset-search/">Search GDEX</a>
+                    </li>
+                    
+                    <li>
+                        <a class="dropdown-item" href="/datasets/collections/">Curated Dataset Collections</a>
+                    </li>
+                    
+                </ul>
+            
+        </li>
+    
+
+    
+        <li class="nav-item dropdown d-flex flex-wrap justify-content-between">
+            <a class="nav-link " aria-current="page" href="/about-gdex/">About</a>
+            
+                <button aria-expanded="false" aria-label="Expand/Collapse" class="btn dropdown-toggle px-3 px-md-0 mx-md-1" data-bs-toggle="dropdown" id="about" role="button" href="#"></button>
+                
+
+
+    <ul class="dropdown-menu" aria-labelledby="">
+        
+            <li class="">
+                <a class="dropdown-item" href="/about-gdex/empowering-scalable-collaborative-science/">Empowering Scalable, Collaborative Science</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/about-gdex/a-20-year-legacy-of-open-climate-data-access/">History of GDEX</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/about-gdex/ndcc-osdf/">Integration with OSDF Infrastructure</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/about-gdex/metrics/">Most Popular Datasets and Usage Statistics</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/about-gdex/data-policies/">Data Policies</a>
+                
+            </li>
+        
+    </ul>
+
+            
+        </li>
+    
+        <li class="nav-item dropdown d-flex flex-wrap justify-content-between">
+            <a class="nav-link " aria-current="page" href="/resources/">Resources</a>
+            
+                <button aria-expanded="false" aria-label="Expand/Collapse" class="btn dropdown-toggle px-3 px-md-0 mx-md-1" data-bs-toggle="dropdown" id="resources" role="button" href="#"></button>
+                
+
+
+    <ul class="dropdown-menu" aria-labelledby="">
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/getting-started/">Getting started</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/thredds/">THREDDS Data Server</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/gdex-notebook-examples/">Example Access and Analysis Notebooks</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/web-services/">Web Services</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/citations/">Data Citation</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/submit-new-dataset/">Submit New Dataset</a>
+                
+            </li>
+        
+            <li class=" dropdown">
+                <a class="dropdown-item" href="/resources/docs/">Documentation</a>
+                
+                    
+
+
+    <ul class="dropdown-menu" aria-labelledby="">
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/docs/dsmaint/">Dataset Maintenance</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/docs/mm-guide/">Guide to using the Metadata Manager</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/docs/search-browse/">Search and Browse Tools</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/docs/man-pages/">Man(ual) pages for GDEX utilities</a>
+                
+            </li>
+        
+    </ul>
+
+	            
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/resources/ancillary-services/">Specialized and Additional Services</a>
+                
+            </li>
+        
+    </ul>
+
+            
+        </li>
+    
+        <li class="nav-item dropdown d-flex flex-wrap justify-content-between">
+            <a class="nav-link " aria-current="page" href="/support/">Support</a>
+            
+                <button aria-expanded="false" aria-label="Expand/Collapse" class="btn dropdown-toggle px-3 px-md-0 mx-md-1" data-bs-toggle="dropdown" id="support" role="button" href="#"></button>
+                
+
+
+    <ul class="dropdown-menu" aria-labelledby="">
+        
+            <li class=" dropdown">
+                <a class="dropdown-item" href="/support/faqs/">Frequently Asked Questions (FAQs)</a>
+                
+                    
+
+
+    <ul class="dropdown-menu" aria-labelledby="">
+        
+            <li class="">
+                <a class="dropdown-item" href="/support/faqs/faqs/">Ways to Download Data</a>
+                
+            </li>
+        
+    </ul>
+
+	            
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/support/help-desk/">GDEX Data Help Desk</a>
+                
+            </li>
+        
+            <li class="">
+                <a class="dropdown-item" href="/support/ncar-hpc-user-support/">HPC User Support</a>
+                
+            </li>
+        
+    </ul>
+
+            
+        </li>
+    
+        <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="/news/">News</a>
+            
+        </li>
+    
+</ul>
+
+        
+        
+            <form id="header-search-form" class="utility-menu d-flex ms-2" name="header_search_form" action="/gsearch/dataset-search/">
+    <label class="sr-only" for="siteSearch">Search</label>
+    <input class="form-control" id="siteSearch" type="search" autocomplete="off" data-provide="typeahead" name="q" placeholder="Search" aria-label="Search" value="">
+    <button aria-label="Search" class="btn btn-primary" type="submit" >Search GDEX</button>
+</form>
+
+        
+    </div>
+</div>
+
+                
+
+                
+                <div class="col-12 mobile-utility-menu px-2 d-md-none">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent2">
+        <div class="py-2 contact">
+            <div>
+                <a href="/contact-us/">Contact Us</a>
+            </div>
+            
+                <div class="d-flex py-2">
+                    <a href="/accounts/login" class="btn btn-primary">Sign In</a>
+                </div>
+            
+        </div>
+    </div>
+</div>
+                
+            </div>
+        </div>
+    </nav>
+</header>
+
+        
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+    
+
+    
+
+
+
+        <main class="container-lg py-3 pt-md-4">
+            
+
+
+  <nav aria-label="breadcrumb" class="breadcrumb-wrapper mb-2 d-print-none">
+    <ol class=breadcrumb>
+        <li class='breadcrumb-item'> 
+          <a href='/'>Home</a>
+        </li>
+      
+        <li class='breadcrumb-item'>
+        
+          <a href='/datasets/'> datasets</a>
+        
+        </li>
+      
+        <li class='breadcrumb-item'>
+        
+          d084001
+        
+        </li>
+      
+    </ol> 
+  </nav>
+
+
+            
+<link rel="stylesheet" type="text/css" href="/static/datasets/css/filelist.css">
+
+    
+      
+        <meta name="DC.type" content="Dataset"/>
+<meta name="DC.identifier" content="https://doi.org/10.5065/D65D8PWK"/>
+<meta name="DC.creator" content="National Centers for Environmental Prediction/National Weather Service/NOAA/U.S. Department of Commerce"/>
+<meta name="DC.title" content="NCEP GFS 0.25 Degree Global Forecast Grids Historical Archive"/>
+<meta name="DC.date" content="2015-01-26" scheme="DCTERMS.W3CDTF"/>
+<meta name="DC.publisher" content="NSF National Center for Atmospheric Research"/>
+<meta name="DC.description" content="The NCEP operational Global Forecast System analysis and forecast grids are on a 0.25 by 0.25 global latitude longitude grid. Grids include analysis and forecast time steps at a 3 hourly interval from 0 to 240, and a 12 hourly interval from 240 to 384. Model forecast runs occur at 00, 06, 12, and 18 UTC daily. For real-time data access please use the NCEP data server [http://www.nco.ncep.noaa.gov/pmb/products/gfs/].\n\nNOTE: This dataset now has a direct, continuously updating copy located on AWS (https://noaa-gfs-bdp-pds.s3.amazonaws.com/index.html [https://noaa-gfs-bdp-pds.s3.amazonaws.com/index.html]). Therefore, the RDA will stop updating this dataset early 2026"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > AIR QUALITY > VISIBILITY"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ALTITUDE > GEOPOTENTIAL HEIGHT"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ALTITUDE > PLANETARY BOUNDARY LAYER HEIGHT"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE > GRAVITY WAVE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE > HYDROSTATIC PRESSURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE > SEA LEVEL PRESSURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > HEAT FLUX"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > LONGWAVE RADIATION"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > SHORTWAVE RADIATION"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > AIR TEMPERATURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > MAXIMUM/MINIMUM TEMPERATURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > UPPER AIR TEMPERATURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > UPPER AIR TEMPERATURE > POTENTIAL TEMPERATURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR INDICATORS > DEW POINT TEMPERATURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR INDICATORS > HUMIDITY"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR INDICATORS > TOTAL PRECIPITABLE WATER"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR PROCESSES > EVAPORATION"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > SURFACE WINDS"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > UPPER LEVEL WINDS"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > WIND DYNAMICS > VERTICAL WIND VELOCITY/SPEED"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > WIND DYNAMICS > VORTICITY"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > WIND DYNAMICS > WIND SHEAR"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > CLOUDS > CLOUD MICROPHYSICS > CLOUD LIQUID WATER/ICE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > CLOUDS > CLOUD PROPERTIES > CLOUD FREQUENCY"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION AMOUNT"/>
+<meta name="DC.subject" content="EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION RATE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > LAND MANAGEMENT > LAND USE/LAND COVER CLASSIFICATION"/>
+<meta name="DC.subject" content="EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT"/>
+<meta name="DC.subject" content="EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEMPERATURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > LAND SURFACE > SURFACE RADIATIVE PROPERTIES > ALBEDO"/>
+<meta name="DC.subject" content="EARTH SCIENCE > LAND SURFACE > SURFACE THERMAL PROPERTIES > SKIN TEMPERATURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE"/>
+<meta name="DC.subject" content="EARTH SCIENCE > OCEANS > SEA ICE > ICE DEPTH/THICKNESS"/>
+<meta name="DC.subject" content="EARTH SCIENCE > OCEANS > SEA ICE > ICE EXTENT"/>
+<meta name="DC.subject" content="EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > SNOW/ICE > SNOW DEPTH"/>
+<meta name="DC.subject" content="EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > SNOW/ICE > SNOW WATER EQUIVALENT"/>
+<meta name="DC.subject" content="EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > SURFACE WATER > SURFACE WATER PROCESSES/MEASUREMENTS > RUNOFF"/>
+<script type="application/ld+json">
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/"
+  },
+  "@type": "Dataset",
+  "@id": "https://doi.org/10.5065/D65D8PWK",
+  "name": "NCEP GFS 0.25 Degree Global Forecast Grids Historical Archive",
+  "description": "The NCEP operational Global Forecast System analysis and forecast grids are on a 0.25 by 0.25 global latitude longitude grid. Grids include analysis and forecast time steps at a 3 hourly interval from 0 to 240, and a 12 hourly interval from 240 to 384. Model forecast runs occur at 00, 06, 12, and 18 UTC daily. For real-time data access please use the NCEP data server [http://www.nco.ncep.noaa.gov/pmb/products/gfs/].\n\nNOTE: This dataset now has a direct, continuously updating copy located on AWS (https://noaa-gfs-bdp-pds.s3.amazonaws.com/index.html [https://noaa-gfs-bdp-pds.s3.amazonaws.com/index.html]). Therefore, the RDA will stop updating this dataset early 2026",
+  "publisher": {
+    "@type": "Organization",
+    "name": "NSF National Center for Atmospheric Research"
+  },
+  "datePublished": "2015-01-26",
+  "author": {
+    "@type": "Organization",
+    "name": "National Centers for Environmental Prediction/National Weather Service/NOAA/U.S. Department of Commerce"
+  },
+  "keywords": [
+    "EARTH SCIENCE > ATMOSPHERE > AIR QUALITY > VISIBILITY",
+    "EARTH SCIENCE > ATMOSPHERE > ALTITUDE > GEOPOTENTIAL HEIGHT",
+    "EARTH SCIENCE > ATMOSPHERE > ALTITUDE > PLANETARY BOUNDARY LAYER HEIGHT",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE > GRAVITY WAVE",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE > HYDROSTATIC PRESSURE",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC PRESSURE > SEA LEVEL PRESSURE",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > HEAT FLUX",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > LONGWAVE RADIATION",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC RADIATION > SHORTWAVE RADIATION",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > AIR TEMPERATURE",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > SURFACE TEMPERATURE > MAXIMUM/MINIMUM TEMPERATURE",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > UPPER AIR TEMPERATURE",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC TEMPERATURE > UPPER AIR TEMPERATURE > POTENTIAL TEMPERATURE",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR INDICATORS > DEW POINT TEMPERATURE",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR INDICATORS > HUMIDITY",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR INDICATORS > TOTAL PRECIPITABLE WATER",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WATER VAPOR > WATER VAPOR PROCESSES > EVAPORATION",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > SURFACE WINDS",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > UPPER LEVEL WINDS",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > WIND DYNAMICS > VERTICAL WIND VELOCITY/SPEED",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > WIND DYNAMICS > VORTICITY",
+    "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC WINDS > WIND DYNAMICS > WIND SHEAR",
+    "EARTH SCIENCE > ATMOSPHERE > CLOUDS > CLOUD MICROPHYSICS > CLOUD LIQUID WATER/ICE",
+    "EARTH SCIENCE > ATMOSPHERE > CLOUDS > CLOUD PROPERTIES > CLOUD FREQUENCY",
+    "EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION AMOUNT",
+    "EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION RATE",
+    "EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > LAND MANAGEMENT > LAND USE/LAND COVER CLASSIFICATION",
+    "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL MOISTURE/WATER CONTENT",
+    "EARTH SCIENCE > LAND SURFACE > SOILS > SOIL TEMPERATURE",
+    "EARTH SCIENCE > LAND SURFACE > SURFACE RADIATIVE PROPERTIES > ALBEDO",
+    "EARTH SCIENCE > LAND SURFACE > SURFACE THERMAL PROPERTIES > SKIN TEMPERATURE",
+    "EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
+    "EARTH SCIENCE > OCEANS > SEA ICE > ICE DEPTH/THICKNESS",
+    "EARTH SCIENCE > OCEANS > SEA ICE > ICE EXTENT",
+    "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > SNOW/ICE > SNOW DEPTH",
+    "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > SNOW/ICE > SNOW WATER EQUIVALENT",
+    "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > SURFACE WATER > SURFACE WATER PROCESSES/MEASUREMENTS > RUNOFF"
+  ],
+  "temporalCoverage": "2015-01-15T00:00/2026-11-27T21:00",
+  "spatialCoverage": {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoShape",
+      "box": "-90.0,-180.0 90.0,180.0"
+    }
+  },
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+      
+    
+    <script src="/js/xhr_content2.js"></script>
+    <script src="/js/popInfo.js"></script>
+
+    <script type="text/javascript">
+        function setActiveTab(tabId) {
+            var datasetTab = $('#datasetTab');
+            
+            // Remove 'active' class from all tabs
+            datasetTab.find('.nav-link').removeClass('active');
+            datasetTab.find('.nav-link').attr('aria-selected', 'false');
+
+            // Add 'active' class to the selected tab
+            $('#' + tabId).addClass('active');
+            $('#' + tabId).attr('aria-selected', 'true');
+        }
+
+        function setTab() {
+          path = document.location.pathname.substr(document.location.pathname.indexOf("/datasets") + 10);
+          path = path.substr(path.indexOf("/") + 1)
+          qs = document.location.search;
+          if (path.indexOf("dataaccess") == 0 || qs.indexOf("content=dataaccess") >= 0 || path.indexOf("listopt") == 0 || path.indexOf("custom-subset") == 0) {
+            setActiveTab("data-access-tab");
+          } else if (path.indexOf("citation") == 0) {
+            setActiveTab("citation-tab");
+          } else if (path.indexOf("documentation") == 0) {
+            setActiveTab("documentation-tab");
+          } else if (path.indexOf("software") == 0) {
+            setActiveTab("software-tab");
+          } else if (path.indexOf("metrics") == 0 || qs.indexOf("content=metrics") >= 0) {
+            setActiveTab("metrics-tab");
+          } else {
+            setActiveTab("description-tab");
+          }
+        }
+
+        function replace_ds_content(response) {
+          $('#ds_content').html(response);
+          $('html, body').animate({
+            scrollTop: $('#datasetTab').offset().top - $('header').height()
+          });
+        }
+
+        // shown_url (optional) is the address-bar URL when it differs from the fragment URL being fetched
+        function get_ajax_with_history(u, t = '', h = true, shown_url = u) {
+          $.get(u, replace_ds_content);
+          if (h) {
+            document.title = "NSF NCAR GDEX Dataset d084001 " + t;
+            window.history.pushState({'url': u, 'title': t}, "", shown_url);
+            setTab();
+          }
+        }
+
+        // Shareable address for a filelist fragment URL, kept under /dataaccess/ so a pasted link loads the full page:
+        // /datasets/dNNNNNN/filelist/[gindex/][?page=&fl=&filter_wfile=] -> /datasets/dNNNNNN/dataaccess/?view=filelist&...
+        // Returns null for URLs that are not filelist views. The trailing slash is optional because the
+        // subgroup and Back links are generated without one (e.g. /datasets/d083002/filelist/3).
+        function filelist_share_url(u) {
+          var m = u.match(/^\/datasets\/(d\d{6})\/filelist(?:\/(-?\d+))?\/?(?:\?(.*))?$/);
+          if (!m) return null;
+          var src = new URLSearchParams(m[3] || '');
+          var q = new URLSearchParams({'view': 'filelist'});
+          if (m[2] !== undefined) q.set('gindex', m[2]);
+          ['page', 'fl', 'filter_wfile'].forEach(function(k) {
+            if (src.get(k)) q.set(k, src.get(k));
+          });
+          return '/datasets/' + m[1] + '/dataaccess/?' + q.toString();
+        }
+
+        // Load a data access content fragment; filelist views also update the address bar so the page can be shared
+        function get_ds_content(u) {
+          var share = filelist_share_url(u);
+          if (share) {
+            get_ajax_with_history(u, 'Data Access', true, share);
+          } else {
+            $.get(u, replace_ds_content);
+          }
+        }
+
+        window.onpopstate = function(e) {
+          setTab();
+          if (document.location.hash !== "") return; //Do nothing if tag anchor
+          if (e.state) {
+            get_ajax_with_history(e.state.url, e.state.title, false);
+          } else {
+            get_ajax_with_history('', '', false);
+          }
+        };
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="/css/bubble.css">
+    <style>
+    .infosrc {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+      text-decoration-style: dashed;
+      cursor: help;
+    }
+    div.info {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      visibility: hidden;
+      max-width: 400px;
+      border: thin solid black;
+      padding: 3px 8px 3px 8px;
+      z-index: 998;
+      background-color: #c3d7ee;
+    }
+    div.dshead {
+        display: grid;
+        grid-template-columns: 1fr 9fr;
+        grid-gap: 10px;
+    }
+    .dshead .img {
+        grid-column: 1;
+        display: flex;
+        align-items: top;
+        justify-content: center;
+    }
+    .dshead .title {
+        grid-column: 2;
+    }
+    .disabled-tab {
+        color: #6c757d !important;
+        pointer-events: none !important;
+        cursor: default !important;
+    }
+    </style>
+
+        <div class="dshead">
+            <div class="img-fluid">
+                
+                    <img src="/images/ds_logos/gfs4c_452_432.png">
+                
+            </div>
+            <div class="title">
+                <h2 class="mb-0">NCEP GFS 0.25 Degree Global Forecast Grids Historical Archive</h2>
+                <div>
+                    <h5 class="d-inline mb-0">d084001</h5><h5 class="d-inline mb-0"> | DOI: 10.5065/D65D8PWK</h5>
+                    
+                    
+                    <img id="ds_bookmark_img" class="mb-1" src="/images/hollow-black-star.png" width="18" height="18" border="0" title="Click to bookmark this dataset" onclick="$.get('bookmark/', function(response) { $('#ds_bookmark_img').attr('src', '/images/' + response) })">
+                    
+                    
+                </div>
+            </div>
+        </div>
+        <div>&nbsp;<div class="float-end my-2 position-relative" style="z-index: 999"><a class="component-link i-angle-right--after" href="mailto:datahelp@ucar.edu?subject=Question about dataset d084001">Ask a Question</a></div></div>
+
+        
+        <ul class="nav nav-tabs" id="datasetTab" role="tablist">
+            <li class="nav-item" role="dataset">
+                <a class="nav-link px-3 py-2 active" id="description-tab" data-toggle="tab" href="javascript:void(0)" role="tab" aria-controls="description" aria-selected="true" onclick="get_ajax_with_history('/datasets/d084001/')">Description</a>
+            </li>
+            <li class="nav-item" role="dataset">
+                <a class="nav-link px-3 py-2 " id="data-access-tab" data-toggle="tab" href="javascript:void(0)" role="tab" aria-controls="data-access" aria-selected="false" onclick="get_ajax_with_history('/datasets/d084001/dataaccess/', 'Data Access')">Data Access</a>
+            </li>
+            <li class="nav-item" role="dataset">
+                <a class="nav-link px-3 py-2" id="citation-tab" data-toggle="tab" href="javascript:void(0)" role="tab" aria-controls="citation" aria-selected="false" onclick="get_ajax_with_history('/datasets/d084001/citation/', 'Citation')">Citation</a>
+            </li>
+            
+            <li class="nav-item" role="dataset">
+                <a class="nav-link px-3 py-2 " id="documentation-tab" data-toggle="tab" href="javascript:void(0)" role="tab" aria-controls="documentation" aria-selected="false" onclick="get_ajax_with_history('/datasets/d084001/documentation/', 'Documentation')">Documentation</a>
+            </li>
+            
+            
+            <li class="nav-item" role="dataset">
+                <a class="nav-link px-3 py-2 " id="software-tab" data-toggle="tab" href="javascript:void(0)" role="tab" aria-controls="software" aria-selected="false" onclick="get_ajax_with_history('/datasets/d084001/software/', 'Software')">Software</a>
+            </li>
+            
+            <li class="nav-item" role="dataset">
+                <a class="nav-link px-3 py-2" id="metrics-tab" data-toggle="tab" style='cursor:pointer' role="tab" onclick="switch_to_metrics()" aria-controls="metrics" aria-selected="false">Metrics</a>
+            </li>
+        </ul>
+        
+
+        
+        <div id="ds_content" class="dataset p-3">
+            
+                
+                
+
+
+
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Abstract:</div>
+    <div class="col-12 col-md-10"><p>The NCEP operational Global Forecast System analysis and forecast grids are on a 0.25 by 0.25 global latitude longitude grid.  Grids include analysis and forecast time steps at a 3 hourly interval from 0 to 240, and a 12 hourly interval from 240 to 384.  Model forecast runs occur at 00, 06, 12, and 18 UTC daily.  For real-time data access please use the <a href="http://www.nco.ncep.noaa.gov/pmb/products/gfs/">NCEP data server</a>.</p>
+<p style="color:red">NOTE: This dataset now has a direct, continuously updating copy located on AWS (<a href="https://noaa-gfs-bdp-pds.s3.amazonaws.com/index.html">https://noaa-gfs-bdp-pds.s3.amazonaws.com/index.html</a>). Therefore, the RDA will stop updating this dataset early 2026</p></div>
+</div>
+
+ 
+
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Temporal Range:</div>
+    <div class="col-12 col-md-10">2015-01-15 00:00 +0000 to 2026-11-30 12:00 +0000
+    
+    (Entire dataset)
+    <span class="d-block small mt-n1 mb-1">
+        <span id="DP0">
+            <b><a class="text-uppercase" style="color: black" href="javascript:swapDivs('P0', 'P1')" title="Expand dataset product period list">Period details by dataset product<span class="btn dropdown-toggle p-md-1" aria-hidden="true"></span></a></b>
+        </span>
+        <span id="DP1" style="visibility: hidden; position: absolute; top: 0; line-height: 1.25em">
+            <b><a class="text-uppercase" style="color: black" href="javascript:swapDivs('P1', 'P0')" title="Collapse dataset product period list">Period details by dataset product<span class="btn dropdown-toggle p-md-1 show" aria-hidden="true"></span></a></b>
+            <span class="d-block mt-n1"></span>
+            
+            <span class="d-block ms-3">2015-01-15 00:00 +0000 to 2016-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2015)</span>
+            
+            <span class="d-block ms-3">2016-01-01 00:00 +0000 to 2017-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2016)</span>
+            
+            <span class="d-block ms-3">2017-01-01 00:00 +0000 to 2018-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2017)</span>
+            
+            <span class="d-block ms-3">2018-01-01 00:00 +0000 to 2019-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2018)</span>
+            
+            <span class="d-block ms-3">2019-01-01 00:00 +0000 to 2020-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2019)</span>
+            
+            <span class="d-block ms-3">2020-01-01 00:00 +0000 to 2021-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2020)</span>
+            
+            <span class="d-block ms-3">2021-01-01 00:00 +0000 to 2022-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2021)</span>
+            
+            <span class="d-block ms-3">2022-01-01 00:00 +0000 to 2023-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2022)</span>
+            
+            <span class="d-block ms-3">2023-01-01 00:00 +0000 to 2024-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2023)</span>
+            
+            <span class="d-block ms-3">2024-01-01 00:00 +0000 to 2025-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2024)</span>
+            
+            <span class="d-block ms-3">2025-01-01 00:00 +0000 to 2026-01-16 18:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2025)</span>
+            
+            <span class="d-block ms-3">2026-01-01 00:00 +0000 to 2026-11-30 12:00 +0000 (NCEP GFS 0.25 Degree Analysis and Forecast Grids for 2026)</span>
+            
+        </span>
+    </span>
+    
+    </div>
+</div>
+
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Updates:</div>
+    <div class="col-12 col-md-10">Daily</div>
+</div>
+
+
+
+
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Variables:</div>
+    <div class="col-12 col-md-10">
+        <div class="table-responsive mb-1">
+            <table class="table mb-0">
+                <tr>
+                
+                    
+                    <td>Air Temperature</td>
+                
+                    
+                    <td>Albedo</td>
+                
+                    
+                    <td>Cloud Frequency</td>
+                
+                    
+                    <td>Cloud Liquid Water/Ice</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Dew Point Temperature</td>
+                
+                    
+                    <td>Evaporation</td>
+                
+                    
+                    <td>Geopotential Height</td>
+                
+                    
+                    <td>Gravity Wave</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Heat Flux</td>
+                
+                    
+                    <td>Humidity</td>
+                
+                    
+                    <td>Hydrostatic Pressure</td>
+                
+                    
+                    <td>Ice Depth/Thickness</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Ice Extent</td>
+                
+                    
+                    <td>Land Use/Land Cover Classification</td>
+                
+                    
+                    <td>Longwave Radiation</td>
+                
+                    
+                    <td>Maximum/Minimum Temperature</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Planetary Boundary Layer Height</td>
+                
+                    
+                    <td>Potential Temperature</td>
+                
+                    
+                    <td>Precipitation Amount</td>
+                
+                    
+                    <td>Precipitation Rate</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Runoff</td>
+                
+                    
+                    <td>Sea Level Pressure</td>
+                
+                    
+                    <td>Sea Surface Temperature</td>
+                
+                    
+                    <td>Shortwave Radiation</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Skin Temperature</td>
+                
+                    
+                    <td>Snow Depth</td>
+                
+                    
+                    <td>Snow Water Equivalent</td>
+                
+                    
+                    <td>Soil Moisture/Water Content</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Soil Temperature</td>
+                
+                    
+                    <td>Surface Winds</td>
+                
+                    
+                    <td>Total Precipitable Water</td>
+                
+                    
+                    <td>Upper Air Temperature</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Upper Level Winds</td>
+                
+                    
+                    <td>Vertical Wind Velocity/Speed</td>
+                
+                    
+                    <td>Visibility</td>
+                
+                    
+                    <td>Vorticity</td>
+                
+                    
+                        </tr>
+                        <tr>
+                    
+                    <td>Wind Shear</td>
+                
+                </tr>
+            </table>
+            
+            <div>
+                GRIB2 parameter table: <a href="javascript:void(0)" onclick="$.get('/datasets/d084001/metadata/grib2.html', replace_ds_content)">HTML</a> | <a href="/datasets/d084001/metadata/grib2.xml">XML</a>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Vertical Levels:</div>
+    <div class="col-12 col-md-10">
+        
+        See the <a href="javascript:void(0)" onclick="get_ajax_with_history('/datasets/d084001/detailed_metadata/?view=level')">detailed metadata</a> for level information.
+        
+        See also the <a href="javascript:void(0)" onclick="$.get('/datasets/d084001/metadata/grib2_levels.html', replace_ds_content)">GRIB2 level table</a>.
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Data Types:</div>
+    <div class="col-12 col-md-10">
+        
+            
+            Grid
+        
+    </div>
+</div>
+
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Spatial Coverage:</div>
+    <div class="col-12 col-md-10">
+        Longitude Range: Westernmost=180W Easternmost=180E
+        <br>
+        Latitude Range: Southernmost=90S Northernmost=90N
+        
+        <span class="d-block small mt-n1 mb-1">
+            <span id="DSC0">
+                <a class="text-uppercase" style="color: black; font-weight: 600" href="javascript:swapDivs('SC0', 'SC1')" title="Expand detailed coverage information">Detailed coverage information<span class="btn dropdown-toggle p-md-1" aria-hidden="true"></span></a>
+            </span>
+            <span id="DSC1" style="visibility: hidden; position: absolute; top: 0; line-height: 1.25em">
+                <a class="text-uppercase" style="color: black; font-weight: 600" href="javascript:swapDivs('SC1', 'SC0')" title="Collapse detailed coverage information">Detailed coverage information<span class="btn dropdown-toggle p-md-1 show" aria-hidden="true"></span></a>
+                <span style="display: block; margin-top: -0.65em"></span>
+                
+                <span style="display: block; margin-left: 1em">0.25&deg; x 0.25&deg; from 0E to 359.75E and 90N to 90S <small>(1440 x 721 Latitude/Longitude)</small></span>
+                
+            </span>
+        </span>
+        
+    </div>
+</div>
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Data Contributors:</div>
+    <div class="col-12 col-md-10">
+        
+            
+            <span class="infosrc" tabindex="0" aria-describedby="src0" onmouseover="popInfo(this, 'src0', '#e1eaff', 'left', 'bottom')" onmouseout="hideInfo('src0')" onfocus="popInfo(this, 'src0', '#e1eaff', 'left', 'bottom')" onblur="hideInfo('src0')">DOC/NOAA/NWS/NCEP</span>
+            <div id="src0" class="info" role="tooltip"><small>National Centers for Environmental Prediction, National Weather Service, NOAA, U.S. Department of Commerce</small></div>
+        
+    </div>
+</div>
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Related Resources:</div>
+    <div class="col-12 col-md-10">
+        
+            
+            <a href="http://www.nco.ncep.noaa.gov/pmb/products/gfs/#GFS"><i>NCEP GFS &#x27;real-time&#x27; operational data access</i></a><br>
+            
+        
+            
+            <a href="https://registry.opendata.aws/noaa-gfs-pds/"><i>AWS hosted 4-week rolling archive</i></a><br>
+            
+        
+            
+            <a href="https://registry.opendata.aws/noaa-gfs-bdp-pds/"><i>NOAA GFS data from 2021 to the present on Amazon Web Services</i></a><br>
+            
+        
+    </div>
+</div>
+
+
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Total Volume:</div>
+    <div class="col-12 col-md-10">672.55 TB
+    
+        (Entire dataset)
+        <span class="d-block small mt-n1 mb-1">
+            <span id="DV0">
+                <a class="text-uppercase" style="color: black; font-weight: 600" href="javascript:swapDivs('V0', 'V1')" title="Expand dataset product volume list">Volume details by dataset product<span class="btn dropdown-toggle p-md-1" aria-hidden="true"></span></a>
+            </span>
+            <span id="DV1" style="visibility: hidden; position: absolute; top: 0; line-height: 1.25em">
+                <a class="text-uppercase" style="color: black; font-weight: 600" href="javascript:swapDivs('V1', 'V0')" title="Collapse dataset product volume list">Volume details by dataset product<span class="btn dropdown-toggle p-md-1 show" aria-hidden="true"></span></a>
+                <span style="display: block; margin-top: -0.65em"></span>
+                
+                    <span style="display: block; margin-left: 1em">NCEP GFS 0.25 Degree Analysis and Forecast Grids: 672.55 TB</span>
+                
+            </span>
+        </span>
+    
+    </div>
+</div>
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Data Formats:</div>
+    <div class="col-12 col-md-10">
+    <a href="http://rda.ucar.edu/#grib2doc" target="_format">WMO GRIB2</a>
+    </div>
+</div>
+
+
+<div class="row gx-0 mb-2 mb-md-3">
+    <div class="col-12 col-md-2 dataset-label">Related GDEX Datasets:</div>
+    <div class="col-12 col-md-10">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 98fr">
+        
+            <div style="grid-column: 1"><center><a href="/datasets/d083002/">d083002</a></center></div>
+            <div class="ps-1 pe-1" style="grid-column: 2">-</div>
+            <div style="grid-column: 3">NCEP FNL Operational Model Global Tropospheric Analyses, continuing from July 1999</div>
+        
+            <div style="grid-column: 1"><center><a href="/datasets/d083003/">d083003</a></center></div>
+            <div class="ps-1 pe-1" style="grid-column: 2">-</div>
+            <div style="grid-column: 3">NCEP GDAS/FNL 0.25 Degree Global Tropospheric Analyses and Forecast Grids</div>
+        
+            <div style="grid-column: 1"><center><a href="/datasets/d084003/">d084003</a></center></div>
+            <div class="ps-1 pe-1" style="grid-column: 2">-</div>
+            <div style="grid-column: 3">NCEP GFS 0.25 Degree Global Forecast Auxiliary Grids Historical Archive</div>
+        
+            <div style="grid-column: 1"><center><a href="/datasets/d084004/">d084004</a></center></div>
+            <div class="ps-1 pe-1" style="grid-column: 2">-</div>
+            <div style="grid-column: 3">NCEP GDAS/FNL Global Surface Flux Grids</div>
+        
+            <div style="grid-column: 1"><center><a href="/datasets/d335000/">d335000</a></center></div>
+            <div class="ps-1 pe-1" style="grid-column: 2">-</div>
+            <div style="grid-column: 3">Historical Unidata Internet Data Distribution (IDD) Gridded Model Data</div>
+        
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">More Details:</div>
+    <div class="col-12 col-md-10">
+        View a <a href="javascript:void(0)" onclick="get_ajax_with_history('/datasets/d084001/detailed_metadata/')">more detailed summary</a> of the data, including specific date ranges and locations by parameter
+    </div>
+</div>
+
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Metadata Record:</div>
+    <div id="meta_record" class="col-12 col-md-10">
+    </div>
+    <img class="w-auto h-auto" src="/images/transpace.gif" width="0" height="0" alt="" aria-hidden="true" onload="getAjaxContent('GET', null, '/datasets/d084001/metadata_view/', 'meta_record')">
+</div>
+
+<div class="row gx-0 mb-2 mb-md-1">
+    <div class="col-12 col-md-2 dataset-label">Data License:</div>
+    <div class="col-12 col-md-10">
+        <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_data_license"><img class="w-auto h-auto" alt="Data License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" hspace="5px" valign="top" /></a>This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_data_license">Creative Commons Attribution 4.0 International License</a>.
+    </div>
+</div>
+
+<div id="icite" class="bubble-left-top-arrow" style="width: 600px">Citation counts are compiled through information provided by publicly-accessible APIs according to the guidelines developed through the https://makedatacount.org/ project.  If journals do not provide citation information to these publicly-accessible services, then this citation information will not be included in GDEX citation counts. Additionally citations that include dataset DOIs are the only types included in these counts, so legacy citations without DOIs, references found in publication acknowledgements, or references to a related publication that describes a dataset will not be included in these counts.</div>
+
+
+
+                
+            
+        </div>
+        
+
+    <script language="javascript" type="text/javascript" src="/static/js/swapDivs.js"></script>
+    <script type="text/javascript" src="/static/js/FileSaver.min.js"></script>
+    <script language="javascript" type="text/javascript">
+        function load_metrics_content() {
+            const columns = [
+                {
+                    label: 'Last 30 Days',
+                    metrics: [
+                        { header: 'Users',            endpoint: 'users_month',  icon: 'fa-users'          },
+                        { header: 'Data Transferred', endpoint: 'volume_month', icon: 'fa-database' },
+                    ],
+                },
+                {
+                    label: 'Last 365 Days',
+                    metrics: [
+                        { header: 'Users',            endpoint: 'users_year',  icon: 'fa-users'          },
+                        { header: 'Data Transferred', endpoint: 'volume_year', icon: 'fa-database' },
+                    ],
+                },
+            ];
+            const container = $('<div>').css({ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' });
+            columns.forEach(function(col) {
+                const column = $('<div>').css({ flex: '1 1 240px' });
+                $('<h4>').text(col.label).css({ textAlign: 'center' }).appendTo(column);
+                col.metrics.forEach(function(m) {
+                    const card = $('<div>').css({
+                        border: '1px solid #dee2e6',
+                        borderRadius: '0.375rem',
+                        padding: '1rem',
+                        marginBottom: '1rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                    });
+                    $('<i>').addClass('fas ' + m.icon).css({ fontSize: '1.75rem', color: '#6c757d' }).appendTo(card);
+                    const text = $('<div>').css({ textAlign: 'center' });
+                    $('<div>').css({ fontWeight: '600' }).text(m.header).appendTo(text);
+                    const value = $('<div>').text('Loading...').appendTo(text);
+                    text.appendTo(card);
+                    $.getJSON('/api/metrics/dataset/d084001/' + m.endpoint + '/', function(data) {
+                        value.text('unit' in data ? data.value + ' ' + data.unit : data.value);
+                    }).fail(function() {
+                        value.text('Error loading data');
+                    });
+                    card.appendTo(column);
+                });
+                column.appendTo(container);
+            });
+            $('#ds_content').empty().append(container).append(build_detailed_metrics());
+            $('html, body').animate({
+                scrollTop: $('#datasetTab').offset().top - $('header').height()
+            });
+        }
+
+        // Collapsible "Get Detailed Metrics" section; year-by-year data is fetched on first expand only
+        function build_detailed_metrics() {
+            const wrapper = $('<div>').css({ marginTop: '0.5rem' });
+            const toggle = $('<div>').css({ cursor: 'pointer', userSelect: 'none', fontWeight: '600' })
+                .attr({ role: 'button', 'aria-expanded': 'false' });
+            const label = $('<span>').text('Get Detailed Metrics').appendTo(toggle);
+            const chevron = $('<i>').addClass('fas fa-chevron-right ms-2').css({ transition: 'transform 0.2s' }).appendTo(toggle);
+            const body = $('<div>').css({ display: 'none', marginTop: '0.75rem' });
+            let loaded = false;
+
+            function load() {
+                body.text('Loading...');
+                $.getJSON('/api/metrics/dataset/d084001/yearly/', function(data) {
+                    loaded = true;
+                    if (!data.years.length) {
+                        body.text('No usage recorded for this dataset.');
+                        return;
+                    }
+                    const table = $('<table>').addClass('table table-sm table-striped').css({ maxWidth: '480px' });
+                    const head = $('<tr>').appendTo($('<thead>').appendTo(table));
+                    ['Year', 'Users', 'Data Transferred'].forEach(function(h) { $('<th>').text(h).appendTo(head); });
+                    const tbody = $('<tbody>').appendTo(table);
+                    data.years.forEach(function(row) {
+                        const tr = $('<tr>').appendTo(tbody);
+                        $('<td>').text(row.year).appendTo(tr);
+                        $('<td>').text(row.users.toLocaleString()).appendTo(tr);
+                        $('<td>').text(row.volume.value.toLocaleString() + ' ' + row.volume.unit).appendTo(tr);
+                    });
+                    body.empty().append(table);
+                }).fail(function() {
+                    body.text('Error loading data');
+                });
+            }
+
+            toggle.on('click', function() {
+                const opening = body.css('display') === 'none';
+                body.toggle(opening);
+                chevron.css('transform', opening ? 'rotate(90deg)' : '');
+                toggle.attr('aria-expanded', opening);
+                if (opening && !loaded) load();
+            });
+            return wrapper.append(toggle).append(body);
+        }
+
+        function switch_to_metrics() {
+            const url = '/datasets/d084001/?content=metrics';
+            window.history.pushState({'url': url, 'title': 'Metrics'}, "", url);
+            setActiveTab("metrics-tab");
+            load_metrics_content();
+        }
+    </script>
+
+    <img src="/images/transpace.gif" width="0" height="0" onload="setTab()">
+
+        </main>
+        
+        
+
+<footer>
+    <div id="org-footer" class="org-footer d-print-none">
+        <div class="container-lg">
+            <div class="row">
+                
+
+<div class="col-12 col-md-5 py-2">
+    <div class="accordion" id="accordionNCAR">
+        <div id="ncarHeader" class="d-flex justify-content-between">
+            <h3 class="pb-mb-2">NSF NCAR</h3>
+                <button class="btn text-light px-2 collapsed" href="#ncarCollapseMenu" id="ncarCollapseButton" aria-label="NCAR Organization" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="ncarCollapseMenu"></button>
+        </div>
+        <div id="ncarCollapseMenu" class="collapse" aria-labelledby="ncarHeader" data-parent="#accordionNCAR">
+            <ul class="nav flex-column">
+                
+                    <li class="nav-item "><a class="nav-link" href="https://ncar.ucar.edu/">NSF NCAR Homepage</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www2.acom.ucar.edu/">ACOM | Atmospheric Chemistry Observations &amp; Modeling</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.cgd.ucar.edu/">CGD Laboratory</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www2.cisl.ucar.edu/">CISL | Computational &amp; Information Systems</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://edec.ucar.edu/">EdEC | Education, Engagement &amp; Early-Career Development</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.eol.ucar.edu/">EOL | Earth Observing Laboratory</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www2.hao.ucar.edu/">HAO | High Altitude Observatory</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.mmm.ucar.edu/">MMM | Mesoscale &amp; Microscale Meteorology</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://ral.ucar.edu/">RAL | Research Applications Laboratory</a></li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+                
+
+<div class="col-12 col-md py-2">
+    <div class="accordion" id="accordionUCAR">
+        <div id="ucarHeader" class="d-flex justify-content-between">
+            <h3 class="pb-mb-2">UCAR</h3>
+            <button class="btn px-2 text-light collapsed" href="#ucarCollapseMenu" id="ucarCollapseButton" aria-label="UCAR Organization" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="ucarCollapseMenu"></button>
+        </div>
+        <div id="ucarCollapseMenu" class="collapse" aria-labelledby="ucarHeader" data-parent="#accordionUCAR">
+            <ul class="nav flex-column">
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.ucar.edu/">UCAR Homepage</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.ucar.edu/community-programs">Community Programs</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.ucar.edu/what-we-offer/education-training">Education &amp; Training</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://sundog.ucar.edu/">For Staff</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.ucar.edu/what-we-do/advocacy/office-government-relations">Government Relations &amp; External Engagement</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.ucar.edu/who-we-are/membership">Member Institutions</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.ucar.edu/what-we-do/tech-transfer-engagement">Tech Transfer &amp; Engagement</a></li>
+                
+                    <li class="nav-item "><a class="nav-link" href="https://www.ucar.edu/what-we-do/university-collaboration">University Collaboration</a></li>
+                                
+            </ul>
+        </div>
+    </div>
+</div>
+
+                
+
+<div class="col-12 col-md py-2">
+<div class="social pt-2">
+    <h4>Follow GDEX</h4>
+    <div class="social-icons text-light">
+        
+            <a href="https://bsky.app/profile/ncar-gdex.bsky.social" aria-label="Bluesky">
+                <i class="fa-brands fa-bluesky">
+                </i>
+            </a>
+        
+            <a href="https://github.com/orgs/NCAR/teams/gdex/teams" aria-label="Github">
+                <i class="fa-brands fa-github">
+                </i>
+            </a>
+        
+    </div>
+</div>
+
+
+<div class="d-flex pt-3">
+    <a class="text-center" href="https://www.coretrustseal.org/"><img class="img-fluid w-75" src="/media/images/CoreTrustSeal-logo-transparent.max-165x165_CFkaI4S.png"></a>
+    <div class="d-flex align-items-center text-light fst-italic">
+        Certified repository committed to FAIR and open science
+    </div>
+</div>
+
+</div>
+
+            </div>
+        </div>
+    </div>
+
+    
+
+<div id="legal-footer" class="legal-footer py-3">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col-12 d-print-none">
+                <p class="copyright pe-md-2">© 2026 UCAR</p>
+                <ul class="nav flex-column flex-md-row">
+                    
+                        <li class="nav-item ">
+                            <a class="nav-link" href="https://www.ucar.edu/privacy-notice">Privacy</a>
+                        </li>
+                    
+                        <li class="nav-item ">
+                            <a class="nav-link" href="https://www.ucar.edu/cookie-other-tracking-technologies-notice">Cookies</a>
+                        </li>
+                    
+                        <li class="nav-item ">
+                            <a class="nav-link" href="https://www.ucar.edu/accessibility">Web Accessibility</a>
+                        </li>
+                    
+                        <li class="nav-item ">
+                            <a class="nav-link" href="https://www.ucar.edu/terms-of-use">Terms of Use</a>
+                        </li>
+                    
+                        <li class="nav-item ">
+                            <a class="nav-link" href="https://www.ucar.edu/notification-copyright-infringement-digital-millenium-copyright-act">Copyright Issues</a>
+                        </li>
+                    
+                        <li class="nav-item ">
+                            <a class="nav-link" href="https://nsf.gov">Sponsored by U.S. NSF</a>
+                        </li>
+                    
+                        <li class="nav-item ">
+                            <a class="nav-link" href="https://www.ucar.edu/who-we-are/ethics">Report Ethics Concern</a>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="col-12 text-gray-light">
+                <span class="d-block d-md-inline pt-2 pt-md-0"><b>Postal Address:</b></span>
+                <span>P.O. Box 3000, Boulder, CO 80307-3000</span>
+                <span class="d-none d-md-inline">&bull;</span>
+                <span class="d-block d-md-inline pt-2 pt-md-0"><b>Shipping Address:</b></span>
+                <span>3090 Center Green Drive, Boulder, CO 80301</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div id="nsf-footer" class="nsf-footer py-3">
+        <div class="container-lg">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-1 pb-3 pb-md-0 me-md-3">
+                    
+
+
+<picture>
+    <source srcset="/media/original_images/NSF_Official_logo.webp" type="image/webp">
+    <source srcset="/media/original_images/NSF_Official_logo.png"  type="image/jpeg+png">
+    <img class="img-fluid" src="/media/original_images/NSF_Official_logo.png" alt="NSF Logo">
+</picture>
+
+                </div>
+                <div class="col-12 col-md-10 flex-md-grow-1">
+                    <p class="mb-0">
+                        This material is based upon work supported by the NSF National Center for Atmospheric Research, a major facility sponsored by the U.S. National Science Foundation and managed by the University Corporation for Atmospheric Research. Any opinions, findings and conclusions or recommendations expressed in this material do not necessarily reflect the views of the <a href="https://nsf.gov" target="_blank">U.S. National Science Foundation.</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+
+<script type="text/javascript">
+
+function popModalWindow(w, h) {
+  document.getElementById('modal-window-content').innerHTML = '<center><span class="modal-loader"></span></center>';
+  mw = document.getElementById('modal-window');
+  mc = document.getElementById('modal-window-close');
+  if (w) {
+    mw.style.width = '75%';
+    if (h) {
+      mw.style.height = '60%';
+    }
+  }
+  mw_width = parseFloat(mw.offsetWidth) / document.body.offsetWidth;
+  mw.style.left = (1. - mw_width) / 2. * 100. + '%';
+  mc_width = parseFloat(mc.offsetWidth) / document.body.offsetWidth;
+  border_width = parseFloat(mw.style.borderWidth) / document.body.offsetWidth;
+  mc.style.left = parseFloat(mw.style.left) + (mw_width * 100.) - (mc_width / 2. * 100.) + - (border_width / 2. * 100.) + '%';
+  win_height = window.innerHeight
+      ? window.innerHeight
+      : document.body.clientHeight;
+  mw.style.top = (win_height - parseInt(mw.offsetHeight)) / 2 + 'px';
+  mc.style.top = parseInt(mw.style.top) - (mc.offsetHeight / 2) + (parseInt(mw.style.borderWidth) / 2) + 'px';
+  document.getElementById('shader').classList.replace('invisible', 'visible');
+  mw.classList.replace('invisible', 'visible');
+  mc.classList.replace('invisible', 'visible');
+}
+
+function hideModalWindow() {
+  document.getElementById('modal-window').classList.replace('visible', 'invisible');
+  document.getElementById('modal-window-close').classList.replace('visible', 'invisible');
+  document.getElementById('shader').classList.replace('visible', 'invisible');
+}
+
+function popModalWindowWithGetUrl(w, h, u) {
+  popModalWindow(w, h);
+  getAjaxContent('GET', null, u, 'modal-window-content');
+}
+
+function popModalWindowWithPostUrl(w, h, u, p) {
+  popModalWindow(w, h);
+  getAjaxContent('POST', p, u, 'modal-window-content');
+}
+
+function popModalWindowWithHTML(w, h, html) {
+  popModalWindow(w, h);
+  document.getElementById('modal-window-content').innerHTML = html;
+}
+
+function popConfirm(m, a, w, h) {
+  popModalWindowWithHTML(w, h, '<center><p>' + m + '</p><div><a class="btn btn-primary px-1 py-1 border-1" style="pointer" href="javascript:void(0)" onclick="' + a + ';this.onclick=null">Yes</a>&nbsp;&nbsp;<a class="btn btn-primary px-1 py-1 border-1" style="cursor: pointer" href="javascript:void(0)" onclick="hideModalWindow()">No</a></div></center>');
+}
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="/static/css/modal.css">
+
+
+<div id="modal-window" class="invisible" style="width: 600px; height: 300px; padding: 10px; border: 15px solid #1a658f">
+    <div id="modal-window-wrapper">
+        <div id="modal-window-content">
+            <center>
+                <img id="modal-loader">
+                <div id="modal-loader-text"></div>
+            </center>
+        </div>
+    </div>
+</div>
+<div id="modal-window-close" class="invisible" style="width: 30px; height: 30px" onclick="hideModalWindow()"></div>
+<div id="shader" class="invisible"></div>
+
+
+        <input type="hidden" name="csrfmiddlewaretoken" value="cbyw6qop62jBvmvBpcMNxqXhSfOhZWoYXb4TPRIzZXqBFq2LUwo2xo24joppCnTp">
+    </body>
+    
+    <script src="/static/unity/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/unity/js/main.min.js"></script>
+    <script src="/static/unity/js/unity-gdex.js"></script>
+    
+</html>

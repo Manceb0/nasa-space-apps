@@ -1,0 +1,209 @@
+{
+  "generated_at": "2026-11-15T17:31:52.500856+00:00",
+  "catalog_sha256": "b4d8fccdc1e080ba2f19dd37387f86863615fecb47a404201d1977f2e04335ff",
+  "test_events": 8,
+  "sources": [
+    {
+      "id": "NCAR_GFS_025",
+      "documented_start": "2015-01-15",
+      "url": "https://gdex.ucar.edu/datasets/d084001/",
+      "kind": "archived_operational_forecasts",
+      "coverage_status": "documented_start_only_not_file_availability",
+      "events": [
+        {
+          "event": "2016-11",
+          "catalog_start_date": "2016-10-29",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2017-04",
+          "catalog_start_date": "2017-04-19",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2017-09",
+          "catalog_start_date": "2017-09-21",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2020-07",
+          "catalog_start_date": "2020-07-30",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2022-09",
+          "catalog_start_date": "2022-09-18",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2023-11",
+          "catalog_start_date": "2023-11-17",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2024-11",
+          "catalog_start_date": "2024-11-11",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2024-12",
+          "catalog_start_date": "2024-12-19",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        }
+      ]
+    },
+    {
+      "id": "ECMWF_TIGGE",
+      "documented_start": "2006-10-01",
+      "url": "https://www.ecmwf.int/en/forecasts/datasets/tigge-global-medium-range-ensemble-forecasts-multiple-nwp-centres-2006",
+      "kind": "archived_multi_centre_ensemble_forecasts",
+      "coverage_status": "documented_start_only_not_file_availability",
+      "events": [
+        {
+          "event": "2016-11",
+          "catalog_start_date": "2016-10-29",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2017-04",
+          "catalog_start_date": "2017-04-19",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2017-09",
+          "catalog_start_date": "2017-09-21",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2020-07",
+          "catalog_start_date": "2020-07-30",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2022-09",
+          "catalog_start_date": "2022-09-18",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2023-11",
+          "catalog_start_date": "2023-11-17",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2024-11",
+          "catalog_start_date": "2024-11-11",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        },
+        {
+          "event": "2024-12",
+          "catalog_start_date": "2024-12-19",
+          "after_documented_archive_start": true,
+          "forecast_files_retrieved": false,
+          "precipitation_variable_verified": false,
+          "publication_time_verified": false,
+          "local_operational_access_verified": false,
+          "onset_hour_and_timezone_verified": false,
+          "validated_lead_time": null
+        }
+      ]
+    }
+  ],
+  "new_forecast_backtest_executed": false,
+  "limits": [
+    "Archive start is not proof of continuous coverage, download access or an event-specific forecast file",
+    "Forecast initialization is not publication time or availability to a Dominican municipality",
+    "Catalogue dates lack onset hours/timezone verification; no operational lead time is established",
+    "Reforecasts or later analyses cannot substitute for originally issued forecast runs",
+    "Non-event intervals must be included to evaluate unmatched signal episodes"
+  ]
+}

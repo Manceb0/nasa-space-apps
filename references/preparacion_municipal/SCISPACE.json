@@ -1,0 +1,126 @@
+{
+  "retrieved_at": "2026-11-15",
+  "purpose": "Solucion cientifica y auditoria de limites; metadatos SciSpace no sustituyen verificacion primaria",
+  "searches": [
+    {
+      "key": "scispace_homogeneity",
+      "results": [
+        {
+          "id": "urban-rainfall-trends-in-imerg-datasets-7rqjv3fw955j",
+          "title": "Urban rainfall trends in IMERG datasets",
+          "text": "2026 · Shankar Sharma, Jason P. Evans, A. J. Pitman · Environmental Research Letters · Journal Article\nTL;DR: This study analyzes IMERG satellite data to assess urban rainfall trends in 15 global cities, finding a consistent increase in rainfall frequency and intensity, with microwave-based retrievals dominating the urban signal, and accounting for sampling artefacts reveals a robust and physically consistent urban signal.\nAbstract: Abstract Satellite precipitation records are increasingly used to assess whether urbanisation modifies local rainfall. However, it remains unclear whether reported urban signals reflect physical processes or artefacts from evolving satellite observing systems. The Integrated Multi-satellitE Retrievals for GPM (IMERG) merges observations from a growing constellation of microwave and infrared sensors, meaning that long-term trends derived from this product may partly reflect changes in the observing system rather than true precipitation changes. Here we analyse rainfall frequency and intensity…",
+          "url": "https://scispace.com/papers/urban-rainfall-trends-in-imerg-datasets-7rqjv3fw955j?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "evaluation-of-imerg-climate-trends-over-land-in-the-trmm-and-11rq92jiqz1z",
+          "title": "Evaluation of IMERG climate trends over land in the TRMM and GPM eras",
+          "text": "2024 · Siyu Zhu, Zhi Li, Mengye Chen · Environmental Research Letters · 8 citations · Journal Article\nTL;DR: This study evaluates IMERG's climate trend capturing ability over land from 2001 to 2019, comparing TRMM (2001-2014) and GPM (2015-2019) eras. Results show improved performance in the GPM era, with higher spatial consistency and trend accuracy, suggesting enhanced capacity for tracking global precipitation trends.\nAbstract: Abstract The Integrated Multi-satellitE Retrievals for Global Precipitation Measurement (GPM) mission (IMERG) is a global precipitation product suite consisting of both near-real-time and research-grade products with high spatiotemporal resolution. However, the IMERG developers note that it is designed as a High Resolution Precipitation Product (HRPP), not a Climate Data Record (CDR), and its ability to capture climate trends remains uncertain. Therefore, understanding IMERG's capability in capturing climate trends is fundamental. This study examines the climatological performance of IMERG…",
+          "url": "https://scispace.com/papers/evaluation-of-imerg-climate-trends-over-land-in-the-trmm-and-11rq92jiqz1z?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "on-the-verge-of-imerg-version-07-ousn7fcm",
+          "title": "On the Verge of IMERG Version 07",
+          "text": "2022 · 6 citations · Posted Content\nTL;DR: In this article , the authors report the status of IMERG Version 07 processing as of the conference time, and introduce some topics that are being considered for the future, including improved uncertainty estimates, addition of sub-monthly gauge information, and strategies for incorporating precipitation estimates from multiple, relatively short-lived small satellites.\nAbstract: Development is well-advanced for the next version of the Integrated Multi-satellitE Retrievals for the Global Precipitation Measurement (GPM) mission (IMERG), labeled Version 07. IMERG is a key output of the U.S. GPM Science Team, and V07 will be the second generation in which data from both the Tropical Rainfall Measuring Mission (TRMM) and GPM projects are combined into a single, uniformly processed record, currently starting in June 2000. This presentation will show several examples of successes and challenges in V06, and use these to illuminate the upgrades that have been pursued for V07.…",
+          "url": "https://scispace.com/papers/on-the-verge-of-imerg-version-07-ousn7fcm?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "evaluation-of-the-spatiotemporal-distribution-of-lgazyh0a",
+          "title": "Evaluation of the Spatiotemporal Distribution of Precipitation Using 28 Precipitation Indices and 4 IMERG Datasets over Nepal",
+          "text": "2022 · Rocky Talchabhadel, Suraj Shah, Bibek Aryal · Remote sensing · 14 citations · Journal Article\nTL;DR: In this article , the authors evaluated the dynamic characteristics of the precipitation amounts, intensities, frequencies, and other relevant data across Nepal, using four IMERG datasets: microwave only, infrared only, multi satellites gauge uncalibrated, and multi sensors gauge calibrated.\nAbstract: Accurate accounting of spatiotemporal variability of precipitation is essential for understanding the changing climate. Among the available precipitation estimates, the Global Precipitation Measurement (GPM) is an international satellite network providing advanced global precipitation estimates. The integrated multi-satellite retrievals for GPM (IMERG) algorithm combines information from the GPM satellite constellation to estimate precipitation and yields a better performance in detecting precipitation events and spatial resolution. Here, we used twenty years (2001–2020) of IMERG Final data…",
+          "url": "https://scispace.com/papers/evaluation-of-the-spatiotemporal-distribution-of-lgazyh0a?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "impact-of-microwave-sounder-calibration-on-precipitation-for-52nfyym7zf",
+          "title": "Impact of Microwave Sounder Calibration on Precipitation for the Global Precipitation Measurement Mission",
+          "text": "2019 · Rachael Kroodsma · International Geoscience and Remote Sensing Symposium · Proceedings Article\nTL;DR: Data is used from past and current microwave sounders to show how offsets in the calibration can impact the precipitation using the GPM Level 2 GPROF algorithm.\nAbstract: Cross-track microwave sounders make up a significant percentage of the radiometers included in the Global Precipitation Measurement (GPM) constellation. Therefore, it is important to properly assess the calibration of each sounder instrument and to understand the impact of the calibration on the derived precipitation rates. This ensures an accurate precipitation product is produced for the entire constellation. This paper will use data from past and current microwave sounders to show how offsets in the calibration can impact the precipitation using the GPM Level 2 GPROF algorithm. Potential…",
+          "url": "https://scispace.com/papers/impact-of-microwave-sounder-calibration-on-precipitation-for-52nfyym7zf?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "evaluation-of-gpm-imerg-and-its-constellations-in-extreme-4p4pqjed",
+          "title": "Evaluation of GPM IMERG and its constellations in extreme events over the conterminous united states",
+          "text": "2022 · Journal of hydrology · 43 citations · Journal Article\nTL;DR: In this article , the performance of the Integrated Multi-satellite Retrievals for GPM (IMERG) in extreme events over the conterminous US was evaluated using satellite data.\nAbstract: • Systematic assessments of IMERG ER, LR, and FR and its constellations. • Percentile, storm events, and IDF curve-based methods to define extreme events. • The degree of underestimation of high-end extreme values increases with data latency. • PMW better depict rainfall events while IR suits for quantification of hail events. • IMERG is not a homogeneous precipitation product when estimating extreme precipitation. Improved quantification of extreme precipitation rates using observations has far-reaching implications for environmental sciences, especially for hydrometeorological studies. Yet,…",
+          "url": "https://scispace.com/papers/evaluation-of-gpm-imerg-and-its-constellations-in-extreme-4p4pqjed?utm_source=chatgpt&utm_medium=tool"
+        }
+      ]
+    },
+    {
+      "key": "scispace_preparedness",
+      "results": [
+        {
+          "id": "flood-forecast-skill-for-early-action-results-and-learnings-22ebbj4lak",
+          "title": "Flood forecast skill for Early Action: Results and Learnings from the development of the Early-Action Protocol for Floods in Uganda",
+          "text": "2021 · Andrea Ficchì, Hannah Cloke, Linda Speight · 2 citations · Posted Content\nTL;DR: In this paper, the authors developed a methodology to tailor flood forecast skill analysis to EAP development, that could be potentially useful for humanitarians in other countries and forecasters engaging with them.\nAbstract: <p>Global flood forecasting systems are helpful in complementing local resources and in-country data to support humanitarians and trigger early action before an impactful flood occurs. Freely available global flood forecast information from the European Commission&#8217;s Global Flood Awareness System (GloFAS, a Copernicus EMS service) is being used by the Uganda Red Cross Society (URCS) alongside in-country knowledge to develop appropriate triggers for early actions for flood preparedness, within the Forecast-based Financing (FbF) initiative. To scale up the first FbF pilot to a national…",
+          "url": "https://scispace.com/papers/flood-forecast-skill-for-early-action-results-and-learnings-22ebbj4lak?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "assessing-ensemble-flood-forecasts-with-action-relevant-3i09brr8",
+          "title": "Assessing ensemble flood forecasts with action-relevant scores to support flood preparedness actions: An application to the Global Flood Awareness System in Uganda.",
+          "text": "2023 · Hannah Cloke, Andrea Ficchì, Lorenzo Alfieri · Posted Content\nTL;DR: In this paper , the importance of assessing ensemble flood forecasts with action-relevant scores to support flood preparedness actions by analyzing the discrepancies between traditional general scores that focus on the overall accuracy with other more specific flood event-based scores.\nAbstract: This study investigates the importance of assessing ensemble flood forecasts with action-relevant scores to support flood preparedness actions by analyzing the discrepancies between traditional general scores that focus on the overall accuracy with other more specific flood event-based scores. Popular general scores such as the Kling-Gupta Efficiency (KGE) or the Continuous Ranked Probability Score (CRPS) are widely used in hydrological modeling and forecasting, but they aggregate different aspects of model quality into a single overall score. On the other hand, flood event-based scores, such…",
+          "url": "https://scispace.com/papers/assessing-ensemble-flood-forecasts-with-action-relevant-3i09brr8?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "enhancing-global-flood-forecasts-in-southern-africa-using-vrfj3tr6k8s4",
+          "title": "Enhancing global flood forecasts in Southern Africa using Deep Learning: A user-oriented evaluation for anticipatory actions",
+          "text": "2025 · Andrea Ficchì, Moslem Mir, Andrea Castelletti · Journal Article\nTL;DR: This study evaluates a deep learning model to enhance global flood forecasts in Southern Africa, improving GloFAS predictions up to 7-day lead times, reducing biases, and extending skillful lead times, with added value for anticipatory actions in data-scarce regions.\nAbstract: Global hydrological forecasting systems, such as the Global Flood Awareness System (GloFAS), part of the Copernicus Emergency Management Service, are operationally used to inform early warning and early action, particularly in large transboundary river basins and data scarce regions. Humanitarian organizations often integrate these global forecasting systems with local information to assist national mandated agencies in the disaster risk management chain. However, limitations in the skill of global systems restrict their operational adoption and constrain the lead times available for…",
+          "url": "https://scispace.com/papers/enhancing-global-flood-forecasts-in-southern-africa-using-vrfj3tr6k8s4?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "assessing-the-riverine-flood-forecast-skill-of-glofas-with-1p2v7wi1",
+          "title": "Assessing the riverine flood forecast skill of GloFAS with streamflow observations and impact data: a case study for Mali",
+          "text": "2022 · Posted Content\nTL;DR: In this article , the authors investigate the riverine flood forecast skill of the Global Flood Awareness System (GloFAS version 3.1, part of the Copernicus Emergency Management Service) in the Niger river basin by evaluating reforecast data against two reference datasets: river flow observations and impact data.\nAbstract: &amp;lt;p&amp;gt;Riverine floods are one of Mali's most devastating and frequently occurring disasters. However, so far, actions linked to it are mainly post-disaster ones. For this reason, the Mali Red Cross has recently established with partners a Forecast-based Financing mechanism that triggers early actions to reduce the impacts of floods once a predefined trigger is reached. Given the lack of forecasts at the national scale, the current trigger model is based only on real-time observations from the hydrological monitoring network of the National Directorate of Hydraulics (DNH): if the…",
+          "url": "https://scispace.com/papers/assessing-the-riverine-flood-forecast-skill-of-glofas-with-1p2v7wi1?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "assessing-the-riverine-flood-forecast-skill-of-glofas-and-p4aut4dvtejj",
+          "title": "Assessing the Riverine Flood Forecast Skill of GloFAS and Google Flood Hub With Impact Data and Discharge Observations to Support Early Actions in Mali",
+          "text": "2026 · Els Kuipers, Valentijn Oldenburg, Phuoc Phùng · Journal of Flood Risk Management · 1 citations · Journal Article\nTL;DR: This study evaluates the flood forecasting skill of GloFAS and Google Flood Hub in Mali, comparing their performance with the current trigger model using discharge observations and impact data, and assessing their potential for anticipatory action in flood-prone regions with limited data availability.\nAbstract: ABSTRACT Riverine floods are among the most destructive and frequent natural hazards in Mali. To reduce their impacts, the Mali Red Cross implemented an Early Action Protocol (EAP) to enable anticipatory actions through pre‐defined triggers and forecast information. Currently, the protocol relies on upstream water levels from the National Directorate of Hydraulics (DNH) to predict downstream flooding. However, this model does not consider meteorological forcing, limiting lead times to a maximum of 4 days. Recent advancements in global flood forecasting systems present opportunities to enhance…",
+          "url": "https://scispace.com/papers/assessing-the-riverine-flood-forecast-skill-of-glofas-and-p4aut4dvtejj?utm_source=chatgpt&utm_medium=tool"
+        },
+        {
+          "id": "comparative-suitability-of-the-global-flood-awareness-system-2sr5402d",
+          "title": "Comparative Suitability of the Global Flood Awareness System and a Catchment-based Model to Simulate Floods in Uganda",
+          "text": "2022 · Posted Content\nTL;DR: In this paper , the authors evaluated the suitability of a global hydrological forecasting and monitoring system, the Copernicus-Emergency Management Service - Global Flood Awareness System (GloFAS), and a local catchment-based model (GR4J) as possible alternative or complementary flood forecasting tools in Uganda.\nAbstract: &amp;lt;p&amp;gt;This study aims to evaluate the comparative suitability of a global hydrological forecasting and monitoring system, the Copernicus-Emergency Management Service - Global Flood Awareness System (GloFAS), and a local catchment-based model (GR4J) as possible alternative or complementary flood forecasting tools in Uganda. Local stakeholders and end-users in Uganda need to understand whether flood forecasts from ready-to-use global systems can be relied on as one of the available tools to inform flood preparedness actions or whether other easy-to-set-up local hydrological models…",
+          "url": "https://scispace.com/papers/comparative-suitability-of-the-global-flood-awareness-system-2sr5402d?utm_source=chatgpt&utm_medium=tool"
+        }
+      ]
+    }
+  ],
+  "extraction": {
+    "columns": [
+      {
+        "id": "methods_used",
+        "name": "Methods Used"
+      },
+      {
+        "id": "limitations",
+        "name": "Limitations"
+      }
+    ],
+    "values": {
+      "methods_used": {
+        "evaluation-of-imerg-climate-trends-over-land-in-the-trmm-and-11rq92jiqz1z": "- The paper applies the **Mann-Kendall analysis** to evaluate **annual precipitation trends over land** from **2001 to 2019**, using **gauge records as the true values**.  \n- It evaluates IMERG **Final (Version 06)** daily precipitation by using **three matching strategies**: matching **at gauge locations**, matching at **0.1° pixels**, and matching at **1.0° pixels**.  \n- It performs a **comparative assessment across eras**, separating the record into the **TRMM era (2001–2014)** and the **GPM era (2015–2019)** to examine differences in trend-tracking performance.  \n- It uses **reliability/trend-consistency metrics based on agreement with gauge-derived trends**, reporting the **proportion of unreliable samples** and the **proportion of samples showing consistent trends** for each matching strategy and era.",
+        "evaluation-of-the-spatiotemporal-distribution-of-lgazyh0a": "- The study used observational satellite precipitation estimates from four IMERG Final datasets over Nepal for 20 years (2001–2020): microwave only, infrared only, multi-satellites gauge uncalibrated, and multi-satellites gauge calibrated.  \n- A set of 28 precipitation indices was computed at IMERG grid locations (and at gauge-station locations for comparison), including threshold-based counts, consecutive wet/dry days, precipitation amounts and extremes, precipitation intensity, percentile-based extremes, proportion-based indices, and additional seasonal spell indices for monsoon dry spells and winter wet spells.  \n- The paper handled precipitation data gaps by first filling small gaps using reanalysis or interpolated products via a point-to-pixel approach for gap days: APHRODITE (0.25 spatial resolution) for 2001–2015 and NOAA CPC (0.5 spatial resolution) for 2016–2020; gauge observations were used to generate the gridded products, and the study noted that this filling introduces some uncertainty.  \n- Daily IMERG precipitation was used with a 1 mm threshold to define wet and dry days, and the indices were derived from those daily series (for example, wet-day counts, totals over wet days, and intensity based on totals divided by wet-day counts).  \n- Trend significance and magnitude were evaluated using a non-parametric Mann–Kendall test with a p-value threshold of 0.1 (90% confidence level), together with the Theil–Sen slope estimator; a pre-whitening method was applied to limit serial correlation using the pyMannKendall workflow.",
+        "enhancing-global-flood-forecasts-in-southern-africa-using-vrfj3tr6k8s4": "- The paper uses a computational deep-learning approach by developing Long Short-Term Memory (LSTM)–based post-processing models to improve operational GloFAS river-flow forecasts up to a 7-day lead time.  \n- The post-processing models are trained and tested using inputs that include historical GloFAS forecasts of river flows, past forecast errors, and catchment characteristics, with different LSTM architectures and loss functions evaluated to select alternative post-processing variants.  \n- The methodology includes both single-site and multi-site modeling strategies, with model performance compared using streamflow observations as a reference in cross-validation.  \n- The paper evaluates forecast improvements for operational use by demonstrating changes in skill and value of the forecasts for anticipatory actions, using user-oriented metrics from the Red Cross Early Action Protocol framework for floods in Mozambique (including False Alarm Ratios and Hit Rates).  \n- The study uses a valuation framework for early actions to assess the cost-effectiveness of alternative hybrid forecasting solutions for anticipatory actions, and it discusses potential scaling through follow-on post-processing of flood hazard maps."
+      },
+      "limitations": {
+        "evaluation-of-imerg-climate-trends-over-land-in-the-trmm-and-11rq92jiqz1z": "- The paper notes that IMERG was designed as a High Resolution Precipitation Product (HRPP), not as a Climate Data Record (CDR), so its ability to capture climate trends remains uncertain.  \n- The study evaluates climatological performance using gauge records as the “true values,” implying that conclusions depend on how well gauges represent actual precipitation trends.  \n- The analysis is limited to annual precipitation trends over land from 2001 to 2019, split into the TRMM era (2001–2014) and the GPM era (2015–2019), so results may not directly extend to other periods or regions.  \n- The comparison shows differences in performance between the TRMM and GPM eras, which the paper attributes to residual differences in calibration methods, indicating a limitation for between-mission consistency.  \n- The paper reports different matching strategies (gauge locations, 0.1° pixels, and 1.0° pixels), implying that trend agreement depends on the spatial matching approach used.",
+        "evaluation-of-the-spatiotemporal-distribution-of-lgazyh0a": "- The paper reports that most precipitation indices were substantially underestimated, including consecutive wet days, annual and monsoon precipitation, and the days when precipitation equaled or exceeded 20 and 50 mm.  \n- It states that the microwave-only dataset highly underestimated precipitation amount.  \n- It identifies false alarms as a substantial problem for all four IMERG datasets.  \n- It notes that the IMERG uncalibrated dataset tends to overestimate precipitation during heavy precipitation events.  \n- It attributes remaining accuracy issues to challenges such as complex topography and atmospheric processes over Nepal, which make precipitation estimation difficult and introduce persistent biases in different regions.",
+        "enhancing-global-flood-forecasts-in-southern-africa-using-vrfj3tr6k8s4": "- The paper states that limitations in the skill of global forecasting systems like GloFAS restrict their operational adoption and constrain the lead times available for implementing early actions.  \n- It indicates that, despite the growing number of studies on AI models, there is an urgent need for user-oriented evidence of added value to support operational uptake.  \n- It notes that evaluating hybrid forecasting models requires user-oriented criteria (such as False Alarm Ratios and Hit Rates) within a valuation framework of early actions, implying that performance limitations cannot be assessed through standard metrics alone.  \n- It suggests that ongoing work is needed on post-processing flood hazard maps to further improve forecast value for early actions.  \n- It does not describe additional study-specific limitations in the provided text beyond the above points, so further limitations are not explicitly available from the context."
+      }
+    }
+  },
+  "verified_corrections": [
+    {
+      "topic": "forecast archive",
+      "result": "GFS NCAR operational forecasts documented since 2015-01-15; TIGGE since October 2006. Event-level availability and actual publication are NOT verified."
+    },
+    {
+      "topic": "EGU25-17698",
+      "result": "SciSpace labelled a 2025 Journal Article; primary source establishes an EGU General Assembly conference abstract. No journal article status asserted."
+    },
+    {
+      "topic": "IMERG V06 literature",
+      "result": "Zhu et al. 2024 evaluates V06 annual precipitation; not direct attribution of V07 Dominican wet-day change."
+    }
+  ]
+}
