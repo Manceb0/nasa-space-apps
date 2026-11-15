@@ -8,6 +8,7 @@ import type maplibregl from "maplibre-gl";
 import { terrain3d } from "../terrain3d";
 import { esc, LL, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
 import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
+import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verdeAnswer, type Land, type LandQ } from "./tierra";
 import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart, WARN } from "./graficas";
 import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
@@ -18,7 +19,7 @@ type Style = "crestas" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { d3: false, style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
+const ui = { land: "" as LandQ, landVar: "modis_ndvi", landSite: "", d3: false, style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -36,18 +37,22 @@ export function destroyTrends() {
   document.body.classList.remove("wx-on");
 }
 
+/** Abre Tendencias en una pregunta de la vegetación (los enlaces viejos de «Investigar» y «Recovery Ribbon»). */
+export function openLand(q: LandQ) { ui.land = q; ui.year = null; }
+
 export async function viewTrends(view: HTMLElement) {
   destroyTrends();
   document.body.classList.add("wx-on");
   view.innerHTML = `<div class="wx"><p class="wx-loading">${esc(LL("Cargando tendencias…", "Loading trends…"))}</p></div>`;
-  const d = await loadTrends();
+  const [d, land] = await Promise.all([loadTrends(), loadLand()]);
   if (!d.prods.includes(sel.src)) sel.src = d.prods[0];
   if (!ui.show || (ui.show === "acuerdo" && !d.both)) ui.show = d.both ? "acuerdo" : sel.src;
   if (!d.rel && ui.style === "crestas") ui.style = "oscuro";
-  render(view, d);
+  if (!land) ui.land = "";
+  render(view, d, land);
 }
 
-function render(view: HTMLElement, d: TrendData) {
+function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const layout: Layout = innerWidth < 760 ? "phone" : innerWidth < 1180 ? "mid" : "wide";
   const updated = new Date(d.V.generado_utc).toLocaleString(LL("es-DO", "en-US"), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   // Secciones plegables: abiertas en ancho (tienen su columna), cerradas en tableta y teléfono (comparten la hoja)
@@ -77,7 +82,7 @@ function render(view: HTMLElement, d: TrendData) {
         <li>${esc(LL("Las salidas publicadas no se tocaron; la variante está aparte.", "The published outputs were not touched; the variant is kept apart."))}</li>
       </ul>` : "";
   view.innerHTML = `
-  <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-sty="${ui.style}" data-d3="${ui.d3 ? "on" : "off"}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
+  <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-land="${ui.land ? "on" : "off"}" data-sty="${ui.style}" data-d3="${ui.d3 ? "on" : "off"}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
     <header class="wx-top">
       <a class="wx-brand" href="#tendencias">${MARK}<b>Stellar Horizons</b><span>${esc(LL("Detective de tendencias", "Trend detective"))}</span></a>
       ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}"><i></i>${esc(LL("Preliminar: solo IMERG", "Preliminary: IMERG only"))}</p>`}
@@ -153,6 +158,7 @@ function render(view: HTMLElement, d: TrendData) {
     $("wx-h1").textContent = regName();
     ($("r-sel") as HTMLSelectElement).value = sel.reg;
     $("finding").textContent = finding(d, sel, pick);
+    if (layout === "phone" && ui.land && land) { $("peek-ans").innerHTML = landPeek(land, ui.land, ui.landVar); return; }
     if (layout === "phone") {
       const ti = d.tier(sel), q = questionOf(sel.ind);
       $("peek-ans").innerHTML = `<span class="pa-q">${esc(LL(q.es, q.en))}</span>${both().map(({ p, t }) => `<span class="pa-w"><i style="background:${PROD_COLOR[p]}"></i>${p} <b class="num">${sgn(t.pendiente_decada)}</b></span>`).join("")}<span class="chip" style="--c:${ti.color}">${esc(ti.label)}</span>`;
@@ -163,12 +169,15 @@ function render(view: HTMLElement, d: TrendData) {
   const renderQuestions = () => {
     const q0 = questionOf(sel.ind);
     $("qs").innerHTML = QUESTIONS.map((q) => {
-      const v = verdict(d, sel, pick[q.id]), on = q.id === q0.id;
+      const v = verdict(d, sel, pick[q.id]), on = !ui.land && q.id === q0.id;
       return `<button class="q-h ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}" title="${esc(v.text)}">
           <span class="q-t">${esc(LL(q.es, q.en))}</span>
           <span class="q-v ${v.strong ? "sig" : ""}" style="--c:${v.color}"><i></i>${esc(v.short)}</span>
         </button>`;
-    }).join("");
+    }).join("") + (land ? `<p class="q-g">${esc(LL("La vegetación (MODIS, 5 lugares)", "Vegetation (MODIS, 5 sites)"))}</p>` + LAND_Q.map((q) => {
+      const on = ui.land === q.id;
+      return `<button class="q-h ${on ? "on" : ""}" data-landq="${q.id}" role="radio" aria-checked="${on}"><span class="q-t">${esc(LL(q.es, q.en))}</span></button>`;
+    }).join("") : "");
   };
 
   // ── La respuesta: época, medidas con su veredicto, los dos testigos, la frase, la escalera y la prueba ──
@@ -198,6 +207,13 @@ function render(view: HTMLElement, d: TrendData) {
   };
   const renderAnswer = () => {
     const box = $("ans");
+    if (ui.land && land) {
+      renderHead();
+      $("ans-h").textContent = ui.land === "verde" ? LL("Qué dice MODIS", "What MODIS says") : LL("Qué dice la auditoría", "What the audit says");
+      box.innerHTML = ui.land === "verde" ? verdeAnswer(land, ui.landVar, ui.landSite) : recuperaAnswer(land, ui.landSite);
+      return;
+    }
+    $("ans-h").textContent = LL("Qué dicen las dos fuentes", "What the two sources say");
     const q = questionOf(sel.ind), v = vm(), ws = both(), cls = d.row(sel)?.clase ?? "";
     const ctl = `
       <div class="seg seg-per" role="radiogroup" aria-label="${esc(LL("Época del año", "Season"))}">
@@ -294,7 +310,30 @@ function render(view: HTMLElement, d: TrendData) {
   };
   const hexRGB = (h: string): [number, number, number] => { const n = parseInt(h.replace("#", ""), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
   let ridgeColor: (k: number) => RGBA | null = () => null;
-  const renderMap = (anim = true) => { renderMap0(anim); if (ui.style === "crestas" && ui.d3) ridges3d(); };
+  const renderMap = (anim = true) => {
+    wx.dataset.land = ui.land ? "on" : "off";
+    if (ui.land && land) { renderLandMap(anim); return; }
+    sites?.set([]);
+    renderMap0(anim);
+    if (ui.style === "crestas" && ui.d3) ridges3d();
+  };
+  const renderLandMap = (anim: boolean) => {
+    if (!land) return;
+    paintRidge(anim);
+    sites?.set(siteMarks(land, ui.land, ui.landVar, ui.landSite));
+    $("wx-legend").innerHTML = ui.land === "verde"
+      ? `<p class="lg-w"><span>${esc(LL("Puntos de MODIS: relleno = cambio claro · naranja = hacia lo seco o caliente", "MODIS points: filled = clear change · orange = towards dry or hot"))}</span></p>`
+      : `<p class="lg-w"><span>${esc(LL("Lugares auditados: relleno = alguna sequía con impacto · naranja = estrés invisible", "Audited sites: filled = some drought with impact · orange = invisible stress"))}</span></p>`;
+    describeRidge();
+    if (!t3) return;
+    const m = t3.map;
+    if (m.getLayer("cells")) m.setLayoutProperty("cells", "visibility", "none");
+    if (m.getLayer("stip")) m.setLayoutProperty("stip", "visibility", "none");
+    const clear: Record<string, string> = {}, zero: Record<string, number> = {};
+    d.provs.forEach((r) => { const id = d.isoToShape[r.id]; if (id) { clear[id] = "rgba(0,0,0,0)"; zero[id] = 0; } });
+    t3.setChoro(clear, zero);
+    if (ui.style === "crestas" && ui.d3) ridges3d();
+  };
   const renderMap0 = (anim = true) => {
     wx.dataset.mode = ui.year === null ? "trend" : "year";
     paintRidge(anim);
@@ -358,6 +397,7 @@ function render(view: HTMLElement, d: TrendData) {
   const cellProv = d.rel ? cellProvinces(d.R, d.fc) : [];
   let rg: ReturnType<typeof ridges> | null = null;
   const colorFor = (): ((k: number) => RGBA | null) => {
+    if (ui.land) return () => null;
     if (ui.year === null && ui.show === "acuerdo") {
       const cl = d.cellClass(sel), codes = d.R.clases_codigo ?? [];
       if (!cl) return () => null;
@@ -442,7 +482,7 @@ function render(view: HTMLElement, d: TrendData) {
     else { m.dragRotate.enable(); m.touchZoomRotate.enableRotation(); m.touchPitch.enable(); }
   };
   const renderStyle = () => {
-    wx.dataset.sty = ui.style; wx.dataset.d3 = ui.d3 ? "on" : "off"; wx.dataset.left = ui.left ? "on" : "off"; wx.dataset.right = ui.right ? "on" : "off";
+    wx.dataset.sty = ui.style; wx.dataset.d3 = ui.d3 ? "on" : "off"; wx.dataset.left = ui.left ? "on" : "off"; wx.dataset.right = ui.right && !ui.land ? "on" : "off";
     ($("sty-sel") as HTMLSelectElement).value = ui.style;
     wx.querySelectorAll<HTMLButtonElement>("[data-cam]").forEach((b) => { const on = (b.dataset.cam === "3d") === ui.d3; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
     wx.querySelectorAll<HTMLButtonElement>("[data-fold]").forEach((b) => {
@@ -467,9 +507,21 @@ function render(view: HTMLElement, d: TrendData) {
   };
   wx.addEventListener("click", (e) => {
     const el = e.target as Element;
+    const lq = el.closest<HTMLElement>("[data-landq]");
+    if (lq) {
+      if (ui.land !== lq.dataset.landq) { ui.land = lq.dataset.landq as LandQ; ui.year = null; ui.landSite = ""; renderStyle(); renderPanels(); renderMap(); frameSites(); }
+      return;
+    }
+    const lv = el.closest<HTMLElement>("[data-landvar]");
+    if (lv) { ui.landVar = lv.dataset.landvar!; renderAnswer(); renderMap(); return; }
+    const st = el.closest<HTMLElement>("[data-site]");
+    if (st) { ui.landSite = ui.landSite === st.dataset.site ? "" : st.dataset.site!; renderAnswer(); renderMap(); return; }
     const q = el.closest<HTMLElement>("[data-q]");
     if (q) {
+      const back = !!ui.land;
+      if (back) { ui.land = ""; renderStyle(); }
       if (questionOf(sel.ind).id !== q.dataset.q) setInd(pick[q.dataset.q!]);
+      else if (back) { renderPanels(); renderMap(); frame(); }
       return;
     }
     const mi = el.closest<HTMLElement>("[data-ind]");
@@ -565,6 +617,15 @@ function render(view: HTMLElement, d: TrendData) {
     rg.show(ui.style === "crestas");
   }
 
+  // ── Los lugares de la vegetación (encima de las crestas) ──
+  const sites = land ? sitesLayer(wx.querySelector<HTMLElement>(".wx-mapcol")!, () => (t3 ? (lon, lat) => t3!.map.project([lon, lat]) : null)) : null;
+  if (sites) { const mineS = sites; cleanup.push(() => mineS.destroy()); }
+  const frameSites = () => {
+    if (!t3 || !land) return;
+    // los lugares están repartidos por el país: se encuadra la isla entera, como en el resto de preguntas
+    frame();
+  };
+
   // ── Arranque ──
   t3 = terrain3d($("map"), {
     zones: [], sites: [], onZone: () => {}, onSite: () => {}, cellLabel: () => "", siteAction: "",
@@ -580,10 +641,10 @@ function render(view: HTMLElement, d: TrendData) {
     mine.setView(base(), ui.d3, ui.style === "crestas" ? 4 : 1.8);
     renderMap(false);
     if (sel.reg !== "DO") mine.selectProvince(d.isoToShape[sel.reg] ?? null);
-    frame(true);
+    if (ui.land) frameSites(); else frame(true);
     const map = mine.map;
     lockCam();
-    map.on("move", () => rg?.reframe());
+    map.on("move", () => { rg?.reframe(); sites?.place(); });
     rg?.reframe();
     map.on("mousemove", (e) => {
       const r = map.getCanvas().getBoundingClientRect();

@@ -328,3 +328,30 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
   .cap-n { animation: none; }
   .wx *, .wx *::after { transition: none !important; }
 }
+
+/* ── La vegetación (MODIS y auditoría de recuperación) dentro de Tendencias ── */
+.q-g { margin: 16px 0 4px; padding: 0 12px; font-size: 13px; color: var(--muted); }
+.cap-p { font-size: 13px; font-weight: 600; fill: var(--text); font-family: inherit; }
+.land-chart .land-bg { fill: transparent; transition: fill .2s; }
+.land-chart .land-row { cursor: pointer; }
+.land-chart .land-row:hover .land-bg { fill: var(--hover); }
+.land-chart .land-row.on .land-bg { fill: var(--raised); }
+.land-v { font-size: 12px; font-weight: 600; fill: var(--text); font-family: inherit; }
+.land-axis { stroke: var(--rule); stroke-width: 1.5; }
+.cap-key svg[viewBox="0 0 12 12"] { width: 11px; height: 11px; }
+.land-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+.land-legend span { display: inline-flex; align-items: center; gap: 6px; cursor: help; }
+.land-legend i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: none; }
+.land-legend i.hollow { background: none; box-shadow: inset 0 0 0 2px var(--c); }
+.land-legend b { color: var(--text); font-weight: 600; }
+.sites { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.sites[hidden] { display: none; }
+.site { position: absolute; top: 0; left: 0; width: 28px; height: 28px; margin: -14px 0 0 -14px; padding: 0; border: 0; border-radius: 50%; background: none; pointer-events: auto; cursor: pointer; display: grid; place-items: center; }
+.site i { width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 2px var(--ground); transition: transform .2s var(--ease); }
+.site.hollow i { background: var(--ground); box-shadow: inset 0 0 0 2.5px var(--c), 0 0 0 2px var(--ground); }
+.site:hover i, .site.on i { transform: scale(1.35); }
+.site.on i { outline: 2px solid #fff; outline-offset: 2px; }
+.site:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.wx[data-land="on"] #s-sec, .wx[data-land="on"] #r-sec { display: none; }
+.wx[data-land="on"] .map-data, .wx[data-land="on"] .wx-play, .wx[data-land="on"] .wx-trendbtn, .wx[data-land="on"] .wx-track { visibility: hidden; }
+.wx[data-land="on"] .wx-right { display: none; }

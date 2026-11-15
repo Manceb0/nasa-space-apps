@@ -10,7 +10,7 @@ import { pillNav, wirePillNav } from "./pillnav";
 import { type Grid } from "./field";
 import { terrain3d } from "./terrain3d";
 import { provinceStats, type ProvStat } from "./provincias";
-import { destroyTrends, viewTrends } from "./tendencias/vista";
+import { destroyTrends, openLand, viewTrends } from "./tendencias/vista";
 import { destroyAudit, viewAudit } from "./auditoria/vista";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
@@ -82,8 +82,6 @@ function shell(): void {
       logoAlt: `Stellar Horizons · ${esc(t.brand)}`, logoHref: "#tendencias", ariaLabel: esc(t.brand),
       items: [
         { key: "tendencias", href: "#tendencias", label: getLang() === "es" ? "Tendencias" : "Trends", short: getLang() === "es" ? "Tendencias" : "Trends" },
-        { key: "investigar", href: "#investigar", label: esc(t.navInvestigate), short: esc(t.navInvestigate) },
-        { key: "ribbon", href: "#ribbon", label: "Recovery Ribbon", short: "Ribbon" },
         { key: "auditoria", href: "#auditoria", label: esc(t.navAudit), short: esc(t.navAudit) },
         { key: "metodo", href: "#metodo", label: esc(t.navMethod), short: getLang() === "es" ? "Método" : "Method" },
       ],
@@ -1386,7 +1384,11 @@ function viewMethod() {
 /* ───────────── Router ───────────── */
 
 async function route(scrollTop = true) {
-  const r = (location.hash.replace("#", "") || "tendencias") as "tendencias" | "investigar" | "ribbon" | "expedientes" | "auditoria" | "metodo";
+  // «Investigar» y «Recovery Ribbon» viven ahora dentro de Tendencias como preguntas de la vegetación; sus pantallas
+  // anteriores quedan en #investigar-v1 y #ribbon-v1, fuera del menú
+  const raw = location.hash.replace("#", "") || "tendencias";
+  if (raw === "investigar" || raw === "ribbon") { openLand(raw === "investigar" ? "verde" : "recupera"); history.replaceState(null, "", "#tendencias"); }
+  const r = (raw === "investigar" || raw === "ribbon" ? "tendencias" : raw === "investigar-v1" ? "investigar" : raw === "ribbon-v1" ? "ribbon" : raw) as "tendencias" | "investigar" | "ribbon" | "expedientes" | "auditoria" | "metodo";
   setNav(r);
   stopPlay();
   clearMaps();
@@ -1411,7 +1413,7 @@ async function start() {
   shell();
   index = await load<Index>("index.json");
   window.addEventListener("hashchange", () => {
-    if (["#tendencias", "#investigar", "#ribbon", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
+    if (["#tendencias", "#investigar", "#ribbon", "#investigar-v1", "#ribbon-v1", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
   });
   let timer: number | undefined;
   let lastW = window.innerWidth;
