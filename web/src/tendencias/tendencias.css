@@ -66,24 +66,30 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .pick select { flex: 1; min-width: 0; height: 100%; appearance: none; -webkit-appearance: none; border: 0; background: none; color: var(--text); font: 500 13px/1 inherit; cursor: pointer; text-overflow: ellipsis; }
 .pick select option, .reg-pick select option { background: #24272b; color: #fff; }
 
-/* ── Preguntas: acordeón; solo la elegida muestra su respuesta ── */
-.blk-q { padding: 16px 12px 12px; }
-.blk-q > h2 { padding: 0 8px 8px; font-size: 13px; font-weight: 500; color: var(--muted); }
+/* ── Preguntas: lista de selección de un solo nivel; la respuesta va siempre debajo ── */
+.blk-q, .blk-ans { padding: 16px 12px 12px; }
+.blk-ans { border-top: 1px solid var(--rule); padding: 16px 20px 18px; }
+.blk-q > h2, .blk-ans > h2 { padding: 0 8px 8px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.blk-ans > h2 { padding: 0 0 10px; }
 .qs { display: grid; gap: 2px; }
-.q { border-radius: 14px; transition: background .2s; }
-.q.open { background: var(--hover); }
-.q-h { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 8px 12px; border: 0; border-radius: 14px; background: none; color: var(--dim); text-align: left; font: inherit; cursor: pointer; transition: background .2s, color .2s; }
-.q-h:hover { background: var(--hover); color: var(--text); }
-.q.on .q-h { color: var(--text); }
-.q-t { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; }
+.q-h, .m { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: none; color: var(--dim); text-align: left; font: inherit; cursor: pointer; transition: background .2s, color .2s; }
+.q-h { min-height: 44px; padding: 8px 12px; border-radius: 12px; }
+.q-h:hover, .m:hover { background: var(--hover); color: var(--text); }
+.q-h.on { background: var(--raised); color: var(--text); }
+.q-t, .m-t { flex: 1; min-width: 0; }
+.q-t { font-size: 14px; font-weight: 500; }
 .q-v { flex: none; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--faint); white-space: nowrap; }
 .q-v i { width: 7px; height: 7px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--faint); }
 .q-v.sig { color: color-mix(in srgb, var(--c), #fff 38%); font-weight: 600; }
 .q-v.sig i { background: var(--c); box-shadow: none; }
-.q-h .chev { color: var(--faint); }
-.q.open .q-h .chev { transform: rotate(180deg); }
-.q-b { padding: 4px 12px 14px; }
-.q-h:focus-visible, .seg button:focus-visible, .fold:focus-visible, .sec summary:focus-visible, .proof summary:focus-visible, .wx-play:focus-visible, .wx-trendbtn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* Medidas: filas de radio con su propio veredicto (sustituye al desplegable «Medido como») */
+.ms { display: grid; margin-top: 10px; }
+.m { min-height: 38px; padding: 6px 10px; border-radius: 10px; font-size: 14px; }
+.m::before { content: ""; flex: none; width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--faint); }
+.m.on { color: var(--text); font-weight: 500; }
+.m.on::before { box-shadow: inset 0 0 0 4px var(--text); }
+.m .q-v { font-size: 13px; font-weight: 500; }
+.q-h:focus-visible, .m:focus-visible, .seg button:focus-visible, .fold:focus-visible, .sec summary:focus-visible, .wx-play:focus-visible, .wx-trendbtn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 /* ── La respuesta ── */
 .ans-ctl { display: grid; gap: 8px; }
@@ -105,11 +111,8 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .ladder span i::after { content: ""; position: absolute; inset: 0; background: var(--c); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
 .ladder span.on { color: var(--text); font-weight: 500; }
 .ladder span.on i::after { transform: scaleX(1); }
-.proof { margin-top: 12px; border-top: 1px solid var(--rule); }
-.proof summary { display: flex; align-items: center; justify-content: space-between; height: 40px; list-style: none; font-size: 13px; font-weight: 500; color: var(--dim); cursor: pointer; }
-.proof summary::-webkit-details-marker, .sec summary::-webkit-details-marker { display: none; }
-.proof summary:hover { color: var(--text); }
-.proof[open] summary .chev, .sec[open] summary .chev { transform: rotate(180deg); }
+.sec summary::-webkit-details-marker { display: none; }
+.sec[open] summary .chev { transform: rotate(180deg); }
 .pr-why, .pr-txt { font-size: 13px; line-height: 1.5; color: var(--muted); }
 .pr-why b { color: var(--text); font-weight: 600; }
 .pr-txt { margin-top: 10px; }
@@ -127,7 +130,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .stats-t thead th:first-child { cursor: default; }
 .stats-t tbody th { text-align: left; font-weight: 600; display: flex; align-items: center; gap: 6px; }
 .stats-t tbody tr + tr > * { border-top: 1px solid var(--rule); }
-.rule { margin-top: 8px; font-size: 12px; color: var(--faint); }
+.rule { margin-top: 8px; font-size: 13px; line-height: 1.45; color: var(--faint); }
 .empty { margin-top: 12px; padding: 12px; border: 1px dashed var(--rule); border-radius: 10px; color: var(--muted); font-size: 13px; }
 
 /* ── Secciones plegables: año a año y dónde poner atención ── */
@@ -141,7 +144,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .sec summary .chev { color: var(--faint); }
 .sec-b { padding: 0 var(--pad) var(--pad); }
 .hint { font-size: 12px; color: var(--faint); margin-bottom: 8px; }
-.fine { padding: 14px var(--pad) var(--pad); border-top: 1px solid var(--rule); font-size: 12px; line-height: 1.5; color: var(--faint); }
+.fine { padding: 14px var(--pad) var(--pad); border-top: 1px solid var(--rule); font-size: 13px; line-height: 1.5; color: var(--faint); }
 .tr-svg, .tr-forest { display: block; max-width: 100%; height: auto; overflow: visible; }
 .tr-svg .gl { stroke: var(--rule); }
 .tr-svg .ax, .fr-ax { font-size: 11px; fill: var(--faint); font-family: inherit; }
@@ -211,6 +214,13 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .lg-cls span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 .lg-cls i { width: 10px; height: 10px; border-radius: 2px; }
 .lg-cls b { color: var(--text); font-weight: 600; }
+
+/* La barra se adapta al ancho del mapa (no al de la ventana): si no cabe, la leyenda baja a otra fila */
+.wx-mapcol { container-type: inline-size; }
+@container (max-width: 860px) {
+  .wx-time { height: auto; flex-wrap: wrap; gap: 6px 12px; padding: 10px 16px; }
+  .wx-legend, .wx-legend:has(.lg-cls) { width: 100%; order: 4; }
+}
 
 /* ── Tableta: panel | mapa; año a año y provincias van plegadas en el panel ── */
 @media (max-width: 1179px) {

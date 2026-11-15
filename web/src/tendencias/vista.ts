@@ -19,7 +19,7 @@ type Style = "crestas" | "3d" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true, open: true, proof: false };
+const ui = { style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -87,8 +87,13 @@ function render(view: HTMLElement, d: TrendData) {
         <div class="wx-scroll">
           <section class="blk-q" aria-labelledby="q-h">
             <h2 id="q-h">${esc(LL("Lo que quieres saber", "What you want to know"))}</h2>
-            <div class="qs" id="qs"></div>
+            <div class="qs" id="qs" role="radiogroup" aria-labelledby="q-h"></div>
           </section>
+          <section class="blk-ans" aria-labelledby="ans-h">
+            <h2 id="ans-h">${esc(LL("Qué dicen las dos fuentes", "What the two sources say"))}</h2>
+            <div id="ans" aria-live="polite"></div>
+          </section>
+          <p class="fine">${esc(LL("IMERG y CHIRPS comparten insumos (infrarrojo y pluviómetros). Si discrepan no es que uno mienta: cada producto lee distinto la misma lluvia, y eso es lo que se investiga.", "IMERG and CHIRPS share inputs (infrared and gauges). If they disagree, neither is lying: each reads the same rain differently, and that is what gets investigated."))} ${esc(d.V.nota_causalidad)}</p>
           ${layout === "wide" ? "" : extra}
         </div>
       </aside>
@@ -134,22 +139,19 @@ function render(view: HTMLElement, d: TrendData) {
     }
   };
 
-  // ── Preguntas: un acordeón; la elegida se abre con su respuesta, las demás muestran solo el veredicto ──
+  // ── Preguntas: una lista de selección (un solo nivel); la respuesta de la elegida va siempre debajo ──
   const renderQuestions = () => {
     const q0 = questionOf(sel.ind);
     $("qs").innerHTML = QUESTIONS.map((q) => {
-      const v = verdict(d, sel, pick[q.id]), on = q.id === q0.id, open = on && ui.open;
-      return `<div class="q ${on ? "on" : ""} ${open ? "open" : ""}">
-        <button class="q-h" data-q="${q.id}" aria-expanded="${open}" title="${esc(v.text)}">
+      const v = verdict(d, sel, pick[q.id]), on = q.id === q0.id;
+      return `<button class="q-h ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}" title="${esc(v.text)}">
           <span class="q-t">${esc(LL(q.es, q.en))}</span>
-          <span class="q-v ${v.strong ? "sig" : ""}" style="--c:${v.color}"><i></i>${esc(v.short)}</span>${CHEV}
-        </button>
-        ${open ? `<div class="q-b" id="ans" aria-live="polite"></div>` : ""}
-      </div>`;
+          <span class="q-v ${v.strong ? "sig" : ""}" style="--c:${v.color}"><i></i>${esc(v.short)}</span>
+        </button>`;
     }).join("");
   };
 
-  // ── La respuesta: los dos testigos, una frase y la escalera; la prueba queda plegada ──
+  // ── La respuesta: época, medidas con su veredicto, los dos testigos, la frase, la escalera y la prueba ──
   const countUp = (root: HTMLElement) => root.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
     if (RM()) return;
     const to = Number(el.dataset.count), dg = Number(el.dataset.d), t0 = performance.now();
@@ -161,15 +163,14 @@ function render(view: HTMLElement, d: TrendData) {
     requestAnimationFrame(step);
   });
   const renderAnswer = () => {
-    const box = document.getElementById("ans");
-    if (!box) return;
+    const box = $("ans");
     const q = questionOf(sel.ind), v = vm(), ws = both(), cls = d.row(sel)?.clase ?? "";
     const ctl = `
-      <div class="ans-ctl">
-        ${q.vars.length > 1 ? `<label class="pick"><span>${esc(LL("Medido como", "Measured as"))}</span><select id="v-sel">${q.vars.map((id) => `<option value="${id}" ${id === sel.ind ? "selected" : ""}>${esc(shortName(id))}</option>`).join("")}</select>${CHEV}</label>` : ""}
-        <div class="seg seg-per" role="radiogroup" aria-label="${esc(LL("Época del año", "Season"))}">
-          ${Object.keys(d.V.periodos).map((k) => `<button data-per="${k}" role="radio" aria-checked="${k === sel.per}" class="${k === sel.per ? "on" : ""}" title="${esc(v.periodos.includes(k) ? d.lab(d.V.periodos[k]) : LL("El SPI solo existe para el año completo", "SPI exists for the whole year only"))}" ${v.periodos.includes(k) ? "" : "disabled"}>${esc(LL(...SEASON[k]))}</button>`).join("")}
-        </div>
+      <div class="seg seg-per" role="radiogroup" aria-label="${esc(LL("Época del año", "Season"))}">
+        ${Object.keys(d.V.periodos).map((k) => `<button data-per="${k}" role="radio" aria-checked="${k === sel.per}" class="${k === sel.per ? "on" : ""}" title="${esc(v.periodos.includes(k) ? d.lab(d.V.periodos[k]) : LL("El SPI solo existe para el año completo", "SPI exists for the whole year only"))}" ${v.periodos.includes(k) ? "" : "disabled"}>${esc(LL(...SEASON[k]))}</button>`).join("")}
+      </div>
+      <div class="ms" role="radiogroup" aria-label="${esc(LL("Medido como", "Measured as"))}">
+        ${q.vars.map((id) => { const mv = verdict(d, sel, id), on = id === sel.ind; return `<button class="m ${on ? "on" : ""}" data-ind="${id}" role="radio" aria-checked="${on}" title="${esc(mv.text)}"><span class="m-t">${esc(shortName(id))}</span><span class="q-v ${mv.strong ? "sig" : ""}" style="--c:${mv.color}"><i></i>${esc(mv.short)}</span></button>`; }).join("")}
       </div>`;
     if (!ws.length) { box.innerHTML = `${ctl}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
     const ti = d.tier(sel), unit = v.unidad;
@@ -193,19 +194,12 @@ function render(view: HTMLElement, d: TrendData) {
       </div>`).join("")}</div>
       <p class="ans-sent">${esc(sentence)}</p>
       <div class="ladder" role="img" aria-label="${esc(`${LL("Evidencia", "Evidence")}: ${ti.label}`)}">${TIERS.map(([, es, en], i) => `<span class="${i === tierIdx ? "on" : ""}" style="--c:${ti.color}"><i></i>${esc(LL(es, en))}</span>`).join("")}</div>
-      <details class="proof" ${ui.proof ? "open" : ""}>
-        <summary>${esc(LL("Ver la prueba", "See the evidence"))}${CHEV}</summary>
-        <p class="pr-why"><b>${esc(ti.label)}.</b> ${esc(ti.why)}</p>
-        ${capsule(d, sel)}
-        <table class="stats-t">
-          <thead><tr><th></th><th class="num" title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}">p</th><th class="num" title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}">q (FDR)</th><th class="num" title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}">${esc(LL("Mín. detect.", "Min. detect."))}</th><th class="num">${esc(LL("Media", "Mean"))}</th></tr></thead>
-          <tbody>${ws.map(({ p, t }) => `<tr><th scope="row"><i style="background:${PROD_COLOR[p]}"></i>${p}</th><td class="num">${pFmt(t)}</td><td class="num">${t.q === null ? "—" : num(t.q, 3)}</td><td class="num">±${num(t.mdt)}</td><td class="num">${num(t.media)}</td></tr>`).join("")}</tbody>
-        </table>
-        <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))} ${ws.map((w) => `${w.p}: ${esc(d.V.productos[w.p]?.tipo_fuente ?? "")}`).join(" · ")}.</p>
-        <p class="pr-txt">${esc(v.descripcion)} ${esc(v.por_que_importa)}</p>
-        <p class="pr-txt">${esc(LL("IMERG y CHIRPS no son testigos del todo independientes: comparten infrarrojo geoestacionario y pluviómetros. Si discrepan, no es que un satélite mienta: cada producto lee distinto la misma lluvia, y eso es lo que hay que investigar.", "IMERG and CHIRPS are not fully independent: they share geostationary infrared and rain gauges. When they disagree it is not that a satellite lies: each product reads the same rain differently, and that is what needs checking."))} ${esc(d.V.nota_causalidad)}</p>
-      </details>`;
-    box.querySelector<HTMLDetailsElement>(".proof")!.addEventListener("toggle", (e) => { ui.proof = (e.target as HTMLDetailsElement).open; });
+      ${capsule(d, sel)}
+      <table class="stats-t">
+        <thead><tr><th></th><th class="num" title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}">p</th><th class="num" title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}">q (FDR)</th><th class="num" title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}">${esc(LL("Mín. detect.", "Min. detect."))}</th><th class="num">${esc(LL("Media", "Mean"))}</th></tr></thead>
+        <tbody>${ws.map(({ p, t }) => `<tr><th scope="row"><i style="background:${PROD_COLOR[p]}"></i>${p}</th><td class="num">${pFmt(t)}</td><td class="num">${t.q === null ? "—" : num(t.q, 3)}</td><td class="num">±${num(t.mdt)}</td><td class="num">${num(t.media)}</td></tr>`).join("")}</tbody>
+      </table>
+      <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))} ${esc(v.descripcion)}</p>`;
     countUp(box);
   };
 
@@ -348,7 +342,9 @@ function render(view: HTMLElement, d: TrendData) {
   };
   const paintRidge = (anim = true) => { ridgeColor = colorFor(); if (ui.style === "crestas") rg?.draw(anim && !RM()); };
   const describeRidge = () => rg?.describe(`${LL("Perfiles de relieve de La Española apilados de norte a sur; cada tramo lleva el color de su celda en el mapa.", "Relief profiles of Hispaniola stacked north to south; each stretch takes its cell's map colour.")} ${$("wx-legend").textContent?.replace(/\s+/g, " ").trim() ?? ""}`);
-  const fitPad = () => (layout === "phone" ? { top: 70, bottom: PEEK + 120, left: 16, right: 16 } : { top: 64, bottom: layout === "mid" ? 150 : 110, left: 32, right: 32 });
+  // El margen inferior sale de la altura real de la línea de tiempo (cambia cuando la leyenda baja a otra fila)
+  const barH = () => document.getElementById("wx-bar")?.offsetHeight ?? 76;
+  const fitPad = () => (layout === "phone" ? { top: 70, bottom: PEEK + 120, left: 16, right: 16 } : { top: 64, bottom: barH() + 34, left: 32, right: 32 });
   const frame = (fly = true) => {
     if (!t3) return;
     t3.setFitPadding(fitPad());
@@ -382,8 +378,12 @@ function render(view: HTMLElement, d: TrendData) {
     const el = e.target as Element;
     const q = el.closest<HTMLElement>("[data-q]");
     if (q) {
-      if (questionOf(sel.ind).id === q.dataset.q) { ui.open = !ui.open; renderQuestions(); renderAnswer(); }
-      else { ui.open = true; setInd(pick[q.dataset.q!]); }
+      if (questionOf(sel.ind).id !== q.dataset.q) setInd(pick[q.dataset.q!]);
+      return;
+    }
+    const mi = el.closest<HTMLElement>("[data-ind]");
+    if (mi) {
+      if (mi.dataset.ind !== sel.ind) setInd(mi.dataset.ind!);
       return;
     }
     const fo = el.closest<HTMLButtonElement>("[data-fold]");
@@ -416,7 +416,7 @@ function render(view: HTMLElement, d: TrendData) {
     }
   });
 
-  wx.querySelector(".wx-main")!.addEventListener("transitionend", (e) => { if ((e as TransitionEvent).propertyName === "grid-template-columns") t3?.map.resize(); });
+  wx.querySelector(".wx-main")!.addEventListener("transitionend", (e) => { if ((e as TransitionEvent).propertyName === "grid-template-columns") { t3?.map.resize(); t3?.setFitPadding(fitPad()); } });
 
   // ── Línea de tiempo ──
   const tl = timeline($("wx-bar"), (i) => { ui.year = i; renderMap(); renderSeries(); });
