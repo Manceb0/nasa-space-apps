@@ -1,0 +1,11 @@
+{
+  "fecha": "2026-11-15",
+  "predicciones": {
+    "P1_ciclones": "En días con un ciclón tropical a < 500 km, IMERG y CHIRPS coinciden MÁS en lluvia fuerte (CSI ≥ 50 mm mayor) y el disparador > 100 mm/48 h queda MENOS veces sin confirmar que en días sin ciclón de la misma temporada (ago-nov).",
+    "P1b_extremos": "La fracción de máximos anuales de lluvia diaria (Rx1day) que cae en días de ciclón es mucho mayor que la fracción de días con ciclón.",
+    "P2_barlovento": "En las laderas que miran al alisio (ascenso forzado > 0), CHIRPS da más lluvia media que IMERG (IMERG subestima la lluvia orográfica cálida) y el acuerdo diario es menor.",
+    "P2b_lluvia_debil": "Las celdas con SDII en disputa son las que más difieren en frecuencia de días húmedos (≥ 1 mm) entre productos.",
+    "P3_sin_explicar": "Los 28 episodios sin explicar se concentran en retornos de la estación seca (dic-abr) con lluvia de retorno modesta, más que el resto de los 96.",
+    "P4_instrumento": "La diferencia mensual IMERG − CHIRPS en frecuencia de días húmedos tiene un punto de cambio cerca de 2014-2015 (paso de TRMM a GPM)."
+  }
+}

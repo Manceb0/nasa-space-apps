@@ -122,3 +122,15 @@ services:
       - ./data:/app/data:ro
       - ./results:/app/results:ro
       - ./figures/galeria:/app/figures/galeria
+  tropical:
+    <<: *motor
+    entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.tropical.run"]
+    volumes:
+      - ./earthmemory:/app/earthmemory:ro
+      - ./tests:/app/tests:ro
+      - ./data:/app/data:ro
+      - ./results:/app/results:ro
+      - ./data/tropical:/app/data/tropical
+      - ./results/tropical:/app/results/tropical
+      - ./figures/tropical:/app/figures/tropical
+      - ./reports_nacional:/app/reports_nacional

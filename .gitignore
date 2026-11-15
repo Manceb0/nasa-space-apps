@@ -26,3 +26,5 @@ data/yuna/*
 data/testigos/*
 !data/testigos/MANIFEST.json
 .playwright-cli/
+data/tropical/*
+!data/tropical/MANIFEST.json

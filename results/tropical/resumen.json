@@ -1,0 +1,108 @@
+{
+  "p5_quien_cambio": [
+    {
+      "estacion": "DRM00078458",
+      "cambio_frec_estacion": 0.02747513458465689,
+      "cambio_frec_IMERG": -0.03973044900876643,
+      "cambio_frec_CHIRPS": 0.03644975824206331,
+      "n_antes": 2638,
+      "n_despues": 1748
+    },
+    {
+      "estacion": "DRM00078479",
+      "cambio_frec_estacion": -0.04809023201493401,
+      "cambio_frec_IMERG": -0.11559518789515155,
+      "cambio_frec_CHIRPS": -0.004482664604342657,
+      "n_antes": 2494,
+      "n_despues": 2303
+    },
+    {
+      "estacion": "DRM00078482",
+      "cambio_frec_estacion": 0.020917337800657687,
+      "cambio_frec_IMERG": -0.12229340461814997,
+      "cambio_frec_CHIRPS": -0.05362753015343741,
+      "n_antes": 1669,
+      "n_despues": 1495
+    },
+    {
+      "estacion": "DRM00078486",
+      "cambio_frec_estacion": 0.00853133409514778,
+      "cambio_frec_IMERG": -0.060662963779241685,
+      "cambio_frec_CHIRPS": 0.015392294314728161,
+      "n_antes": 2630,
+      "n_despues": 2053
+    },
+    {
+      "estacion": "DRW00011650",
+      "cambio_frec_estacion": NaN,
+      "cambio_frec_IMERG": NaN,
+      "cambio_frec_CHIRPS": NaN,
+      "n_antes": 0,
+      "n_despues": 0
+    }
+  ],
+  "predicciones": {
+    "P1_ciclones": "En días con un ciclón tropical a < 500 km, IMERG y CHIRPS coinciden MÁS en lluvia fuerte (CSI ≥ 50 mm mayor) y el disparador > 100 mm/48 h queda MENOS veces sin confirmar que en días sin ciclón de la misma temporada (ago-nov).",
+    "P1b_extremos": "La fracción de máximos anuales de lluvia diaria (Rx1day) que cae en días de ciclón es mucho mayor que la fracción de días con ciclón.",
+    "P2_barlovento": "En las laderas que miran al alisio (ascenso forzado > 0), CHIRPS da más lluvia media que IMERG (IMERG subestima la lluvia orográfica cálida) y el acuerdo diario es menor.",
+    "P2b_lluvia_debil": "Las celdas con SDII en disputa son las que más difieren en frecuencia de días húmedos (≥ 1 mm) entre productos.",
+    "P3_sin_explicar": "Los 28 episodios sin explicar se concentran en retornos de la estación seca (dic-abr) con lluvia de retorno modesta, más que el resto de los 96.",
+    "P4_instrumento": "La diferencia mensual IMERG − CHIRPS en frecuencia de días húmedos tiene un punto de cambio cerca de 2014-2015 (paso de TRMM a GPM)."
+  },
+  "p1": {
+    "dif_csi50_ciclon_menos_control": 0.16731832031362978,
+    "ic95_por_anios": [
+      0.09436627633374389,
+      0.2344574094406781
+    ],
+    "extremos": {
+      "IMERG": {
+        "fraccion_rx1day_en_ciclon_pm1d": 0.3759426847662142,
+        "fraccion_dias_ciclon_pm1d": 0.04095368469085101,
+        "razon": 9.179703550586723
+      },
+      "CHIRPS": {
+        "fraccion_rx1day_en_ciclon_pm1d": 0.15309200603318251,
+        "fraccion_dias_ciclon_pm1d": 0.04095368469085101,
+        "razon": 3.738174164030301
+      }
+    },
+    "n_tormentas_500km_2001_2024": 78,
+    "dias_ciclon_500km": 205
+  },
+  "p3": {
+    "tabla_temporada": {
+      "false": {
+        "seca dic-abr": 36,
+        "tardía ago-nov": 27,
+        "temprana may-jul": 5
+      },
+      "true": {
+        "seca dic-abr": 15,
+        "tardía ago-nov": 9,
+        "temprana may-jul": 4
+      }
+    },
+    "p_permutacion_temporada": 0.6178
+  },
+  "p4": {
+    "frecuencia_dias_humedos_IMERG_menos_CHIRPS": {
+      "punto_de_cambio": "2013-10",
+      "K": 7953.0,
+      "p_bloques_12m": 0.001,
+      "media_antes": 0.0209367594095138,
+      "media_despues": -0.023728327330782308
+    },
+    "log_lluvia_IMERG_sobre_CHIRPS": {
+      "punto_de_cambio": "2011-10",
+      "K": 3639.0,
+      "p_bloques_12m": 0.10333333333333333,
+      "media_antes": -0.03542317343222003,
+      "media_despues": 0.02873955580349923
+    }
+  },
+  "entradas_sha256": {
+    "ibtracs": "666681be5b12caf5bad7a511bae5f6e5fa8b03789f7f6dd00ee2f0aaa41c2c97"
+  },
+  "semilla": 20261115
+}
