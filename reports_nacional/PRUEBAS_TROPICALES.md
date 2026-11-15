@@ -331,3 +331,42 @@ Coincidencias que **no** sirven como explicación:
 sobre todo cuando domina la información infrarroja, y no en las observaciones directas de microondas. IMERG trae
 campos para separarlo: influencia del infrarrojo, fuente de microondas y precipitación sin el ajuste final con
 pluviómetros. Si el cambio aparece igual en las microondas, la pista de GOES pierde fuerza.
+
+## ¿Infrarrojo o microondas? Prueba de la pista GOES-16 (15-nov, noche)
+
+Código: `earthmemory/tropical/gpm_fuentes.py` y `figura_gpm.py`. Salidas: `results/tropical/gpm_fuentes/`. Figura:
+`figures/tropical/11_infrarrojo_o_microondas_{dark,light}.png`. Datos: IMERG V07 Final diario 2016-2019 (1.461 días),
+bajado de nuevo con los contadores de medias horas: `precipitation_cnt(_cond)` y `MWprecipitation_cnt(_cond)`.
+
+**Idea.** Si el cambio venía de la entrada infrarroja (GOES-13 → GOES-16, GOES-East desde el 18-dic-2017), la
+fracción de medias horas con lluvia debería bajar en las medias horas **sin** microondas (morphing + infrarrojo,
+`f_ir`) y no en las que **tienen** microondas directas (`f_mw`). Los huecos de microondas se tratan como ausentes.
+
+Periodos: antes = 2016-01..2017-11; después = 2018-12..2019-12. Se excluye la transición (2017-12..2018-11). Se usan
+anomalías respecto al mes del calendario e IC 95 % por bootstrap de meses. Las predicciones se registraron antes de
+descargar, con la tabla de interpretación fijada de antemano (propuesta por la revisión).
+
+| Predicción | Resultado nacional (442 celdas) | Veredicto |
+|---|---|---|
+| H1 (control): en esta ventana, IMERG − CHIRPS baja en días ≥ 1 mm | −6,8 pp [−12,0, −1,1] | Se cumple: el cambio está en la ventana |
+| H2: `f_ir` baja más que `f_mw` | `f_ir` −3,2 pp; `f_mw` −3,0 pp; diferencia −0,17 [−0,57, +0,28] | **No se cumple** |
+| H3: la cobertura de microondas cambia < 10 % | +2,2 pp sobre 23,9 % (+9 % relativo) | Se cumple, por poco |
+
+En los 6 lugares de ERA5 la diferencia `f_ir − f_mw` va de −0,5 a +0,6 pp: tampoco hay señal.
+
+**Lectura, según la tabla fijada antes.** «Cambian también las microondas comparables» **debilita una explicación
+solo infrarroja**. La parte con microondas directas y la parte de morphing + infrarrojo bajan prácticamente lo mismo.
+La pista de GOES-16 pierde fuerza como causa principal, pero no queda refutada.
+
+**Límites.**
+- No es un experimento limpio: el morphing también usa microondas, así que `f_ir` no es infrarrojo puro.
+- La bajada común (~3 pp) puede incluir tiempo real (2019 frente a 2016-2017). El contraste que discrimina es la
+  diferencia entre las dos partes, y esa es ~0.
+- La cobertura de microondas subió un 9 %, cerca del umbral.
+- El producto diario no trae `precipitationUncal` (sin el ajuste con pluviómetros) ni `IRinfluence`. La vía de la
+  **calibración con pluviómetros** sigue abierta y solo se puede probar con los archivos de media hora.
+
+**Siguientes candidatos, sin probar:**
+- La calibración mensual con pluviómetros (GPCC).
+- Cambios en la constelación de microondas o en GPROF.
+- Un cambio en CHIRPS, la referencia.

@@ -126,6 +126,7 @@ services:
     <<: *motor
     entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.tropical.run"]
     volumes:
+      - ./.secrets:/run/secrets:ro          # token de Earthdata solo en ejecución (gpm_fuentes.py)
       - ./earthmemory:/app/earthmemory:ro
       - ./tests:/app/tests:ro
       - ./data:/app/data:ro

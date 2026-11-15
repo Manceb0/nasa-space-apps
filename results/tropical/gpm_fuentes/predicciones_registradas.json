@@ -1,0 +1,12 @@
+{
+  "registradas_utc": "2026-11-15T14:41:09.093424+00:00",
+  "H1": "Control: en esta ventana, la diferencia de días ≥ 1 mm IMERG − CHIRPS baja después frente a antes.",
+  "H2": "Si la vía infrarroja contribuye: el cambio (después − antes, sin ciclo estacional) de la fracción de medias horas con lluvia SIN microondas (f_ir) es más negativo que el de las medias horas CON microondas (f_mw), y el IC 95 % de (Δf_ir − Δf_mw) queda por debajo de 0.",
+  "H3": "Confusor: la cobertura de microondas (cob) cambia menos de un 10 % relativo; si cambia más, la prueba es ambigua.",
+  "interpretacion": {
+    "cambia sobre todo f_ir": "apoya investigar la vía infrarroja; NO identifica a GOES como causa",
+    "cambia también f_mw": "debilita una explicación solo infrarroja",
+    "no cambia ninguna pero sí H1": "orienta hacia la calibración con pluviómetros o el umbral diario (no se puede probar con el producto diario)",
+    "cobertura insuficiente o ambiguo": "hipótesis sin resolver"
+  }
+}
