@@ -1,0 +1,2689 @@
+[
+  {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          27
+        ]
+      ],
+      "date-time": "2026-10-27T09:35:47Z",
+      "timestamp": 1793093747825,
+      "version": "4.5.0"
+    },
+    "reference-count": 0,
+    "publisher": "Springer Science and Business Media LLC",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              10,
+              27
+            ]
+          ],
+          "date-time": "2026-10-27T00:00:00Z",
+          "timestamp": 1793059200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://creativecommons.org/licenses/by/4.0"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              10,
+              27
+            ]
+          ],
+          "date-time": "2026-10-27T00:00:00Z",
+          "timestamp": 1793059200000
+        },
+        "content-version": "am",
+        "delay-in-days": 0,
+        "URL": "https://creativecommons.org/licenses/by/4.0"
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "link.springer.com"
+      ],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [
+      "Commun Earth Environ"
+    ],
+    "abstract": "<jats:title>Abstract</jats:title>\n                  <jats:p>Gridded precipitation products are widely used to assess long-term rainfall and snowfall change, yet their trend reliability remains uncertain. We evaluate 19 (quasi-)global products for three annual statistics: mean precipitation, daily maximum, and wet-day frequency, screening for temporal homogeneity and benchmarking trends against daily and monthly rain-gauge observations. Most products exhibit spatially coherent discontinuities linked to observing-system changes, particularly satellite-instrument transitions in the late 1990s to early 2000s and 2014–2015. Notably, only 58–64% of non-gauge-corrected products match the reference trend sign on average. Even including gauge-corrected products, the interquartile range of product trends is 1.1–1.9 times the reference magnitude, so product choice rivals or exceeds the magnitude of the trends themselves. For 1983–2025 annual-mean trends over land, the eight long-record products span and extend beyond the climate model ensemble envelope, implying observations cannot cleanly disentangle model error from observational uncertainty. This uncertainty propagates into infrastructure design, agricultural risk management, and climate finance, particularly in the tropics and Global South.</jats:p>",
+    "DOI": "10.1038/s43247-026-04148-w",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          27
+        ]
+      ],
+      "date-time": "2026-10-27T09:03:55Z",
+      "timestamp": 1793091835000
+    },
+    "update-policy": "https://doi.org/10.1007/springer_crossmark_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 0,
+    "title": [
+      "Precipitation trend uncertainty from product choice rivals or exceeds the magnitude of actual trends"
+    ],
+    "prefix": "10.1038",
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0002-2845-910X",
+        "authenticated-orcid": false,
+        "given": "Shengli",
+        "family": "Zhu",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-4770-2539",
+        "authenticated-orcid": false,
+        "given": "Yoshihide",
+        "family": "Wada",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6186-5751",
+        "authenticated-orcid": false,
+        "given": "Diego G.",
+        "family": "Miralles",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-3562-2323",
+        "authenticated-orcid": false,
+        "given": "Yongqiang",
+        "family": "Zhang",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6413-7020",
+        "authenticated-orcid": false,
+        "given": "Chiyuan",
+        "family": "Miao",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-1844-8236",
+        "authenticated-orcid": false,
+        "given": "Hamza Kunhu",
+        "family": "Bangalath",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Xuetong",
+        "family": "Wang",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-2553-9566",
+        "authenticated-orcid": false,
+        "given": "Hylke E.",
+        "family": "Beck",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "297",
+    "published-online": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          27
+        ]
+      ]
+    },
+    "container-title": [
+      "Communications Earth &amp; Environment"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://www.nature.com/articles/s43247-026-04148-w",
+        "content-type": "text/html",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          27
+        ]
+      ],
+      "date-time": "2026-10-27T09:03:55Z",
+      "timestamp": 1793091835000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://www.nature.com/articles/s43247-026-04148-w"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          27
+        ]
+      ]
+    },
+    "references-count": 0,
+    "alternative-id": [
+      "4148"
+    ],
+    "URL": "https://doi.org/10.1038/s43247-026-04148-w",
+    "relation": {},
+    "ISSN": [
+      "2662-4435"
+    ],
+    "issn-type": [
+      {
+        "value": "2662-4435",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          27
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "9 June 2026",
+        "order": 1,
+        "name": "received",
+        "label": "Received",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "29 September 2026",
+        "order": 2,
+        "name": "accepted",
+        "label": "Accepted",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "27 October 2026",
+        "order": 3,
+        "name": "first_online",
+        "label": "First Online",
+        "group": {
+          "name": "ArticleHistory",
+          "label": "Article History"
+        }
+      },
+      {
+        "value": "The authors declare no competing interests.",
+        "order": 1,
+        "name": "Ethics",
+        "label": "Competing interests",
+        "group": {
+          "name": "EthicsHeading",
+          "label": "Ethics"
+        }
+      }
+    ]
+  },
+  {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          6
+        ]
+      ],
+      "date-time": "2026-11-06T20:43:00Z",
+      "timestamp": 1793997780417,
+      "version": "4.8.0"
+    },
+    "reference-count": 33,
+    "publisher": "American Geophysical Union (AGU)",
+    "issue": "19",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2022,
+              10,
+              7
+            ]
+          ],
+          "date-time": "2022-10-07T00:00:00Z",
+          "timestamp": 1665100800000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "http://onlinelibrary.wiley.com/termsAndConditions#vor"
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "agupubs.onlinelibrary.wiley.com"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [
+      "Geophysical Research Letters"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2022,
+          10,
+          16
+        ]
+      ]
+    },
+    "abstract": "<jats:title>Abstract</jats:title><jats:p>Satellite‐based precipitation products (SPPs) provide extensive spatial and temporal coverage globally but are challenged in complex terrain. This study aims at understanding uncertainties of SPP estimation due to topographically induced rainfall. Environmental and physical parameters, that is, orographically forced upward motion and horizontal moisture flux convergence, are considered to condition precipitation mechanisms for a detailed uncertainty analysis. The Global Precipitation Measurement (GPM) precipitation product Integrated Multi‐Satellite Retrievals for GPM (IMERG) is compared at its native resolution against a high quality and accurate radar and rain gauge precipitation reference Ground Validation Multi‐Radar Multi‐Sensor (GV‐MRMS). Conditional analysis of IMERG using environmental parameters is conducted over mountainous terrain. The highest GV‐MRMS mean rainfall rate is found to be associated with positive high <jats:italic>Q</jats:italic> and moderate <jats:italic>w</jats:italic> values, confirming that vigorous moisture flux convergence is a strong condition for heavy rainfall. IMERG shows over‐ and underestimation for positive <jats:italic>w</jats:italic> and <jats:italic>Q</jats:italic> when GV‐MRMS rainfall magnitudes between 0.8 and 13 mm h<jats:sup>−1</jats:sup>.</jats:p>",
+    "DOI": "10.1029/2022gl100186",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2022,
+          9,
+          23
+        ]
+      ],
+      "date-time": "2022-09-23T04:05:15Z",
+      "timestamp": 1663905915000
+    },
+    "update-policy": "https://doi.org/10.1002/crossmark_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 25,
+    "title": [
+      "Evaluation of IMERG Over CONUS Complex Terrain Using Environmental Variables"
+    ],
+    "prefix": "10.1029",
+    "volume": "49",
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0003-2961-4412",
+        "authenticated-orcid": false,
+        "given": "Y.",
+        "family": "Derin",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Advanced Radar Research Center University of Oklahoma  Norman OK USA"
+          },
+          {
+            "name": "School of Meteorology University of Oklahoma  Norman OK USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-7381-0229",
+        "authenticated-orcid": false,
+        "given": "P.‐E.",
+        "family": "Kirstetter",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Advanced Radar Research Center University of Oklahoma  Norman OK USA"
+          },
+          {
+            "name": "School of Meteorology University of Oklahoma  Norman OK USA"
+          },
+          {
+            "name": "School of Civil Engineering and Environmental Science University of Oklahoma  Norman OK USA"
+          },
+          {
+            "name": "NOAA/National Severe Storms Laboratory  Norman OK USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "13",
+    "published-online": {
+      "date-parts": [
+        [
+          2022,
+          10,
+          7
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "e_1_2_8_2_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/978-3-319-35095-0_39"
+      },
+      {
+        "key": "e_1_2_8_3_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/waf858.1"
+      },
+      {
+        "key": "e_1_2_8_4_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/jhm-404.1"
+      },
+      {
+        "key": "e_1_2_8_5_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/mwr-d-15-0242.1"
+      },
+      {
+        "key": "e_1_2_8_6_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/1520-0450(1994)033<0140:astmfm>2.0.co;2"
+      },
+      {
+        "key": "e_1_2_8_7_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/2008jamc1987.1"
+      },
+      {
+        "key": "e_1_2_8_8_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/tgrs.2017.2763622"
+      },
+      {
+        "key": "e_1_2_8_9_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/jhm-d-15-0197.1"
+      },
+      {
+        "key": "e_1_2_8_10_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.3390/rs11242936"
+      },
+      {
+        "key": "e_1_2_8_11_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/JHM-D-21-0234.1"
+      },
+      {
+        "key": "e_1_2_8_12_1",
+        "first-page": "2843",
+        "article-title": "Evaluation of IMERG satellite precipitation over land‐coast‐ocean continuum. Part I: Detection",
+        "volume": "22",
+        "author": "Derin Y.",
+        "year": "2021",
+        "journal-title": "Journal of Hydrometeorology"
+      },
+      {
+        "key": "e_1_2_8_13_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/B978-0-12-814899-0.00007-9"
+      },
+      {
+        "key": "e_1_2_8_14_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/jhm-d-13-0191.1"
+      },
+      {
+        "key": "e_1_2_8_15_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1080/01431160701772526"
+      },
+      {
+        "key": "e_1_2_8_16_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/2009jamc2260.1"
+      },
+      {
+        "key": "e_1_2_8_17_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/tgrs.2012.2196282"
+      },
+      {
+        "key": "e_1_2_8_18_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1002/qj.784"
+      },
+      {
+        "key": "e_1_2_8_19_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1080/20014422.1926.11881138"
+      },
+      {
+        "key": "e_1_2_8_20_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/2009jamc2298.1"
+      },
+      {
+        "key": "e_1_2_8_21_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/bams-d-13-00164.1"
+      },
+      {
+        "key": "e_1_2_8_22_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1029/2011rg000365"
+      },
+      {
+        "key": "e_1_2_8_23_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.3390/atmos9030080"
+      },
+      {
+        "key": "e_1_2_8_24_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1002/9781118872086.ch4"
+      },
+      {
+        "key": "e_1_2_8_25_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/jhm-d-11-0139.1"
+      },
+      {
+        "key": "e_1_2_8_26_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1002/qj.2416"
+      },
+      {
+        "key": "e_1_2_8_27_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1002/qj.3243"
+      },
+      {
+        "key": "e_1_2_8_28_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/978-3-030-35798-6_7"
+      },
+      {
+        "key": "e_1_2_8_29_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.2151/jmsj.87a.153"
+      },
+      {
+        "key": "e_1_2_8_30_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/2007jamc1857.1"
+      },
+      {
+        "key": "e_1_2_8_31_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1017/CBO9780511619649"
+      },
+      {
+        "key": "e_1_2_8_32_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/JTECH-D-12-00184.1"
+      },
+      {
+        "key": "e_1_2_8_33_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/jamc-d-12-074.1"
+      },
+      {
+        "key": "e_1_2_8_34_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1175/jamc-d-16-0332.1"
+      }
+    ],
+    "container-title": [
+      "Geophysical Research Letters"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://onlinelibrary.wiley.com/doi/pdf/10.1029/2022GL100186",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://onlinelibrary.wiley.com/doi/full-xml/10.1029/2022GL100186",
+        "content-type": "application/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2022GL100186",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2024,
+          1,
+          20
+        ]
+      ],
+      "date-time": "2024-01-20T18:21:08Z",
+      "timestamp": 1705774868000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2022GL100186"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2022,
+          10,
+          7
+        ]
+      ]
+    },
+    "references-count": 33,
+    "journal-issue": {
+      "issue": "19",
+      "published-print": {
+        "date-parts": [
+          [
+            2022,
+            10,
+            16
+          ]
+        ]
+      }
+    },
+    "alternative-id": [
+      "10.1029/2022GL100186"
+    ],
+    "URL": "https://doi.org/10.1029/2022gl100186",
+    "archive": [
+      "Portico"
+    ],
+    "relation": {},
+    "ISSN": [
+      "0094-8276",
+      "1944-8007"
+    ],
+    "issn-type": [
+      {
+        "value": "0094-8276",
+        "type": "print"
+      },
+      {
+        "value": "1944-8007",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2022,
+          10,
+          7
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "2022-06-24",
+        "order": 0,
+        "name": "received",
+        "label": "Received",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      },
+      {
+        "value": "2022-09-20",
+        "order": 1,
+        "name": "accepted",
+        "label": "Accepted",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      },
+      {
+        "value": "2022-10-07",
+        "order": 2,
+        "name": "published",
+        "label": "Published",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      }
+    ],
+    "article-number": "e2022GL100186"
+  },
+  {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          20
+        ]
+      ],
+      "date-time": "2026-10-20T12:04:32Z",
+      "timestamp": 1792497872097,
+      "version": "4.5.0"
+    },
+    "reference-count": 36,
+    "publisher": "Elsevier BV",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              9,
+              1
+            ]
+          ],
+          "date-time": "2026-09-01T00:00:00Z",
+          "timestamp": 1788220800000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              9,
+              1
+            ]
+          ],
+          "date-time": "2026-09-01T00:00:00Z",
+          "timestamp": 1788220800000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/legal/tdmrep-license"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              6,
+              6
+            ]
+          ],
+          "date-time": "2026-06-06T00:00:00Z",
+          "timestamp": 1780704000000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "http://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "funder": [
+      {
+        "DOI": "10.13039/501100012166",
+        "name": "National Key Research and Development Program of China",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "2022YFC3002902"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "2022YFC3002902"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/501100012166",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/501100002855",
+        "name": "Ministry of Science and Technology of the People's Republic of China",
+        "doi-asserted-by": "publisher",
+        "id": [
+          {
+            "id": "10.13039/501100002855",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/100006959",
+        "name": "U.S. Forest Service",
+        "doi-asserted-by": "publisher",
+        "id": [
+          {
+            "id": "10.13039/100006959",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/501100001809",
+        "name": "National Natural Science Foundation of China",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "U2442201"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "U2442201"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/501100001809",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/501100001809",
+        "name": "National Natural Science Foundation of China",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "52409031"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "52409031"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/501100001809",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "elsevier.com",
+        "sciencedirect.com"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [
+      "Journal of Hydrology"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2026,
+          9
+        ]
+      ]
+    },
+    "DOI": "10.1016/j.jhydrol.2026.135827",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2026,
+          6,
+          3
+        ]
+      ],
+      "date-time": "2026-06-03T23:52:41Z",
+      "timestamp": 1780530761000
+    },
+    "page": "135827",
+    "update-policy": "https://doi.org/10.1016/elsevier_cm_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 5,
+    "special_numbering": "PA",
+    "title": [
+      "Soil moisture thresholds for runoff generation: depth sensitivity and mechanistic controls"
+    ],
+    "prefix": "10.1016",
+    "volume": "677",
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0001-9406-7369",
+        "authenticated-orcid": false,
+        "given": "Zhen",
+        "family": "Cui",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-9414-7019",
+        "authenticated-orcid": false,
+        "given": "Fuqiang",
+        "family": "Tian",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "78",
+    "reference": [
+      {
+        "issue": "16",
+        "key": "10.1016/j.jhydrol.2026.135827_b0005",
+        "doi-asserted-by": "crossref",
+        "first-page": "3575",
+        "DOI": "10.1002/hyp.10527",
+        "article-title": "Comparison of threshold hydrologic response across northern catchments",
+        "volume": "29",
+        "author": "Ali",
+        "year": "2015",
+        "journal-title": "Hydrol. Process."
+      },
+      {
+        "issue": "25",
+        "key": "10.1016/j.jhydrol.2026.135827_b0010",
+        "doi-asserted-by": "crossref",
+        "first-page": "3950",
+        "DOI": "10.1002/hyp.8355",
+        "article-title": "Water storage in a till catchment. II: implications of transmissivity feedback for flow paths and turnover times",
+        "volume": "25",
+        "author": "Bishop",
+        "year": "2011",
+        "journal-title": "Hydrol. Process."
+      },
+      {
+        "issue": "2",
+        "key": "10.1016/j.jhydrol.2026.135827_b0015",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1029/2021WR030507",
+        "article-title": "Antecedent conditions control thresholds of tile-runoff generation and nitrogen export in intensively managed landscapes",
+        "volume": "58",
+        "author": "Cain",
+        "year": "2022",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "issue": "8",
+        "key": "10.1016/j.jhydrol.2026.135827_b0020",
+        "doi-asserted-by": "crossref",
+        "first-page": "7010",
+        "DOI": "10.1029/2019WR025245",
+        "article-title": "Diagnosing bias in modeled soil moisture/runoff coefficient correlation using the SMAP level 4 soil moisture product",
+        "volume": "55",
+        "author": "Crow",
+        "year": "2019",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0025",
+        "doi-asserted-by": "crossref",
+        "first-page": "2275",
+        "DOI": "10.5194/hess-29-2275-2025",
+        "article-title": "Delayed stormflow generation in a semi-humid forested watershed controlled by soil water storage and groundwater dynamics",
+        "volume": "29",
+        "author": "Cui",
+        "year": "2025",
+        "journal-title": "Hydrol. Earth Syst. Sci."
+      },
+      {
+        "issue": "7",
+        "key": "10.1016/j.jhydrol.2026.135827_b0030",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1029/2009WR008102",
+        "article-title": "Threshold changes in storm runoff generation at a till-mantled headwater catchment",
+        "volume": "46",
+        "author": "Detty",
+        "year": "2010",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0035",
+        "doi-asserted-by": "crossref",
+        "first-page": "2519",
+        "DOI": "10.1002/wrcr.20191",
+        "article-title": "Threshold behavior in a fissured granitic catchment in southern China: 1. Analysis of field monitoring results",
+        "volume": "49",
+        "author": "Fu",
+        "year": "2013",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0040",
+        "doi-asserted-by": "crossref",
+        "first-page": "2951",
+        "DOI": "10.1029/97WR01422",
+        "article-title": "Linearity of basin response as a function of scale in a semiarid watershed",
+        "volume": "33",
+        "author": "Goodrich",
+        "year": "1997",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "issue": "12",
+        "key": "10.1016/j.jhydrol.2026.135827_b0045",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1029/2005WR004236",
+        "article-title": "Flow paths, rainfall properties, and antecedent soil moisture controlling lags to peak discharge in a granitic unchanneled catchment",
+        "volume": "41",
+        "author": "Haga",
+        "year": "2005",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "issue": "4",
+        "key": "10.1016/j.jhydrol.2026.135827_b0050",
+        "doi-asserted-by": "crossref",
+        "first-page": "1081",
+        "DOI": "10.1029/JZ068i004p01081",
+        "article-title": "Moisture and energy conditions within a sloping soil mass during drainage",
+        "volume": "68",
+        "author": "Hewlett",
+        "year": "1963",
+        "journal-title": "J. Geophys. Res."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0055",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.3389/ffgc.2022.853729",
+        "article-title": "Impact of climate change on hydrochemical processes at two high-elevation forested watersheds in the southern Appalachians, United States",
+        "volume": "5",
+        "author": "Huang",
+        "year": "2022",
+        "journal-title": "Front. For. Glob. Change"
+      },
+      {
+        "issue": "1–2",
+        "key": "10.1016/j.jhydrol.2026.135827_b0060",
+        "doi-asserted-by": "crossref",
+        "first-page": "50",
+        "DOI": "10.1016/j.jhydrol.2007.12.021",
+        "article-title": "The spatiotemporal variability of runoff generation and groundwater dynamics in a snow-dominated catchment",
+        "volume": "352",
+        "author": "Kuraś",
+        "year": "2008",
+        "journal-title": "J. Hydrol."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0065",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1016/j.jhydrol.2020.125534",
+        "article-title": "Characterization of runoff generation in a mountainous hillslope according to multiple threshold behavior and hysteretic loop features",
+        "volume": "590",
+        "author": "Lee",
+        "year": "2020",
+        "journal-title": "J. Hydrol."
+      },
+      {
+        "issue": "11",
+        "key": "10.1016/j.jhydrol.2026.135827_b0070",
+        "doi-asserted-by": "crossref",
+        "first-page": "2821",
+        "DOI": "10.1029/WR026i011p02821",
+        "article-title": "A rationale for old water discharge through macropores in a steep, humid catchment",
+        "volume": "26",
+        "author": "McDonnell",
+        "year": "1990",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0075",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1016/j.jhydrol.2023.129532",
+        "article-title": "Threshold controlling runoff generation mechanisms in Mediterranean headwater catchments",
+        "volume": "620",
+        "author": "Nanda",
+        "year": "2023",
+        "journal-title": "J. Hydrol."
+      },
+      {
+        "issue": "19",
+        "key": "10.1016/j.jhydrol.2026.135827_b0080",
+        "doi-asserted-by": "crossref",
+        "first-page": "3042",
+        "DOI": "10.1002/hyp.8036",
+        "article-title": "Water storage dynamics and runoff response of a boreal Shield headwater catchment",
+        "volume": "25",
+        "author": "Oswald",
+        "year": "2011",
+        "journal-title": "Hydrol. Process."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0085",
+        "doi-asserted-by": "crossref",
+        "first-page": "975",
+        "DOI": "10.1175/JHM-D-24-0143.1",
+        "article-title": "Leveraging SMAP-based soil moisture to identify runoff thresholds on flash flood-prone basins in the Mediterranean region",
+        "volume": "26",
+        "author": "Ortenzi",
+        "year": "2025",
+        "journal-title": "J. Hydrometeorol."
+      },
+      {
+        "issue": "2",
+        "key": "10.1016/j.jhydrol.2026.135827_b0090",
+        "doi-asserted-by": "crossref",
+        "first-page": "198",
+        "DOI": "10.1002/hyp.10140",
+        "article-title": "Spatio-temporal variability of piezometric response on two steep alpine hillslopes",
+        "volume": "29",
+        "author": "Penna",
+        "year": "2015",
+        "journal-title": "Hydrol. Process."
+      },
+      {
+        "issue": "3",
+        "key": "10.1016/j.jhydrol.2026.135827_b0095",
+        "doi-asserted-by": "crossref",
+        "first-page": "689",
+        "DOI": "10.5194/hess-15-689-2011",
+        "article-title": "The influence of soil moisture on threshold runoff generation processes in an alpine headwater catchment",
+        "volume": "15",
+        "author": "Penna",
+        "year": "2011",
+        "journal-title": "Hydrol. Earth Syst. Sci."
+      },
+      {
+        "issue": "8",
+        "key": "10.1016/j.jhydrol.2026.135827_b0100",
+        "article-title": "Non-linearity of runoff generation processes in an alpine headwater catchment",
+        "volume": "36",
+        "author": "Penna",
+        "year": "2010",
+        "journal-title": "Hydrol. Process."
+      },
+      {
+        "issue": "7",
+        "key": "10.1016/j.jhydrol.2026.135827_b0105",
+        "doi-asserted-by": "crossref",
+        "first-page": "973",
+        "DOI": "10.1111/j.1745-6584.2003.tb02439.x",
+        "article-title": "Hydrological dynamics of the Panola mountain research Watershed, Georgia",
+        "volume": "41",
+        "author": "Peters",
+        "year": "2003",
+        "journal-title": "Ground Water"
+      },
+      {
+        "issue": "1",
+        "key": "10.1016/j.jhydrol.2026.135827_b0110",
+        "doi-asserted-by": "crossref",
+        "first-page": "130",
+        "DOI": "10.1061/(ASCE)1084-0699(2007)12:1(130)",
+        "article-title": "Dimensionless rainfall patterns for South Carolina",
+        "volume": "12",
+        "author": "Powell",
+        "year": "2007",
+        "journal-title": "J. Hydrol. Eng."
+      },
+      {
+        "issue": "1",
+        "key": "10.1016/j.jhydrol.2026.135827_b0115",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1029/2020WR027498",
+        "article-title": "Evaluating the ubiquity of thresholds in rainfall-runoff response across contrasting environments",
+        "volume": "57",
+        "author": "Ross",
+        "year": "2021",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "issue": "8",
+        "key": "10.1016/j.jhydrol.2026.135827_b0120",
+        "doi-asserted-by": "crossref",
+        "first-page": "6579",
+        "DOI": "10.1002/2017WR020376",
+        "article-title": "Nonstationarity in threshold response of stormflow in southern Appalachian headwater catchments",
+        "volume": "53",
+        "author": "Scaife",
+        "year": "2017",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "issue": "13",
+        "key": "10.1016/j.jhydrol.2026.135827_b0125",
+        "doi-asserted-by": "crossref",
+        "first-page": "2949",
+        "DOI": "10.1002/hyp.13780",
+        "article-title": "Non-linear quickflow response as indicators of runoff generation mechanisms",
+        "volume": "34",
+        "author": "Scaife",
+        "year": "2020",
+        "journal-title": "Hydrol. Process."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0130",
+        "first-page": "96",
+        "article-title": "HYSEP: a computer program for streamflow hydrograph separation and analysis",
+        "author": "Sloto",
+        "year": "1996",
+        "journal-title": "U.S. Geol. Surv. Water-Resour. Investig. Rep."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0135",
+        "doi-asserted-by": "crossref",
+        "first-page": "136",
+        "DOI": "10.1016/j.jhydrol.2010.03.011",
+        "article-title": "Model diagnostic analysis of seasonal switching of runoff generation mechanisms in the Blue River basin, Oklahoma",
+        "volume": "418–419",
+        "author": "Tian",
+        "year": "2012",
+        "journal-title": "J. Hydrol."
+      },
+      {
+        "issue": "2",
+        "key": "10.1016/j.jhydrol.2026.135827_b0140",
+        "article-title": "Threshold relations in subsurface stormflow: 2. The fill and spill hypothesis",
+        "volume": "42",
+        "author": "Tromp-van Meerveld",
+        "year": "2006",
+        "journal-title": "Water Resour. Res."
+      },
+      {
+        "issue": "4",
+        "key": "10.1016/j.jhydrol.2026.135827_b0145",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1111/ejss.13274",
+        "article-title": "Combined effects of rainfall types and antecedent soil moisture on runoff generation at a hillslope of red soil region",
+        "volume": "73",
+        "author": "Wang",
+        "year": "2022",
+        "journal-title": "Eur. J. Soil Sci."
+      },
+      {
+        "issue": "8",
+        "key": "10.1016/j.jhydrol.2026.135827_b0150",
+        "doi-asserted-by": "crossref",
+        "first-page": "1728",
+        "DOI": "10.1002/hyp.13658",
+        "article-title": "Stormflow threshold behaviour in a subtropical mountainous headwater catchment during forest recovery period",
+        "volume": "34",
+        "author": "Wei",
+        "year": "2020",
+        "journal-title": "Hydrol. Process."
+      },
+      {
+        "issue": "1–4",
+        "key": "10.1016/j.jhydrol.2026.135827_b0155",
+        "doi-asserted-by": "crossref",
+        "first-page": "3",
+        "DOI": "10.1016/S0022-1694(03)00271-3",
+        "article-title": "Virtual experiments: a new approach for improving process conceptualization in hillslope hydrology",
+        "volume": "285",
+        "author": "Weiler",
+        "year": "2004",
+        "journal-title": "J. Hydrol."
+      },
+      {
+        "issue": "1–4",
+        "key": "10.1016/j.jhydrol.2026.135827_b0160",
+        "doi-asserted-by": "crossref",
+        "first-page": "113",
+        "DOI": "10.1016/j.jhydrol.2003.09.014",
+        "article-title": "Spatial correlation of soil moisture in small catchments and its relationship to dominant spatial hydrological processes",
+        "volume": "286",
+        "author": "Western",
+        "year": "2004",
+        "journal-title": "J. Hydrol."
+      },
+      {
+        "issue": "13",
+        "key": "10.1016/j.jhydrol.2026.135827_b0165",
+        "doi-asserted-by": "crossref",
+        "first-page": "2477",
+        "DOI": "10.1002/hyp.11212",
+        "article-title": "Hydrologic connectivity and threshold behavior of hillslopes with fragipans and soil pipe networks",
+        "volume": "31",
+        "author": "Wilson",
+        "year": "2017",
+        "journal-title": "Hydrol. Process."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0170",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1016/j.jhydrol.2023.130060",
+        "article-title": "From rainfall to runoff: the role of soil moisture in a mountainous catchment",
+        "volume": "625",
+        "author": "Ye",
+        "year": "2023",
+        "journal-title": "J. Hydrol."
+      },
+      {
+        "key": "10.1016/j.jhydrol.2026.135827_b0175",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1016/j.jhydrol.2021.127107",
+        "article-title": "Stormflow generation in a humid forest watershed controlled by antecedent wetness and rainfall amounts",
+        "volume": "603",
+        "author": "Zhang",
+        "year": "2021",
+        "journal-title": "J. Hydrol."
+      },
+      {
+        "issue": "4",
+        "key": "10.1016/j.jhydrol.2026.135827_b0180",
+        "doi-asserted-by": "crossref",
+        "first-page": "1441",
+        "DOI": "10.5194/hess-11-1441-2007",
+        "article-title": "Analysis of the runoff response of an alpine catchment at different scales",
+        "volume": "11",
+        "author": "Zillgens",
+        "year": "2007",
+        "journal-title": "Hydrol. Earth Syst. Sci."
+      }
+    ],
+    "container-title": [
+      "Journal of Hydrology"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S0022169426009248?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S0022169426009248?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2026,
+          9,
+          11
+        ]
+      ],
+      "date-time": "2026-09-11T20:33:30Z",
+      "timestamp": 1789158810000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://linkinghub.elsevier.com/retrieve/pii/S0022169426009248"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2026,
+          9
+        ]
+      ]
+    },
+    "references-count": 36,
+    "alternative-id": [
+      "S0022169426009248"
+    ],
+    "URL": "https://doi.org/10.1016/j.jhydrol.2026.135827",
+    "relation": {},
+    "ISSN": [
+      "0022-1694"
+    ],
+    "issn-type": [
+      {
+        "value": "0022-1694",
+        "type": "print"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2026,
+          9
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "Elsevier",
+        "name": "publisher",
+        "label": "This article is maintained by"
+      },
+      {
+        "value": "Soil moisture thresholds for runoff generation: depth sensitivity and mechanistic controls",
+        "name": "articletitle",
+        "label": "Article Title"
+      },
+      {
+        "value": "Journal of Hydrology",
+        "name": "journaltitle",
+        "label": "Journal Title"
+      },
+      {
+        "value": "https://doi.org/10.1016/j.jhydrol.2026.135827",
+        "name": "articlelink",
+        "label": "CrossRef DOI link to publisher maintained version"
+      },
+      {
+        "value": "article",
+        "name": "content_type",
+        "label": "Content Type"
+      },
+      {
+        "value": "© 2026 The Authors. Published by Elsevier B.V.",
+        "name": "copyright",
+        "label": "Copyright"
+      }
+    ],
+    "article-number": "135827"
+  },
+  {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          12
+        ]
+      ],
+      "date-time": "2026-11-12T18:31:39Z",
+      "timestamp": 1794508299452,
+      "version": "4.9.1"
+    },
+    "reference-count": 51,
+    "publisher": "Copernicus GmbH",
+    "issue": "16",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              8,
+              20
+            ]
+          ],
+          "date-time": "2026-08-20T00:00:00Z",
+          "timestamp": 1787184000000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "funder": [
+      {
+        "DOI": "10.13039/501100001809",
+        "name": "National Natural Science Foundation of China",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "U2442201"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "U2442201"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/501100001809",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/501100001809",
+        "name": "National Natural Science Foundation of China",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "52409031"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "52409031"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/501100001809",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [
+      "Hydrol. Earth Syst. Sci."
+    ],
+    "abstract": "<jats:p>Runoff threshold behavior is widely reported in event-based hydrological studies, but its interpretation and cross-catchment variability remain unresolved because threshold metrics, values, and process interpretations vary among studies, climates and landscape settings. This study synthesizes reported storm-runoff thresholds from 138 experimental catchments worldwide, as well as reported dominant runoff mechanisms, documented wetness-dependent mechanism transitions, and soil-geology-hydrogeology associations. Across the reviewed literature, threshold-like responses were identified using rainfall metrics (e.g., event rainfall amount and rainfall intensity), hydrological-state metrics (e.g., antecedent or within-event soil moisture, storage, and groundwater level), and composite rainfall–state indicators. Hydrological-state and composite indicators were reported more frequently than rainfall-only metrics. Subsurface- and saturation-related mechanisms were most frequently reported, particularly among studies in humid catchments. Among the catchments with explicitly documented event-scale transitions in runoff generation mechanisms, shifts from surface-dominated responses toward saturation-, subsurface-, or shallow-groundwater-influenced responses were more frequently reported as catchment wetness increased within the reported transition subset, although reverse and context-dependent pathways are hydrologically possible. Co-occurrence analysis indicates that reported mechanisms are associated with soil-depth, texture, permeability, lithology, and hydrogeological descriptors, which we interpret as structural contexts that condition state-dependent functional connectivity. Together, the synthesis supports a connectivity-based framework in which rainfall forcing interacts with catchment state and structural constraints to activate or connect runoff pathways.</jats:p>",
+    "DOI": "10.5194/hess-30-5281-2026",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2026,
+          8,
+          20
+        ]
+      ],
+      "date-time": "2026-08-20T06:03:37Z",
+      "timestamp": 1787205817000
+    },
+    "page": "5281-5296",
+    "source": "Crossref",
+    "is-referenced-by-count": 3,
+    "title": [
+      "Runoff thresholds, runoff generation mechanisms, and catchment characteristics: a global synthesis"
+    ],
+    "prefix": "10.5194",
+    "volume": "30",
+    "author": [
+      {
+        "given": "Zhen",
+        "family": "Cui",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-9414-7019",
+        "authenticated-orcid": false,
+        "given": "Fuqiang",
+        "family": "Tian",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "id": [
+              {
+                "id": "https://ror.org/03cve4549",
+                "id-type": "ROR",
+                "asserted-by": "publisher"
+              }
+            ],
+            "name": "Tsinghua University (Beijing, China)"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          },
+          {
+            "role": "corresponding-author",
+            "vocabulary": "crossref"
+          }
+        ]
+      }
+    ],
+    "member": "3145",
+    "published-online": {
+      "date-parts": [
+        [
+          2026,
+          8,
+          20
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "ref1",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ali, G., Tetzlaff, D., McDonnell, J. J., Soulsby, C., Carey, S., Laudon, H., McGuire, K., Buttle, J., Seibert, J., and Shanley, J.: Comparison of threshold hydrologic response across northern catchments, Hydrol. Process., 29, 3575–3591, 10.1002/hyp.10527, 2015.",
+        "DOI": "10.1002/hyp.10527"
+      },
+      {
+        "key": "ref2",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ali, G. A. and Roy, A. G.: Shopping for hydrologically representative connectivity metrics in a humid temperate forested catchment, Water Resour. Res., 46, 2010WR009442, 10.1029/2010WR009442, 2010.",
+        "DOI": "10.1029/2010WR009442"
+      },
+      {
+        "key": "ref3",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ares, M. G., Varni, M., and Chagas, C.: Runoff response of a small agricultural basin in the argentine Pampas considering connectivity aspects, Hydrol. Process., 34, 3102–3119, 10.1002/hyp.13782, 2020.",
+        "DOI": "10.1002/hyp.13782"
+      },
+      {
+        "key": "ref4",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Blume, T. and Van Meerveld, H. J.: From hillslope to stream: methods to investigate subsurface connectivity, WIREs Water, 2, 177–198, 10.1002/wat2.1071, 2015.",
+        "DOI": "10.1002/wat2.1071"
+      },
+      {
+        "key": "ref5",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Bracken, L. J. and Croke, J.: The concept of hydrological connectivity and its contribution to understanding runoff‐dominated geomorphic systems, Hydrol. Process., 21, 1749–1763, 10.1002/hyp.6313, 2007.",
+        "DOI": "10.1002/hyp.6313"
+      },
+      {
+        "key": "ref6",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Bracken, L. J., Wainwright, J., Ali, G. A., Tetzlaff, D., Smith, M. W., Reaney, S. M., and Roy, A. G.: Concepts of hydrological connectivity: Research approaches, pathways and future agendas, Earth-Sci. Rev., 119, 17–34, 10.1016/j.earscirev.2013.02.001, 2013.",
+        "DOI": "10.1016/j.earscirev.2013.02.001"
+      },
+      {
+        "key": "ref7",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Chittolina, M., da Rocha, H. R., Domingues, L. M., and de Araújo Lobo, G.: Hydrological response of a headwater catchment in Southeast Brazil – Threshold patterns of stormflow response, Hydrol. Process., 10.1002/hyp.14879, 2023.",
+        "DOI": "10.1002/hyp.14879"
+      },
+      {
+        "key": "ref8",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Cui, Z.: Global Synthesis Dataset of Storm Runoff Thresholds, Runoff Generation Mechanisms, and Catchment Characteristics, Zenodo [data set], 10.5281/zenodo.21915052, 2026.",
+        "DOI": "10.5281/zenodo.21915052",
+        "type": "dataset"
+      },
+      {
+        "key": "ref9",
+        "doi-asserted-by": "publisher",
+        "unstructured": "de Moraes, J. M., Schuler, A. E., Dunne, T., Figueiredo, R. de O., and Victoria, R. L.: Water storage and runoff processes in plinthic soils under forest and pasture in eastern Amazonia, Hydrol. Process., 20, 2509–2526, 10.1002/hyp.6213, 2006.",
+        "DOI": "10.1002/hyp.6213"
+      },
+      {
+        "key": "ref10",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Deng, C., Jiang, X., Tan, Z., and Nie, T.: Spatiotemporal variation of hydrological connectivity and its threshold effects on flood dynamics: An examination in the arid and semi-arid regions, China, Sci. Total Environ., 935, 173406, 10.1016/j.scitotenv.2024.173406, 2024.",
+        "DOI": "10.1016/j.scitotenv.2024.173406"
+      },
+      {
+        "key": "ref11",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Detty, J. M. and McGuire, K. J.: Threshold changes in storm runoff generation at a till‐mantled headwater catchment, Water Resour. Res., 46, 2009WR008102, 10.1029/2009WR008102, 2010.",
+        "DOI": "10.1029/2009WR008102"
+      },
+      {
+        "key": "ref12",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Devito, K. J., O'Sullivan, A. M., Peters, D. L., Hokanson, K. J., Kettridge, N., and Mendoza, C. A.: Runoff Threshold Responses in Continental Boreal Catchments: Nexus of Subhumid Climate, LowRelief, Surficial Geology, and Land Cover, Water Resour. Res., 59, 10.1029/2023wr034752, 2023.",
+        "DOI": "10.1029/2023wr034752"
+      },
+      {
+        "key": "ref13",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Dunne, T. and Black, R. D.: An Experimental Investigation of Runoff Production in Permeable Soils, Water Resour. Res., 6, 478–490, 10.1029/WR006i002p00478, 1970.",
+        "DOI": "10.1029/WR006i002p00478"
+      },
+      {
+        "key": "ref14",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Farrick, K. K. and Branfireun, B. A.: Soil water storage, rainfall and runoff relationships in a tropical dry forest catchment, Water Resour. Res., 50, 9236–9250, 10.1002/2014WR016045, 2014.",
+        "DOI": "10.1002/2014WR016045"
+      },
+      {
+        "key": "ref15",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Fu, C., Chen, J., Jiang, H., and Dong, L.: Threshold behavior in a fissured granitic catchment in southern China: 1. Analysis of field monitoring results, Water Resour. Res., 49, 2519–2535, 10.1002/wrcr.20191, 2013.",
+        "DOI": "10.1002/wrcr.20191"
+      },
+      {
+        "key": "ref16",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Gao, H., Hrachowitz, M., Wang-Erlandsson, L., Fenicia, F., Xi, Q., Xia, J., Shao, W., Sun, G., and Savenije, H. H. G.: Root zone in the Earth system, Hydrol. Earth Syst. Sci., 28, 4477–4499, 10.5194/hess-28-4477-2024, 2024.",
+        "DOI": "10.5194/hess-28-4477-2024"
+      },
+      {
+        "key": "ref17",
+        "doi-asserted-by": "publisher",
+        "unstructured": "James, A. L. and Roulet, N. T.: Investigating hydrologic connectivity and its association with threshold change in runoff response in a temperate forested watershed, Hydrol. Process., 21, 3391–3408, 10.1002/hyp.6554, 2007.",
+        "DOI": "10.1002/hyp.6554"
+      },
+      {
+        "key": "ref18",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Jencso, K. and McGlynn, B.: Hierarchical controls on runoff generation: Topographically driven hydrologic connectivity, geology, and vegetation, Water Resour. Res., 47, 10.1029/2011WR010666, 2011.",
+        "DOI": "10.1029/2011WR010666"
+      },
+      {
+        "key": "ref19",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Kampf, S. K., Faulconer, J., Shaw, J. R., Lefsky, M., Wagenbrenner, J. W., and Cooper, D. J.: Rainfall Thresholds for Flow Generation in Desert Ephemeral Streams, Water Resour. Res., 54, 9935–9950, 10.1029/2018WR023714, 2018.",
+        "DOI": "10.1029/2018WR023714"
+      },
+      {
+        "key": "ref20",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Kim, H. J.: Hydrologic contributions of subsurface flow during snowmelt and rainfall in a forest catchment, coastal British Columbia, University of British Columbia, 10.14288/1.0090117, 2009.",
+        "DOI": "10.14288/1.0090117"
+      },
+      {
+        "key": "ref21",
+        "doi-asserted-by": "publisher",
+        "unstructured": "McDonnell, J. J.: Are all runoff processes the same?, Hydrol. Process., 27, 4103–4111, 10.1002/hyp.10076, 2013.",
+        "DOI": "10.1002/hyp.10076"
+      },
+      {
+        "key": "ref22",
+        "doi-asserted-by": "publisher",
+        "unstructured": "McDonnell, J. J., Spence, C., Karran, D. J., Van Meerveld, H. J., and Harman, C. J.: Fill‐and‐Spill: A Process Description of Runoff Generation at the Scale of the Beholder, Water Resour. Res., 57, e2020WR027514, 10.1029/2020WR027514, 2021.",
+        "DOI": "10.1029/2020WR027514"
+      },
+      {
+        "key": "ref23",
+        "doi-asserted-by": "publisher",
+        "unstructured": "McGuire, K. J. and McDonnell, J. J.: Hydrological connectivity of hillslopes and streams: Characteristic time scales and nonlinearities, Water Resour. Res., 46, 2010WR009341, 10.1029/2010WR009341, 2010.",
+        "DOI": "10.1029/2010WR009341"
+      },
+      {
+        "key": "ref24",
+        "doi-asserted-by": "publisher",
+        "unstructured": "McMillan, H.: A taxonomy of hydrological processes and watershed function, Hydrol. Process., 36, e14537, 10.1002/hyp.14537, 2022.",
+        "DOI": "10.1002/hyp.14537"
+      },
+      {
+        "key": "ref25",
+        "doi-asserted-by": "publisher",
+        "unstructured": "McMillan, H., Araki, R., Bolotin, L., Kim, D.-H., Coxon, G., Clark, M., and Seibert, J.: Global patterns in observed hydrologic processes, Nat. Water, 3, 497–506, 10.1038/s44221-025-00407-w, 2025.",
+        "DOI": "10.1038/s44221-025-00407-w"
+      },
+      {
+        "key": "ref26",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Meyles, E., Williams, A., Ternan, L., and Dowd, J.: Runoff generation in relation to soil moisture patterns in a small Dartmoor catchment, Southwest England, Hydrol. Process., 17, 251–264, 10.1002/hyp.1122, 2003.",
+        "DOI": "10.1002/hyp.1122"
+      },
+      {
+        "key": "ref27",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Mirus, B. B. and Loague, K.: How runoff begins (and ends): Characterizing hydrologic response at th e catchment scale, Water Resour. Res., 49, 2987–3006, 10.1002/wrcr.20218, 2013.",
+        "DOI": "10.1002/wrcr.20218"
+      },
+      {
+        "key": "ref28",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Nanda, A. and Safeeq, M.: Threshold controlling runoff generation mechanisms in Mediterranean headwater catchments, J. Hydrol., 620, 129532, 10.1016/j.jhydrol.2023.129532, 2023.",
+        "DOI": "10.1016/j.jhydrol.2023.129532"
+      },
+      {
+        "key": "ref29",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Nanda, A. and Sen, S.: Exploring Hydrological Connections: A Threshold and Complex Network Based Approach, EGU General Assembly 2021, online, 19–30 Apr 2021, EGU21-7526, 10.5194/egusphere-egu21-7526, 2021.",
+        "DOI": "10.5194/egusphere-egu21-7526"
+      },
+      {
+        "key": "ref30",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Oswald, C. J., Richardson, M. C., and Branfireun, B. A.: Water storage dynamics and runoff response of a boreal Shield headwater catchment, Hydrol. Process., 25, 3042–3060, 10.1002/hyp.8036, 2011.",
+        "DOI": "10.1002/hyp.8036"
+      },
+      {
+        "key": "ref31",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Penna, D.: Controls on runoff processes in forested catchments worldwide, Nat. Water, 4, 102–114, 10.1038/s44221-025-00547-z, 2026.",
+        "DOI": "10.1038/s44221-025-00547-z"
+      },
+      {
+        "key": "ref32",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Penna, D., Tromp-van Meerveld, H. J., Gobbi, A., Borga, M., and Dalla Fontana, G.: The influence of soil moisture on threshold runoff generation processes in an alpine headwater catchment, Hydrol. Earth Syst. Sci., 15, 689–702, 10.5194/hess-15-689-2011, 2011.",
+        "DOI": "10.5194/hess-15-689-2011"
+      },
+      {
+        "key": "ref33",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ross, C. A., Ali, G. A., Spence, C., and Courchesne, F.: Evaluating the Ubiquity of Thresholds in Rainfall‐Runoff Response Across Contrasting Environments, Water Resour. Res., 57, e2020WR027498, 10.1029/2020WR027498, 2021.",
+        "DOI": "10.1029/2020WR027498"
+      },
+      {
+        "key": "ref34",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Sando, R., Jaeger, K. L., Kelleher, C. A., Hammond, J., Christensen, J. R., Segura, C., Golden, H. E., Cheng, F., Husic, A., Jones, C. N., Lane, C. R., Li, L., Mahoney, D. T., McMillan, H. K., Price, A. N., Seybold, E. C., Ward, A. S., Zimmer, M., and Pestana, S.: Streamflow and Surface‐Water Presence Data Availability Across the Conterminous United States: A Review for Headwater Systems, Hydrol. Process., 40, e70572, 10.1002/hyp.70572, 2026.",
+        "DOI": "10.1002/hyp.70572"
+      },
+      {
+        "key": "ref35",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Scaife, C. I. and Band, L. E.: Nonstationarity in threshold response of stormflow in southern A ppalachian headwater catchments, Water Resour. Res., 53, 6579–6596, 10.1002/2017WR020376, 2017.",
+        "DOI": "10.1002/2017WR020376"
+      },
+      {
+        "key": "ref36",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Scaife, C. I., Singh, N. K., Emanuel, R. E., Miniat, C. F., and Band, L. E.: Non‐linear quickflow response as indicators of runoff generation mechanisms, Hydrol. Process., 34, 2949–2964, 10.1002/hyp.13780, 2020.",
+        "DOI": "10.1002/hyp.13780"
+      },
+      {
+        "key": "ref37",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Sidle, R. C., Tsuboyama, Y., Noguchi, S., Hosoda, I., Fujieda, M., and Shimizu, T.: Stormflow generation in steep forested headwaters: a linked hydrogeomorphic paradigm, Hydrol. Process., 14, 369–385, 10.1002/(SICI)1099-1085(20000228)14:33.0.CO;2-P, 2000.",
+        "DOI": "10.1002/(SICI)1099-1085(20000228)14:33.0.CO;2-P"
+      },
+      {
+        "key": "ref38",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Spence, C.: A Paradigm Shift in Hydrology: Storage Thresholds Across Scales Influe nce Catchment Runoff Generation, Geography Compass, 4, 819–833, 10.1111/j.1749-8198.2010.00341.x, 2010.",
+        "DOI": "10.1111/j.1749-8198.2010.00341.x"
+      },
+      {
+        "key": "ref39",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Spence, C. and Woo, M.: Hydrology of subarctic Canadian shield: soil-filled valleys, J. Hydrol., 279, 151–166, 10.1016/S0022-1694(03)00175-6, 2003.",
+        "DOI": "10.1016/S0022-1694(03)00175-6"
+      },
+      {
+        "key": "ref40",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Srinivasan, M., Gburek, W., and Hamlett, J.: Dynamics of stormflow generation – A hillslope‐scale field study in east‐central Pennsylvania, USA, Hydrol. Process., 16, 649–665, 10.1002/HYP.311, 2002.",
+        "DOI": "10.1002/HYP.311"
+      },
+      {
+        "key": "ref41",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Tromp‐van Meerveld, H. J. and McDonnell, J. J.: Threshold relations in subsurface stormflow: 1. A 147‐storm analysis of the Panola hillslope, Water Resour. Res., 42, 2004WR003778, 10.1029/2004WR003778, 2006a.",
+        "DOI": "10.1029/2004WR003778"
+      },
+      {
+        "key": "ref42",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Tromp‐van Meerveld, H. J. and McDonnell, J. J.: Threshold relations in subsurface stormflow: 2. The fill and spill hypothesis, Water Resour. Res., 42, 2004WR003800, 10.1029/2004WR003800, 2006b.",
+        "DOI": "10.1029/2004WR003800"
+      },
+      {
+        "key": "ref43",
+        "doi-asserted-by": "publisher",
+        "unstructured": "von Freyberg, J., Radny, D., Gall, H. E., and Schirmer, M.: Implications of hydrologic connectivity between hillslopes and riparia n zones on streamflow composition, J. Contam. Hydrol., 169, 62–74, 10.1016/j.jconhyd.2014.07.005, 2014.",
+        "DOI": "10.1016/j.jconhyd.2014.07.005"
+      },
+      {
+        "key": "ref44",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Wang, Y., Gao, L., Huang, S., and Peng, X.: Combined effects of rainfall types and antecedent soil moisture on runoff generation at a hillslope of red soil region, Eur. J. Soil Sci., 73, e13274, 10.1111/ejss.13274, 2022.",
+        "DOI": "10.1111/ejss.13274"
+      },
+      {
+        "key": "ref45",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Western, A. W., Blöschl, G., and Grayson, R. B.: Toward capturing hydrologically significant connectivity in spatial patterns, Water Resour. Res., 37, 83–97, 10.1029/2000WR900241, 2001.",
+        "DOI": "10.1029/2000WR900241"
+      },
+      {
+        "key": "ref46",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Wilson, G. V., Nieber, J. L., Fox, G. A., Dabney, S. M., Ursic, M., and Rigby, J. R.: Hydrologic connectivity and threshold behavior of hillslopes with fragipans and soil pipe networks, Hydrol. Process., 31, 2477–2496, 10.1002/hyp.11212, 2017.",
+        "DOI": "10.1002/hyp.11212"
+      },
+      {
+        "key": "ref47",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Zehe, E. and Sivapalan, M.: Threshold behaviour in hydrological systems as (human) geo-ecosystems: manifestations, controls, implications, Hydrol. Earth Syst. Sci., 13, 1273–1297, 10.5194/hess-13-1273-2009, 2009.",
+        "DOI": "10.5194/hess-13-1273-2009"
+      },
+      {
+        "key": "ref48",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Zhang, G., Cui, P., Gualtieri, C., Zhang, J., Ahmed Bazai, N., Zhang, Z., Wang, J., Tang, J., Chen, R., and Lei, M.: Stormflow generation in a humid forest watershed controlled by antecedent wetness and rainfall amounts, J. Hydrol., 603, 127107, 10.1016/j.jhydrol.2021.127107, 2021.",
+        "DOI": "10.1016/j.jhydrol.2021.127107"
+      },
+      {
+        "key": "ref49",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Zhang, J., Liu, J., Han, X., Shen, X., Liang, Z., and Wang, S.: Variable storage behavior controlled by rainfall intensity and profile structure upon saturation excess overland flow generation, J. Hydrol., 610, 127860, 10.1016/j.jhydrol.2022.127860, 2022.",
+        "DOI": "10.1016/j.jhydrol.2022.127860"
+      },
+      {
+        "key": "ref50",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Zhang, Y., Guo, L., Xu, H., Liu, H., Liu, J., Sun, X., Mello, C. R., Boyer, E., and Wang, G.: Quantifying Subsurface Hydrological Connectivity and Its Coupling With Structural Connectivity in Headwater Catchments, Water Resour. Res., 62, e2025WR042599, 10.1029/2025WR042599, 2026.",
+        "DOI": "10.1029/2025WR042599"
+      },
+      {
+        "key": "ref51",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Zimmermann, B., Zimmermann, A., Turner, B. L., Francke, T., and Elsenbeer, H.: Connectivity of overland flow by drainage network expansion in a rain forest catchment, Water Resour. Res., 50, 1457–1473, 10.1002/2012WR012660, 2014.",
+        "DOI": "10.1002/2012WR012660"
+      }
+    ],
+    "container-title": [
+      "Hydrology and Earth System Sciences"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://hess.copernicus.org/articles/30/5281/2026/hess-30-5281-2026.pdf",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2026,
+          9,
+          26
+        ]
+      ],
+      "date-time": "2026-09-26T20:35:37Z",
+      "timestamp": 1790454937000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://hess.copernicus.org/articles/30/5281/2026/"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2026,
+          8,
+          20
+        ]
+      ]
+    },
+    "references-count": 51,
+    "journal-issue": {
+      "issue": "16",
+      "published-online": {
+        "date-parts": [
+          [
+            2026
+          ]
+        ]
+      }
+    },
+    "URL": "https://doi.org/10.5194/hess-30-5281-2026",
+    "relation": {
+      "has-preprint": [
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265",
+          "asserted-by": "subject"
+        },
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265",
+          "asserted-by": "object"
+        }
+      ],
+      "has-review": [
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265-RC1",
+          "asserted-by": "subject"
+        },
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265-AC1",
+          "asserted-by": "subject"
+        },
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265-RC2",
+          "asserted-by": "subject"
+        },
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265-AC2",
+          "asserted-by": "subject"
+        },
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265-RC1",
+          "asserted-by": "object"
+        },
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265-RC2",
+          "asserted-by": "object"
+        },
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265-AC2",
+          "asserted-by": "object"
+        },
+        {
+          "id-type": "doi",
+          "id": "10.5194/egusphere-2026-1265-AC1",
+          "asserted-by": "object"
+        }
+      ],
+      "is-part-of": [
+        {
+          "id-type": "doi",
+          "id": "10.5281/zenodo.21915052",
+          "asserted-by": "subject"
+        }
+      ],
+      "has-part": [
+        {
+          "id-type": "doi",
+          "id": "https://doi.org/10.5194/hess-30-5281-2026-supplement",
+          "asserted-by": "subject"
+        }
+      ]
+    },
+    "ISSN": [
+      "1607-7938"
+    ],
+    "issn-type": [
+      {
+        "value": "1607-7938",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2026,
+          8,
+          20
+        ]
+      ]
+    }
+  },
+  {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          3
+        ]
+      ],
+      "date-time": "2026-11-03T13:53:17Z",
+      "timestamp": 1793713997981,
+      "version": "4.6.1"
+    },
+    "reference-count": 35,
+    "publisher": "American Meteorological Society",
+    "issue": "8",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2023,
+              8,
+              1
+            ]
+          ],
+          "date-time": "2023-08-01T00:00:00Z",
+          "timestamp": 1690848000000
+        },
+        "content-version": "unspecified",
+        "delay-in-days": 0,
+        "URL": "http://www.ametsoc.org/PUBSReuseLicenses"
+      }
+    ],
+    "funder": [
+      {
+        "DOI": "10.13039/100014573",
+        "name": "Earth Sciences Division",
+        "doi-asserted-by": "crossref",
+        "id": [
+          {
+            "id": "10.13039/100014573",
+            "id-type": "DOI",
+            "asserted-by": "crossref"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [],
+    "published-print": {
+      "date-parts": [
+        [
+          2023,
+          8
+        ]
+      ]
+    },
+    "abstract": "<jats:title>Abstract</jats:title>\n<jats:p>Several decades of continuous improvements in satellite precipitation algorithms have resulted in fairly accurate level-2 precipitation products for local-scale applications. Numerous studies have been carried out to quantify random and systematic errors at individual validation sites and regional networks. Understanding uncertainties at larger scales, however, has remained a challenge. Temporal changes in precipitation regional biases, regime morphology, sampling, and observation-vector information content, all play important roles in defining the accuracy of satellite rainfall retrievals. This study considers these contributors to offer a quantitative estimate of uncertainty in recently produced global precipitation climate data record. Generated from intercalibrated observations collected by a constellation of passive microwave (PMW) radiometers over the course of 30 years, this data record relies on Global Precipitation Measurement (GPM) mission enterprise PMW precipitation retrieval to offer a long-term global monthly precipitation estimates with corresponding uncertainty at 5° scales. To address changes in the information content across different constellation members the study develops synthetic datasets from GPM Microwave Imager (GMI) sensor, while sampling- and morphology-related uncertainties are quantified using GPM’s dual-frequency precipitation radar (DPR). Special attention is given to separating precipitation into self-similar states that appear to be consistent across environmental conditions. Results show that the variability of bias patterns can be explained by the relative occurrence of different precipitation states across the regions and used to calculate product’s uncertainty. It is found that at 5° spatial scale monthly mean precipitation uncertainties in tropics can exceed 10%.</jats:p>",
+    "DOI": "10.1175/jamc-d-22-0179.1",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2023,
+          6,
+          15
+        ]
+      ],
+      "date-time": "2023-06-15T06:17:16Z",
+      "timestamp": 1686809836000
+    },
+    "page": "1069-1082",
+    "source": "Crossref",
+    "is-referenced-by-count": 9,
+    "title": [
+      "Can We Estimate the Uncertainty Level of Satellite Long-Term Precipitation Records?"
+    ],
+    "prefix": "10.1175",
+    "volume": "62",
+    "author": [
+      {
+        "given": "Veljko",
+        "family": "Petković",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "a Earth System Science Interdisciplinary Center/Cooperative Institute for Satellite Earth System Studies, University of Maryland, College Park, College Park, Maryland"
+          },
+          {
+            "name": "b Colorado State University, Fort Collins, Colorado"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Paula J.",
+        "family": "Brown",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "b Colorado State University, Fort Collins, Colorado"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Wesley",
+        "family": "Berg",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "b Colorado State University, Fort Collins, Colorado"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "David L.",
+        "family": "Randel",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "b Colorado State University, Fort Collins, Colorado"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Spencer R.",
+        "family": "Jones",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "b Colorado State University, Fort Collins, Colorado"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Christian D.",
+        "family": "Kummerow",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "b Colorado State University, Fort Collins, Colorado"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "12",
+    "reference": [
+      {
+        "key": "bib1",
+        "series-title": "J. Hydrometeor.",
+        "first-page": "1147",
+        "article-title": "The Version-2 Global Precipitation Climatology Project (GPCP) monthly precipitation analysis (1979–present)",
+        "volume": "4",
+        "author": "Adler, R. F.",
+        "year": "2003",
+        "unstructured": "Adler, R. F., and Coauthors, 2003: \nThe Version-2 Global Precipitation Climatology Project (GPCP) monthly precipitation analysis (1979–present). J. Hydrometeor., 4, 1147–1167, https://doi.org/10.1175/1525-7541(2003)004<1147:TVGPCP>2.0.CO;2."
+      },
+      {
+        "key": "bib2",
+        "series-title": "J. Meteor. Soc. Japan",
+        "first-page": "281",
+        "article-title": "A ten-year tropical rainfall climatology based on a composite of TRMM products",
+        "volume": "87A",
+        "author": "Adler, R. F.",
+        "year": "2009",
+        "unstructured": "Adler, R. F., J. J. Wang, G. Gu, and G. J. Huffman, 2009: \nA ten-year tropical rainfall climatology based on a composite of TRMM products. J. Meteor. Soc. Japan, 87A, 281–293, https://doi.org/10.2151/jmsj.87A.281."
+      },
+      {
+        "key": "bib3",
+        "series-title": "J. Appl. Meteor. Climatol.",
+        "first-page": "84",
+        "article-title": "Estimating climatological bias errors for the Global Precipitation Climatology Project (GPCP)",
+        "volume": "51",
+        "author": "Adler, R. F.",
+        "year": "2012",
+        "unstructured": "Adler, R. F., G. Gu, and G. J. Huffman, 2012: \nEstimating climatological bias errors for the Global Precipitation Climatology Project (GPCP). J. Appl. Meteor. Climatol., 51, 84–99, https://doi.org/10.1175/JAMC-D-11-052.1."
+      },
+      {
+        "key": "bib4",
+        "series-title": "Quart. J. Roy. Meteor. Soc.",
+        "first-page": "690",
+        "article-title": "A Tool to Estimate Land–Surface Emissivities at Microwave frequencies (TELSEM) for use in numerical weather prediction",
+        "volume": "137",
+        "author": "Aires, F.",
+        "year": "2011",
+        "unstructured": "Aires, F., C. Prigent, F. Bernardo, C. Jiménez, R. Saunders, and P. Brunel, 2011: \nA Tool to Estimate Land–Surface Emissivities at Microwave frequencies (TELSEM) for use in numerical weather prediction. Quart. J. Roy. Meteor. Soc., 137, 690–699, https://doi.org/10.1002/qj.803."
+      },
+      {
+        "key": "bib5",
+        "series-title": "Philos. Trans. Roy. Soc.",
+        "first-page": "123",
+        "article-title": "Uniqueness in the inversion of inaccurate gross Earth data",
+        "volume": "A266",
+        "author": "Backus, G.",
+        "year": "1970",
+        "unstructured": "Backus, G., and F. Gilbert, 1970: \nUniqueness in the inversion of inaccurate gross Earth data. Philos. Trans. Roy. Soc., A266, 123–192, https://doi.org/10.1098/rsta.1970.0005."
+      },
+      {
+        "key": "bib6",
+        "series-title": "Klimastatusbericht",
+        "first-page": "181",
+        "article-title": "A new monthly precipitation climatology for the global land areas for the period 1951 to 2000",
+        "volume": "2004",
+        "author": "Beck, C.",
+        "year": "2005",
+        "unstructured": "Beck, C., J. Grieser, and B. Rudolf, 2005: \nA new monthly precipitation climatology for the global land areas for the period 1951 to 2000. Klimastatusbericht, 2004, 181–190."
+      },
+      {
+        "key": "bib7",
+        "author": "Berg, W.",
+        "year": "2016",
+        "unstructured": "Berg, W., 2016: GPM GMI_R common calibrated brightness temperatures collocated L1C 1.5 hours 13 km V05. Goddard Earth Sciences Data and Information Services Center, accessed 1 March 2019, https://doi.org/10.5067/GPM/GMI/R/1C/05."
+      },
+      {
+        "key": "bib8",
+        "author": "Berg, W.",
+        "year": "2017",
+        "unstructured": "Berg, W., 2017: Towards developing a long-term high-quality intercalibrated TRMM/GPM radiometer dataset. 2017 IEEE Int. Geoscience and Remote Sensing Symp. (IGARSS), Fort Worth, TX, IEEE, 248–250, https://doi.org/10.1109/IGARSS.2017.8126941."
+      },
+      {
+        "key": "bib9",
+        "series-title": "J. Appl. Meteor. Climatol.",
+        "first-page": "434",
+        "article-title": "Rainfall climate regimes: The relationship of regional TRMM rainfall biases to the environment",
+        "volume": "45",
+        "author": "Berg, W.",
+        "year": "2006",
+        "unstructured": "Berg, W., T. L’Ecuyer, and C. D. Kummerow, 2006: \nRainfall climate regimes: The relationship of regional TRMM rainfall biases to the environment. J. Appl. Meteor. Climatol., 45, 434–454, https://doi.org/10.1175/JAM2331.1."
+      },
+      {
+        "key": "bib10",
+        "series-title": "J. Atmos. Oceanic Technol.",
+        "first-page": "2639",
+        "article-title": "Intercalibration of the GPM microwave radiometer constellation",
+        "volume": "33",
+        "author": "Berg, W.",
+        "year": "2016",
+        "unstructured": "Berg, W., and Coauthors, 2016: \nIntercalibration of the GPM microwave radiometer constellation. J. Atmos. Oceanic Technol., 33, 2639–2654, https://doi.org/10.1175/JTECH-D-16-0100.1."
+      },
+      {
+        "key": "bib11",
+        "series-title": "Remote Sens.",
+        "first-page": "1306",
+        "article-title": "Fundamental climate data records of microwave brightness temperatures",
+        "volume": "10",
+        "author": "Berg, W.",
+        "year": "2018",
+        "unstructured": "Berg, W., R. Kroodsma, C. D. Kummerow, and D. S. McKague, 2018: \nFundamental climate data records of microwave brightness temperatures. Remote Sens., 10, 1306, https://doi.org/10.3390/rs10081306."
+      },
+      {
+        "key": "bib12",
+        "year": "2017",
+        "unstructured": "Copernicus Climate Change Service, 2017: ERA5: Fifth generation of ECMWF atmospheric reanalyses of the global climate. Copernicus Climate Change Service Climate Data Store, accessed 10 January 2019, https://cds.climate.copernicus.eu/cdsapp#!/home."
+      },
+      {
+        "key": "bib13",
+        "series-title": "Quart. J. Roy. Meteor. Soc.",
+        "first-page": "553",
+        "article-title": "The ERA-Interim reanalysis: Configuration and performance of the data assimilation system",
+        "volume": "137",
+        "author": "Dee, D. P.",
+        "year": "2011",
+        "unstructured": "Dee, D. P., and Coauthors, 2011: \nThe ERA-Interim reanalysis: Configuration and performance of the data assimilation system. Quart. J. Roy. Meteor. Soc., 137, 553–597, https://doi.org/10.1002/qj.828."
+      },
+      {
+        "key": "bib14",
+        "series-title": "J. Appl. Meteor. Climatol.",
+        "first-page": "408",
+        "article-title": "The sensitivity of rainfall estimation to error assumptions in a Bayesian passive microwave retrieval algorithm",
+        "volume": "54",
+        "author": "Elsaesser, G. S.",
+        "year": "2015",
+        "unstructured": "Elsaesser, G. S., and C. D. Kummerow, 2015: \nThe sensitivity of rainfall estimation to error assumptions in a Bayesian passive microwave retrieval algorithm. J. Appl. Meteor. Climatol., 54, 408–422, https://doi.org/10.1175/JAMC-D-14-0105.1."
+      },
+      {
+        "key": "bib15",
+        "series-title": "Bull. Amer. Meteor. Soc.",
+        "first-page": "701",
+        "article-title": "The Global Precipitation Measurement mission",
+        "volume": "95",
+        "author": "Hou, A. Y.",
+        "year": "2014",
+        "unstructured": "Hou, A. Y., and Coauthors, 2014: \nThe Global Precipitation Measurement mission. Bull. Amer. Meteor. Soc., 95, 701–722, https://doi.org/10.1175/BAMS-D-13-00164.1."
+      },
+      {
+        "key": "bib16",
+        "author": "Huffman, G. J.",
+        "year": "2020",
+        "unstructured": "Huffman, G. J., and Coauthors, 2020: Integrated Multi-satellite Retrievals for the Global Precipitation Measurement (GPM) Mission (IMERG). Satellite Precipitation Measurement, V. Levizzani et al., Eds., Advances in Global Change Research, Vol. 67, Springer, 343–353, https://doi.org/10.1007/978-3-030-24568-9_19."
+      },
+      {
+        "key": "B16a",
+        "series-title": "J. Hydrometeor.",
+        "first-page": "487",
+        "article-title": "CMORPH: A method that produces global precipitation estimates from passive microwave and infrared data at high spatial and temporal resolution",
+        "volume": "5",
+        "author": "Joyce, R. J.",
+        "year": "2004",
+        "unstructured": "Joyce, R. J., J. E. Janowiak, P. A. Arkin, and P. Xie, 2004: \nCMORPH: A method that produces global precipitation estimates from passive microwave and infrared data at high spatial and temporal resolution. J. Hydrometeor., 5, 487–503, https://doi.org/10.1175/1525-7541(2004)005<0487:CAMTPG>2.0.CO;2."
+      },
+      {
+        "key": "B16b",
+        "series-title": "Remote Sens.",
+        "first-page": "947",
+        "article-title": "Precipitation retrievals from passive microwave cross-track sensors: The Precipitation Retrieval and Profiling Scheme",
+        "volume": "13",
+        "author": "Kidd, C.",
+        "year": "2021",
+        "unstructured": "Kidd, C., T. Matsui, and S. Ringerud, 2021: \nPrecipitation retrievals from passive microwave cross-track sensors: The Precipitation Retrieval and Profiling Scheme. Remote Sens., 13, 947, https://doi.org/10.3390/rs13050947."
+      },
+      {
+        "key": "bib17",
+        "series-title": "Bull. Amer. Meteor. Soc.",
+        "first-page": "893",
+        "article-title": "Globally gridded satellite observations for climate studies",
+        "volume": "92",
+        "author": "Knapp, K. R.",
+        "year": "2011",
+        "unstructured": "Knapp, K. R., and Coauthors, 2011: \nGlobally gridded satellite observations for climate studies. Bull. Amer. Meteor. Soc., 92, 893–907, https://doi.org/10.1175/2011BAMS3039.1."
+      },
+      {
+        "key": "bib18",
+        "series-title": "J. Appl. Meteor.",
+        "first-page": "3",
+        "article-title": "A passive microwave technique for estimating rainfall and vertical structure information from space. Part I: Algorithm description",
+        "volume": "33",
+        "author": "Kummerow, C. D.",
+        "year": "1994",
+        "unstructured": "Kummerow, C. D., and L. Giglio, 1994: \nA passive microwave technique for estimating rainfall and vertical structure information from space. Part I: Algorithm description. J. Appl. Meteor., 33, 3–18, https://doi.org/10.1175/1520-0450(1994)033<0003:APMTFE>2.0.CO;2."
+      },
+      {
+        "key": "bib19",
+        "series-title": "J. Atmos. Oceanic Technol.",
+        "first-page": "113",
+        "article-title": "An observationally generated a priori database for microwave rainfall retrievals",
+        "volume": "28",
+        "author": "Kummerow, C. D.",
+        "year": "2011",
+        "unstructured": "Kummerow, C. D., S. Ringerud, J. Crook, D. Randel, and W. Berg, 2011: \nAn observationally generated a priori database for microwave rainfall retrievals. J. Atmos. Oceanic Technol., 28, 113–130, https://doi.org/10.1175/2010JTECHA1468.1."
+      },
+      {
+        "key": "bib20",
+        "series-title": "J. Atmos. Oceanic Technol.",
+        "first-page": "2265",
+        "article-title": "The evolution of the Goddard profiling algorithm to a fully parametric scheme",
+        "volume": "32",
+        "author": "Kummerow, C. D.",
+        "year": "2015",
+        "unstructured": "Kummerow, C. D., D. L. Randel, M. Kulie, N.-Y. Wang, R. Ferraro, S. Joseph Munchak, and V. Petkovic, 2015: \nThe evolution of the Goddard profiling algorithm to a fully parametric scheme. J. Atmos. Oceanic Technol., 32, 2265–2280, https://doi.org/10.1175/JTECH-D-15-0039.1."
+      },
+      {
+        "key": "bib22",
+        "series-title": "Environ. Res. Lett.",
+        "first-page": "125016",
+        "article-title": "Inter-product biases in global precipitation extremes",
+        "volume": "14",
+        "author": "Masunaga, H.",
+        "year": "2019",
+        "unstructured": "Masunaga, H., M. Schröder, F. A. Furuzawa, C. Kummerow, E. Rustemeier, and U. Schneider, 2019: \nInter-product biases in global precipitation extremes. Environ. Res. Lett., 14, 125016, https://doi.org/10.1088/1748-9326/ab5da9."
+      },
+      {
+        "key": "bib24",
+        "author": "Okamoto, K.",
+        "year": "2005",
+        "unstructured": "Okamoto, K., T. Iguchi, N. Takahashi, K. Iwanami, and T. Ushio, 2005: The Global Satellite Mapping of Precipitation (GSMaP) project. IGARSS’05: Proc. 2005 IEEE Int. Geoscience and Remote Sensing Symp., Seoul, South Korea, IEEE, 3414–3416, https://doi.org/10.1109/IGARSS.2005.1526575."
+      },
+      {
+        "key": "bib25",
+        "author": "Olson, W.",
+        "year": "2017",
+        "unstructured": "Olson, W., 2017: GPM DPR and GMI combined precipitation L2B 1.5 hours 5 km V05. Goddard Earth Sciences Data and Information Services Center, accessed 1 March 2019, https://doi.org/10.5067/GPM/DPRGMI/CMB/2B/05."
+      },
+      {
+        "key": "B26a",
+        "series-title": "J. Appl. Meteor. Climatol.",
+        "first-page": "597",
+        "article-title": "Understanding the sources of satellite passive microwave rainfall retrieval systematic errors over land",
+        "volume": "56",
+        "author": "Petković, V.",
+        "year": "2017",
+        "unstructured": "Petković, V., and C. D. Kummerow, 2017: \nUnderstanding the sources of satellite passive microwave rainfall retrieval systematic errors over land. J. Appl. Meteor. Climatol., 56, 597–614, https://doi.org/10.1175/JAMC-D-16-0174.1."
+      },
+      {
+        "key": "B26b",
+        "series-title": "J. Atmos. Oceanic Technol.",
+        "first-page": "2349",
+        "article-title": "Enhancing PMW satellite precipitation estimation: Detecting convective class",
+        "volume": "36",
+        "author": "Petković, V.",
+        "year": "2019",
+        "unstructured": "Petković, V., M. Orescanin, P. Kirstetter, C. Kummerow, and R. Ferraro, 2019: \nEnhancing PMW satellite precipitation estimation: Detecting convective class. J. Atmos. Oceanic Technol., 36, 2349–2363, https://doi.org/10.1175/JTECH-D-19-0008.1."
+      },
+      {
+        "key": "bib26",
+        "series-title": "J. Appl. Meteor.",
+        "first-page": "1866",
+        "article-title": "Automated monitoring of snow cover over North America with multispectral satellite data",
+        "volume": "39",
+        "author": "Romanov, P.",
+        "year": "2000",
+        "unstructured": "Romanov, P., G. Gutman, and I. Csiszar, 2000: \nAutomated monitoring of snow cover over North America with multispectral satellite data. J. Appl. Meteor., 39, 1866–1880, https://doi.org/10.1175/1520-0450(2000)039<1866:AMOSCO>2.0.CO;2."
+      },
+      {
+        "key": "bib27",
+        "author": "Schneider, U.",
+        "year": "2008",
+        "unstructured": "Schneider, U., T. Fuchs, A. Meyer-Christoffer, and B. Rudolf, 2008: Global precipitation analysis products of the GPCC. GPCC DWD Publ. 112, 17 pp., https://opendata.dwd.de/climate_environment/GPCC/PDF/GPCC_intro_products_lastversion.pdf."
+      },
+      {
+        "key": "bib28",
+        "series-title": "IAHS Publ.",
+        "first-page": "29",
+        "article-title": "The new portfolio of global precipitation data products of the Global Precipitation Climatology Centre suitable to assess and quantify the global water cycle and resources",
+        "volume": "374",
+        "author": "Schneider, U.",
+        "year": "2016",
+        "unstructured": "Schneider, U., M. Ziese, A. Meyer-Christoffer, P. Finger, E. Rustemeier, and A. Becker, 2016: \nThe new portfolio of global precipitation data products of the Global Precipitation Climatology Centre suitable to assess and quantify the global water cycle and resources. IAHS Publ., 374, 29–34, https://doi.org/10.5194/piahs-374-29-2016."
+      },
+      {
+        "key": "bib29",
+        "series-title": "Atmosphere",
+        "first-page": "52",
+        "article-title": "Evaluating the hydrological cycle over land using the newly-corrected precipitation climatology from the Global Precipitation Climatology Centre (GPCC)",
+        "volume": "8",
+        "author": "Schneider, U.",
+        "year": "2017",
+        "unstructured": "Schneider, U., P. Finger, A. Meyer-Christoffer, E. Rustemeier, M. Ziese, and A. Becker, 2017: \nEvaluating the hydrological cycle over land using the newly-corrected precipitation climatology from the Global Precipitation Climatology Centre (GPCC). Atmosphere, 8, 52, https://doi.org/10.3390/atmos8030052."
+      },
+      {
+        "key": "bib31",
+        "series-title": "Bull. Amer. Meteor. Soc.",
+        "first-page": "1679",
+        "article-title": "The Global Precipitation Measurement (GPM) mission for science and society",
+        "volume": "98",
+        "author": "Skofronick-Jackson, G.",
+        "year": "2017",
+        "unstructured": "Skofronick-Jackson, G., and Coauthors, 2017: \nThe Global Precipitation Measurement (GPM) mission for science and society. Bull. Amer. Meteor. Soc., 98, 1679–1695, https://doi.org/10.1175/BAMS-D-15-00306.1."
+      },
+      {
+        "key": "bib32",
+        "series-title": "Atmos. Res.",
+        "first-page": "1",
+        "article-title": "Global precipitation measurements for validating climate models",
+        "volume": "197",
+        "author": "Tapiador, F. J.",
+        "year": "2017",
+        "unstructured": "Tapiador, F. J., and Coauthors, 2017: \nGlobal precipitation measurements for validating climate models. Atmos. Res., 197, 1–20, https://doi.org/10.1016/j.atmosres.2017.06.021."
+      },
+      {
+        "key": "bib33",
+        "series-title": "J. Climate",
+        "first-page": "5063",
+        "article-title": "The diurnal cycle of precipitation according to multiple decades of global satellite observations, three CMIP6 models, and the ECMWF reanalysis",
+        "volume": "34",
+        "author": "Watters, D.",
+        "year": "2021",
+        "unstructured": "Watters, D., A. Battaglia, and R. P. Allan, 2021: \nThe diurnal cycle of precipitation according to multiple decades of global satellite observations, three CMIP6 models, and the ECMWF reanalysis. J. Climate, 34, 5063–5080, https://doi.org/10.1175/JCLI-D-20-0966.1."
+      },
+      {
+        "key": "bib34",
+        "series-title": "Bull. Amer. Meteor. Soc.",
+        "first-page": "2539",
+        "article-title": "Global precipitation: A 17-year monthly analysis based on gauge observations, satellite estimates, and numerical model outputs",
+        "volume": "78",
+        "author": "Xie, P.",
+        "year": "1997",
+        "unstructured": "Xie, P., and P. A. Arkin, 1997: \nGlobal precipitation: A 17-year monthly analysis based on gauge observations, satellite estimates, and numerical model outputs. Bull. Amer. Meteor. Soc., 78, 2539–2558, https://doi.org/10.1175/1520-0477(1997)078<2539:GPAYMA>2.0.CO;2."
+      }
+    ],
+    "container-title": [
+      "Journal of Applied Meteorology and Climatology"
+    ],
+    "original-title": [],
+    "link": [
+      {
+        "URL": "https://journals.ametsoc.org/view/journals/apme/62/8/JAMC-D-22-0179.1.xml",
+        "content-type": "text/html",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://journals.ametsoc.org/view/journals/apme/62/8/JAMC-D-22-0179.1.xml",
+        "content-type": "text/html",
+        "content-version": "vor",
+        "intended-application": "syndication"
+      },
+      {
+        "URL": "https://journals.ametsoc.org/view/journals/apme/62/8/JAMC-D-22-0179.1.xml",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2023,
+          11,
+          17
+        ]
+      ],
+      "date-time": "2023-11-17T16:12:18Z",
+      "timestamp": 1700237538000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://journals.ametsoc.org/view/journals/apme/62/8/JAMC-D-22-0179.1.xml"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2023,
+          8
+        ]
+      ]
+    },
+    "references-count": 35,
+    "journal-issue": {
+      "issue": "8"
+    },
+    "URL": "https://doi.org/10.1175/jamc-d-22-0179.1",
+    "relation": {},
+    "ISSN": [
+      "1558-8424",
+      "1558-8432"
+    ],
+    "issn-type": [
+      {
+        "value": "1558-8424",
+        "type": "print"
+      },
+      {
+        "value": "1558-8432",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2023,
+          8
+        ]
+      ]
+    }
+  }
+]

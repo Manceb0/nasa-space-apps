@@ -1,0 +1,389 @@
+{
+  "estado": "exploratorio; no atribuye causas ni calibra umbral físico",
+  "seed": 20261115,
+  "bootstrap_replicas": 2000,
+  "hashes_sha256": {
+    "data/auditoria/cache/estado.pkl": "5801857039f2a9ad1fad12f5fbca397ac31c529a699e879f043a991f5076f510",
+    "data/tendencias/derivados/imerg_diario_01.npz": "1d2d01c1c3421045511bb337e634bc413ad23c9ee8b24b64f0e89a2ba7519c8e",
+    "data/tendencias/derivados/chirps_diario_01.npz": "3528d29a2baf8469f8db11ec4dd0eddddea39797e9152af13b89c4199c23ba19",
+    "results/nacional/celdas_imerg.csv": "8acfed436f39f3d753954754634d164044a9e1fc81c866b5e9b2d6e716658f5e",
+    "results/yuna/series_diarias_zonas.parquet": "a34b97c56c832fba591143c978cb0a8106407982c285270e7a90f751b9c9608b",
+    "results/yuna/catalogo_eventos.csv": "c875c98c9625a2326893a228124b9310f467201ecf765c65ce525ecd7504c838",
+    "results/yuna/mcdwd_diario_zonas.csv": "cddbf9b905d06adba037f234be00f5a8e48a1cdccdc4b46eb821e904199c18bf"
+  },
+  "yuna": [
+    {
+      "id": "2024-11",
+      "inicio": "2024-11-11",
+      "fin": "2024-11-20",
+      "max_panel": {
+        "fecha": "2024-11-08",
+        "mm": 115.47499465942383
+      },
+      "max_puntuado": {
+        "fecha": "2024-11-11",
+        "mm": 92.30999565124512
+      }
+    },
+    {
+      "id": "2017-04",
+      "inicio": "2017-04-19",
+      "fin": "2017-05-02",
+      "max_panel": {
+        "fecha": "2017-04-24",
+        "mm": 113.72499465942383
+      },
+      "max_puntuado": {
+        "fecha": "2017-04-24",
+        "mm": 113.72499465942383
+      }
+    },
+    {
+      "id": "2025-10",
+      "inicio": "2025-10-21",
+      "fin": "2025-10-30",
+      "max_panel": null,
+      "max_puntuado": null
+    }
+  ],
+  "spi_margenes": [
+    {
+      "productos": "cuatro",
+      "margen_spi": 0,
+      "n_validos": 9152,
+      "n_alarmas_original": 3111,
+      "n_alarmas_retenidas": 3111,
+      "n_discrepancias_retenidas": 2836,
+      "tasa_condicional": 0.9116039858566377,
+      "ic95_bloques3": [
+        0.8534469998490533,
+        0.9637278780834964
+      ],
+      "cobertura_alarmas": 1.0
+    },
+    {
+      "productos": "cuatro",
+      "margen_spi": 0.1,
+      "n_validos": 9152,
+      "n_alarmas_original": 3111,
+      "n_alarmas_retenidas": 1779,
+      "n_discrepancias_retenidas": 1585,
+      "tasa_condicional": 0.8909499718943227,
+      "ic95_bloques3": [
+        0.8175885557965031,
+        0.9624656243615693
+      ],
+      "cobertura_alarmas": 0.5718418514946962
+    },
+    {
+      "productos": "cuatro",
+      "margen_spi": 0.25,
+      "n_validos": 9152,
+      "n_alarmas_original": 3111,
+      "n_alarmas_retenidas": 732,
+      "n_discrepancias_retenidas": 614,
+      "tasa_condicional": 0.8387978142076503,
+      "ic95_bloques3": [
+        0.7464689390260055,
+        0.9437609011627907
+      ],
+      "cobertura_alarmas": 0.23529411764705882
+    },
+    {
+      "productos": "cuatro",
+      "margen_spi": 0.5,
+      "n_validos": 9152,
+      "n_alarmas_original": 3111,
+      "n_alarmas_retenidas": 128,
+      "n_discrepancias_retenidas": 105,
+      "tasa_condicional": 0.8203125,
+      "ic95_bloques3": [
+        0.6287658562367865,
+        0.9780279503105589
+      ],
+      "cobertura_alarmas": 0.04114432658309225
+    },
+    {
+      "productos": "IMERG_CHIRPS",
+      "margen_spi": 0,
+      "n_validos": 9152,
+      "n_alarmas_original": 2245,
+      "n_alarmas_retenidas": 2245,
+      "n_discrepancias_retenidas": 1498,
+      "tasa_condicional": 0.667260579064588,
+      "ic95_bloques3": [
+        0.55756244909713,
+        0.8217836394853821
+      ],
+      "cobertura_alarmas": 1.0
+    },
+    {
+      "productos": "IMERG_CHIRPS",
+      "margen_spi": 0.1,
+      "n_validos": 9152,
+      "n_alarmas_original": 2245,
+      "n_alarmas_retenidas": 1683,
+      "n_discrepancias_retenidas": 1064,
+      "tasa_condicional": 0.6322043969102793,
+      "ic95_bloques3": [
+        0.5024900795834801,
+        0.8191071577968406
+      ],
+      "cobertura_alarmas": 0.7496659242761693
+    },
+    {
+      "productos": "IMERG_CHIRPS",
+      "margen_spi": 0.25,
+      "n_validos": 9152,
+      "n_alarmas_original": 2245,
+      "n_alarmas_retenidas": 1004,
+      "n_discrepancias_retenidas": 581,
+      "tasa_condicional": 0.5786852589641435,
+      "ic95_bloques3": [
+        0.4124903798411122,
+        0.8229969980296664
+      ],
+      "cobertura_alarmas": 0.4472160356347439
+    },
+    {
+      "productos": "IMERG_CHIRPS",
+      "margen_spi": 0.5,
+      "n_validos": 9152,
+      "n_alarmas_original": 2245,
+      "n_alarmas_retenidas": 452,
+      "n_discrepancias_retenidas": 215,
+      "tasa_condicional": 0.4756637168141593,
+      "ic95_bloques3": [
+        0.25417958121377027,
+        0.8151131364423898
+      ],
+      "cobertura_alarmas": 0.20133630289532295
+    }
+  ],
+  "lluvia_umbrales": [
+    {
+      "umbral_mm": 0.5,
+      "metrica": "R_dias",
+      "significativas_imerg": 175,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 120,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": -9.644607843137255,
+      "mediana_pendiente_chirps": 1.609722836503022
+    },
+    {
+      "umbral_mm": 0.5,
+      "metrica": "SDII",
+      "significativas_imerg": 130,
+      "significativas_chirps": 138,
+      "opuestas_al_menos_una_sig": 202,
+      "opuestas_ambas_sig": 54,
+      "mediana_pendiente_imerg": 0.6716560547017152,
+      "mediana_pendiente_chirps": -1.2333892107868296
+    },
+    {
+      "umbral_mm": 1,
+      "metrica": "R_dias",
+      "significativas_imerg": 123,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 69,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": -7.187229437229437,
+      "mediana_pendiente_chirps": 0.7333059097764979
+    },
+    {
+      "umbral_mm": 1,
+      "metrica": "SDII",
+      "significativas_imerg": 122,
+      "significativas_chirps": 72,
+      "opuestas_al_menos_una_sig": 160,
+      "opuestas_ambas_sig": 29,
+      "mediana_pendiente_imerg": 0.7067065327218749,
+      "mediana_pendiente_chirps": -1.1804768746241867
+    },
+    {
+      "umbral_mm": 2,
+      "metrica": "R_dias",
+      "significativas_imerg": 36,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 11,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": -4.860681114551083,
+      "mediana_pendiente_chirps": -0.7042124542124542
+    },
+    {
+      "umbral_mm": 2,
+      "metrica": "SDII",
+      "significativas_imerg": 64,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 64,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": 0.7475898247957335,
+      "mediana_pendiente_chirps": -1.1316867792727376
+    },
+    {
+      "umbral_mm": 5,
+      "metrica": "R_dias",
+      "significativas_imerg": 2,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 2,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": -2.0,
+      "mediana_pendiente_chirps": -2.5
+    },
+    {
+      "umbral_mm": 5,
+      "metrica": "SDII",
+      "significativas_imerg": 0,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 0,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": 0.8278473508128776,
+      "mediana_pendiente_chirps": -1.2867385017560224
+    },
+    {
+      "umbral_mm": 10,
+      "metrica": "R_dias",
+      "significativas_imerg": 0,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 0,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": 0.0,
+      "mediana_pendiente_chirps": -4.0
+    },
+    {
+      "umbral_mm": 10,
+      "metrica": "SDII",
+      "significativas_imerg": 0,
+      "significativas_chirps": 0,
+      "opuestas_al_menos_una_sig": 0,
+      "opuestas_ambas_sig": 0,
+      "mediana_pendiente_imerg": 0.8384995633535486,
+      "mediana_pendiente_chirps": -1.465284126322467
+    }
+  ],
+  "correlacion_acumulados": [
+    {
+      "dias_bloque": 1,
+      "fase": 0,
+      "n_bloques": 8766,
+      "rho_mediana": 0.5419941944067196
+    },
+    {
+      "dias_bloque": 2,
+      "fase": 0,
+      "n_bloques": 4383,
+      "rho_mediana": 0.5914244476725585
+    },
+    {
+      "dias_bloque": 2,
+      "fase": 1,
+      "n_bloques": 4382,
+      "rho_mediana": 0.5924233067852126
+    },
+    {
+      "dias_bloque": 5,
+      "fase": 0,
+      "n_bloques": 1753,
+      "rho_mediana": 0.6608837757124049
+    },
+    {
+      "dias_bloque": 5,
+      "fase": 1,
+      "n_bloques": 1753,
+      "rho_mediana": 0.6693007611295121
+    },
+    {
+      "dias_bloque": 5,
+      "fase": 2,
+      "n_bloques": 1752,
+      "rho_mediana": 0.6643946853690906
+    },
+    {
+      "dias_bloque": 5,
+      "fase": 3,
+      "n_bloques": 1752,
+      "rho_mediana": 0.6599766935360531
+    },
+    {
+      "dias_bloque": 5,
+      "fase": 4,
+      "n_bloques": 1752,
+      "rho_mediana": 0.65727546919746
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 0,
+      "n_bloques": 876,
+      "rho_mediana": 0.7187497290124798
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 1,
+      "n_bloques": 876,
+      "rho_mediana": 0.7151662818969946
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 2,
+      "n_bloques": 876,
+      "rho_mediana": 0.7140176343525533
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 3,
+      "n_bloques": 876,
+      "rho_mediana": 0.7156358324571465
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 4,
+      "n_bloques": 876,
+      "rho_mediana": 0.7185769288819355
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 5,
+      "n_bloques": 876,
+      "rho_mediana": 0.7215896872290793
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 6,
+      "n_bloques": 876,
+      "rho_mediana": 0.7230483095832713
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 7,
+      "n_bloques": 875,
+      "rho_mediana": 0.726565801226271
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 8,
+      "n_bloques": 875,
+      "rho_mediana": 0.7234733835833598
+    },
+    {
+      "dias_bloque": 10,
+      "fase": 9,
+      "n_bloques": 875,
+      "rho_mediana": 0.7246409270790244
+    }
+  ],
+  "descomposicion_log": [
+    {
+      "producto": "IMERG",
+      "log_dias_pendiente_decada": -0.066798709648194,
+      "log_lluvia_humeda_pendiente_decada": 0.0017634003656485982,
+      "log_intensidad_pendiente_decada": 0.06856211001384233
+    },
+    {
+      "producto": "CHIRPS",
+      "log_dias_pendiente_decada": 0.010144881391279968,
+      "log_lluvia_humeda_pendiente_decada": -0.10335810338620086,
+      "log_intensidad_pendiente_decada": -0.11350298477748186
+    }
+  ]
+}
