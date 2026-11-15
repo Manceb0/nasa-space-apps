@@ -1,120 +1,255 @@
-# Stellar Horizons · pitch de cinco minutos
+# Stellar Horizons · pitch dominicano de cinco minutos
 
-Versión oral en español. Los corchetes no se leen. Los tiempos son objetivos de ensayo, no una duración medida. Este guion modifica el relato; no diseña la interfaz. Usar únicamente acciones que funcionen en la versión presentada.
+Guion para decirlo con voz propia ante el jurado local. La llamada inicial es una escena imaginada, no un testimonio. Las notas entre corchetes no se leen. Los tiempos requieren ensayo; no se modifican interfaces.
 
-## 0:00–0:30 · Una decisión que importa
+## 0:00–0:35 · Que el jurado entre en la escena
 
-> Imaginen que tienen que preparar Villa Riva para la próxima temporada de lluvias.
+> Imagínense esta llamada desde Villa Riva:
 >
-> Consultan tres fuentes científicas sobre la lluvia del mismo territorio. Una muestra menos días de lluvia. Otra, casi ningún cambio. La tercera muestra más.
+> «Está cayendo un aguacero. ¿Cómo está la cosa por arriba? ¿Nos vamos preparando?»
 >
-> [Pausa.]
+> [Pausa. Mirar al jurado.]
 >
-> ¿Con cuál preparan su municipio?
+> En el Bajo Yuna, esa pregunta tiene que ver con familias, caminos y comunidades que pueden quedar aisladas.
 >
-> Esa contradicción fue nuestro punto de partida. Construimos Stellar Horizons: un detective del agua que conecta las señales con su evidencia y con lo que necesitamos verificar para prepararnos.
+> Para responder, hay que juntar el pronóstico, la lluvia y lo que pasa en la cuenca.
+>
+> Ahí entra Stellar Horizons: un detective del agua que ayuda a investigar las señales y a saber qué falta comprobar para preparar nuestro territorio.
 
-[Tres resultados comparables y territorio. Las etiquetas aclaran que son cambios históricos, no pronósticos.]
+[Mapa del Yuna. No simular una llamada real ni una alerta vigente.]
 
-## 0:30–1:10 · El producto y su usuario
+## 0:35–1:15 · Qué hacemos, dicho claro
 
-> Nuestro usuario es el técnico municipal que prepara una revisión con los organismos responsables.
+> Nuestro usuario es el técnico municipal que tiene que revisar la situación con los organismos responsables.
 >
-> Elige un territorio y abre un expediente con tres respuestas: qué requiere atención, qué evidencia lo respalda y qué debe comprobar después.
+> Escoge su territorio y abre un expediente: qué merece atención, de dónde sale esa señal y qué debe verificar después.
 >
-> Conectamos tendencias de la NASA, pronósticos y mediciones locales, separando historia y futuro próximo.
+> Trabajamos con tendencias de la NASA, pronósticos y mediciones locales. Para la historia cubrimos las treinta y dos provincias, con veintiún índices de lluvia entre 2001 y 2024.
 >
-> El reto pide identificar qué cambia, dónde, cuánto y si es significativo. Lo hacemos para las treinta y dos provincias, con veintiún índices de lluvia entre 2001 y 2024. Después contrastamos las conclusiones con otras fuentes.
+> Podemos ver qué cambia, dónde, cuánto y si ese cambio es significativo.
+>
+> Y hacemos otra pregunta: ¿la conclusión se sostiene cuando la ponemos a prueba con otras fuentes?
 
-[Expediente y una tendencia: variable, periodo, tasa y significancia. Distinguir cuatro pilotos municipales de cobertura histórica provincial.]
+[Una tendencia y el expediente. Distinguir cobertura provincial histórica de cuatro puntos piloto.]
 
-## 1:10–2:10 · El giro
+## 1:15–2:10 · Miren lo que encontramos
 
-> En quince áreas que cubren República Dominicana, comparamos la frecuencia de días de lluvia antes y después de febrero de 2018.
+> Miren lo que pasó cuando hicimos esa comparación.
 >
-> La mediana de IMERG baja unos cinco puntos porcentuales. CHIRPS cambia muy poco. MERRA-2 sube casi nueve.
+> En quince áreas que cubren el país, IMERG baja unos cinco puntos porcentuales en frecuencia de días lluviosos después de febrero de 2018. CHIRPS cambia muy poco. MERRA-2 sube casi nueve.
 >
-> La misma pregunta produce tres respuestas distintas.
+> Mismo territorio. Misma pregunta. Tres respuestas.
 >
-> En Puerto Rico encontramos algo similar: IMERG pierde más días de lluvia que dieciocho de diecinueve pluviómetros. La diferencia crece al incluir lluvia muy ligera.
+> Fuimos a comprobarlo en Puerto Rico, con más pluviómetros. En dieciocho de diecinueve estaciones, IMERG pierde más días que la medición en tierra. La diferencia crece al incluir lluvia muy ligera.
 >
-> Eso importa: al contar menos días húmedos, la intensidad calculada y las rachas secas pueden cambiar. Una tendencia que parecía climática necesita más comprobaciones.
+> Ojo con esto: si contamos menos días húmedos, también puede cambiar la intensidad calculada y la duración de las rachas secas.
 >
-> Todavía investigamos la causa. MERRA-2 también presentó un cambio propio y quedó descartado como testigo fiable en esa prueba.
+> Todavía investigamos la causa. Incluso MERRA-2 mostró un cambio propio y quedó descartado como testigo fiable en esa prueba.
 >
-> También los testigos necesitan revisión.
+> Eso es trabajar como detectives: también hay que revisar al testigo.
 
-[Comparación histórica y Puerto Rico. Cinco y nueve son medianas en puntos porcentuales, no reducción relativa del volumen de lluvia.]
+[Comparación y Puerto Rico. Son medianas antes/después; puntos porcentuales no equivalen a porcentaje de reducción del volumen.]
 
-## 2:10–3:15 · Para qué sirve investigar
+## 2:10–3:15 · Qué cambia para el municipio
 
-> Volvamos al municipio. Una tendencia histórica sirve para planificar; los próximos días necesitan pronósticos, mediciones y contexto territorial.
+> Ahora, llevemos eso al Yuna.
 >
-> En el Yuna, mirar la lluvia de Villa Riva deja fuera el agua que llega desde arriba. Hatillo regula parte de la cuenca; el Camú aporta aguas abajo de la presa. Nuestro expediente señala esa información faltante.
+> Una tendencia histórica ayuda a planificar. Para los próximos días hacen falta pronósticos, mediciones y contexto.
 >
-> Los pronósticos del NHC aportan contexto temprano de ciclones. Para evaluar una crecida necesitamos además lluvia, río y exposición.
+> Puede llover poco en Villa Riva y estar cayendo agua más arriba. Hatillo regula parte de la cuenca, y el Camú entra aguas abajo de la presa. Nuestro expediente pone esas piezas y los datos faltantes a la vista.
 >
-> Probamos una regla histórica de lluvia en ocho inundaciones. Exigir coincidencia entre productos bajó los episodios sin evento catalogado de treinta y nueve a dieciséis. También perdimos una detección: de siete a seis. Ese coste debe verse antes de adoptar una regla.
+> Los pronósticos del NHC aportan contexto temprano de ciclones. Una crecida exige revisar además lluvia, río y exposición.
 >
-> Con el déficit ocurre algo parecido: poca lluvia no dice por sí sola cuánta agua queda disponible. El expediente pide verificar almacenamiento, suministro y necesidades locales.
+> Probamos una regla histórica en ocho inundaciones. Pedir coincidencia entre productos bajó los episodios sin evento catalogado de treinta y nueve a dieciséis. Pero las detecciones bajaron de siete a seis.
 >
-> Así conectamos cada señal con una pregunta que alguien necesita resolver para prepararse.
+> Hay que ver ese coste antes de adoptar una regla.
+>
+> Y cuando falta lluvia, el expediente pide comprobar cómo andan el almacenamiento y el suministro.
 
-[Alto Yuna, Camú, Hatillo y Bajo Yuna; evidencia faltante y tareas. NHC es investigación histórica, sin atribuir integración operacional ni horas de alerta validadas.]
+[Cuenca y tareas. La comparación histórica con CHIRPS no constituye una alerta operativa ni una regla de movilización.]
 
-## 3:15–4:05 · La tecnología se demuestra
+## 3:15–4:05 · La diferencia se puede demostrar
 
-> El aporte tecnológico está en cómo conectamos la evidencia.
+> Aquí está el trabajo tecnológico.
 >
-> El motor conserva ubicaciones, fechas y dependencias entre fuentes. Dos modelos que comparten información no son automáticamente dos testigos independientes.
+> El motor guarda ubicaciones, fechas y relaciones entre las fuentes. Comprueba qué datos estaban disponibles y cuáles llegaron después.
+>
+> Dos productos pueden compartir información; su coincidencia no garantiza independencia.
 >
 > [Retirar una fuente.]
 >
-> Ahora retiramos una fuente. El expediente recalcula qué respaldo queda, muestra qué falta y explica la regla que produjo el cambio.
+> Quitamos esta fuente. El expediente vuelve a calcular qué respaldo queda y explica qué cambió.
 >
-> Una medición local conserva su procedencia y aparece sin verificar. Un dato posterior a la decisión queda excluido de su reproducción.
+> Si añadimos una medición local, conserva quién la aportó y aparece sin verificar.
 >
-> Finalmente, exportamos el expediente con sus cifras y fuentes para revisarlo y repetir el análisis.
+> Y podemos descargar el expediente con sus cifras y fuentes para que otra persona lo revise.
+>
+> Esa es la diferencia que queremos demostrar: que el técnico pueda entender y revisar cómo se llegó a cada conclusión.
 
-[Ejecutar una retirada y exportación disponibles. El cambio puede estar en cobertura o respaldo, sin cambiar la clasificación. Si la interfaz final no ofrece la acción, mostrar la entrada y salida verificadas del backend; no simularla.]
+[Acción funcional de retirada y exportación. Si la interfaz no la implementa, mostrar entrada/salida del backend. Retirar una fuente puede cambiar cobertura sin cambiar la clasificación.]
 
-## 4:05–4:35 · Qué hemos demostrado
+## 4:05–4:35 · Hasta dónde hemos llegado
 
-> El backend funciona en cuatro territorios piloto. Hemos probado sus reglas y publicado resultados que contradijeron nuestras hipótesis, además de retirar conclusiones que no resistieron la revisión.
+> El backend funciona en cuatro territorios piloto. Hemos probado sus reglas, publicado hipótesis que fallaron y retirado conclusiones que no resistieron la revisión.
 >
-> La siguiente validación es concreta: comprobar con técnicos municipales si el expediente les ayuda a identificar antes la información crítica que falta.
+> Ahora toca comprobar con técnicos municipales si el expediente les ayuda a encontrar antes la información crítica que falta.
 >
-> Esa mejora de uso y la capacidad de anticipar inundaciones requieren pruebas distintas. Las mantenemos separadas.
+> Tenemos que medir esa utilidad. Y evaluar por separado la capacidad de anticipar inundaciones.
 
-[Una evidencia de ejecución y el siguiente piloto de uso. No atribuir aval institucional sin disponer de él.]
+[Resultados verificables. No atribuir uso real, aval institucional ni daños evitados.]
 
-## 4:35–5:00 · Volver a la decisión
+## 4:35–5:00 · Volver a nuestra gente
 
-> Al principio les preguntamos con cuál de tres fuentes prepararían su municipio.
+> Volvamos a aquella llamada: «¿Cómo está la cosa por arriba? ¿Nos vamos preparando?»
 >
-> Stellar Horizons permite investigar qué sostiene cada respuesta, qué la contradice y qué falta comprobar.
+> Trabajamos para que esa respuesta tenga evidencia, sus límites claros y una próxima comprobación.
 >
-> Nuestro siguiente paso es poner ese expediente en manos de un técnico del Yuna y medir su utilidad en una tarea real.
+> Porque cuando el Yuna crece, lo que está en juego son nuestras comunidades.
 >
-> **Stellar Horizons. Del dato a la evidencia. De la evidencia, a una preparación mejor informada.**
+> **Stellar Horizons: investigar el agua para preparar a nuestra gente.**
 
 ---
 
-## Ensayo y respuestas de respaldo
+## Preguntas del jurado y respuestas para practicar
 
-- Contar solo los bloques citados. Ensayar con quien hablará: pausas y demo también consumen tiempo. Si excede cinco minutos, recortar primero detalle de MERRA-2 y una frase técnica, conservando usuario, caso, demostración y cierre.
-- La escena inicial es hipotética. No inventa testimonios ni atribuye a una fecha exacta el aislamiento de comunidades.
-- Puerto Rico refuerza la necesidad de investigar; no demuestra por sí solo una causa instrumental, independencia de todos los insumos ni estabilidad de cada pluviómetro.
-- No decir «cinco de cada cien días de lluvia menos»: cinco puntos porcentuales es diferencia en proporción de días del calendario, no reducción relativa del 5 % entre días lluviosos.
-- Segundo testigo: «En ocho inundaciones, los episodios sin evento catalogado bajaron de 39 a 16, pero las detecciones pasaron de siete a seis. Es un compromiso por evaluar; CHIRPS no convierte esa regla en una alerta rápida».
-- Horas NHC: «La revisión distinguió hora base ATCF de publicación del boletín. Falta precisar el inicio de inundaciones. No presentamos 40–106 h como capacidad operacional validada».
-- Dos tipos de lluvia: coincidencia con ciclón no demuestra causalidad. Los eventos restantes no quedan todos explicados ni se vuelven imposibles de anticipar.
-- GOES, microondas y calibración quedan para preguntas, con su estado real. El diagnóstico a 0,1 mm no basta para excluir un ajuste multiplicativo.
-- Ciclones–déficit queda como respaldo: no se demostró que menos lluvia en días próximos a ciclones implique más déficit posterior. No añadir una regla predictiva de sequía.
-- Los registros de predicciones son locales, no un preregistro externo. Su cantidad no mide validez.
+### Fuentes: estas hay que sabérselas
 
-## Fuentes y alcance
+**1. ¿Cuáles son sus fuentes principales?**
 
-ESTADO_CONCLUSIONES.md; BACKEND_PREPARACION.md; SOLUCION_LIMITES_Y_PREPARACION.md; REVISION_PARA_DEFENSA.md; results/tropical/puerto_rico/resumen.json; results/tropical/merra2/resumen.json; results/tropical/ciclones/inundaciones_y_ciclones.csv; results/tropical/cierre_alertas/demo_yuna.json; results/preparacion/REVISION_DEFENSA.json.
+Para tendencias: NASA GPM IMERG V07 Final y CHIRPS v2.0. Para contrastes: ERA5 y pluviómetros GHCN-Daily. Para próximos días: ECMWF y NOAA GFS mediante Open-Meteo. Para ciclones: IBTrACS histórico y pronósticos oficiales NHC OFCL. Cada uno cumple una función distinta.
 
-La secuencia propuesta no certifica que todas las pantallas hayan sido verificadas en esta revisión. No se modificó la interfaz.
+**2. ¿Cuáles son de la NASA?**
+
+IMERG es nuestro producto principal de lluvia. MERRA-2, consultado mediante NASA POWER, se usó en la auditoría y se descartó como testigo fiable para ese contraste. GLDAS, SMAP y MODIS se usaron en investigaciones complementarias de suelo y agua; no todos respaldan la misma conclusión ni todos intervienen en cada expediente.
+
+**3. ¿CHIRPS y ERA5 también son NASA?**
+
+CHIRPS es un producto del Climate Hazards Center de UC Santa Barbara con colaboración del USGS. ERA5 es un reanálisis de ECMWF/Copernicus. Son fuentes externas que contrastamos con NASA. No presentamos todo lo integrado como dato NASA.
+
+**4. ¿Qué diferencia hay entre satélite, pluviómetro, reanálisis y pronóstico?**
+
+El pluviómetro mide en un punto; el producto satelital estima lluvia sobre una celda. El reanálisis reconstruye el estado pasado usando modelo y observaciones. El pronóstico estima lo que puede ocurrir después. Se etiquetan por separado porque no tienen el mismo significado ni disponibilidad.
+
+**5. ¿Por qué usan Open-Meteo? ¿Es el modelo?**
+
+Es la vía de acceso. Consultamos por separado los modelos ECMWF y GFS, conservando sus nombres y coordenadas devueltas. Para la referencia de déficit pedimos ERA5 explícitamente. Open-Meteo no convierte esas fuentes en un modelo único.
+
+**6. ¿Son realmente independientes sus testigos?**
+
+No todos. IMERG utiliza ERA5 como auxiliar y ajuste mensual con pluviómetros; las redes pueden compartir estaciones. Documentamos esas dependencias y no convertimos coincidencia en votos independientes ni en una probabilidad de confianza.
+
+**7. ¿Qué resolución y periodo tienen?**
+
+El análisis histórico principal cubre 2001–2024. IMERG tiene rejilla nativa de 0,1 grados; CHIRPS v2.0, 0,05 grados, agregado para las comparaciones comunes. Los modelos tienen otras celdas y resoluciones, conservadas en cada registro. Un punto piloto no representa todo el municipio.
+
+**8. ¿Cómo sabemos de dónde salió una cifra?**
+
+El expediente identifica producto, ubicación solicitada y devuelta, periodo, captura, calidad y procedencia. El paquete y el motor tienen hashes. La exportación permite revisar los números y reproducir las reglas. Un hash identifica contenido; no certifica que el fenómeno esté correctamente medido.
+
+### Ciencia: donde pueden apretar
+
+**9. ¿Están diciendo que IMERG está mal?**
+
+Encontramos una discrepancia temporal que exige cautela para ciertos indicadores y umbrales en los lugares estudiados. No invalida todos los usos de IMERG ni demuestra una causa específica.
+
+**10. ¿Cinco puntos porcentuales significa 5 % menos lluvia?**
+
+No. Por ejemplo, pasar de 30 a 25 días húmedos por cada cien días del calendario es una caída de cinco puntos porcentuales. No dice cuánto cambió el volumen de lluvia.
+
+**11. ¿Puerto Rico prueba que la causa es el satélite?**
+
+Refuerza que la discrepancia merece investigación fuera de RD. No identifica por sí solo el mecanismo ni elimina diferencias de representatividad, horarios, insumos compartidos o meteorología real.
+
+**12. ¿Saben que GOES-16 causó el cambio?**
+
+No. GOES es una hipótesis pendiente, junto con otros cambios de sensores, procesamiento y referencias. La coincidencia de fechas no atribuye una causa.
+
+**13. ¿Si dos fuentes coinciden, ya sabemos la verdad?**
+
+No. Pueden compartir insumos y errores. La coincidencia es evidencia que se interpreta junto con calidad, tiempo, escala y mediciones disponibles.
+
+**14. ¿Han demostrado que dejó de cambiar la lluvia real?**
+
+No. Falta cobertura terrestre suficiente para esa afirmación. Medimos diferencias entre estimaciones y analizamos la solidez de determinadas tendencias.
+
+**15. ¿Registraron las predicciones de verdad?**
+
+Conservamos registros locales de predicciones y sus fechas, además de resultados fallidos y retiradas. Eso no equivale a preregistro externo. Solo afirmamos registro previo cuando su secuencia puede verificarse.
+
+### Prevención e impacto
+
+**16. ¿Predicen inundaciones?**
+
+Tenemos un prototipo de apoyo a preparación, con vigilancia de lluvia prevista y seguimiento de déficit. Falta validar habilidad operacional de inundación y utilidad con responsables reales.
+
+**17. ¿Y las 40–106 horas que aparecieron en sus informes?**
+
+Son márgenes de una regla histórica de cercanía de trayectoria. La revisión detectó diferencias entre hora base y publicación del boletín; además, el inicio real de inundación tiene incertidumbre. No las presentamos como horas de alerta operacional demostradas.
+
+**18. ¿Qué significa bajar de 39 a 16?**
+
+Son episodios sin evento emparejado en el catálogo, en una prueba histórica 2016–2024. Las detecciones también bajaron de 7/8 a 6/8. El catálogo puede omitir inundaciones y CHIRPS llega tarde; no es una mejora operacional ya demostrada.
+
+**19. ¿Entonces exigirían dos satélites antes de movilizar?**
+
+No adoptamos esa regla como instrucción operacional. Confirmar tiene costes y puede perder eventos. Se necesita evaluación con responsables competentes, disponibilidad real y un criterio de decisión adecuado.
+
+**20. ¿Para qué le sirve hoy a un ayuntamiento?**
+
+Para revisar en un expediente las señales, sus fuentes, contradicciones e información faltante. En el Yuna incluye qué falta conocer aguas arriba, del Camú y de Hatillo. La utilidad en esa tarea aún debe probarse con sus usuarios.
+
+**21. ¿Esto reemplaza al COE o a INDOMET?**
+
+Los avisos y decisiones corresponden a las instituciones competentes. El expediente aporta una forma de revisar evidencia y preparar esa consulta. No tenemos aval institucional ni uso real que no hayamos documentado.
+
+**22. ¿Por qué una tendencia histórica ayudaría durante un aguacero?**
+
+Su papel principal es la planificación y la revisión de confianza en datos. La vigilancia próxima depende de pronósticos, observaciones recientes y contexto. No usamos una tendencia como disparador de emergencia.
+
+**23. ¿La falta de lluvia descarta una inundación?**
+
+Un déficit acumulado puede coexistir con lluvia intensa posterior. Además, poca lluvia local no descarta aportes desde aguas arriba. Por eso mantenemos esas señales separadas.
+
+### Tecnología y continuación
+
+**24. ¿Qué tiene distinto de un mapa con varias capas?**
+
+Se puede revisar qué sostiene cada afirmación, qué fuentes dependen de otras y qué cambia al retirar evidencia. El aporte está en las reglas y la trazabilidad del expediente. Su valor frente al flujo habitual debe medirse.
+
+**25. ¿Dónde está la innovación para Best Use of Technology?**
+
+En conectar evidencias con restricciones de tiempo, ubicación, calidad y dependencia, y recalcular un expediente explicable. La candidatura se demuestra ejecutando esa capacidad; no afirmando que inventamos la comparación científica entre productos.
+
+**26. ¿Qué pasa si se cae internet o llega un dato viejo?**
+
+Hay paquetes guardados con fecha. La copia no se hace pasar por información actual y el motor excluye registros vencidos del respaldo vigente según sus reglas. Si falta información, lo muestra.
+
+**27. ¿Qué evita que una medición inventada cambie la conclusión?**
+
+La aportación local conserva procedencia y queda sin verificar; los ejemplos conservan la etiqueta sintética. No se convierten automáticamente en confirmación de un pronóstico. La autenticación y validación permanente de observaciones requieren desarrollo adicional.
+
+**28. ¿Qué papel tiene la IA?**
+
+Debe declararse la asistencia usada para investigar, programar y redactar. Las cifras presentadas tienen que salir de datos y cálculos reproducibles. No atribuimos a un modelo de lenguaje mediciones, probabilidades o capacidad predictiva que no estén validadas.
+
+**29. ¿Qué harían después?**
+
+Una prueba de tarea con técnicos municipales, captura prospectiva y evaluación de señales con fechas de disponibilidad y costes de actuar o esperar. Conservaríamos también los errores que el expediente introduzca.
+
+**30. ¿Se puede usar en otro país?**
+
+La arquitectura se puede adaptar. Referencias climáticas, territorio, calidad, fuentes y reglas necesitan verificación local. No está validada universalmente por haber funcionado el código en estos pilotos.
+
+## Cómo decirlo
+
+- Hablar como explicándole el proyecto a alguien de aquí: “aguacero”, “por arriba”, “miren”, “ojo” y “nuestra gente”, con naturalidad. Evitar amontonar muletillas o imitar un acento.
+- La pausa después de la llamada y antes de “Mismo territorio” vale más que acelerar para meter otra cifra.
+- No memorizar treinta respuestas palabra por palabra. Aprender fuente, función, resultado y límite.
+- Si algo no se sabe: “Eso no está demostrado todavía; esto es lo que sí pudimos comprobar”.
+- Ensayar el texto con la demo. Los tiempos indicados no sustituyen un ensayo cronometrado.
+
+## Evidencia para preparar las respuestas
+
+Consultar ESTADO_CONCLUSIONES.md, BACKEND_PREPARACION.md, REVISION_PARA_DEFENSA.md, results/tropical/puerto_rico/resumen.json, results/tropical/merra2/resumen.json y results/preparacion/REVISION_DEFENSA.json. Las pantallas sugeridas requieren comprobarse en la versión que se expone.
+
+Portales para identificar las fuentes: NASA GPM (https://gpm.nasa.gov/data/imerg), NASA POWER (https://power.larc.nasa.gov/), CHIRPS (https://www.chc.ucsb.edu/data/chirps), ERA5 (https://www.ecmwf.int/en/forecasts/dataset/ecmwf-reanalysis-v5), NOAA NHC (https://www.nhc.noaa.gov/), IBTrACS (https://www.ncei.noaa.gov/products/international-best-track-archive), y Open-Meteo (https://open-meteo.com/en/docs). Estos enlaces identifican proveedores; los archivos y versiones del proyecto sostienen sus cifras.
