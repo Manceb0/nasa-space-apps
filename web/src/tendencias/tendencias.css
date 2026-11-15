@@ -600,3 +600,4 @@ button.vd:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-r
 .prep-over .prep { max-width: none; padding: 76px 24px 120px; }
 @media (min-width: 760px) { #wx .prep-over .prep { padding-left: calc(var(--lw) + 32px); padding-right: calc(var(--rw) + 32px); } }
 @media (max-width: 759px) { .wx .prep-over { bottom: 172px; } .prep-over .prep { padding: 64px 14px 40px; } }
+@media (min-width: 760px) and (max-width: 900px) { #wx .map-sty > span { display: none; } #wx .map-top { gap: 6px; } }
