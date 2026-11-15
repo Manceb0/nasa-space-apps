@@ -1,0 +1,778 @@
+{
+  "estado": "diagnósticos exploratorios de revisión; no atribución instrumental",
+  "contraejemplo": {
+    "datos": "SINTETICOS: tendencia lineal sin salto, referencia constante",
+    "pendiente_ols_original": 1.0000000000000084,
+    "pendiente_ols_ajustada": 0.2539130434782595,
+    "reduccion_pendiente_pct": 74.60869565217428,
+    "pettitt_mes_indice_0": 144,
+    "pettitt_p_mismo_nulo_bloques12": 0.0003333333333333333
+  },
+  "comparacion_modelos": [
+    {
+      "respuesta": "dif_frecuencia",
+      "modelo": "estacional",
+      "rmse_ajuste": 0.07578405655297717,
+      "rmse_cv_bloques3": 0.0800726473238536,
+      "corte": null,
+      "cortes_por_fold": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "coef_escalon": null
+    },
+    {
+      "respuesta": "dif_frecuencia",
+      "modelo": "tendencia",
+      "rmse_ajuste": 0.07354646493625916,
+      "rmse_cv_bloques3": 0.0783282283631148,
+      "corte": null,
+      "cortes_por_fold": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "coef_escalon": null
+    },
+    {
+      "respuesta": "dif_frecuencia",
+      "modelo": "escalon",
+      "rmse_ajuste": 0.0718387703605039,
+      "rmse_cv_bloques3": 0.0785781163949965,
+      "corte": "2018-02-01",
+      "cortes_por_fold": [
+        "2018-02-01",
+        "2018-02-01",
+        "2018-02-01",
+        "2018-06-01",
+        "2018-02-01",
+        "2013-10-01",
+        "2013-10-01",
+        "2018-02-01"
+      ],
+      "coef_escalon": -0.05330070515915557
+    },
+    {
+      "respuesta": "dif_frecuencia",
+      "modelo": "tendencia_escalon",
+      "rmse_ajuste": 0.07139542917622715,
+      "rmse_cv_bloques3": 0.07937754699428332,
+      "corte": "2006-01-01",
+      "cortes_por_fold": [
+        "2018-02-01",
+        "2018-02-01",
+        "2006-01-01",
+        "2006-01-01",
+        "2018-02-01",
+        "2013-10-01",
+        "2006-01-01",
+        "2006-01-01"
+      ],
+      "coef_escalon": 0.061221666024373074
+    },
+    {
+      "respuesta": "dif_frecuencia",
+      "modelo": "cuadratica",
+      "rmse_ajuste": 0.07264634263456353,
+      "rmse_cv_bloques3": 0.0792274071441764,
+      "corte": null,
+      "cortes_por_fold": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "coef_escalon": null
+    },
+    {
+      "respuesta": "log_cantidad",
+      "modelo": "estacional",
+      "rmse_ajuste": 0.48285970954046414,
+      "rmse_cv_bloques3": 0.5080021037756902,
+      "corte": null,
+      "cortes_por_fold": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "coef_escalon": null
+    },
+    {
+      "respuesta": "log_cantidad",
+      "modelo": "tendencia",
+      "rmse_ajuste": 0.4827143694529002,
+      "rmse_cv_bloques3": 0.5099327574527506,
+      "corte": null,
+      "cortes_por_fold": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "coef_escalon": null
+    },
+    {
+      "respuesta": "log_cantidad",
+      "modelo": "escalon",
+      "rmse_ajuste": 0.47835153188529145,
+      "rmse_cv_bloques3": 0.5089120957035004,
+      "corte": "2006-01-01",
+      "cortes_por_fold": [
+        "2020-01-01",
+        "2020-01-01",
+        "2006-01-01",
+        "2006-01-01",
+        "2006-01-01",
+        "2006-01-01",
+        "2006-01-01",
+        "2006-01-01"
+      ],
+      "coef_escalon": 0.16209117510073218
+    },
+    {
+      "respuesta": "log_cantidad",
+      "modelo": "tendencia_escalon",
+      "rmse_ajuste": 0.47587862187822344,
+      "rmse_cv_bloques3": 0.5055230238963624,
+      "corte": "2006-01-01",
+      "cortes_por_fold": [
+        "2018-12-01",
+        "2018-12-01",
+        "2006-01-01",
+        "2006-01-01",
+        "2006-01-01",
+        "2006-01-01",
+        "2006-03-01",
+        "2006-01-01"
+      ],
+      "coef_escalon": 0.28066903126436576
+    },
+    {
+      "respuesta": "log_cantidad",
+      "modelo": "cuadratica",
+      "rmse_ajuste": 0.47934218331617406,
+      "rmse_cv_bloques3": 0.5066959725774927,
+      "corte": null,
+      "cortes_por_fold": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "coef_escalon": null
+    }
+  ],
+  "integridad_indices_ajustados": [
+    {
+      "indice": "CDD",
+      "periodo": "anual",
+      "n_negativos": 8,
+      "n_valores": 10608,
+      "minimo": -3.2727272727272734
+    },
+    {
+      "indice": "CWD",
+      "periodo": "anual",
+      "n_negativos": 0,
+      "n_valores": 10608,
+      "minimo": 2.0
+    },
+    {
+      "indice": "R1mm",
+      "periodo": "anual",
+      "n_negativos": 0,
+      "n_valores": 10608,
+      "minimo": 54.0
+    },
+    {
+      "indice": "SDII",
+      "periodo": "anual",
+      "n_negativos": 0,
+      "n_valores": 10608,
+      "minimo": 2.035566742943999
+    },
+    {
+      "indice": "RACHAS10",
+      "periodo": "anual",
+      "n_negativos": 56,
+      "n_valores": 10608,
+      "minimo": -2.4125874125874125
+    },
+    {
+      "indice": "RACHAS15",
+      "periodo": "anual",
+      "n_negativos": 264,
+      "n_valores": 10608,
+      "minimo": -2.4685314685314683
+    },
+    {
+      "indice": "CDD",
+      "periodo": "seca",
+      "n_negativos": 11,
+      "n_valores": 10166,
+      "minimo": -4.1439393939393945
+    },
+    {
+      "indice": "CWD",
+      "periodo": "seca",
+      "n_negativos": 10,
+      "n_valores": 10166,
+      "minimo": -0.7878787878787878
+    },
+    {
+      "indice": "R1mm",
+      "periodo": "seca",
+      "n_negativos": 0,
+      "n_valores": 10166,
+      "minimo": 2.0
+    },
+    {
+      "indice": "SDII",
+      "periodo": "seca",
+      "n_negativos": 28,
+      "n_valores": 10166,
+      "minimo": -3.5291382570509695
+    },
+    {
+      "indice": "RACHAS10",
+      "periodo": "seca",
+      "n_negativos": 103,
+      "n_valores": 10166,
+      "minimo": -2.1818181818181817
+    },
+    {
+      "indice": "RACHAS15",
+      "periodo": "seca",
+      "n_negativos": 319,
+      "n_valores": 10166,
+      "minimo": -2.1893939393939394
+    },
+    {
+      "indice": "CDD",
+      "periodo": "humeda_temprana",
+      "n_negativos": 1,
+      "n_valores": 10608,
+      "minimo": -0.23776223776223793
+    },
+    {
+      "indice": "CWD",
+      "periodo": "humeda_temprana",
+      "n_negativos": 0,
+      "n_valores": 10608,
+      "minimo": 1.979020979020979
+    },
+    {
+      "indice": "R1mm",
+      "periodo": "humeda_temprana",
+      "n_negativos": 0,
+      "n_valores": 10608,
+      "minimo": 13.538461538461538
+    },
+    {
+      "indice": "SDII",
+      "periodo": "humeda_temprana",
+      "n_negativos": 17,
+      "n_valores": 10608,
+      "minimo": -2.046140325620434
+    },
+    {
+      "indice": "RACHAS10",
+      "periodo": "humeda_temprana",
+      "n_negativos": 1343,
+      "n_valores": 10608,
+      "minimo": -1.5174825174825175
+    },
+    {
+      "indice": "RACHAS15",
+      "periodo": "humeda_temprana",
+      "n_negativos": 2359,
+      "n_valores": 10608,
+      "minimo": -1.5174825174825175
+    },
+    {
+      "indice": "CDD",
+      "periodo": "humeda_tardia",
+      "n_negativos": 9,
+      "n_valores": 10608,
+      "minimo": -2.524475524475524
+    },
+    {
+      "indice": "CWD",
+      "periodo": "humeda_tardia",
+      "n_negativos": 0,
+      "n_valores": 10608,
+      "minimo": 1.27972027972028
+    },
+    {
+      "indice": "R1mm",
+      "periodo": "humeda_tardia",
+      "n_negativos": 0,
+      "n_valores": 10608,
+      "minimo": 24.0
+    },
+    {
+      "indice": "SDII",
+      "periodo": "humeda_tardia",
+      "n_negativos": 0,
+      "n_valores": 10608,
+      "minimo": 0.1775324017633606
+    },
+    {
+      "indice": "RACHAS10",
+      "periodo": "humeda_tardia",
+      "n_negativos": 1220,
+      "n_valores": 10608,
+      "minimo": -1.8461538461538463
+    },
+    {
+      "indice": "RACHAS15",
+      "periodo": "humeda_tardia",
+      "n_negativos": 2627,
+      "n_valores": 10608,
+      "minimo": -1.048951048951049
+    }
+  ],
+  "estaciones_control_mes": [
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 10,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": 2.2616187412415587,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 138,
+      "meses_despues": 98
+    },
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 10,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -4.78094368027576,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 138,
+      "meses_despues": 98
+    },
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 10,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": 2.5440444118880285,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 138,
+      "meses_despues": 98
+    },
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 15,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": 2.987847590436579,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 104,
+      "meses_despues": 61
+    },
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 15,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -4.2076053540422595,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 104,
+      "meses_despues": 61
+    },
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 15,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": 2.016713951167355,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 104,
+      "meses_despues": 61
+    },
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 20,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": 9.376445061471971,
+      "meses_calendario_comunes": 8,
+      "meses_antes": 55,
+      "meses_despues": 21
+    },
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 20,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": 4.407384914578864,
+      "meses_calendario_comunes": 8,
+      "meses_antes": 55,
+      "meses_despues": 21
+    },
+    {
+      "id": "DRM00078458",
+      "min_dias_mes": 20,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": 3.5918725468638,
+      "meses_calendario_comunes": 8,
+      "meses_antes": 55,
+      "meses_despues": 21
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 10,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": -5.522043462123655,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 134,
+      "meses_despues": 129
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 10,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -11.888440057674151,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 134,
+      "meses_despues": 129
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 10,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": 0.44841171170483185,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 134,
+      "meses_despues": 129
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 15,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": -5.131101062118404,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 105,
+      "meses_despues": 89
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 15,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -12.97965921989036,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 105,
+      "meses_despues": 89
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 15,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": -2.0307727357175493,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 105,
+      "meses_despues": 89
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 20,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": -3.7373062042201677,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 49,
+      "meses_despues": 45
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 20,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -10.661679330008063,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 49,
+      "meses_despues": 45
+    },
+    {
+      "id": "DRM00078479",
+      "min_dias_mes": 20,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": -4.41439928543966,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 49,
+      "meses_despues": 45
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 10,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": 2.9652548315093825,
+      "meses_calendario_comunes": 10,
+      "meses_antes": 90,
+      "meses_despues": 81
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 10,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -11.118431506757869,
+      "meses_calendario_comunes": 10,
+      "meses_antes": 90,
+      "meses_despues": 81
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 10,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": -4.647657506637655,
+      "meses_calendario_comunes": 10,
+      "meses_antes": 90,
+      "meses_despues": 81
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 15,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": 2.713010916809128,
+      "meses_calendario_comunes": 8,
+      "meses_antes": 43,
+      "meses_despues": 33
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 15,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -13.367358798385714,
+      "meses_calendario_comunes": 8,
+      "meses_antes": 43,
+      "meses_despues": 33
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 15,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": -10.572258758643338,
+      "meses_calendario_comunes": 8,
+      "meses_antes": 43,
+      "meses_despues": 33
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 20,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": -2.474637681159418,
+      "meses_calendario_comunes": 4,
+      "meses_antes": 12,
+      "meses_despues": 11
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 20,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -14.201333992094861,
+      "meses_calendario_comunes": 4,
+      "meses_antes": 12,
+      "meses_despues": 11
+    },
+    {
+      "id": "DRM00078482",
+      "min_dias_mes": 20,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": -6.25272131250392,
+      "meses_calendario_comunes": 4,
+      "meses_antes": 12,
+      "meses_despues": 11
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 10,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": 0.5570065863219819,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 136,
+      "meses_despues": 117
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 10,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -6.13896391137011,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 136,
+      "meses_despues": 117
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 10,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": 1.6570550948229315,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 136,
+      "meses_despues": 117
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 15,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": 3.601740333919264,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 101,
+      "meses_despues": 78
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 15,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -3.0766798471638284,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 101,
+      "meses_despues": 78
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 15,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": 2.7596318025387157,
+      "meses_calendario_comunes": 12,
+      "meses_antes": 101,
+      "meses_despues": 78
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 20,
+      "fuente": "estacion",
+      "cambio_pp_equilibrado_meses": 6.9472141611828935,
+      "meses_calendario_comunes": 10,
+      "meses_antes": 57,
+      "meses_despues": 30
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 20,
+      "fuente": "IMERG",
+      "cambio_pp_equilibrado_meses": -5.291154946268996,
+      "meses_calendario_comunes": 10,
+      "meses_antes": 57,
+      "meses_despues": 30
+    },
+    {
+      "id": "DRM00078486",
+      "min_dias_mes": 20,
+      "fuente": "CHIRPS",
+      "cambio_pp_equilibrado_meses": -5.045024028726641,
+      "meses_calendario_comunes": 10,
+      "meses_antes": 57,
+      "meses_despues": 30
+    }
+  ],
+  "ciclones": [
+    {
+      "grupo": "ciclon_todos",
+      "umbral": 20,
+      "n_dias": 205,
+      "CSI": 0.5216811675554308,
+      "ETS": 0.4155632663727372,
+      "frecuencia_A": 0.252256925284185,
+      "frecuencia_B": 0.22643196115219072
+    },
+    {
+      "grupo": "ciclon_todos",
+      "umbral": 50,
+      "n_dias": 205,
+      "CSI": 0.267954565781236,
+      "ETS": 0.2348255724924874,
+      "frecuencia_A": 0.10611411543979693,
+      "frecuencia_B": 0.050347643747930694
+    },
+    {
+      "grupo": "ciclon_ASON",
+      "umbral": 20,
+      "n_dias": 183,
+      "CSI": 0.5216499162479062,
+      "ETS": 0.4232539317118898,
+      "frecuencia_A": 0.23387236357342434,
+      "frecuencia_B": 0.2153648344583735
+    },
+    {
+      "grupo": "ciclon_ASON",
+      "umbral": 50,
+      "n_dias": 183,
+      "CSI": 0.2688891325803268,
+      "ETS": 0.23868488381212988,
+      "frecuencia_A": 0.09688944934846574,
+      "frecuencia_B": 0.04616373661696709
+    },
+    {
+      "grupo": "sin_ciclon_ASON",
+      "umbral": 20,
+      "n_dias": 2745,
+      "CSI": 0.20443096738507735,
+      "ETS": 0.17999542665844226,
+      "frecuencia_A": 0.056466302367941715,
+      "frecuencia_B": 0.04403646284070585
+    },
+    {
+      "grupo": "sin_ciclon_ASON",
+      "umbral": 50,
+      "n_dias": 2745,
+      "CSI": 0.10063624546760622,
+      "ETS": 0.09743131043719862,
+      "frecuencia_A": 0.007714561234329798,
+      "frecuencia_B": 0.005545252989804581
+    }
+  ],
+  "torus": {
+    "traslaciones_unicas_con_70pc_solape": 82,
+    "pruebas_exhaustivas": [
+      {
+        "x": "ascenso_m_km",
+        "y": "log_ratio",
+        "rho": 0.5599352434149558,
+        "p_exhaustivo": 0.012048192771084338,
+        "n": 82
+      },
+      {
+        "x": "dif_humeda",
+        "y": "SDII_en_disputa",
+        "rho": 0.4123931310789281,
+        "p_exhaustivo": 0.024096385542168676,
+        "n": 82
+      },
+      {
+        "x": "sombra_m",
+        "y": "CSI20",
+        "rho": -0.3850932548809257,
+        "p_exhaustivo": 0.03614457831325301,
+        "n": 82
+      }
+    ],
+    "nota": "n_sustitutos=466 del motor es número de sorteos aceptados, no traducciones únicas"
+  },
+  "sha256": {
+    "earthmemory/tropical/run.py": "81f982947ac773921ef239deada255fc94e5ccfa94b565ff0be302dad17eb6b5",
+    "earthmemory/tropical/recalculo.py": "33de01277b75a95a12ce2d3463ef627abf27e09deba866b1907625c624d962b2",
+    "earthmemory/tropical/auditoria_revision.py": "d2f5bf3246b303e37557f4174205fbfa14cf55b26fe4e880f4a7bb8bac5120e0",
+    "results/tropical/p4_mensual.csv": "9fedb82acba08ac3071261e5d884067df1570db4b789ff6d48cf1b2e9e3faff8"
+  }
+}
