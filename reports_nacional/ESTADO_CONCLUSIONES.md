@@ -50,8 +50,9 @@ manda esta tabla. Antes de ponerle una etiqueta a cada fila se comprobaron todas
 
 | # | Conclusión | Grado | Cifras clave | Fuente |
 |---|---|---|---|---|
-| 22 | Una alerta de inundación que exige un segundo producto (IMERG **y** CHIRPS) da menos falsas alarmas sin perder eventos en la prueba | **Se sostiene con límites** (indicativo) | Prueba 2016-2024: 7 de 8 eventos en ambos casos; falsas alarmas 39 → 20; CSI 0,15 → 0,25. Calibración 2001-2015: falsas alarmas 89 → 46, pero 5 → 4 eventos. n = 8; es observado, no pronóstico; CHIRPS diario está desagregado de la péntada y llega tarde para operar | JANE_PREVENCION, results/tropical/alerta_acuerdo |
-| 23 | Aceptar la alerta de cualquiera de los dos productos mejora la prevención | **No respaldado** | 8 de 8 eventos, pero 88 falsas alarmas (CSI 0,08) | ídem |
+| 22 | Una alerta de inundación que pide un testigo (IMERG confirmado por CHIRPS del mismo día o del anterior, misma celda en 48 h) da menos falsas alarmas y casi no retrasa | **Se sostiene con límites** (indicativo; versión causal) | Prueba 2016-2024: 6 de 8 eventos (IMERG solo: 7); falsas alarmas 39 → 16; CSI 0,15 [0,08-0,21] → 0,25 [0,12-0,42], con IC solapados. Retraso: 0 días en 5 de 6. n = 8; falsas alarmas = cota superior (catálogo de prensa); CHIRPS no es tiempo real. *La versión retrospectiva anterior (7 de 8, 39 → 20) miraba al día siguiente: retirada* | JANE_PREVENCION_CAUSAL, results/tropical/alerta_causal |
+| 23 | Aceptar la alerta de cualquiera de los dos productos mejora la prevención | **No respaldado** | 8 de 8 eventos, pero 88 falsas alarmas (CSI 0,08), en la versión retrospectiva | JANE_PREVENCION |
+| 24 | Las reglas de lluvia observada (> 100 mm en 48 h) avisan antes de la inundación | **No respaldado** | Disparo antes o el día del inicio: 2 de 8 (IMERG solo) y 1 de 8 (con testigo); el resto, durante el evento. Anticipar exige pronóstico | JANE_PREVENCION_CAUSAL |
 
 ## Correcciones al `deep-research-report (8).md` (recibido el 15-nov)
 

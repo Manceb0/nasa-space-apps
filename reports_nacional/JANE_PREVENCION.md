@@ -1,5 +1,9 @@
 # Pasada Jane: ¿qué solución preventiva entregamos? (15-nov-2026, noche)
 
+> **Superado por `JANE_PREVENCION_CAUSAL.md`.** La prueba de este documento miraba al día siguiente, contaba alertas
+> que llegaban durante la inundación y sumaba celdas distintas de CHIRPS. En la versión causal, el testigo deja 16
+> falsas alarmas en vez de 39 y detecta 6 de 8 eventos, pero casi nunca avisa **antes** del inicio (1 o 2 de 8).
+
 Modo `hackathon`. Se pasaron los 7 movimientos con una o más skills por fila, abriendo cada archivo. Hay una prueba
 nueva hecha con datos que ya teníamos (`earthmemory/tropical/alerta_acuerdo.py`); todo lo demás sale del repo.
 

@@ -1,0 +1,6 @@
+{
+  "registradas_utc": "2026-11-15T15:29:54.818469+00:00",
+  "M1": "Prueba 2016-2024, versión causal: exigir confirmación de CHIRPS del mismo día o del anterior conserva al menos 6 de 8 eventos y deja las falsas alarmas en ≤ 60 % de las de IMERG solo.",
+  "M2": "La confirmación retrasa el primer disparo al menos 1 día en la mitad o más de los eventos que detectan ambas reglas.",
+  "M3": "Con IMERG solo, menos de la mitad de los eventos de prueba tienen un disparo anticipado (antes del inicio o el mismo día de inicio)."
+}

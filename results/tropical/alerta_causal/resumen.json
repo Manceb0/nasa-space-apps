@@ -1,0 +1,113 @@
+{
+  "veredicto": {
+    "M1": true,
+    "M2": false,
+    "M3": true
+  },
+  "retraso_prueba": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0
+  ],
+  "tabla": [
+    {
+      "disparador": "A_IMERG",
+      "periodo": "calibración 2001-2015",
+      "eventos": 6,
+      "aciertos": 5,
+      "anticipados": 3,
+      "durante": 2,
+      "episodios": 94,
+      "falsas_alarmas": 89,
+      "POD": 0.8333333333,
+      "CSI": 0.0526315789,
+      "CSI_ic95": [
+        0.0,
+        0.1011235955
+      ]
+    },
+    {
+      "disparador": "A_IMERG",
+      "periodo": "prueba 2016-2024",
+      "eventos": 8,
+      "aciertos": 7,
+      "anticipados": 2,
+      "durante": 5,
+      "episodios": 48,
+      "falsas_alarmas": 39,
+      "POD": 0.875,
+      "CSI": 0.1489361702,
+      "CSI_ic95": [
+        0.0788967611,
+        0.2096986418
+      ]
+    },
+    {
+      "disparador": "C_CHIRPS_48h_misma_celda",
+      "periodo": "calibración 2001-2015",
+      "eventos": 6,
+      "aciertos": 5,
+      "anticipados": 4,
+      "durante": 1,
+      "episodios": 125,
+      "falsas_alarmas": 120,
+      "POD": 0.8333333333,
+      "CSI": 0.0396825397,
+      "CSI_ic95": [
+        0.0080645161,
+        0.0777836879
+      ]
+    },
+    {
+      "disparador": "C_CHIRPS_48h_misma_celda",
+      "periodo": "prueba 2016-2024",
+      "eventos": 8,
+      "aciertos": 7,
+      "anticipados": 5,
+      "durante": 2,
+      "episodios": 65,
+      "falsas_alarmas": 55,
+      "POD": 0.875,
+      "CSI": 0.1111111111,
+      "CSI_ic95": [
+        0.05,
+        0.1621621622
+      ]
+    },
+    {
+      "disparador": "A_y_C_causal",
+      "periodo": "calibración 2001-2015",
+      "eventos": 6,
+      "aciertos": 4,
+      "anticipados": 3,
+      "durante": 1,
+      "episodios": 39,
+      "falsas_alarmas": 35,
+      "POD": 0.6666666667,
+      "CSI": 0.0975609756,
+      "CSI_ic95": [
+        0.0,
+        0.1794871795
+      ]
+    },
+    {
+      "disparador": "A_y_C_causal",
+      "periodo": "prueba 2016-2024",
+      "eventos": 8,
+      "aciertos": 6,
+      "anticipados": 1,
+      "durante": 5,
+      "episodios": 24,
+      "falsas_alarmas": 16,
+      "POD": 0.75,
+      "CSI": 0.25,
+      "CSI_ic95": [
+        0.1212121212,
+        0.4211032389
+      ]
+    }
+  ]
+}
