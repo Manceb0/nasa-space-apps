@@ -100,7 +100,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .seg button:disabled { opacity: .35; cursor: not-allowed; }
 .stats-t th i, .pa-w i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
 .ans-sent { margin-top: 10px; font-size: 14px; line-height: 1.45; text-wrap: pretty; }
-.ladder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 12px; }
+.ladder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 18px; }
 .ladder span { position: relative; padding-top: 12px; font-size: 12px; line-height: 1.3; color: var(--faint); }
 .ladder span i { position: absolute; inset: 0 0 auto; height: 5px; border-radius: 3px; background: var(--raised); overflow: hidden; }
 .ladder span i::after { content: ""; position: absolute; inset: 0; background: var(--c); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
@@ -128,8 +128,15 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .cr-v { text-align: inherit; margin-top: 2px; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
 .cr-s { font-size: 13px; line-height: 1.35; color: var(--muted); }
 .cr-s b { font-weight: 600; }
-.cap-note { margin-top: 10px; font-size: 13px; line-height: 1.45; color: var(--faint); }
-.cr-flag { margin-top: 4px; font-size: 12px; line-height: 1.3; color: #ffd60a; }
+.cap-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 12px; font-size: 12px; color: var(--faint); }
+.cap-key span { display: inline-flex; align-items: center; gap: 6px; }
+.cap-key svg { width: 18px; height: 10px; color: var(--muted); }
+.cap-key .cap-u { margin-left: auto; }
+.cr-warn { display: inline-grid; place-items: center; width: 26px; height: 26px; margin: -6px -4px -6px 2px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
+.cr-warn svg { width: 15px; height: 15px; }
+.cr-warn:hover { background: var(--raised); }
+.cr-warn:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+.s13-h:focus { outline: none; }
 /* Escalón de 2013-10: aviso con conmutador, sin caja propia (una regla a la izquierda) */
 .s13 { margin-top: 16px; padding: 2px 0 2px 14px; border-left: 3px solid #ffd60a; }
 .s13-h { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--text); }
@@ -295,10 +302,11 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 }
 
 /* ── Crestas: relieve en perfiles, coloreado por lo que muestra el mapa ── */
-.ridge { position: absolute; inset: 0; z-index: 1; display: block; cursor: crosshair; }
+.ridge { position: absolute; inset: 0; z-index: 1; display: block; pointer-events: none; }
 .ridge[hidden] { display: none; }
-.wx[data-sty="crestas"] #map { visibility: hidden; }
-.wx[data-sty="crestas"] .maplibregl-ctrl-attrib, .wx[data-sty="crestas"] .maplibregl-ctrl { visibility: hidden; }
+.wx[data-sty="crestas"] #map .maplibregl-canvas { opacity: 0; }
+.wx[data-sty="crestas"] .maplibregl-ctrl-attrib, .wx[data-sty="crestas"] .maplibregl-ctrl-compass { display: none; }
+.wx[data-sty="crestas"] .maplibregl-canvas { cursor: crosshair; }
 
 @media (prefers-reduced-motion: reduce) {
   .cap-n { animation: none; }

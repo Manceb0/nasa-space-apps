@@ -4,6 +4,7 @@ import { esc, LL, num, sgn, type TrendData, type Sel, type Tr } from "./datos";
 
 export const PROD_COLOR: Record<string, string> = { IMERG: "#ffffff", CHIRPS: "#8fd3ff" };
 const pc = (p: string) => PROD_COLOR[p] ?? "#bbbbbb";
+export const WARN = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8l6.6 11.6H1.4z" fill="#ffd60a"/><path d="M8 6v3.4" stroke="#000" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="11.4" r=".9" fill="#000"/></svg>';
 
 /** El medidor: un semicírculo cuyo extremo izquierdo y derecho dicen en palabras qué significa cada lado (con los
  *  colores del mapa); arriba, «sin cambio». Cada fuente es una aguja que gira desde arriba hasta su tendencia, con un
@@ -45,10 +46,9 @@ export function capsule(d: TrendData, s: Sel) {
   const read = rows.map((r, i) => ({ ...r, i })).sort((a, b) => a.t.pendiente_decada - b.t.pendiente_decada).map(({ p, t, i }) => {
     const up = t.pendiente_decada > 0, side = up ? right : left, sc = up ? cR : cL;
     return `<div class="cr">
-      <p class="cr-p"><i style="background:${pc(p)}"></i>${p}</p>
+      <p class="cr-p"><i style="background:${pc(p)}"></i>${p}${p === "IMERG" && d.stepped(s.ind) ? `<button class="cr-warn" data-go13 title="${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}" aria-label="${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}">${WARN}</button>` : ""}</p>
       <p class="cr-v num">${sgn(t.pendiente_decada)}</p>
-      <p class="cr-s"><b style="color:${sc}">${esc(side)}</b> · ${esc(sig[i] ? LL("cambio claro", "clear change") : LL("puede ser azar", "may be chance"))}</p>
-      ${p === "IMERG" && d.stepped(s.ind) ? `<p class="cr-flag" title="${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia", "IMERG changed in 2013 the way it counts rain days"))}">${esc(LL("posible artefacto de medición: escalón 2013-10", "possible measurement artefact: 2013-10 step"))}</p>` : ""}
+      <p class="cr-s"><b style="color:${sc}">${esc(side)}</b> · ${esc(sig[i] ? LL("claro", "clear") : LL("incierto", "uncertain"))}</p>
     </div>`;
   }).join("");
   return `<svg class="tr-cap" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(rows.map(({ p, t }, i) => `${p} ${sgn(t.pendiente_decada)} ${v.unidad_tendencia} (IC ${num(t.ic95[0])} a ${num(t.ic95[1])})${sig[i] ? "" : `, ${LL("no significativa", "not significant")}`}`).join("; "))}">
@@ -61,7 +61,12 @@ export function capsule(d: TrendData, s: Sel) {
     <text x="${cx + R}" y="${cy + 22}" text-anchor="end" class="cap-end" fill="${cR}">${esc(right)} ▶</text>
   </svg>
   <div class="cap-read">${read}</div>
-  <p class="cap-note">${esc(LL(`En ${v.unidad_tendencia}. Aguja sólida: cambio claro · discontinua: puede ser azar · abanico: margen del 95 %.`, `In ${v.unidad_tendencia}. Solid needle: clear change · dashed: may be chance · fan: 95 % margin.`))}</p>`;
+  <p class="cap-key">
+    <span><svg viewBox="0 0 20 8" aria-hidden="true"><line x1="2" y1="4" x2="18" y2="4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>${esc(LL("claro", "clear"))}</span>
+    <span><svg viewBox="0 0 20 8" aria-hidden="true"><line x1="2" y1="4" x2="18" y2="4" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 4"/></svg>${esc(LL("incierto", "uncertain"))}</span>
+    <span><svg viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11L1.5 3A9 9 0 0 1 14.5 3Z" fill="currentColor" fill-opacity=".35"/></svg>${esc(LL("margen 95 %", "95 % margin"))}</span>
+    <span class="cap-u">${esc(v.unidad_tendencia)}</span>
+  </p>`;
 }
 
 /** Las 32 provincias en un mismo eje: arriba IMERG, debajo CHIRPS; el punto relleno es significativo

@@ -24,6 +24,8 @@ export function terrain3d(el: HTMLElement, opts: {
   siteAction: string;
   provinces?: { type: "FeatureCollection"; features: unknown[] };
   onProvince?: (id: string, name: string) => void;
+  /** true donde el mapa es la pantalla (Tendencias); en páginas con scroll la rueda debe desplazar la página. */
+  wheel?: boolean;
 }) {
   const map = new maplibregl.Map({
     container: el,
@@ -58,7 +60,7 @@ export function terrain3d(el: HTMLElement, opts: {
   // De lejos, los lugares cercanos se encimaban: el nombre aparece al acercarse o al pasar el cursor
   const far = () => el.classList.toggle("t3-far", map.getZoom() < 9.5);
   map.on("zoom", far);
-  map.scrollZoom.disable();
+  if (!opts.wheel) map.scrollZoom.disable();
   far();
   map.on("moveend", () => { const c = map.getCenter(); lastCam = { center: [c.lng, c.lat], zoom: map.getZoom(), pitch: map.getPitch(), bearing: map.getBearing() }; });
 

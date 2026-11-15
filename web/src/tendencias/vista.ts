@@ -8,7 +8,7 @@ import type maplibregl from "maplibre-gl";
 import { terrain3d } from "../terrain3d";
 import { esc, LL, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
 import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
-import { capsule, forest, PROD_COLOR, seriesChart } from "./graficas";
+import { capsule, forest, PROD_COLOR, seriesChart, WARN } from "./graficas";
 import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
 import { finding, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
@@ -63,6 +63,15 @@ function render(view: HTMLElement, d: TrendData) {
   const styles: [Style, string][] = [...(d.rel ? [["crestas", LL("Crestas", "Ridges")] as [Style, string]] : []), ["oscuro", LL("Oscuro", "Dark")], ["3d", LL("Relieve", "Terrain")], ["plano", LL("Satélite", "Satellite")]];
   const fold = (side: "left" | "right") => layout === "phone" || (side === "right" && layout !== "wide") ? "" : `<button class="fold" data-fold="${side}" aria-controls="wx-${side}">${side === "left" ? PANEL_L : PANEL_R}</button>`;
 
+  const r15 = d.s13?.recuentos.RACHAS15 ?? {};
+  const nuevas = ["humeda_tardia", "humeda_temprana"].map((k) => `${LL(...SEASON[k])}: ${r15[k]?.en_disputa_sin_escalon ?? 0}`).join(" · ");
+  const warn13 = d.s13 ? `<ul class="s13-w">
+        <li>${esc(LL("Solo cambia el mapa. El medidor y la tabla siguen con lo publicado: el recálculo es por celda, no por provincia.", "Only the map changes. The gauge and table keep the published values: the recalculation is per cell, not per province."))}</li>
+        <li>${esc(LL("La corrección no fecha el escalón: cualquier año de corte entre 2010 y 2017 da casi el mismo resultado. La fecha sale de la prueba de Pettitt; que fue IMERG, de los pluviómetros.", "The correction does not date the step: any cut year from 2010 to 2017 gives almost the same result. The date comes from the Pettitt test; that it was IMERG, from the gauges."))}</li>
+        <li>${esc(LL("Parte del acuerdo es mecánico: se corrige usando CHIRPS como referencia.", "Part of the agreement is mechanical: the correction uses CHIRPS as reference."))}</li>
+        <li>${esc(LL(`Aparecen disputas nuevas en las rachas de 15 días de las temporadas lluviosas (${nuevas} celdas).`, `New disputes appear in 15-day spells in the rainy seasons (${nuevas} cells).`))}</li>
+        <li>${esc(LL("Las salidas publicadas no se tocaron; la variante está aparte.", "The published outputs were not touched; the variant is kept apart."))}</li>
+      </ul>` : "";
   view.innerHTML = `
   <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-sty="${ui.style}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
     <header class="wx-top">
@@ -101,7 +110,7 @@ function render(view: HTMLElement, d: TrendData) {
         <div class="map-top">
           ${fold("left")}
           <div class="seg map-data" role="radiogroup" aria-label="${esc(LL("Qué muestra el mapa", "What the map shows"))}">
-            ${d.both ? `<button data-show="acuerdo" role="radio">${esc(LL("¿Coinciden?", "Agree?"))}</button>` : ""}
+            ${d.both ? `<button data-show="acuerdo" role="radio" title="${esc(LL("Dónde coinciden y dónde se contradicen IMERG y CHIRPS", "Where IMERG and CHIRPS agree and where they contradict each other"))}">${esc(LL("Veredicto", "Verdict"))}</button>` : ""}
             ${d.prods.map((p) => `<button data-show="${p}" role="radio">${p}</button>`).join("")}
           </div>
           <span class="sp"></span>
@@ -122,6 +131,7 @@ function render(view: HTMLElement, d: TrendData) {
       <button class="s13-x" aria-label="${esc(LL("Cerrar", "Close"))}">×</button>
       <h2 id="s13-lb-h">${esc(LL("El escalón de 2013-10 en IMERG", "The 2013-10 step in IMERG"))}</h2>
       <p>${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia. Arriba, el escalón frente a CHIRPS y los 4 pluviómetros; abajo, los mapas antes y después de quitarlo y la sensibilidad al año de corte. Figuras del equipo, en inglés.", "IMERG changed in 2013 the way it counts rain days. Top, the step against CHIRPS and the 4 gauges; bottom, the maps before and after removing it and the sensitivity to the cut year. Team figures."))}</p>
+      ${warn13}
       <img data-src="figuras/07_the_step_in_2013_dark.png" alt="${esc(LL("Diferencia mensual de días húmedos entre IMERG y CHIRPS con el punto de cambio en 2013-10, y los cuatro pluviómetros GHCN-D antes y después de esa fecha.", "Monthly wet-day difference between IMERG and CHIRPS with the change point in 2013-10, and the four GHCN-D gauges before and after that date."))}">
       <img data-src="figuras/08_after_the_correction_dark.png" alt="${esc(LL("Mapas de SDII y de rachas secas de 15 días antes y después de quitar el escalón, y número de celdas en disputa según el año de corte.", "SDII and 15-day dry-spell maps before and after removing the step, and disputed cells by cut year."))}">
     </dialog>
@@ -159,36 +169,27 @@ function render(view: HTMLElement, d: TrendData) {
 
   // ── La respuesta: época, medidas con su veredicto, los dos testigos, la frase, la escalera y la prueba ──
   // ── Escalón de 2013-10: IMERG cambió su forma de contar días de lluvia; el mapa puede verse sin él ──
-  const WARN = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8l6.6 11.6H1.4z" fill="#ffd60a"/><path d="M8 6v3.4" stroke="#000" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="11.4" r=".9" fill="#000"/></svg>';
   const stepBlock = () => {
     const S = d.s13;
     if (!S || !d.stepped(sel.ind)) return "";
     const per = d.perFor(sel.ind, sel.per), rc = S.recuentos[sel.ind]?.[per], nac = sel.reg === "DO" ? S.nacional_IMERG[sel.ind]?.[per] : undefined;
-    const pTxt = (p: number) => (p < 0.001 ? `p &lt;&#8239;${num(0.001, 3)}` : `p ${num(p, 3)}`);
-    const clsLab = (c: string) => esc(d.V.clases[c] ? d.lab(d.V.clases[c]) : c);
-    const r15 = S.recuentos.RACHAS15 ?? {};
-    const nuevas = ["humeda_tardia", "humeda_temprana"].map((k) => `${esc(LL(...SEASON[k]))}: ${r15[k]?.en_disputa_sin_escalon ?? 0}`).join(" · ");
-    const pair = (a: string, b: string, lab: string) => `<div class="s13-n"><p class="s13-l">${lab}</p><p class="s13-v"><span class="${d.fix ? "" : "on"}">${a}</span><i aria-hidden="true">→</i><span class="${d.fix ? "on" : ""}">${b}</span></p></div>`;
+    const pTxt = (p: number) => (p < 0.001 ? `p < ${num(0.001, 3)}` : `p ${num(p, 3)}`);
+    const clsLab = (c: string) => (d.V.clases[c] ? d.lab(d.V.clases[c]) : c);
+    const pair = (a: string, b: string, lab: string, tip = "") => `<div class="s13-n"${tip ? ` title="${esc(tip)}"` : ""}><p class="s13-l">${lab}</p><p class="s13-v"><span class="${d.fix ? "" : "on"}">${a}</span><i aria-hidden="true">→</i><span class="${d.fix ? "on" : ""}">${b}</span></p></div>`;
+    const nacTip = nac?.publicado && nac.sin_escalon ? `${pTxt(nac.publicado.p)}, ${clsLab(nac.publicado.clase)} → ${pTxt(nac.sin_escalon.p)}, ${clsLab(nac.sin_escalon.clase)}` : "";
     return `<section class="s13" aria-labelledby="s13-h">
-      <h3 class="s13-h" id="s13-h">${WARN}${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}</h3>
-      <p class="s13-t">${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia (≥ 1 mm). Los 4 pluviómetros GHCN-D y CHIRPS no muestran ese salto. Afecta a esta medida en IMERG.", "IMERG changed in 2013 the way it counts rain days (≥ 1 mm). The 4 GHCN-D gauges and CHIRPS show no such jump. It affects this measure in IMERG."))}</p>
+      <h3 class="s13-h" id="s13-h" tabindex="-1">${WARN}${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}</h3>
+      <p class="s13-t">${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia; los pluviómetros y CHIRPS, no.", "IMERG changed in 2013 the way it counts rain days; the gauges and CHIRPS did not."))}</p>
       <div class="seg s13-seg" role="radiogroup" aria-label="${esc(LL("Versión de IMERG en el mapa", "IMERG version on the map"))}">
         <button data-fix="0" role="radio" aria-checked="${!d.fix}" class="${d.fix ? "" : "on"}">${esc(LL("Publicado", "Published"))}</button>
         <button data-fix="1" role="radio" aria-checked="${d.fix}" class="${d.fix ? "on" : ""}">${esc(LL("Sin el escalón", "Without the step"))}</button>
       </div>
       <div class="s13-ns">
-        ${rc ? pair(String(rc.en_disputa_publicado), String(rc.en_disputa_sin_escalon), esc(LL("Celdas en disputa en el mapa", "Disputed cells on the map"))) : ""}
-        ${nac?.publicado && nac.sin_escalon ? pair(sgn(nac.publicado.pendiente_pct_decada, 1), sgn(nac.sin_escalon.pendiente_pct_decada, 1), esc(LL("IMERG nacional, % por década", "IMERG national, % per decade"))) : ""}
+        ${rc ? pair(String(rc.en_disputa_publicado), String(rc.en_disputa_sin_escalon), esc(LL("Celdas en disputa", "Disputed cells"))) : ""}
+        ${nac?.publicado && nac.sin_escalon ? pair(sgn(nac.publicado.pendiente_pct_decada, 1), sgn(nac.sin_escalon.pendiente_pct_decada, 1), esc(LL("IMERG nacional, %/década", "IMERG national, %/decade")), nacTip) : ""}
       </div>
-      ${nac?.publicado && nac.sin_escalon ? `<p class="s13-t">${esc(LL("Nacional", "National"))}: ${pTxt(nac.publicado.p)}, ${clsLab(nac.publicado.clase)} → ${pTxt(nac.sin_escalon.p)}, ${clsLab(nac.sin_escalon.clase)}.</p>` : ""}
-      <button class="s13-fig" data-fig13>${esc(LL("Ver el escalón y la corrección", "See the step and the correction"))}</button>
-      ${d.fix ? `<ul class="s13-w">
-        <li>${esc(LL("Solo cambia el mapa. El medidor y la tabla siguen con lo publicado: el recálculo es por celda, no por provincia.", "Only the map changes. The gauge and table keep the published values: the recalculation is per cell, not per province."))}</li>
-        <li>${esc(LL("La corrección no fecha el escalón: cualquier año de corte entre 2010 y 2017 da casi el mismo resultado. La fecha sale de la prueba de Pettitt; que fue IMERG, de los pluviómetros.", "The correction does not date the step: any cut year from 2010 to 2017 gives almost the same result. The date comes from the Pettitt test; that it was IMERG, from the gauges."))}</li>
-        <li>${esc(LL("Parte del acuerdo es mecánico: se corrige usando CHIRPS como referencia.", "Part of the agreement is mechanical: the correction uses CHIRPS as reference."))}</li>
-        <li>${esc(LL(`Aparecen disputas nuevas en las rachas de 15 días de las temporadas lluviosas (${nuevas} celdas).`, `New disputes appear in 15-day spells in the rainy seasons (${nuevas} cells).`))}</li>
-        <li>${esc(LL("Las salidas publicadas no se tocaron; la variante está aparte.", "The published outputs were not touched; the variant is kept apart."))}</li>
-      </ul>` : ""}
+      ${d.fix ? `<p class="s13-t">${esc(LL("Solo cambia el mapa. Parte del acuerdo es mecánico: se corrige con CHIRPS.", "Only the map changes. Part of the agreement is mechanical: it is corrected with CHIRPS."))}</p>` : ""}
+      <button class="s13-fig" data-fig13>${esc(LL("Figura y advertencias", "Figure and caveats"))}</button>
     </section>`;
   };
   const renderAnswer = () => {
@@ -199,7 +200,7 @@ function render(view: HTMLElement, d: TrendData) {
         ${Object.keys(d.V.periodos).map((k) => `<button data-per="${k}" role="radio" aria-checked="${k === sel.per}" class="${k === sel.per ? "on" : ""}" title="${esc(v.periodos.includes(k) ? d.lab(d.V.periodos[k]) : LL("El SPI solo existe para el año completo", "SPI exists for the whole year only"))}" ${v.periodos.includes(k) ? "" : "disabled"}>${esc(LL(...SEASON[k]))}</button>`).join("")}
       </div>
       <div class="ms" role="radiogroup" aria-label="${esc(LL("Medido como", "Measured as"))}">
-        ${q.vars.map((id) => { const mv = verdict(d, sel, id), on = id === sel.ind; return `<button class="m ${on ? "on" : ""}" data-ind="${id}" role="radio" aria-checked="${on}" title="${esc(mv.text)}"><span class="m-t">${esc(shortName(id))}</span><span class="q-v ${mv.strong ? "sig" : ""}" style="--c:${mv.color}"><i></i>${esc(mv.short)}</span></button>`; }).join("")}
+        ${q.vars.map((id) => { const mv = verdict(d, sel, id), on = id === sel.ind; return `<button class="m ${on ? "on" : ""}" data-ind="${id}" role="radio" aria-checked="${on}" title="${esc(`${mv.text}. ${d.vm(id).descripcion}`)}"><span class="m-t">${esc(shortName(id))}</span><span class="q-v ${mv.strong ? "sig" : ""}" style="--c:${mv.color}"><i></i>${esc(mv.short)}</span></button>`; }).join("")}
       </div>`;
     if (!ws.length) { box.innerHTML = `${ctl}${stepBlock()}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
     const ti = d.tier(sel), unit = v.unidad;
@@ -207,24 +208,24 @@ function render(view: HTMLElement, d: TrendData) {
     const mdt = Math.max(...ws.map((w) => w.t.mdt));
     const up = (sigW[0] ?? ws[0]).t.pendiente_decada > 0, dir = up ? LL("sube", "rising") : LL("baja", "falling");
     const sentence =
-      cls === "robusta" ? LL(`Las dos fuentes coinciden: ${dir}. Es lo que sabemos.`, `Both sources agree: ${dir}. This is what we know.`)
+      cls === "robusta" ? LL(`Las dos coinciden: ${dir}.`, `Both agree: ${dir}.`)
       : cls === "consistente" ? LL(`Probablemente ${dir}: solo ${sigW.map((w) => w.p).join(" y ")} lo confirma.`, `Probably ${dir}: only ${sigW.map((w) => w.p).join(" and ")} confirms it.`)
-      : cls === "en disputa" ? LL("Se contradicen: no se puede afirmar una tendencia. Hay que investigar por qué.", "They contradict each other: no trend can be claimed. Why needs checking.")
-      : cls === "sin dato" ? LL("Faltan años en alguna serie: no se calcula la tendencia.", "Some years are missing: no trend is computed.")
+      : cls === "en disputa" ? LL("Se contradicen: no se puede afirmar una tendencia.", "They contradict each other: no trend can be claimed.")
+      : cls === "sin dato" ? LL("Faltan años: no se calcula la tendencia.", "Years missing: no trend computed.")
       : cls === "un solo producto" && sigW.length ? LL(`${up ? "Sube" : "Baja"} según ${ws[0].p}; falta la segunda fuente.`, `${up ? "Rising" : "Falling"} according to ${ws[0].p}; a second source is missing.`)
-      : LL(`Ninguna detecta tendencia, y eso no es «sin cambio»: solo se vería uno mayor de ±${num(mdt)} ${unit} por década.`, `Neither detects a trend, and that is not "no change": only one beyond ±${num(mdt)} ${unit} per decade would show.`);
+      : LL(`Ninguna detecta tendencia, que no es «sin cambio»: solo se vería uno de más de ±${num(mdt)} ${unit}/década.`, `Neither detects a trend, which is not "no change": only one beyond ±${num(mdt)} ${unit}/decade would show.`);
     const tierIdx = TIERS.findIndex(([k]) => k === ti.tier);
     const pFmt = (t: Tr) => (t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3));
     box.innerHTML = `${ctl}
       ${capsule(d, sel)}
-      ${stepBlock()}
+      <div class="ladder" role="img" aria-label="${esc(`${LL("Evidencia", "Evidence")}: ${ti.label}`)}">${TIERS.map(([, es, en], i) => `<span class="${i === tierIdx ? "on" : ""}" style="--c:${ti.color}" title="${esc(LL(es, en))}"><i></i>${i === tierIdx ? esc(LL(es, en)) : ""}</span>`).join("")}</div>
       <p class="ans-sent">${esc(sentence)}</p>
-      <div class="ladder" role="img" aria-label="${esc(`${LL("Evidencia", "Evidence")}: ${ti.label}`)}">${TIERS.map(([, es, en], i) => `<span class="${i === tierIdx ? "on" : ""}" style="--c:${ti.color}"><i></i>${esc(LL(es, en))}</span>`).join("")}</div>
+      ${stepBlock()}
       <table class="stats-t">
         <thead><tr><th></th><th class="num" title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}">p</th><th class="num" title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}">q (FDR)</th><th class="num" title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}">${esc(LL("Mín. detect.", "Min. detect."))}</th><th class="num">${esc(LL("Media", "Mean"))}</th></tr></thead>
         <tbody>${ws.map(({ p, t }) => `<tr><th scope="row"><i style="background:${PROD_COLOR[p]}"></i>${p}</th><td class="num">${pFmt(t)}</td><td class="num">${t.q === null ? "—" : num(t.q, 3)}</td><td class="num">±${num(t.mdt)}</td><td class="num">${num(t.media)}</td></tr>`).join("")}</tbody>
       </table>
-      <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))} ${esc(v.descripcion)}</p>`;
+      <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))}</p>`;
   };
 
   // ── Año a año y las 32 provincias (plegables) ──
@@ -299,7 +300,7 @@ function render(view: HTMLElement, d: TrendData) {
       t3.setChoro(clear, zero);
       map.setLayoutProperty("prov-fill", "visibility", "visible");
       const counts = codes.map((_, i) => cl.filter((x, k) => x === i && d.R.incluida[k]).length);
-      $("wx-legend").innerHTML = `<p class="lg-w"><span>${esc(LL("Celdas de 11 km según el acuerdo de IMERG y CHIRPS", "11 km cells by IMERG–CHIRPS agreement"))}${fixTag()}</span></p>
+      $("wx-legend").innerHTML = `<p class="lg-w"><span>${esc(LL("Veredicto de las dos fuentes, celda a celda (11 km)", "Verdict of the two sources, cell by cell (11 km)"))}${fixTag()}</span></p>
         <p class="lg-cls">${codes.map((k, i) => `<span><i style="background:${colors[i]}"></i>${esc(d.V.clases[k] ? d.lab(d.V.clases[k]) : k)} <b class="num">${counts[i]}</b></span>`).join("")}</p>`;
       describeRidge();
       return;
@@ -376,6 +377,13 @@ function render(view: HTMLElement, d: TrendData) {
     const b = sel.reg === "DO" ? RD : d.bbox(sel.reg) ?? RD;
     t3.map.fitBounds(b, { padding: fitPad(), pitch: ui.style === "3d" ? 52 : 0, bearing: ui.style === "3d" ? -14 : 0, duration: fly && !RM() ? 1500 : 0, maxZoom: 10 });
   };
+  // Con las crestas el mapa no gira ni se inclina: el relieve se dibuja de frente
+  const lockCam = () => {
+    if (!t3) return;
+    const m = t3.map, flat = ui.style === "crestas";
+    if (flat) { m.dragRotate.disable(); m.touchZoomRotate.disableRotation(); m.touchPitch.disable(); if (m.getPitch() || m.getBearing()) m.jumpTo({ pitch: 0, bearing: 0 }); }
+    else { m.dragRotate.enable(); m.touchZoomRotate.enableRotation(); m.touchPitch.enable(); }
+  };
   const renderStyle = () => {
     wx.dataset.sty = ui.style; wx.dataset.left = ui.left ? "on" : "off"; wx.dataset.right = ui.right ? "on" : "off";
     ($("sty-sel") as HTMLSelectElement).value = ui.style;
@@ -411,6 +419,7 @@ function render(view: HTMLElement, d: TrendData) {
       if (mi.dataset.ind !== sel.ind) setInd(mi.dataset.ind!);
       return;
     }
+    if (el.closest("[data-go13]")) { const h = document.getElementById("s13-h"); h?.scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "center" }); h?.focus({ preventScroll: true }); return; }
     const fx = el.closest<HTMLButtonElement>("[data-fix]");
     if (fx) { const on = fx.dataset.fix === "1"; if (on !== d.fix) { d.fix = on; renderAnswer(); renderMap(); } return; }
     if (el.closest("[data-fig13]")) {
@@ -445,6 +454,7 @@ function render(view: HTMLElement, d: TrendData) {
     else if (t.id === "sty-sel") {
       ui.style = t.value as Style; renderStyle();
       rg?.show(ui.style === "crestas");
+      lockCam();
       if (ui.style !== "crestas") { tip.hidden = true; t3?.setMode(ui.style); frame(false); }
     }
   });
@@ -491,9 +501,7 @@ function render(view: HTMLElement, d: TrendData) {
       dim: (k) => (sel.reg === "DO" ? null : cellProv[k] !== sel.reg),
       pad: () => (layout === "phone" ? { top: 62, bottom: PEEK + 110, left: 10, right: 10 } : { ...fitPad(), top: 70 }),
       labels: { yuna: LL("Cuenca del Yuna", "Yuna basin"), hatillo: LL("Presa de Hatillo", "Hatillo dam"), scale: LL("1000 m (×11)", "1,000 m (×11)"), credit: LL("Relieve: Copernicus GLO-90 · color: celdas de 0,1° del mapa", "Relief: Copernicus GLO-90 · colour: the map's 0.1° cells") },
-      onHover: (k, x, y) => { const iso = cellProv[k]; showTip(iso ? d.regName(iso) : LL("Celda de 11 km", "11 km cell"), lineFor(k, iso), x, y); },
-      onLeave: () => { tip.hidden = true; },
-      onClick: (k) => { const iso = cellProv[k]; if (iso) pickRegion(iso === sel.reg ? "DO" : iso); },
+      proj: () => (t3 ? (lon, lat) => t3!.map.project([lon, lat]) : null),
     });
     const mineRg = rg;
     cleanup.push(() => mineRg.destroy());
@@ -504,7 +512,8 @@ function render(view: HTMLElement, d: TrendData) {
   t3 = terrain3d($("map"), {
     zones: [], sites: [], onZone: () => {}, onSite: () => {}, cellLabel: () => "", siteAction: "",
     provinces: (d.fc ?? undefined) as never,
-    onProvince: (shape) => { const iso = d.shapeToIso[shape]; if (iso) pickRegion(iso); },
+    onProvince: (shape) => { const iso = d.shapeToIso[shape]; if (iso) pickRegion(iso === sel.reg ? "DO" : iso); },
+    wheel: true,
   });
   const mine = t3;
   renderStyle(); renderPanels(); paintRidge(false);
@@ -516,10 +525,19 @@ function render(view: HTMLElement, d: TrendData) {
     if (sel.reg !== "DO") mine.selectProvince(d.isoToShape[sel.reg] ?? null);
     frame(true);
     const map = mine.map;
+    lockCam();
+    map.on("move", () => rg?.reframe());
+    rg?.reframe();
     map.on("mousemove", (e) => {
+      const r = map.getCanvas().getBoundingClientRect();
+      if (ui.style === "crestas" && rg) {
+        const k = rg.cellAtPoint(e.point.x, e.point.y), iso = k >= 0 ? cellProv[k] : undefined;
+        if (k < 0) { tip.hidden = true; return; }
+        showTip(iso ? d.regName(iso) : LL("Celda de 11 km", "11 km cell"), lineFor(k, iso), r.left + e.point.x, r.top + e.point.y);
+        return;
+      }
       const f = map.queryRenderedFeatures(e.point, { layers: ["prov-fill"] })[0];
       if (!f) { tip.hidden = true; return; }
-      const r = map.getCanvas().getBoundingClientRect();
       showTip(String(f.properties?.shapeName ?? ""), lineFor(cellAt(d.R, e.lngLat.lng, e.lngLat.lat), d.shapeToIso[String(f.id)]), r.left + e.point.x, r.top + e.point.y);
     });
     map.getCanvas().addEventListener("mouseleave", () => { tip.hidden = true; });

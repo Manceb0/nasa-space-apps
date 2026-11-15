@@ -18,7 +18,6 @@ type Pad = { top: number; bottom: number; left: number; right: number };
 
 const K = 1e-4; // grados de latitud por metro: exageración vertical ≈ ×11, igual que la figura del informe
 const LON: [number, number] = [-72.05, -68.3], LAT: [number, number] = [17.42, 20.02];
-const COSL = Math.cos((18.9 * Math.PI) / 180);
 const OUT: RGBA = [138, 143, 150, 0.22];
 const SWEEP = 520, FADE = 240;
 
@@ -53,9 +52,8 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
   dim: (k: number) => boolean | null;
   pad: () => Pad;
   labels: { yuna: string; hatillo: string; scale: string; credit: string };
-  onHover: (k: number, clientX: number, clientY: number) => void;
-  onLeave: () => void;
-  onClick: (k: number) => void;
+  /** Proyección del mapa (lon, lat) → píxel del contenedor; null mientras el mapa no está listo. */
+  proj: () => ((lon: number, lat: number) => { x: number; y: number }) | null;
 }) {
   const cv = document.createElement("canvas");
   cv.className = "ridge";
@@ -66,7 +64,10 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
   // celda de cada muestra (fija: el relieve no cambia)
   const cellIdx = rel.filas.map((f) => lons.map((x) => cellAt(R, x, f.lat)));
   let prev: RGBA[] = [], next: RGBA[] = [], t0 = 0, raf = 0, on = false;
-  let W = 0, H = 0, sx = 1, sy = 1, ox = 0, oy = 0;
+  // Pantalla = cámara del mapa (sin giro ni inclinación): x lineal en la longitud, y lineal en la Mercator de la latitud
+  let W = 0, H = 0, ax = 0, bx = 1, ay = 0, by = -1;
+  const merc = (lat: number) => Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
+  const unmerc = (m: number) => ((2 * Math.atan(Math.exp(m)) - Math.PI / 2) * 180) / Math.PI;
 
   const geom = () => {
     const r = host.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1), p = o.pad();
@@ -74,14 +75,23 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     cv.style.width = `${W}px`; cv.style.height = `${H}px`;
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const pr = o.proj();
+    if (pr) {
+      const a = pr(LON[0], LAT[0]), b = pr(LON[1], LAT[1]);
+      bx = (b.x - a.x) / (LON[1] - LON[0]); ax = a.x - bx * LON[0];
+      by = (b.y - a.y) / (merc(LAT[1]) - merc(LAT[0])); ay = a.y - by * merc(LAT[0]);
+      return;
+    }
+    // antes de que el mapa esté listo: encajar la isla en el hueco libre
     const aw = Math.max(50, W - p.left - p.right), ah = Math.max(50, H - p.top - p.bottom);
-    sx = Math.min(aw / (LON[1] - LON[0]), (ah * COSL) / (LAT[1] - LAT[0]));
-    sy = sx / COSL;
-    ox = p.left + (aw - sx * (LON[1] - LON[0])) / 2;
-    oy = p.top + (ah - sy * (LAT[1] - LAT[0])) / 2;
+    const m0 = merc(LAT[0]), m1 = merc(LAT[1]), lonRad = ((LON[1] - LON[0]) * Math.PI) / 180;
+    const s = Math.min(aw / lonRad, ah / (m1 - m0));
+    bx = (s * Math.PI) / 180; by = -s;
+    ax = p.left + (aw - s * lonRad) / 2 - bx * LON[0];
+    ay = p.top + (ah - s * (m1 - m0)) / 2 + s * m1;
   };
-  const X = (lon: number) => ox + (lon - LON[0]) * sx;
-  const Y = (lat: number) => oy + (LAT[1] - lat) * sy;
+  const X = (lon: number) => ax + bx * lon;
+  const Y = (lat: number) => ay + by * merc(lat);
   const target = (k: number): RGBA => {
     if (k < 0 || !R.incluida[k]) return OUT;
     const c = o.color(k) ?? OUT;
@@ -143,9 +153,9 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
       label(o.labels.yuna, X(east[0]) + 10, Y(east[1] + east[2] * K) - 14, ink);
       label(o.labels.hatillo, hx + 10, hy + 12, "#E69F00");
       // barra de escala vertical: 1000 m
-      const bx = X(-68.55), by = Y(17.75);
-      g.strokeStyle = ink; g.lineWidth = 1.2; g.beginPath(); g.moveTo(bx, by); g.lineTo(bx, by - 1000 * K * sy); g.stroke();
-      label(o.labels.scale, bx - 10 - g.measureText(o.labels.scale).width, by - 500 * K * sy, muted);
+      const sx0 = X(-68.55), sy0 = Y(17.75), sy1 = Y(17.75 + 1000 * K);
+      g.strokeStyle = ink; g.lineWidth = 1.2; g.beginPath(); g.moveTo(sx0, sy0); g.lineTo(sx0, sy1); g.stroke();
+      label(o.labels.scale, sx0 - 10 - g.measureText(o.labels.scale).width, (sy0 + sy1) / 2, muted);
     }
     g.font = "12px Inter, system-ui, sans-serif";
     const cw = g.measureText(o.labels.credit).width;
@@ -165,23 +175,24 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     raf = requestAnimationFrame(paint);
   };
 
-  const cellFrom = (e: MouseEvent) => {
-    const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-    const lon = LON[0] + (x - ox) / sx, lat = LAT[1] - (y - oy) / sy;
+  /** Celda bajo un punto del contenedor (la fila de crestas más cercana por debajo). */
+  const cellAtPoint = (x: number, y: number) => {
+    const lon = (x - ax) / bx, lat = unmerc((y - ay) / by);
     // la fila más cercana por debajo del cursor (las crestas suben sobre su línea base)
     const f = rel.filas.find((row) => row.lat <= lat + rel.paso_lat * 0.5) ?? rel.filas[rel.filas.length - 1];
     const k = cellAt(R, lon, f.lat);
     return k >= 0 && R.incluida[k] ? k : -1;
   };
-  cv.addEventListener("pointermove", (e) => { const k = cellFrom(e); if (k < 0) o.onLeave(); else o.onHover(k, e.clientX, e.clientY); });
-  cv.addEventListener("pointerleave", () => o.onLeave());
-  cv.addEventListener("click", (e) => { const k = cellFrom(e); if (k >= 0) o.onClick(k); });
-  const ro = new ResizeObserver(() => { if (on) { geom(); cancelAnimationFrame(raf); raf = requestAnimationFrame(paint); } });
+  // El lienzo no recibe el puntero: arrastrar, la rueda y el pellizco llegan al mapa, y las crestas lo siguen
+  const reframe = () => { if (on) { geom(); cancelAnimationFrame(raf); raf = requestAnimationFrame(paint); } };
+  const ro = new ResizeObserver(reframe);
   ro.observe(host);
 
   return {
     show(v: boolean) { on = v; cv.hidden = !v; if (v) draw(false); else cancelAnimationFrame(raf); },
     draw,
+    reframe,
+    cellAtPoint,
     describe(text: string) { cv.setAttribute("aria-label", text); },
     destroy() { cancelAnimationFrame(raf); ro.disconnect(); cv.remove(); },
   };
