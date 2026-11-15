@@ -12,16 +12,18 @@ desde fuera. No es un pre-registro externo.*
 > sostiene), pero no está demostrado que sea un escalón en octubre de 2013. El 82 % mide la sensibilidad a un
 > ajuste, no un mecanismo.
 
-## La deducción
+## La deducción inicial (hipótesis de trabajo; ver el veredicto al final)
 
-**Buena parte de lo que llamábamos «las fuentes se contradicen» no es un desacuerdo sobre el clima dominicano. Son
-tres cosas medibles:**
+**Hipótesis inicial: buena parte de lo que llamábamos «las fuentes se contradicen» podría no ser un desacuerdo sobre
+el clima dominicano, sino tres cosas medibles:**
 
-1. **Un escalón en la forma de contar días de lluvia.** En octubre de 2013, IMERG pasa de contar más días húmedos
+1. **Un cambio en la forma de contar días de lluvia** (la forma y la fecha no están identificadas; ver el veredicto).
+   Según Pettitt frente a CHIRPS, en octubre de 2013 IMERG pasa de contar más días húmedos
    que CHIRPS a contar menos (de +2,1 a −2,4 puntos porcentuales; Pettitt, p = 0,001 con 2.999 permutaciones de
    bloques de 12 meses). En los cuatro pluviómetros GHCN-Daily con datos, IMERG pierde entre 4 y 12 puntos de días
    húmedos mientras los pluviómetros, de media, apenas cambian (+0,2). La «lluvia más intensa, en menos días» que
-   IMERG muestra es, con mucha probabilidad, ese escalón: intensidad = lluvia total ÷ días húmedos.
+   IMERG muestra podría venir de ese cambio en el conteo, porque intensidad = lluvia total ÷ días húmedos. Es una
+   hipótesis: ni el escalón ni su causa están demostrados.
 2. **El relieve frente al alisio.** En las laderas que suben en la dirección del alisio del ENE, CHIRPS da un 14 %
    más de lluvia media que IMERG; en las que bajan (sotavento), un 12 % menos (ρ = 0,56 con el ascenso forzado;
    p exhaustiva 0,012 con las 82 traslaciones toroidales distintas; el 0,002 original contaba sorteos repetidos). El
@@ -94,12 +96,13 @@ la primera mitad ya tiene una prueba; la segunda (territorio) sigue abierta.
 ## Qué cambia para la entrega
 
 - Las tendencias de P0 en frecuencia e intensidad diaria de IMERG (R1mm, SDII, rachas secas) deben llevar la nota:
-  «posible artefacto de medición: escalón en 2013-10». Siguiente paso: recalcularlas con un término de escalón o solo
-  desde 2014.
+  «posible inhomogeneidad temporal de IMERG en el conteo de días de lluvia; no confirmada». *(Antes decía «artefacto
+  de medición: escalón en 2013-10», que quedó retirado.)* Siguiente paso: comparar tendencia, escalón y ambos, sin
+  imponer fecha.
 - El disparador de inundación no se arregla con un umbral distinto: con ciclón los productos coinciden en dónde,
   pero no en cuánto. La decisión debería apoyarse en dónde coinciden (patrón espacial) y no en un número de mm.
-- Para el jurado, una frase: **«La lluvia no cambió en 2013; cambió la forma en que un satélite cuenta los días de
-  lluvia. Y en las montañas, cada producto reparte la lluvia distinto según de dónde sopla el alisio.»**
+- ~~Para el jurado, una frase: «La lluvia no cambió en 2013; cambió la forma en que un satélite cuenta los días de
+  lluvia…»~~ **Retirada:** afirma una fecha y una causa que no están demostradas.
 
 ## Lentes del método Jane usadas
 
@@ -132,12 +135,11 @@ RACHAS15), porque el escalón está en la frecuencia y no en la cantidad. Por ce
 | R1mm, año | 69 → 0 | −5,8 % (p 0,07) → +0,2 % (p 0,98) |
 | Total celda-índice (todos los índices) | 871 → 158 | — |
 
-**Lo que se concluye:** las dos tendencias nacionales significativas de IMERG que más llamaban la atención («llueve
-más intenso» y «las rachas secas de la estación seca se alargan») no sobreviven a quitar un solo escalón. Los
-productos no describían dos climas distintos. P0 queda igual en lo esencial: **ninguna tendencia robusta** de
-frecuencia o intensidad; las «disputas» pasan de ser un misterio a ser, con mucha probabilidad, un artefacto de medición. *(Matizado tras la
-revisión: lo que muestra el recálculo es que esas tendencias son sensibles a un ajuste hacia CHIRPS. Que la causa
-sea un artefacto lo sostienen los testigos, no el recálculo.)*
+**Lo que se concluye (redacción revisada):** las dos tendencias nacionales significativas de IMERG que más llamaban la
+atención («llueve más intenso» y «las rachas secas de la estación seca se alargan») dejan de ser significativas con
+un ajuste aditivo hacia CHIRPS. Eso muestra que son **sensibles a ese ajuste**. No muestra que su causa sea un
+artefacto, porque el mismo ajuste también borra tendencias graduales sin ningún salto (ver el veredicto). P0 queda
+igual en lo esencial: **ninguna tendencia robusta** de frecuencia o intensidad.
 
 **Jugar en contra (lo que NO se puede afirmar):**
 - **La corrección no fecha el escalón.** Con casi cualquier año de corte entre 2010 y 2017 las disputas anuales caen de
@@ -212,8 +214,8 @@ atribuir ni al relieve, ni al clima, ni al algoritmo.
 - ERA5 baja 4-5 pp en Puerto Plata, Santiago y Constanza, en el norte y la montaña. Ahí parte de la caída de IMERG
   podría ser real o compartida.
 - ERA5 también cambia con las observaciones que asimila a lo largo de los años.
-- El recálculo de P0 corrigió con un escalón en 2014. Una corrección por deriva gradual sería más fiel, aunque se
-  espera que las disputas bajen parecido, porque cualquier corte entre 2010 y 2017 funcionaba.
+- El recálculo de P0 ajustó con un escalón en 2014. Todavía no se sabe qué forma (deriva, escalón, varios cambios)
+  representa mejor los datos, así que ninguna corrección está justificada por ahora.
 
 ## Veredicto actual de la hipótesis (tras ERA5 y la revisión independiente)
 
@@ -241,8 +243,8 @@ y sus límites:
 - **Pluviómetros:** con meses comparables, IMERG cae más que la estación en los 4 sitios. Pero Punta Cana también
   pierde días y CHIRPS cambia mucho en Barahona.
 - **CHIRPS frente a ERA5:** no se detecta un cambio, lo que no equivale a estabilidad.
-- **ERA5:** de media, IMERG −6,1 pp y ERA5 −1,9 pp, con mucha diferencia entre lugares. Además, ERA5 depende en parte
-  de IMERG.
+- **ERA5:** de media, IMERG −6,1 pp y ERA5 −1,9 pp, con mucha diferencia entre lugares. Además, IMERG Final usa
+  ERA5 como información auxiliar (GPROF), así que los dos no son del todo independientes.
 
 **Cambios que esto pide:**
 - La figura 08 y el conmutador de la web deben presentarse como *sensibilidad*: «ajuste hacia CHIRPS», no «sin el
