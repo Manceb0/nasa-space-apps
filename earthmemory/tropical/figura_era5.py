@@ -39,7 +39,7 @@ def figura(t):
         ax.plot(s.index, s, color=c, lw=0.6, alpha=0.35)
         r = PT[k]
         ax.plot(s.index, s.rolling(12, center=True).mean(), color=c, lw=2.2,
-                label=f"{lab}: punto de cambio {r['punto_de_cambio']} (p {r['p_bloques_12m']:.3f})")
+                label=f"{lab}: punto de cambio {r['punto_de_cambio']} (p {'< 0.001' if r['p_bloques_12m'] < 0.001 else round(r['p_bloques_12m'], 3)})")
     ax.legend(loc="lower left", fontsize=8.5, frameon=False)
     ax.axhline(0, color=t["muted"], lw=0.8)
     ax.axvline(pd.Timestamp("2013-10-01"), color=OI["yellow"], lw=1.2)
@@ -73,12 +73,12 @@ def figura(t):
     ax.axis("off")
     ax.set_title("c   Predicciones escritas antes de bajar ERA5", loc="left", fontsize=10, color=t["ink"])
     cortas = {"E1": f"IMERG − ERA5 salta entre 2012-10 y 2014-12 (p < 0,05) → {PT['IMERG_menos_ERA5']['punto_de_cambio']}, "
-                    f"p {PT['IMERG_menos_ERA5']['p_bloques_12m']:.3f}",
-              "E2": f"ERA5 cambia < 2 pp e IMERG baja ≥ 4 pp → ERA5 {med['ERA5']:+.1f}, IMERG {med['IMERG']:+.1f}, "
-                    f"CHIRPS {med['CHIRPS']:+.1f}",
-              "E3": f"CHIRPS − ERA5 no salta en esa ventana → {PT['CHIRPS_menos_ERA5']['punto_de_cambio']}, "
+                    f"p {'< 0.001' if PT['IMERG_menos_ERA5']['p_bloques_12m'] < 0.001 else round(PT['IMERG_menos_ERA5']['p_bloques_12m'], 3)}",
+              "E2": f"ERA5 > −2 pp, IMERG ≤ −4 pp → ERA5 {med['ERA5']:+.1f} (mediana "
+                    f"{R['cambio_mediano_pp']['ERA5']:+.1f}), IMERG {med['IMERG']:+.1f}, CHIRPS {med['CHIRPS']:+.1f}",
+              "E3": f"No se detecta salto en CHIRPS − ERA5 (no prueba estabilidad) → {PT['CHIRPS_menos_ERA5']['punto_de_cambio']}, "
                     f"p {PT['CHIRPS_menos_ERA5']['p_bloques_12m']:.3f}",
-              "E4": f"La cantidad de lluvia no salta → {PT['log_cantidad_IMERG_sobre_ERA5']['punto_de_cambio']}, "
+              "E4": f"No se detecta salto en la relación de cantidad IMERG/ERA5 → {PT['log_cantidad_IMERG_sobre_ERA5']['punto_de_cambio']}, "
                     f"p {PT['log_cantidad_IMERG_sobre_ERA5']['p_bloques_12m']:.3f}"}
     for i, k in enumerate(("E1", "E2", "E3", "E4")):
         ok = V[k]
@@ -90,16 +90,16 @@ def figura(t):
     if sostiene:
         titulo = "Un tercer testigo independiente confirma que el salto de 2013 es de IMERG."
     elif V["E2"] and V["E3"]:
-        titulo = "ERA5 confirma que IMERG pierde días de lluvia, pero no de golpe en 2013."
+        titulo = "IMERG pierde más días de lluvia que ERA5 y CHIRPS; el origen sigue abierto."
     else:
         titulo = "El tercer testigo no confirma que el salto de 2013 sea solo de IMERG."
     cabecera(fig, t, titulo,
-             "ERA5 (reanálisis europeo) no usa el algoritmo de IMERG ni los pluviómetros que alimentan a CHIRPS. "
-             "Si IMERG empezó a contar menos días de lluvia,\nIMERG debe separarse de ERA5 en 2013 y CHIRPS no. "
+             "ERA5 (reanálisis europeo) no usa los pluviómetros que alimentan a CHIRPS; IMERG Final sí usa ERA5\ncomo dato auxiliar "
+             "(dependencia parcial). Si IMERG empezó a contar menos días de lluvia, debe separarse de ERA5 y CHIRPS no.\n"
              f"Seis lugares de RD, 2001-2024, día UTC. Predicciones registradas el {P['registradas_utc'][:16]} UTC.",
              ts=18, ss=10.5)
     pie(fig, t, "Pettitt sobre la serie mensual sin ciclo estacional; p por permutación de bloques de 12 meses "
-                "(2999). IMERG y CHIRPS: media de las celdas de 0,1° dentro de cada celda ERA5.\nERA5 vía la API de "
+                "(2999). IMERG y CHIRPS: media de las celdas de 0,1° ponderada por área en la celda ERA5 que DEVUELVE la API.\nERA5 vía la API de "
                 "archivo de Open-Meteo (models=era5). ERA5 es un modelo: tiende a la llovizna, por eso se compara "
                 "el cambio y no el nivel;\nsus observaciones asimiladas también cambian con los años. NASA GPM IMERG "
                 "V07 · CHIRPS v2.0 · ECMWF ERA5 · Stellar Horizons.", y=0.012)

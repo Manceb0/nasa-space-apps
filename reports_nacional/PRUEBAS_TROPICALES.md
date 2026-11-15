@@ -164,33 +164,48 @@ sensibilidad al ajuste, no demuestra el mecanismo. Además, la variante ajustada
 Código: `earthmemory/tropical/era5_testigo.py` y `figura_era5.py`. Salidas: `results/tropical/era5/`. Figura:
 `figures/tropical/09_tercer_testigo_era5_{dark,light}.png`.
 
-**Por qué ERA5.** Es el reanálisis europeo (ECMWF). No usa el algoritmo de IMERG ni los pluviómetros que alimentan a
-CHIRPS, así que rompe la circularidad de P5. Se bajó la lluvia diaria (`models=era5`, día UTC) de la API de archivo
-de Open-Meteo para 6 celdas de 0,25°: las 4 estaciones GHCN-D más Santiago y Constanza. IMERG y CHIRPS se promedian
-dentro de cada celda de ERA5. Las predicciones se escribieron a disco antes de bajar nada
-(`predicciones_registradas.json`).
+**Por qué ERA5.** Es el reanálisis europeo (ECMWF). No usa los pluviómetros que alimentan a CHIRPS. *Dependencia
+parcial:* IMERG Final usa ERA5 como dato auxiliar en GPROF, así que no es un testigo del todo independiente de IMERG.
+Se bajó la lluvia diaria (`models=era5`, día UTC) de la API de archivo de Open-Meteo para 6 celdas de 0,25°: las 4
+estaciones GHCN-D más Santiago y Constanza. Las predicciones se escribieron a disco antes de bajar nada
+(`predicciones_registradas.json`; registro local).
 
-| Predicción | Resultado | Veredicto |
+*Corrección de alineación (segunda revisión):* la API devolvió otra celda en Santo Domingo (−69,50° en vez de −69,75°)
+y en Puerto Plata (−70,75° en vez de −70,50°), unos 26 km de diferencia. Ahora IMERG y CHIRPS se promedian, ponderados
+por área, en la celda que **devuelve** la API (las coordenadas quedan en `resumen.json`). El resultado apenas cambia:
+IMERG pasa de −6,3 a −6,1 pp, ERA5 se queda en −1,9 y el punto de cambio sigue en 2016-10. Coincide con la reproducción
+que hizo la revisión.
+
+| Predicción | Resultado (alineado) | Veredicto |
 |---|---|---|
-| E1: IMERG − ERA5 salta entre 2012-10 y 2014-12 | Salta, pero en **2016-10** (p 0,001) | **No se cumple** |
-| E2: ERA5 cambia < 2 pp e IMERG baja ≥ 4 pp (antes/después de 2013-10) | ERA5 −1,9 pp, IMERG −6,3 pp, CHIRPS +0,0 pp | Se cumple, por poco en ERA5 |
-| E3: CHIRPS − ERA5 no salta en esa ventana | Sin salto (p 0,54) | Se cumple |
-| E4: la cantidad de lluvia (IMERG/ERA5) no salta | Sin salto (p 0,54) | Se cumple |
+| E1: IMERG − ERA5 salta entre 2012-10 y 2014-12 | El punto de cambio cae en **2016-10** (p < 0,001) | **No se cumple** |
+| E2: ERA5 cambia < 2 pp e IMERG baja ≥ 4 pp (antes/después de 2013-10) | ERA5 −1,9 pp de media, pero −2,5 de mediana; IMERG −6,1; CHIRPS −0,2 | Se cumple la regla aritmética, por cancelación entre lugares (ver abajo) |
+| E3: CHIRPS − ERA5 no salta en esa ventana | No se detecta salto (p 0,56). No prueba estabilidad | Se cumple |
+| E4: no salta la relación de cantidad IMERG/ERA5 | No se detecta salto (p 0,56). Ambos podrían cambiar juntos | Se cumple |
 
 **Qué queda en pie.**
-- La hipótesis de fondo resiste con un testigo que no comparte nada con CHIRPS: IMERG pierde días de lluvia que ni
-  ERA5 ni CHIRPS pierden, y la cantidad de lluvia no cambia.
-- CHIRPS se mantiene estable frente a ERA5, así que no fue CHIRPS quien cambió.
+- En los seis lugares, IMERG pierde de media más días de lluvia que ERA5 y que CHIRPS. Esto aguanta la corrección de
+  alineación.
+- No se detectó un cambio en CHIRPS − ERA5 ni en la relación de cantidades IMERG/ERA5. Que no se detecte no prueba que
+  CHIRPS sea estable, ni que la cantidad absoluta no cambie. Tampoco dice cuál producto se acerca más a la realidad.
+
+**E2 se cumple por promedio.** ERA5 pierde 4,0 pp en Puerto Plata, 4,8 en Santiago y 4,2 en Constanza, y gana días en
+Santo Domingo y Punta Cana. Sin Punta Cana, la media de ERA5 sería −2,6 y E2 fallaría. En Santiago, ERA5 pierde incluso
+más que IMERG. «ERA5 apenas cambia» no es una descripción justa. La pista abierta más interesante es por qué el norte y
+la montaña pierden días también en ERA5, mientras el sur y el este divergen mucho más de IMERG. Todavía no se puede
+atribuir ni al relieve, ni al clima, ni al algoritmo.
 
 **Qué se cae.**
-- La palabra «escalón» y la fecha de octubre de 2013 no aguantan frente a ERA5. Frente a ERA5, IMERG se separa de forma
-  gradual: el punto de cambio está en 2016-10 y la separación se profundiza otra vez desde 2022 (figura 09, panel a).
+- La palabra «escalón» y la fecha de octubre de 2013 no aguantan frente a ERA5. Pettitt parte la serie en 2016-10, pero
+  eso no prueba que el cambio empezara ahí, ni que sea suave, ni que haya un solo cambio. La media móvil sugiere una
+  separación que se profundiza desde 2022, aunque también suaviza los saltos (figura 09, panel a). Hasta comparar
+  explícitamente las alternativas, la forma correcta es **«posible inhomogeneidad temporal»**.
 - El salto de 2013-10 se detectó frente a CHIRPS. Frente a ERA5, en 2013-2016 las dos diferencias suben a la vez, así
   que en esos años ERA5 cuenta menos días de lluvia que ambos productos.
 - Es coherente con lo que ya mostraba la sensibilidad del recálculo: cualquier año de corte entre 2010 y 2017
   funcionaba. Una deriva gradual se comporta así; un escalón limpio, no.
-- Lenguaje corregido: «IMERG cuenta cada vez menos días de lluvia desde mediados de la década de 2010», no «un
-  escalón en octubre de 2013».
+- Lenguaje corregido: «posible inhomogeneidad temporal de IMERG en la frecuencia de días de lluvia», no «un escalón en
+  octubre de 2013».
 
 **Límites.**
 - Son solo 6 puntos, no las 442 celdas.
@@ -217,12 +232,17 @@ Verifiqué dos puntos de esa revisión:
 **No se sostiene así.** La fecha falla frente a ERA5 (2016-10), la forma (escalón frente a deriva) no está
 identificada y el 82 % mide la sensibilidad a un ajuste, no un mecanismo demostrado.
 
-**Hipótesis reformulada:** «IMERG cuenta cada vez menos días de lluvia que sus testigos, sin que la cantidad cambie
-de forma detectable; por eso no se pueden confirmar sus tendencias de intensidad y de rachas secas».
-**Se sostiene, con límites.** Tiene tres testigos, ninguno perfecto:
-- **Pluviómetros:** IMERG cae más que la estación en los 4 sitios.
-- **CHIRPS:** estable frente a ERA5.
-- **ERA5:** IMERG −6,3 pp, ERA5 −1,9 pp.
+**Lo que se puede afirmar hoy (formulación de la segunda revisión):** «En los seis lugares estudiados, IMERG presenta
+una disminución media de días húmedos mayor que ERA5 y CHIRPS. La diferencia persiste al alinear espacialmente la
+comparación, pero su origen, su forma temporal y su alcance nacional siguen sin resolverse».
+
+Consecuencia: las tendencias de IMERG de intensidad y de rachas secas son frágiles y no se pueden confirmar. Los apoyos
+y sus límites:
+- **Pluviómetros:** con meses comparables, IMERG cae más que la estación en los 4 sitios. Pero Punta Cana también
+  pierde días y CHIRPS cambia mucho en Barahona.
+- **CHIRPS frente a ERA5:** no se detecta un cambio, lo que no equivale a estabilidad.
+- **ERA5:** de media, IMERG −6,1 pp y ERA5 −1,9 pp, con mucha diferencia entre lugares. Además, ERA5 depende en parte
+  de IMERG.
 
 **Cambios que esto pide:**
 - La figura 08 y el conmutador de la web deben presentarse como *sensibilidad*: «ajuste hacia CHIRPS», no «sin el

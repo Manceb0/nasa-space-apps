@@ -1,43 +1,85 @@
 {
   "puntos": {
-    "Santo Domingo": [
-      18.5,
-      -69.75
-    ],
-    "Punta Cana": [
-      18.5,
-      -68.5
-    ],
-    "Puerto Plata": [
-      19.75,
-      -70.5
-    ],
-    "Barahona": [
-      18.25,
-      -71.0
-    ],
-    "Santiago": [
-      19.5,
-      -70.75
-    ],
-    "Constanza": [
-      19.0,
-      -70.75
-    ]
+    "Santo Domingo": {
+      "pedida": [
+        18.5,
+        -69.75
+      ],
+      "devuelta": [
+        18.5,
+        -69.5
+      ],
+      "elevacion_m": 31.0
+    },
+    "Punta Cana": {
+      "pedida": [
+        18.5,
+        -68.5
+      ],
+      "devuelta": [
+        18.5,
+        -68.5
+      ],
+      "elevacion_m": 30.0
+    },
+    "Puerto Plata": {
+      "pedida": [
+        19.75,
+        -70.5
+      ],
+      "devuelta": [
+        19.75,
+        -70.75
+      ],
+      "elevacion_m": 88.0
+    },
+    "Barahona": {
+      "pedida": [
+        18.25,
+        -71.0
+      ],
+      "devuelta": [
+        18.25,
+        -71.0
+      ],
+      "elevacion_m": 0.0
+    },
+    "Santiago": {
+      "pedida": [
+        19.5,
+        -70.75
+      ],
+      "devuelta": [
+        19.5,
+        -70.75
+      ],
+      "elevacion_m": 138.0
+    },
+    "Constanza": {
+      "pedida": [
+        19.0,
+        -70.75
+      ],
+      "devuelta": [
+        19.0,
+        -70.75
+      ],
+      "elevacion_m": 1570.0
+    }
   },
   "corte": "2013-10-01",
   "pettitt": {
     "IMERG_menos_ERA5": {
       "punto_de_cambio": "2016-10",
-      "p_bloques_12m": 0.0006666666666666666,
-      "media_antes": 0.02342684758802609,
-      "media_despues": -0.0447239817589589
+      "p_bloques_12m": 0.0003333333333333333,
+      "media_antes": 0.02277380417553803,
+      "media_despues": -0.043477262516936246
     },
     "CHIRPS_menos_ERA5": {
       "punto_de_cambio": "2013-01",
-      "p_bloques_12m": 0.5393333333333333,
-      "media_antes": -0.011967404994379411,
-      "media_despues": 0.011967404994379411
+      "p_bloques_12m": 0.5613333333333334,
+      "media_antes": -0.011027424529116222,
+      "media_despues": 0.011027424529116222
     },
     "ERA5_solo": {
       "punto_de_cambio": "2022-02",
@@ -48,20 +90,25 @@
     "IMERG_solo": {
       "punto_de_cambio": "2013-11",
       "p_bloques_12m": 0.0023333333333333335,
-      "media_antes": 0.029629263581422736,
-      "media_despues": -0.03405154172790372
+      "media_antes": 0.028827695517370557,
+      "media_despues": -0.03313033663936615
     },
     "log_cantidad_IMERG_sobre_ERA5": {
       "punto_de_cambio": "2018-10",
-      "p_bloques_12m": 0.5433333333333333,
-      "media_antes": 0.03702864510793399,
-      "media_despues": -0.10516135210653253
+      "p_bloques_12m": 0.5586666666666666,
+      "media_antes": 0.03832827162124086,
+      "media_despues": -0.10885229140432408
     }
   },
   "cambio_medio_pp": {
-    "CHIRPS": 0.010832894373792127,
+    "CHIRPS": -0.16896284312003984,
     "ERA5": -1.8592967450104922,
-    "IMERG": -6.318268659961038
+    "IMERG": -6.115302129580857
+  },
+  "cambio_mediano_pp": {
+    "CHIRPS": 0.5594852885845436,
+    "ERA5": -2.4509619484786915,
+    "IMERG": -6.041462864022876
   },
   "veredicto": {
     "E1": false,

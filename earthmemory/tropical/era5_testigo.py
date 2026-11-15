@@ -73,19 +73,25 @@ def bajar(nombre, lat, lon):
                     print(f"  fallo de red ({e}); reintento en 10 s ({nombre} {y})", flush=True)
                     time.sleep(10)
             time.sleep(1.5)
-        d = json.loads(f.read_text())["daily"]
+        J = json.loads(f.read_text())
+        d = J["daily"]
         partes.append(pd.Series(d["precipitation_sum"], index=pd.to_datetime(d["time"]), dtype=float))
     print(f"ERA5 listo: {nombre}", flush=True)
-    return pd.concat(partes)
+    # la API puede devolver otra celda (elige una adecuada a tierra): se usa la coordenada DEVUELTA
+    return pd.concat(partes), float(J["latitude"]), float(J["longitude"]), J.get("elevation")
 
 
 def caja(P, lat, lon, half=0.125):
+    """Media de las celdas de 0,1° ponderada por el área que comparten con la celda ERA5 de 0,25°."""
     g = datos.GRID01
-    la = g.lat0 + g.res * (np.arange(g.ny) + 0.5)
-    lo = g.lon0 + g.res * (np.arange(g.nx) + 0.5)
-    i = np.where(np.abs(la - lat) <= half)[0]
-    j = np.where(np.abs(lo - lon) <= half)[0]
-    return np.nanmean(P[:, i][:, :, j].reshape(P.shape[0], -1), 1)
+    e_la = g.lat0 + g.res * np.arange(g.ny + 1)
+    e_lo = g.lon0 + g.res * np.arange(g.nx + 1)
+    w_la = np.clip(np.minimum(e_la[1:], lat + half) - np.maximum(e_la[:-1], lat - half), 0, None)
+    w_lo = np.clip(np.minimum(e_lo[1:], lon + half) - np.maximum(e_lo[:-1], lon - half), 0, None)
+    W = np.outer(w_la, w_lo)
+    X = P * W[None]
+    ok = np.isfinite(P)
+    return np.nansum(X, (1, 2)) / np.where(ok, W[None], 0).sum((1, 2))
 
 
 def prueba(s, rng):
@@ -103,9 +109,11 @@ def main():
     Pi = np.load(datos.DER / "imerg_diario_01.npz")["P"].astype(float)
     Pc = np.load(datos.DER / "chirps_diario_01.npz")["P"].astype(float)
     days = pd.DatetimeIndex(datos.DAYS.astype("datetime64[D]"))
-    rows, wet = [], {}
-    for n, (la, lo) in PUNTOS.items():
-        e = bajar(n, la, lo).reindex(days)
+    rows, wet, coords = [], {}, {}
+    for n, (la0, lo0) in PUNTOS.items():
+        e, la, lo, elev = bajar(n, la0, lo0)
+        e = e.reindex(days)
+        coords[n] = {"pedida": [la0, lo0], "devuelta": [la, lo], "elevacion_m": elev}
         df = pd.DataFrame({"IMERG": caja(Pi, la, lo), "CHIRPS": caja(Pc, la, lo), "ERA5": e.to_numpy()}, index=days)
         df = df.dropna()
         wet[n] = (df >= 1).astype(float)
@@ -138,8 +146,9 @@ def main():
         "E4": bool(not (res["log_cantidad_IMERG_sobre_ERA5"]["p_bloques_12m"] < 0.05
                         and en_ventana(res["log_cantidad_IMERG_sobre_ERA5"]))),
     }
-    write_json(OUT / "resumen.json", {"puntos": PUNTOS, "corte": CORTE, "pettitt": res,
-                                      "cambio_medio_pp": med, "veredicto": veredicto})
+    mediana = T.groupby("producto")["cambio_pp"].median().to_dict()
+    write_json(OUT / "resumen.json", {"puntos": coords, "corte": CORTE, "pettitt": res,
+                                      "cambio_medio_pp": med, "cambio_mediano_pp": mediana, "veredicto": veredicto})
     print(T.round(3).to_string())
     print(json.dumps({"pettitt": res, "cambio_medio_pp": med, "veredicto": veredicto}, indent=1, ensure_ascii=False))
 
