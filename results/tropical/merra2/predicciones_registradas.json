@@ -1,0 +1,8 @@
+{
+  "registradas_utc": "2026-11-15T17:22:43.864881+00:00",
+  "N1": "En al menos 10 de las 15 celdas MERRA-2, la frecuencia de dias >= 1 mm de IMERG cae mas que la de MERRA-2 (despues - antes de 2018-02).",
+  "N2": "Mediana de las 15 celdas: IMERG cae al menos 4 pp y MERRA-2 cambia menos de 2 pp en valor absoluto.",
+  "N3": "La diferencia mensual desestacionalizada IMERG - MERRA-2 (media nacional) tiene un punto de cambio entre 2016-01 y 2019-12 con p < 0,05 (permutacion de bloques de 12 meses).",
+  "N4": "Control del testigo: MERRA-2 solo NO tiene un punto de cambio significativo entre 2016-01 y 2019-12. Si lo tiene, el testigo esta comprometido y N1-N3 no pueden atribuirse a IMERG.",
+  "refutacion": "Si MERRA-2 cae tanto como IMERG (N2 falla por MERRA-2) o el propio MERRA-2 salta (N4 falla), la perdida de dias deja de ser una propiedad solo de IMERG a escala nacional."
+}

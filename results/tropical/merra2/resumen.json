@@ -1,0 +1,54 @@
+{
+  "corte": "2018-02-01",
+  "celdas": 15,
+  "celdas_IMERG_cae_mas_que_MERRA2": 15,
+  "celdas_IMERG_cae_mas_que_CHIRPS": 15,
+  "cambio_mediano_pp": {
+    "CHIRPS": 0.03673335769535102,
+    "IMERG": -5.097257750167494,
+    "MERRA2": 8.553314757293379
+  },
+  "cambio_medio_pp": {
+    "CHIRPS": -0.04179862760622951,
+    "IMERG": -5.2191845829019226,
+    "MERRA2": 10.903660900988692
+  },
+  "pettitt": {
+    "IMERG_menos_MERRA2": {
+      "punto_de_cambio": "2014-08",
+      "p_bloques_12m": 0.0003333333333333333,
+      "media_antes": 0.07741292337709967,
+      "media_despues": -0.10094645208373793
+    },
+    "CHIRPS_menos_MERRA2": {
+      "punto_de_cambio": "2015-11",
+      "p_bloques_12m": 0.0003333333333333333,
+      "media_antes": 0.05577873535113789,
+      "media_despues": -0.09026013538638676
+    },
+    "MERRA2_solo": {
+      "punto_de_cambio": "2015-11",
+      "p_bloques_12m": 0.0003333333333333333,
+      "media_antes": -0.0588525743136906,
+      "media_despues": 0.09523416570760841
+    },
+    "IMERG_solo": {
+      "punto_de_cambio": "2018-05",
+      "p_bloques_12m": 0.017,
+      "media_antes": 0.016533374457804378,
+      "media_despues": -0.04298677359029139
+    },
+    "CHIRPS_solo": {
+      "punto_de_cambio": "2023-12",
+      "p_bloques_12m": 0.6196666666666667,
+      "media_antes": -0.004140798872778872,
+      "media_despues": 0.08759382230878335
+    }
+  },
+  "veredicto": {
+    "N1": true,
+    "N2": false,
+    "N3": false,
+    "N4": true
+  }
+}
