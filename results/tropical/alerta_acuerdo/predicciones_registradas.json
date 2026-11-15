@@ -1,0 +1,6 @@
+{
+  "registradas_utc": "2026-11-15T15:23:48.543067+00:00",
+  "K1": "En la prueba 2016-2024, exigir acuerdo (A∧C) conserva al menos 6 de los 8 eventos y reduce las falsas alarmas de A al menos a la mitad (de 39 a ≤ 20).",
+  "K2": "A∨C no mejora el CSI de A en la prueba (añade más falsas alarmas que aciertos).",
+  "nota": "n = 8 eventos de prueba: un evento mueve el POD 12,5 puntos. Resultado indicativo, no operativo."
+}

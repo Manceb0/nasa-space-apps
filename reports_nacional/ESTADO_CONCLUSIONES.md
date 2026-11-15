@@ -46,6 +46,13 @@ manda esta tabla. Antes de ponerle una etiqueta a cada fila se comprobaron todas
 | 20 | «El suelo recuerda» (memoria del suelo de GLDAS) | **Hipótesis débil**: solo existe dentro del modelo | β 0,46 → 0,37-0,40 frente a la lluvia observada, pero 0,17-0,22 frente a la lluvia que fuerza al modelo. No hay humedad de raíz observada | TESTIGOS_E_HIPOTESIS |
 | 21 | PHANTOM (la vegetación se ve verde pero sigue estresada tras la sequía) | **No respaldado** | 19 de 24 comparaciones dentro de ±32 días (la precisión del método) | RESULTS.md (primera versión) |
 
+## Prevención
+
+| # | Conclusión | Grado | Cifras clave | Fuente |
+|---|---|---|---|---|
+| 22 | Una alerta de inundación que exige un segundo producto (IMERG **y** CHIRPS) da menos falsas alarmas sin perder eventos en la prueba | **Se sostiene con límites** (indicativo) | Prueba 2016-2024: 7 de 8 eventos en ambos casos; falsas alarmas 39 → 20; CSI 0,15 → 0,25. Calibración 2001-2015: falsas alarmas 89 → 46, pero 5 → 4 eventos. n = 8; es observado, no pronóstico; CHIRPS diario está desagregado de la péntada y llega tarde para operar | JANE_PREVENCION, results/tropical/alerta_acuerdo |
+| 23 | Aceptar la alerta de cualquiera de los dos productos mejora la prevención | **No respaldado** | 8 de 8 eventos, pero 88 falsas alarmas (CSI 0,08) | ídem |
+
 ## Correcciones al `deep-research-report (8).md` (recibido el 15-nov)
 
 Su enfoque general coincide con esta tabla: dar un grado de certeza a cada conclusión, no prometer predicciones y
