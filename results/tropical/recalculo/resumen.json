@@ -1,0 +1,16 @@
+{
+  "reproduce_P0_publicado": true,
+  "corte": 2014,
+  "total_en_disputa": {
+    "original": 871,
+    "A_frec": 158,
+    "A": 188,
+    "B": 9147
+  },
+  "total_robustas": {
+    "original": 2,
+    "A_frec": 128,
+    "A": 186,
+    "B": 18
+  }
+}

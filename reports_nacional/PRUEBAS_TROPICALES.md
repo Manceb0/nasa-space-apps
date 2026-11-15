@@ -98,3 +98,44 @@ la primera mitad ya tiene una prueba; la segunda (territorio) sigue abierta.
 - `thinking-scientific-method`: predicciones registradas antes de correr; dos refutadas se publican igual.
 - `the-fool` / `thinking-red-team`: las objeciones de arriba (circularidad, Pettitt, CSI y frecuencia).
 - `thinking-probabilistic`: tasas base (4,1 % de días con ciclón frente al 37,6 % de los máximos).
+
+## Recálculo de P0 sin el escalón de IMERG
+
+Código: `earthmemory/tropical/recalculo.py` y `sensibilidad_corte.py`. Salidas: `results/tropical/recalculo/`.
+Figura: `figures/tropical/08_after_the_correction_{dark,light}.png`. Se usa el **mismo motor P0** (Theil-Sen,
+Mann-Kendall con Hamed-Rao, BH-FDR) sobre las mismas series anuales; la corrida sin cambios reproduce exactamente
+las clases publicadas en `results/tendencias/tendencias_celdas.csv`. Las salidas de P0 no se tocaron.
+
+**Variante principal (A_frec):** solo en los índices que cuentan días húmedos (R1mm, SDII, CDD, CWD, RACHAS10,
+RACHAS15), porque el escalón está en la frecuencia y no en la cantidad. Por celda e índice se resta a IMERG, desde
+2014, el cambio de su diferencia media con CHIRPS (CHIRPS como referencia, respaldada por los pluviómetros).
+
+| Índice | Celdas en disputa: publicado → corregido | IMERG nacional: publicado → corregido |
+|---|---|---|
+| SDII (intensidad), año | 160 → 0 | +6,7 %/década (p 0,035) → −8,8 % (p 0,09) |
+| Rachas secas ≥ 15 d, dic-abr | 117 → 2 | +16,1 %/década (p < 0,001) → −13,2 % (p 0,07) |
+| Días ≥ 1 mm (R1mm), dic-abr | 106 → 1 | −9,9 % (p 0,21) → +8,1 % (p 0,37) |
+| R1mm, año | 69 → 0 | −5,8 % (p 0,07) → +0,2 % (p 0,98) |
+| Total celda-índice (todos los índices) | 871 → 158 | — |
+
+**Lo que se concluye:** las dos tendencias nacionales significativas de IMERG que más llamaban la atención («llueve
+más intenso» y «las rachas secas de la estación seca se alargan») no sobreviven a quitar un solo escalón. Los
+productos no describían dos climas distintos. P0 queda igual en lo esencial: **ninguna tendencia robusta** de
+frecuencia o intensidad; las «disputas» pasan de ser un misterio a ser, con mucha probabilidad, un artefacto de medición.
+
+**Jugar en contra (lo que NO se puede afirmar):**
+- **La corrección no fecha el escalón.** Con casi cualquier año de corte entre 2010 y 2017 las disputas anuales caen de
+  307 a menos de 10 (`sensibilidad_corte.csv`): un escalón en 24 años absorbe casi cualquier diferencia de tendencia.
+  Lo que fecha el salto es la prueba de Pettitt (2013-10, p 0,001); lo que dice quién cambió son los pluviómetros.
+- **El acuerdo tras corregir es en parte mecánico**, porque la corrección usa CHIRPS. Por eso no se presentan como
+  hallazgos las 128 celdas «robustas» nuevas de SDII en la temporada temprana (may-jul, descenso): son producto de la
+  corrección, no evidencia independiente.
+- **La corrección crea disputas nuevas** en las rachas secas de las temporadas húmedas (RACHAS15 ago-nov 41,
+  may-jul 49): el escalón no es igual en todas las estaciones. Una corrección por temporada sería el siguiente paso.
+- **Sin una serie de referencia, el escalón y la tendencia no se separan.** La variante B (escalón estimado en la
+  propia serie de IMERG) fabrica tendencias por todas partes (PRCPTOT +16 %/década, 9.147 celdas en disputa). Es la
+  prueba de por qué hacen falta testigos independientes.
+- El índice SPI-12 queda igual (no depende de contar días) y su prueba sigue siendo liberal según la calibración de P0.
+
+**Frase para el jurado:** «Quitamos un solo escalón del registro del satélite y el 82 % de las contradicciones
+desaparece. No eran dos climas: era una forma distinta de contar los días de lluvia.»

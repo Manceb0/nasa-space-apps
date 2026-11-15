@@ -1,0 +1,33 @@
+variante,indice,periodo,pendiente_decada,pendiente_pct_decada,p,clase_confianza
+original,SDII,anual,0.7267,6.675,0.035,en disputa
+original,R1mm,anual,-6.999,-5.785,0.07018,sin señal detectable
+original,CDD,anual,-0.4551,-1.158,0.9013,consistente
+original,PRCPTOT,anual,-1.152,-0.08792,1,sin señal detectable
+original,R20mm,anual,0.8134,4.549,0.7471,sin señal detectable
+original,Rx1day,anual,6.463,6.782,0.3092,sin señal detectable
+original,RACHAS15,seca,0.4142,16.11,0.0002678,en disputa
+original,R1mm,seca,-2.458,-9.937,0.2049,en disputa
+A_frec,SDII,anual,-0.8585,-8.85,0.08699,sin señal detectable
+A_frec,R1mm,anual,0.2266,0.1776,0.9802,sin señal detectable
+A_frec,CDD,anual,-1.653,-4.306,0.5683,consistente
+A_frec,PRCPTOT,anual,-1.152,-0.08792,1,sin señal detectable
+A_frec,R20mm,anual,0.8134,4.549,0.7471,sin señal detectable
+A_frec,Rx1day,anual,6.463,6.782,0.3092,sin señal detectable
+A_frec,RACHAS15,seca,-0.2691,-13.22,0.07251,consistente
+A_frec,R1mm,seca,2.279,8.089,0.3692,consistente
+A,SDII,anual,-0.8585,-8.85,0.08699,sin señal detectable
+A,R1mm,anual,0.2266,0.1776,0.9802,sin señal detectable
+A,CDD,anual,-1.653,-4.306,0.5683,consistente
+A,PRCPTOT,anual,-78.8,-6.289,0.413,sin señal detectable
+A,R20mm,anual,-2.084,-13.12,0.2059,sin señal detectable
+A,Rx1day,anual,-4.878,-5.638,0.503,sin señal detectable
+A,RACHAS15,seca,-0.2691,-13.22,0.07251,consistente
+A,R1mm,seca,2.279,8.089,0.3692,consistente
+B,SDII,anual,1.388,12.22,0.0006783,en disputa
+B,R1mm,anual,4.951,3.782,0.2242,sin señal detectable
+B,CDD,anual,0.1142,0.287,0.9802,en disputa
+B,PRCPTOT,anual,236.8,16.04,0.003707,en disputa
+B,R20mm,anual,3.945,19.55,0.01062,en disputa
+B,Rx1day,anual,24.1,22.13,0.0009703,en disputa
+B,RACHAS15,seca,0.4535,17.41,9.278e-05,en disputa
+B,R1mm,seca,-3.534,-14.73,0.1015,en disputa
