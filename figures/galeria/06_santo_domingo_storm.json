@@ -1,0 +1,60 @@
+{
+ "pieza": "06_santo_domingo_storm",
+ "titulo_en": "Santo Domingo storm, 17-19 Nov 2023",
+ "titulo_es": "Tormenta de Santo Domingo, 17-19 nov 2023",
+ "generado_utc": "2026-11-15T03:02:44Z",
+ "generado_por": "earthmemory/galeria (docker compose run --rm galeria)",
+ "archivos": [
+  "figures/galeria/dark/06_santo_domingo_storm_keyframes.png",
+  "figures/galeria/dark/06_santo_domingo_storm_keyframes.pdf",
+  "figures/galeria/light/06_santo_domingo_storm_keyframes.png",
+  "figures/galeria/light/06_santo_domingo_storm_keyframes.pdf",
+  "figures/galeria/dark/06_santo_domingo_storm.gif"
+ ],
+ "entradas": [
+  {
+   "ruta": "data/nacional/gesdisc/GPM_3IMERGHH.07",
+   "nota": "144 archivos IMERG V07 Final de media hora",
+   "n_archivos": 144,
+   "bytes": 3529115
+  },
+  {
+   "ruta": "results/auditoria/santo_domingo_2023-11-18.json",
+   "nota": "celda, 431 mm, descomposición de la brecha",
+   "bytes": 4134,
+   "sha256": "ff5468c87e95a729d5e3e4dce1d8e434a72e8f0439a4b8deedae53eb5bc7835c"
+  }
+ ],
+ "calculo": "Acumulado = cumsum de mm por media hora (auditoria.datos.imerg_halfhour, ya en mm por 30 min). Control: suma del día UTC 18 en la celda = imerg_diario.celda_dia_utc_18 de la auditoría (±0.5 mm).",
+ "numeros_codificados": {
+  "imerg_celda_dia_utc_18_mm": 139.8799969777465,
+  "imerg_celda_72h_mm": 187.77999610826373,
+  "imerg_mejor_vecina_72h_mm": 209.559997824952,
+  "maximo_region_72h_mm": 255.18999364599586,
+  "estacion_mm": 431.0,
+  "imerg_mejor_vecina_mejor_ventana_mm": 185.19499830901623,
+  "brecha_restante_mm": 245.80500169098377,
+  "celda": {
+   "i": 10,
+   "j": 21,
+   "lat": 18.45,
+   "lon": -69.95
+  },
+  "gif_bytes": 498169,
+  "fotogramas": 162,
+  "ms_por_fotograma": 110
+ },
+ "avisos": [
+  "Ventana de 24 h y coordenada del pluviómetro no públicas: veredicto inconcluso para repartir la brecha.",
+  "El 431 mm es un valor de 24 h; la curva IMERG es un acumulado de 72 h (comparación generosa con IMERG)."
+ ],
+ "alt_en": "Animated dark map of the Dominican Republic: NASA IMERG half-hourly rain accumulating from 17 to 19 November 2023, with a UTC and local clock. A side chart grows the accumulated rain at the Santo Domingo cell to 188 mm in 72 h, below the dashed 431 mm line reported by the gauge in 24 h. Six key frames are provided as a still.",
+ "alt_es": "Mapa animado de la RD: lluvia IMERG de media hora acumulándose del 17 al 19 de noviembre de 2023, con reloj UTC y local. Un gráfico lateral muestra el acumulado en la celda de Santo Domingo hasta 188 mm en 72 h, por debajo de la línea de 431 mm del pluviómetro en 24 h. Seis fotogramas clave como imagen fija.",
+ "software": {
+  "python": "3.12.16",
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "pandas": "3.1.1"
+ },
+ "nota_ia": "matplotlib; figure code written with AI assistance (Claude), data unaltered"
+}

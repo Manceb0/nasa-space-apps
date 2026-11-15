@@ -1,0 +1,82 @@
+{
+ "f1_codigo_barras": {
+  "archivos": [
+   "figures/galeria/dark/01_barcode_of_doubt.png",
+   "figures/galeria/dark/01_barcode_of_doubt.pdf",
+   "figures/galeria/dark/01_barcode_of_doubt_square.png",
+   "figures/galeria/dark/01_barcode_of_doubt_square.pdf",
+   "figures/galeria/light/01_barcode_of_doubt.png",
+   "figures/galeria/light/01_barcode_of_doubt.pdf",
+   "figures/galeria/light/01_barcode_of_doubt_square.png",
+   "figures/galeria/light/01_barcode_of_doubt_square.pdf"
+  ],
+  "segundos": 6.6
+ },
+ "f2_espiral": {
+  "archivos": [
+   "figures/galeria/dark/02_spiral_of_disagreement.png",
+   "figures/galeria/dark/02_spiral_of_disagreement.pdf",
+   "figures/galeria/dark/02_spiral_of_disagreement_square.png",
+   "figures/galeria/dark/02_spiral_of_disagreement_square.pdf",
+   "figures/galeria/light/02_spiral_of_disagreement.png",
+   "figures/galeria/light/02_spiral_of_disagreement.pdf",
+   "figures/galeria/light/02_spiral_of_disagreement_square.png",
+   "figures/galeria/light/02_spiral_of_disagreement_square.pdf"
+  ],
+  "segundos": 2.1
+ },
+ "f1b_yuna_atlas": {
+  "archivos": [
+   "figures/galeria/dark/01b_yuna_flood_atlas.png",
+   "figures/galeria/dark/01b_yuna_flood_atlas.pdf",
+   "figures/galeria/dark/01c_yuna_flood_recurrence.png",
+   "figures/galeria/dark/01c_yuna_flood_recurrence.pdf",
+   "figures/galeria/light/01b_yuna_flood_atlas.png",
+   "figures/galeria/light/01b_yuna_flood_atlas.pdf",
+   "figures/galeria/light/01c_yuna_flood_recurrence.png",
+   "figures/galeria/light/01c_yuna_flood_recurrence.pdf"
+  ],
+  "segundos": 17.9
+ },
+ "f3_relieve": {
+  "archivos": [
+   "figures/galeria/dark/03_ridgeline_relief.png",
+   "figures/galeria/dark/03_ridgeline_relief.pdf",
+   "figures/galeria/dark/03_ridgeline_relief_square.png",
+   "figures/galeria/dark/03_ridgeline_relief_square.pdf",
+   "figures/galeria/light/03_ridgeline_relief.png",
+   "figures/galeria/light/03_ridgeline_relief.pdf",
+   "figures/galeria/light/03_ridgeline_relief_square.png",
+   "figures/galeria/light/03_ridgeline_relief_square.pdf"
+  ],
+  "segundos": 5.8
+ },
+ "f4_genealogia": {
+  "archivos": [
+   "figures/galeria/dark/04_genealogy_of_the_data.png",
+   "figures/galeria/dark/04_genealogy_of_the_data.pdf",
+   "figures/galeria/light/04_genealogy_of_the_data.png",
+   "figures/galeria/light/04_genealogy_of_the_data.pdf"
+  ],
+  "segundos": 1.1
+ },
+ "f5_bivariado": {
+  "archivos": [
+   "figures/galeria/dark/05_bivariate_where_to_measure.png",
+   "figures/galeria/dark/05_bivariate_where_to_measure.pdf",
+   "figures/galeria/light/05_bivariate_where_to_measure.png",
+   "figures/galeria/light/05_bivariate_where_to_measure.pdf"
+  ],
+  "segundos": 1.1
+ },
+ "f6_tormenta": {
+  "archivos": [
+   "figures/galeria/dark/06_santo_domingo_storm_keyframes.png",
+   "figures/galeria/dark/06_santo_domingo_storm_keyframes.pdf",
+   "figures/galeria/light/06_santo_domingo_storm_keyframes.png",
+   "figures/galeria/light/06_santo_domingo_storm_keyframes.pdf",
+   "figures/galeria/dark/06_santo_domingo_storm.gif"
+  ],
+  "segundos": 19.4
+ }
+}

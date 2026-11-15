@@ -1,0 +1,90 @@
+{
+ "pieza": "05_bivariate_where_to_measure",
+ "titulo_en": "Where doubt is high and gauges are far (prototype)",
+ "titulo_es": "Donde la duda es alta y los pluviómetros están lejos (prototipo)",
+ "generado_utc": "2026-11-15T03:02:25Z",
+ "generado_por": "earthmemory/galeria (docker compose run --rm galeria)",
+ "archivos": [
+  "figures/galeria/dark/05_bivariate_where_to_measure.png",
+  "figures/galeria/dark/05_bivariate_where_to_measure.pdf",
+  "figures/galeria/light/05_bivariate_where_to_measure.png",
+  "figures/galeria/light/05_bivariate_where_to_measure.pdf"
+ ],
+ "entradas": [
+  {
+   "ruta": "results/auditoria/donde_medir_prototipo.csv",
+   "nota": "tasa_cambio_condicional_spi3, dist_estacion_ghcn_activa_km",
+   "bytes": 38553,
+   "sha256": "3de9f315979ed18ac8366b7bae73d90782721ed7e666750b5f840057ecdd1813"
+  },
+  {
+   "ruta": "results/auditoria/estaciones_meta.csv",
+   "nota": "estaciones GHCN-Daily activas en 2024",
+   "bytes": 3097,
+   "sha256": "373cacdc8f5e0c5ddd4c0664d54ba3c40fb7df98c38e205dbd00b9192ce70094"
+  },
+  {
+   "ruta": "data/nacional/limites/geoBoundaries-DOM-ADM1.geojson",
+   "nota": "límites ADM1",
+   "bytes": 92829,
+   "sha256": "5f9db326ca51e82ad482e27bb5ab9737abf6b7f333acd475d3d11563490e7e8f"
+  }
+ ],
+ "calculo": "Terciles (np.nanquantile 1/3, 2/3) de cada variable; clase = (tercil distancia, tercil cambio).",
+ "numeros_codificados": {
+  "n_celdas": 443,
+  "terciles_tasa_cambio": [
+   0.905263,
+   0.9366826666666667
+  ],
+  "terciles_distancia_km": [
+   60.40866666666667,
+   97.3852333333333
+  ],
+  "n_celdas_por_clase_dist_x_cambio": {
+   "0": {
+    "0": 63,
+    "1": 58,
+    "2": 26
+   },
+   "1": {
+    "0": 45,
+    "1": 49,
+    "2": 54
+   },
+   "2": {
+    "0": 40,
+    "1": 40,
+    "2": 68
+   }
+  },
+  "n_celdas_clase_alta_alta": 68,
+  "provincias_clase_alta_alta": {
+   "San Juan": 23,
+   "La Estrelleta": 14,
+   "Pedernales": 13,
+   "Barahona": 7,
+   "Independencia": 3,
+   "Samaná": 2,
+   "Dajabón": 1,
+   "Santiago Rodríguez": 1
+  },
+  "estaciones_activas": [
+   "Puerto Plata",
+   "Punta Cana",
+   "Santo Domingo"
+  ]
+ },
+ "avisos": [
+  "PROTOTIPO: no prueba dónde deben ir estaciones (ver AUDITORIA_CONFIANZA.md §6)."
+ ],
+ "alt_en": "Map of the Dominican Republic in 443 squares of 0.1 degrees, coloured with a 3-by-3 bivariate palette: one axis is how often the drought decision flips with the rainfall product, the other the distance to the nearest active GHCN-Daily station (triangles). 68 cells fall in the high-high class, mostly in San Juan, La Estrelleta, Pedernales. Labelled PROTOTYPE.",
+ "alt_es": "Mapa de la RD en 443 cuadros de 0.1° con paleta bivariada 3 × 3: un eje es cuánto cambia la decisión de sequía según el producto, el otro la distancia a la estación GHCN-Daily activa más cercana (triángulos). 68 celdas en la clase alta-alta, sobre todo en San Juan, La Estrelleta, Pedernales. Marcado PROTOTIPO.",
+ "software": {
+  "python": "3.12.16",
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "pandas": "3.1.1"
+ },
+ "nota_ia": "matplotlib; figure code written with AI assistance (Claude), data unaltered"
+}

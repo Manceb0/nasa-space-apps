@@ -1,0 +1,3 @@
+EN: Animated dark map of the Dominican Republic: NASA IMERG half-hourly rain accumulating from 17 to 19 November 2023, with a UTC and local clock. A side chart grows the accumulated rain at the Santo Domingo cell to 188 mm in 72 h, below the dashed 431 mm line reported by the gauge in 24 h. Six key frames are provided as a still.
+
+ES: Mapa animado de la RD: lluvia IMERG de media hora acumulándose del 17 al 19 de noviembre de 2023, con reloj UTC y local. Un gráfico lateral muestra el acumulado en la celda de Santo Domingo hasta 188 mm en 72 h, por debajo de la línea de 431 mm del pluviómetro en 24 h. Seis fotogramas clave como imagen fija.

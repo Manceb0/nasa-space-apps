@@ -1,0 +1,152 @@
+{
+ "pieza": "01_barcode_of_doubt",
+ "titulo_en": "The barcode of doubt",
+ "titulo_es": "El código de barras de la duda",
+ "generado_utc": "2026-11-15T03:01:57Z",
+ "generado_por": "earthmemory/galeria (docker compose run --rm galeria)",
+ "archivos": [
+  "figures/galeria/dark/01_barcode_of_doubt.png",
+  "figures/galeria/dark/01_barcode_of_doubt.pdf",
+  "figures/galeria/dark/01_barcode_of_doubt_square.png",
+  "figures/galeria/dark/01_barcode_of_doubt_square.pdf",
+  "figures/galeria/light/01_barcode_of_doubt.png",
+  "figures/galeria/light/01_barcode_of_doubt.pdf",
+  "figures/galeria/light/01_barcode_of_doubt_square.png",
+  "figures/galeria/light/01_barcode_of_doubt_square.pdf"
+ ],
+ "entradas": [
+  {
+   "ruta": "data/auditoria/cache/imerg_diario.npz",
+   "nota": "IMERG V07 Final diario (caché del motor auditoría)",
+   "bytes": 12906832,
+   "sha256": "850d68eff9016805768640448b65a6dbafece752621b8a3a88c212b0c96dbf08"
+  },
+  {
+   "ruta": "data/nacional_hr/derivados/rejilla_005.npz",
+   "nota": "CHIRPS v2.0 mensual 0.05°",
+   "bytes": 29851846,
+   "sha256": "922f60779646af0de7f01b8c1717057b59c4402964dcc419668b6429e2954669"
+  },
+  {
+   "ruta": "data/nacional/gesdisc/GLDAS_NOAH025_M.2.1_Rainf",
+   "nota": "GLDAS-2.1 Rainf_f_tavg mensual",
+   "n_archivos": 288,
+   "bytes": 7988045
+  },
+  {
+   "ruta": "data/nacional/power/mensual_DOM_PRECTOTCORR_2001_2024.json",
+   "nota": "MERRA-2 vía NASA POWER",
+   "bytes": 187979,
+   "sha256": "7207a9b6fb670f8f1cf00df3e90e036d63dbe4aad8757369b568b0f9165d6aea"
+  },
+  {
+   "ruta": "data/auditoria/cache/pesos_provincia_005.parquet",
+   "nota": "pesos de provincia 0.05°",
+   "bytes": 18255,
+   "sha256": "2da2d293ab755f34a3fcb8db7a4e60ae1b13f78ca33eeb6240d0a3992d868c32"
+  },
+  {
+   "ruta": "results/auditoria/cambio_decision_sequia_nacional.json",
+   "nota": "totales de control",
+   "bytes": 3648,
+   "sha256": "131fda0b0f1519a2ddc81e7728e808ed51c18625d4859fb4fa610a50237dbe7d"
+  },
+  {
+   "ruta": "results/auditoria/cambio_decision_sequia_provincias.csv",
+   "nota": "orden de filas y tasas",
+   "bytes": 6558,
+   "sha256": "c7571796d36f2c7b849a25748ed2d584b9fe412839859edc2cbed93bd7d7966b"
+  },
+  {
+   "ruta": "results/auditoria/cambio_decision_sequia_por_anio.csv",
+   "nota": "control por año",
+   "bytes": 491,
+   "sha256": "a3b75e0e4e38803ad7304b1f69c2e8a32818855db9cc999ab352d6e69788ca78"
+  }
+ ],
+ "calculo": "SPI-3 por provincia (auditoria.analisis.monthly_cubes + G05.province_mean + decision.spi3); estados con decision.flip_components (umbral −1.0) y contradicción clara = no unánime y máx SPI-3 ≥ 0. Recuentos comprobados con assert contra results/auditoria (nacional, por año y por provincia).",
+ "numeros_codificados": {
+  "unanimous": 275,
+  "majority": 460,
+  "split": 1175,
+  "contradiction": 1201,
+  "no_alarm": 6041,
+  "no_data": 64,
+  "n_casos": 9152,
+  "n_alguna_alarma": 3111,
+  "n_no_unanime": 2836,
+  "n_contradiccion_clara": 1201,
+  "auditoria_nacional": {
+   "umbral_spi3": -1.0,
+   "productos": "4 productos",
+   "n_casos": 9152,
+   "n_alguna_alarma": 3111,
+   "n_no_unanime": 2836,
+   "tasa_global": 0.3098776223776224,
+   "tasa_condicional": 0.9116039858566377,
+   "ic95_global": [
+    0.23578016493055556,
+    0.3839641185179257
+   ],
+   "ic95_condicional": [
+    0.8489348359745249,
+    0.9633661413217279
+   ],
+   "n_contradiccion_clara": 1201,
+   "tasa_contradiccion_clara": 0.3860495017679203,
+   "ic95_contradiccion_clara": [
+    0.28355976266876165,
+    0.5074805361802828
+   ],
+   "n_frontera": 665,
+   "tasa_frontera": 0.21375763420122149,
+   "n_unanime_sequia": 275
+  },
+  "por_anio_unanime": {
+   "2001": 1,
+   "2002": 3,
+   "2003": 0,
+   "2004": 0,
+   "2005": 15,
+   "2006": 0,
+   "2007": 0,
+   "2008": 0,
+   "2009": 42,
+   "2010": 0,
+   "2011": 0,
+   "2012": 0,
+   "2013": 25,
+   "2014": 26,
+   "2015": 93,
+   "2016": 0,
+   "2017": 0,
+   "2018": 3,
+   "2019": 32,
+   "2020": 25,
+   "2021": 0,
+   "2022": 5,
+   "2023": 5,
+   "2024": 0
+  },
+  "top5_tasa_condicional": {
+   "Hato Mayor": 0.9691,
+   "La Romana": 0.96,
+   "San Pedro de Macorís": 0.9596,
+   "La Altagracia": 0.9592,
+   "San Juan": 0.9519
+  }
+ },
+ "avisos": [
+  "Los cuatro productos comparten insumos (pluviómetros GTS, IR): la tasa es un mínimo.",
+  "Parte del desacuerdo es efecto de umbral (estados 'dividido'/'3 de 4' con el resto entre −1 y 0)."
+ ],
+ "alt_en": "Stripe chart with 32 rows (Dominican provinces, sorted by how often the drought decision flips with the product) and 288 thin columns (months 2001-2024). Most cells are dark (no alarm); alarm months are mostly vermillion (clear contradiction: 1201) and blue shades (partial agreement); green cells, where all four products agree on drought, are rare (275 of 3111) and cluster in 2015 (93).",
+ "alt_es": "Gráfico de franjas: 32 filas (provincias, ordenadas por la tasa de cambio de decisión) y 288 columnas (meses 2001-2024). La mayoría de celdas son oscuras (sin alarma); los meses con alarma son sobre todo bermellón (contradicción clara: 1201) y azules (acuerdo parcial); las verdes, donde los cuatro productos coinciden en sequía, son raras (275 de 3111) y se concentran en 2015 (93).",
+ "software": {
+  "python": "3.12.16",
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "pandas": "3.1.1"
+ },
+ "nota_ia": "matplotlib; figure code written with AI assistance (Claude), data unaltered"
+}

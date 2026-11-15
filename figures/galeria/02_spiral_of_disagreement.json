@@ -1,0 +1,54 @@
+{
+ "pieza": "02_spiral_of_disagreement",
+ "titulo_en": "Spiral of disagreement",
+ "titulo_es": "Espiral del desacuerdo",
+ "generado_utc": "2026-11-15T03:02:17Z",
+ "generado_por": "earthmemory/galeria (docker compose run --rm galeria)",
+ "archivos": [
+  "figures/galeria/dark/02_spiral_of_disagreement.png",
+  "figures/galeria/dark/02_spiral_of_disagreement.pdf",
+  "figures/galeria/dark/02_spiral_of_disagreement_square.png",
+  "figures/galeria/dark/02_spiral_of_disagreement_square.pdf",
+  "figures/galeria/light/02_spiral_of_disagreement.png",
+  "figures/galeria/light/02_spiral_of_disagreement.pdf",
+  "figures/galeria/light/02_spiral_of_disagreement_square.png",
+  "figures/galeria/light/02_spiral_of_disagreement_square.pdf"
+ ],
+ "entradas": [
+  {
+   "ruta": "figures/galeria/_datos/spi3_provincias.parquet",
+   "nota": "SPI-3 provincia-mes recalculado con el motor de auditoría",
+   "bytes": 372508,
+   "sha256": "dcb66beda46e43ec57dc25d8efdf7233255625dbf15387ca4fb9196282c62d26"
+  },
+  {
+   "ruta": "results/auditoria/cambio_decision_sequia_nacional.json",
+   "nota": "control: 2836 no unánimes",
+   "bytes": 3648,
+   "sha256": "131fda0b0f1519a2ddc81e7728e808ed51c18625d4859fb4fa610a50237dbe7d"
+  }
+ ],
+ "calculo": "n provincias por mes con decision.flip_components()['no_unanime'] (umbral −1.0, 4 productos). Suma = n_no_unanime de la auditoría (assert).",
+ "numeros_codificados": {
+  "meses_validos": 286,
+  "meses_con_desacuerdo": 180,
+  "meses_ge16": 85,
+  "max": 32,
+  "mes_max": "2001-09-01",
+  "suma": 2836,
+  "n_meses_max": 19
+ },
+ "avisos": [
+  "Escala de color por recuento entero 0-32 (sin interpolar).",
+  "Los productos comparten insumos: el desacuerdo es un mínimo."
+ ],
+ "alt_en": "An Archimedean spiral of 288 monthly segments, 2001 at the centre and 2024 at the rim, January at the top. Segment colour (cividis) shows how many of 32 provinces had a non-unanimous drought call among four rainfall products. Bright bands appear in drought years; 180 of 286 months had at least one province in disagreement; maximum 32 provinces in 2001-09.",
+ "alt_es": "Espiral de Arquímedes de 288 segmentos mensuales (2001 en el centro, 2024 en el borde, enero arriba). El color indica en cuántas de las 32 provincias los cuatro productos de lluvia no fueron unánimes sobre la sequía. 180 de 286 meses tuvieron al menos una; máximo 32 provincias en 2001-09.",
+ "software": {
+  "python": "3.12.16",
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "pandas": "3.1.1"
+ },
+ "nota_ia": "matplotlib; figure code written with AI assistance (Claude), data unaltered"
+}

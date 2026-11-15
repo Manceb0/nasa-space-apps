@@ -1,0 +1,70 @@
+{
+ "pieza": "03_ridgeline_relief",
+ "titulo_en": "Two satellites, two climates (ridgeline relief)",
+ "titulo_es": "Dos satélites, dos climas (relieve en crestas)",
+ "generado_utc": "2026-11-15T03:02:23Z",
+ "generado_por": "earthmemory/galeria (docker compose run --rm galeria)",
+ "archivos": [
+  "figures/galeria/dark/03_ridgeline_relief.png",
+  "figures/galeria/dark/03_ridgeline_relief.pdf",
+  "figures/galeria/dark/03_ridgeline_relief_square.png",
+  "figures/galeria/dark/03_ridgeline_relief_square.pdf",
+  "figures/galeria/light/03_ridgeline_relief.png",
+  "figures/galeria/light/03_ridgeline_relief.pdf",
+  "figures/galeria/light/03_ridgeline_relief_square.png",
+  "figures/galeria/light/03_ridgeline_relief_square.pdf"
+ ],
+ "entradas": [
+  {
+   "ruta": "data/nacional_hr/derivados/nativas.npz",
+   "nota": "dem_Z/dem_lat/dem_lon: Copernicus GLO-90 a 1/300°",
+   "bytes": 13311448,
+   "sha256": "93c726f168ef6e62c259c90291c3da6d74ab14e14a854913d9027a4c5d714c64"
+  },
+  {
+   "ruta": "results/tendencias/tendencias_celdas.csv",
+   "nota": "clase_confianza SDII anual por celda 0.1°",
+   "bytes": 11993878,
+   "sha256": "8043b3cbc8c33541d153e2a18581548aec68a1163d1c4e0731333f0e7ebc3f51"
+  },
+  {
+   "ruta": "results/yuna/cuencas_yuna.geojson",
+   "nota": "cuenca del Yuna",
+   "bytes": 120579,
+   "sha256": "d3c77607b8e02f80510352640ac45b8837cb510d65befd4ffa658e3d78a89771"
+  },
+  {
+   "ruta": "results/yuna/hatillo_ficha.json",
+   "nota": "coordenada de la presa",
+   "bytes": 2389,
+   "sha256": "eb0bbae5ccbc9f286e47cd2c54b671c3dd35ab3751bd78c62975c762a16dfb5f"
+  }
+ ],
+ "calculo": "Perfiles cada 0.03° de latitud (fila DEM más cercana), muestreo cada 2 columnas; y = lat + elevación × 0.0001 °/m (exageración ≈ 11×). Color de cada tramo = clase de la celda 0.1° que contiene el punto.",
+ "numeros_codificados": {
+  "n_celdas": 442,
+  "por_clase": {
+   "sin señal detectable": 277,
+   "en disputa": 160,
+   "consistente": 5
+  },
+  "disputa_imerg_sube_chirps_baja": 160,
+  "disputa_imerg_sig": 122,
+  "disputa_chirps_sig": 67,
+  "mediana_pendiente_imerg_disputa_mm_dia_decada": 1.45885,
+  "mediana_pendiente_chirps_disputa_mm_dia_decada": -1.5416
+ },
+ "avisos": [
+  "Clase 'en disputa' = señal de los productos (detección de llovizna, reparto diario), no del clima.",
+  "Exageración vertical ×11 (indicada con barra de 1 000 m)."
+ ],
+ "alt_en": "About 80 stacked east-west elevation profiles of Hispaniola drawn as glowing-free thin lines on a dark ground, mountains rising as peaks (Cordillera Central up to Pico Duarte). Line colour per 0.1° cell: vermillion where IMERG and CHIRPS disagree on the 2001-2024 trend of daily rain intensity (160 of 442 cells, mostly IMERG up and CHIRPS down), white where no trend is detectable, sky blue where consistent. The Yuna basin is outlined dashed with the Hatillo dam marked.",
+ "alt_es": "Unos 80 perfiles de elevación este-oeste de La Española apilados de norte a sur. Color por celda 0.1°: bermellón donde IMERG y CHIRPS discrepan en la tendencia 2001-2024 de la intensidad diaria de la lluvia (160 de 442 celdas; IMERG sube y CHIRPS baja), blanco sin tendencia detectable, celeste consistente. Cuenca del Yuna en discontinua y presa de Hatillo marcada.",
+ "software": {
+  "python": "3.12.16",
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "pandas": "3.1.1"
+ },
+ "nota_ia": "matplotlib; figure code written with AI assistance (Claude), data unaltered"
+}

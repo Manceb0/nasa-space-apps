@@ -111,3 +111,14 @@ services:
       - ./figures/testigos:/app/figures/testigos
       - ./reports_nacional:/app/reports_nacional
       - ./notebooks:/app/notebooks
+  # Galería: figuras de impacto visual (no estándar) a partir de los resultados ya verificados. Solo lee datos.
+  #   docker compose run --rm galeria
+  galeria:
+    <<: *motor
+    entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.galeria.run"]
+    volumes:
+      - ./earthmemory:/app/earthmemory:ro
+      - ./tests:/app/tests:ro
+      - ./data:/app/data:ro
+      - ./results:/app/results:ro
+      - ./figures/galeria:/app/figures/galeria

@@ -1,0 +1,239 @@
+{
+ "pieza": "01b_yuna_flood_atlas",
+ "titulo_en": "Where the water was (Yuna flood atlas + recurrence)",
+ "titulo_es": "Dónde estuvo el agua (atlas del Yuna)",
+ "generado_utc": "2026-11-15T03:02:15Z",
+ "generado_por": "earthmemory/galeria (docker compose run --rm galeria)",
+ "archivos": [
+  "figures/galeria/dark/01b_yuna_flood_atlas.png",
+  "figures/galeria/dark/01b_yuna_flood_atlas.pdf",
+  "figures/galeria/dark/01c_yuna_flood_recurrence.png",
+  "figures/galeria/dark/01c_yuna_flood_recurrence.pdf",
+  "figures/galeria/light/01b_yuna_flood_atlas.png",
+  "figures/galeria/light/01b_yuna_flood_atlas.pdf",
+  "figures/galeria/light/01c_yuna_flood_recurrence.png",
+  "figures/galeria/light/01c_yuna_flood_recurrence.pdf"
+ ],
+ "entradas": [
+  {
+   "ruta": "data/yuna/mcdwd",
+   "nota": "recortes diarios MCDWD (npz) del motor Yuna",
+   "n_archivos": 209,
+   "bytes": 4861434
+  },
+  {
+   "ruta": "results/yuna/mcdwd_por_evento.csv",
+   "nota": "día de máxima extensión y km² de control",
+   "bytes": 7119,
+   "sha256": "e2b909e81399e82d36dccb439a8d82c2bd1fc46f8de58fa610951f858e307955"
+  },
+  {
+   "ruta": "results/yuna/mcdwd_diario_zonas.csv",
+   "nota": "% sin ver por día",
+   "bytes": 107009,
+   "sha256": "cddbf9b905d06adba037f234be00f5a8e48a1cdccdc4b46eb821e904199c18bf"
+  },
+  {
+   "ruta": "results/yuna/mcdwd_dias_pedidos.csv",
+   "nota": "días de cada ventana de evento",
+   "bytes": 5402,
+   "sha256": "206ff7fe43580b29ecfb0f6224ba33df7dc1fdfee1f93a27f1a67cfb186f1123"
+  },
+  {
+   "ruta": "results/yuna/catalogo_eventos.csv",
+   "nota": "catálogo de 15 eventos",
+   "bytes": 20885,
+   "sha256": "c875c98c9625a2326893a228124b9310f467201ecf765c65ce525ecd7504c838"
+  },
+  {
+   "ruta": "results/yuna/cuencas_yuna.geojson",
+   "nota": "cuenca",
+   "bytes": 120579,
+   "sha256": "d3c77607b8e02f80510352640ac45b8837cb510d65befd4ffa658e3d78a89771"
+  },
+  {
+   "ruta": "results/yuna/rios_hydrorivers.geojson",
+   "nota": "ríos (UPLAND ≥ 150 km²)",
+   "bytes": 302917,
+   "sha256": "0f1e7d3c0955ecca76117ca673da85c35a5c92a5ce51b49ef33a3d31a866d82a"
+  },
+  {
+   "ruta": "data/nacional_hr/derivados/nativas.npz",
+   "nota": "DEM Copernicus 1/300° para sombreado",
+   "bytes": 13311448,
+   "sha256": "93c726f168ef6e62c259c90291c3da6d74ab14e14a854913d9027a4c5d714c64"
+  }
+ ],
+ "calculo": "Para cada evento: npz del día dia_max_yuna (o, sin observación, el día con menos píxeles sin ver), capa Flood_2Day_250m; máscara de cuenca = rasterize(cuenca 'yuna', all_touched=False) en la rejilla MCDWD (yuna.mcdwd.transform); km² = nº clase 3 × PX_KM2, comprobado contra mcdwd_por_evento.csv (±2 %). Máscara fija = 255 en todos los npz descargados (yuna.mcdwd.siempre_enmascarado). Recurrencia = nº de eventos con clase 3 en cualquier día de la ventana pedida.",
+ "numeros_codificados": {
+  "eventos": [
+   {
+    "id": "2003-11",
+    "dia": "2003-11-21",
+    "km2_clase3": 19.228509666642758,
+    "km2_ref_csv": 19.228509666642758,
+    "sin_ver": 0.23040899891749422,
+    "n_dias": 7
+   },
+   {
+    "id": "2007-10",
+    "dia": "2007-11-04",
+    "km2_clase3": 70.75687809090064,
+    "km2_ref_csv": 70.75687809090064,
+    "sin_ver": 0.324516402315621,
+    "n_dias": 5
+   },
+   {
+    "id": "2007-12",
+    "dia": "2007-12-10",
+    "km2_clase3": 59.048179291265164,
+    "km2_ref_csv": 59.048179291265164,
+    "sin_ver": 0.5909069515696334,
+    "n_dias": 5
+   },
+   {
+    "id": "2011-06",
+    "dia": "2011-05-29",
+    "km2_clase3": 0.050468529308773644,
+    "km2_ref_csv": null,
+    "sin_ver": 0.995316985927425,
+    "n_dias": 5
+   },
+   {
+    "id": "2012-08",
+    "dia": "2012-08-29",
+    "km2_clase3": 5.652475282582648,
+    "km2_ref_csv": 5.652475282582648,
+    "sin_ver": 0.48293876782604606,
+    "n_dias": 5
+   },
+   {
+    "id": "2012-10",
+    "dia": "2012-10-28",
+    "km2_clase3": 8.579649982491519,
+    "km2_ref_csv": 8.579649982491519,
+    "sin_ver": 0.0019061514566762366,
+    "n_dias": 5
+   },
+   {
+    "id": "2016-11",
+    "dia": "2016-11-26",
+    "km2_clase3": 31.795173464527394,
+    "km2_ref_csv": 31.795173464527394,
+    "sin_ver": 0.41732950534193064,
+    "n_dias": 12
+   },
+   {
+    "id": "2017-04",
+    "dia": "2017-05-05",
+    "km2_clase3": 13.071349090972374,
+    "km2_ref_csv": 13.071349090972374,
+    "sin_ver": 0.07796394785146138,
+    "n_dias": 8
+   },
+   {
+    "id": "2017-09",
+    "dia": "2017-09-24",
+    "km2_clase3": 10.951670860003881,
+    "km2_ref_csv": 10.951670860003881,
+    "sin_ver": 0.29884218948557445,
+    "n_dias": 5
+   },
+   {
+    "id": "2020-07",
+    "dia": "2020-08-02",
+    "km2_clase3": 0.4542167637789628,
+    "km2_ref_csv": 0.4542167637789628,
+    "sin_ver": 0.7535887419400386,
+    "n_dias": 5
+   },
+   {
+    "id": "2022-09",
+    "dia": "2022-09-23",
+    "km2_clase3": 5.450601165347553,
+    "km2_ref_csv": 5.450601165347553,
+    "sin_ver": 0.21475973078552266,
+    "n_dias": 5
+   },
+   {
+    "id": "2023-11",
+    "dia": "2023-11-22",
+    "km2_clase3": 63.237067223893376,
+    "km2_ref_csv": 63.237067223893376,
+    "sin_ver": 0.10502659198945734,
+    "n_dias": 5
+   },
+   {
+    "id": "2024-11",
+    "dia": "2024-11-21",
+    "km2_clase3": 4.239356461936986,
+    "km2_ref_csv": 4.239356461936986,
+    "sin_ver": 0.1138984327199134,
+    "n_dias": 6
+   },
+   {
+    "id": "2024-12",
+    "dia": "2024-12-20",
+    "km2_clase3": 7.4693423376984995,
+    "km2_ref_csv": 7.4693423376984995,
+    "sin_ver": 0.4457570480538429,
+    "n_dias": 5
+   },
+   {
+    "id": "2025-10",
+    "dia": "2025-10-20",
+    "km2_clase3": 1.564524408571983,
+    "km2_ref_csv": 1.564524408571983,
+    "sin_ver": 0.08323528027486234,
+    "n_dias": 6
+   }
+  ],
+  "km2_por_umbral_eventos": {
+   "1": 227.96634688773054,
+   "2": 85.74603129560641,
+   "3": 49.50962725190694,
+   "4": 23.467866128579743,
+   "5": 13.273223208207469,
+   "6": 7.721684984242367,
+   "7": 4.2898249912457596,
+   "8": 2.5738949947474556,
+   "9": 1.2112447034105673,
+   "10": 0.5046852930877365
+  },
+  "max_eventos": 10,
+  "eventos_con_50pc_vistos": 14,
+  "fraccion_vista_por_evento": {
+   "2003-11": 0.9869157998776298,
+   "2007-10": 0.6760483833011719,
+   "2007-12": 0.9708194097990305,
+   "2011-06": 0.01075445945309926,
+   "2012-08": 0.8640043300230621,
+   "2012-10": 0.9982115122134889,
+   "2016-11": 0.9976702593307291,
+   "2017-04": 0.9695486421612463,
+   "2017-09": 0.8946674824681131,
+   "2020-07": 0.996470089895044,
+   "2022-09": 0.8980797289029039,
+   "2023-11": 0.9984703722878524,
+   "2024-11": 0.9408622393749706,
+   "2024-12": 0.8343766178754648,
+   "2025-10": 0.9348849249305784
+  },
+  "pixeles_vistos_alguna_vez": 42494,
+  "fraccion_cuenca_siempre_enmascarada": 0.617505423188745
+ },
+ "avisos": [
+  "Sensor óptico: no ve bajo nubes ni dosel; una crecida más corta que el compuesto puede perderse.",
+  "El recuento por píxel es un mínimo (días nublados).",
+  "Eventos 2025 fuera del periodo 2001-2024 del resto del análisis (están en el catálogo del motor Yuna)."
+ ],
+ "alt_en": "Fifteen small maps of the Yuna basin (5 by 3, in time order 2003-2025) over shaded relief, each showing MODIS 250 m flood classes on the day of largest extent; unusual flood in strong blue, cloud-hidden areas hatched, permanently unmapped mountains veiled grey. The largest is 04 Nov 2007 with 71 km² of unusual flood, concentrated in the lower Yuna plain near Villa Riva and Arenoso. A companion map counts, per pixel, how many events flagged unusual flood.",
+ "alt_es": "Quince mapas pequeños de la cuenca del Yuna (5 × 3, en orden 2003-2025) sobre sombreado de relieve con las clases de inundación MODIS de 250 m del día de máxima extensión; inundación inusual en azul fuerte, lo tapado por nubes con trama y las montañas que el producto nunca mapea con velo gris. El mayor es el 04-11-2007 con 71 km² de inundación inusual, en la llanura del Bajo Yuna (Villa Riva, Arenoso). Un mapa hermano cuenta en cuántos eventos cada píxel fue inundación inusual.",
+ "software": {
+  "python": "3.12.16",
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "pandas": "3.1.1"
+ },
+ "nota_ia": "matplotlib; figure code written with AI assistance (Claude), data unaltered"
+}

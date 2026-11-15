@@ -1,0 +1,3 @@
+EN: Map of the Dominican Republic in 443 squares of 0.1 degrees, coloured with a 3-by-3 bivariate palette: one axis is how often the drought decision flips with the rainfall product, the other the distance to the nearest active GHCN-Daily station (triangles). 68 cells fall in the high-high class, mostly in San Juan, La Estrelleta, Pedernales. Labelled PROTOTYPE.
+
+ES: Mapa de la RD en 443 cuadros de 0.1° con paleta bivariada 3 × 3: un eje es cuánto cambia la decisión de sequía según el producto, el otro la distancia a la estación GHCN-Daily activa más cercana (triángulos). 68 celdas en la clase alta-alta, sobre todo en San Juan, La Estrelleta, Pedernales. Marcado PROTOTIPO.

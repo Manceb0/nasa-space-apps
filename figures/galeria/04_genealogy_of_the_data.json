@@ -1,0 +1,259 @@
+{
+ "pieza": "04_genealogy_of_the_data",
+ "titulo_en": "Agreement is not validation (genealogy of the data)",
+ "titulo_es": "Coincidir no es validar (genealogía de los datos)",
+ "generado_utc": "2026-11-15T03:02:24Z",
+ "generado_por": "earthmemory/galeria (docker compose run --rm galeria)",
+ "archivos": [
+  "figures/galeria/dark/04_genealogy_of_the_data.png",
+  "figures/galeria/dark/04_genealogy_of_the_data.pdf",
+  "figures/galeria/light/04_genealogy_of_the_data.png",
+  "figures/galeria/light/04_genealogy_of_the_data.pdf"
+ ],
+ "entradas": [
+  {
+   "ruta": "results/auditoria/procedencia_insumos_compartidos.csv",
+   "nota": "matriz insumo × producto (V/I)",
+   "bytes": 488,
+   "sha256": "37b3abcbc458cf798430384ba2da8fb7e3c60a76d8a9e403c946cef04133aceb"
+  },
+  {
+   "ruta": "results/auditoria/procedencia_matriz.csv",
+   "nota": "ficha de cada producto",
+   "bytes": 8145,
+   "sha256": "5adb97adc948742df12eb163ee4b2a87fd724010c29332a2e59a3d3d80caabb3"
+  },
+  {
+   "ruta": "results/auditoria/procedencia.json",
+   "nota": "aristas y veredicto",
+   "bytes": 14388,
+   "sha256": "27b56448903177d7fb6fa2abf067e1dff39a26631887b3699d48fc26448d4566"
+  }
+ ],
+ "calculo": "Cada arista = celda V o I de la matriz; sólida = V (verificado), discontinua = I (inferido). Resaltadas las aristas de insumos que alimentan ≥ 2 de {IMERG, CHIRPS, GLDAS_forzamiento, MERRA2} hacia esos productos.",
+ "numeros_codificados": {
+  "n_insumos": 12,
+  "n_productos": 12,
+  "n_aristas": 39,
+  "n_verificadas": 34,
+  "n_inferidas": 5,
+  "insumos_compartidos_por_productos_de_sequia": [
+   "Pluviómetros GTS/SYNOP",
+   "GPCC",
+   "GHCN/GSOD",
+   "IR geoestacionario",
+   "Microondas pasivas",
+   "Sistema GEOS / MERRA-2",
+   "NCEP (CFSv2 / GDAS)"
+  ],
+  "aristas": [
+   {
+    "insumo": "Pluviómetros GTS/SYNOP",
+    "producto": "IMERG",
+    "estado": "V"
+   },
+   {
+    "insumo": "Pluviómetros GTS/SYNOP",
+    "producto": "CHIRPS",
+    "estado": "V"
+   },
+   {
+    "insumo": "Pluviómetros GTS/SYNOP",
+    "producto": "GLDAS_forzamiento",
+    "estado": "V"
+   },
+   {
+    "insumo": "Pluviómetros GTS/SYNOP",
+    "producto": "MERRA2",
+    "estado": "V"
+   },
+   {
+    "insumo": "Pluviómetros GTS/SYNOP",
+    "producto": "Estaciones",
+    "estado": "V"
+   },
+   {
+    "insumo": "Pluviómetros GTS/SYNOP",
+    "producto": "SMAP_L4",
+    "estado": "V"
+   },
+   {
+    "insumo": "GPCC",
+    "producto": "IMERG",
+    "estado": "V"
+   },
+   {
+    "insumo": "GPCC",
+    "producto": "CHIRPS",
+    "estado": "I"
+   },
+   {
+    "insumo": "GPCC",
+    "producto": "GLDAS_forzamiento",
+    "estado": "V"
+   },
+   {
+    "insumo": "GPCC",
+    "producto": "SMAP_L4",
+    "estado": "V"
+   },
+   {
+    "insumo": "GHCN/GSOD",
+    "producto": "IMERG",
+    "estado": "I"
+   },
+   {
+    "insumo": "GHCN/GSOD",
+    "producto": "CHIRPS",
+    "estado": "V"
+   },
+   {
+    "insumo": "GHCN/GSOD",
+    "producto": "Estaciones",
+    "estado": "V"
+   },
+   {
+    "insumo": "GHCN/GSOD",
+    "producto": "TerraClimate",
+    "estado": "I"
+   },
+   {
+    "insumo": "CPC Unified",
+    "producto": "MERRA2",
+    "estado": "V"
+   },
+   {
+    "insumo": "CPC Unified",
+    "producto": "SMAP_L4",
+    "estado": "I"
+   },
+   {
+    "insumo": "IR geoestacionario",
+    "producto": "IMERG",
+    "estado": "V"
+   },
+   {
+    "insumo": "IR geoestacionario",
+    "producto": "CHIRPS",
+    "estado": "V"
+   },
+   {
+    "insumo": "IR geoestacionario",
+    "producto": "GLDAS_forzamiento",
+    "estado": "V"
+   },
+   {
+    "insumo": "Microondas pasivas",
+    "producto": "IMERG",
+    "estado": "V"
+   },
+   {
+    "insumo": "Microondas pasivas",
+    "producto": "CHIRPS",
+    "estado": "I"
+   },
+   {
+    "insumo": "Microondas pasivas",
+    "producto": "GLDAS_forzamiento",
+    "estado": "V"
+   },
+   {
+    "insumo": "Tb SMAP banda L",
+    "producto": "SMAP_L4",
+    "estado": "V"
+   },
+   {
+    "insumo": "Tb SMAP banda L",
+    "producto": "SMAP_L3",
+    "estado": "V"
+   },
+   {
+    "insumo": "Reflectancia MODIS",
+    "producto": "GLDAS_forzamiento",
+    "estado": "V"
+   },
+   {
+    "insumo": "Reflectancia MODIS",
+    "producto": "SMAP_L3",
+    "estado": "V"
+   },
+   {
+    "insumo": "Reflectancia MODIS",
+    "producto": "MOD13A3",
+    "estado": "V"
+   },
+   {
+    "insumo": "Reflectancia MODIS",
+    "producto": "MOD17",
+    "estado": "V"
+   },
+   {
+    "insumo": "Gravimetría GRACE",
+    "producto": "GRACE",
+    "estado": "V"
+   },
+   {
+    "insumo": "Sistema GEOS / MERRA-2",
+    "producto": "IMERG",
+    "estado": "V"
+   },
+   {
+    "insumo": "Sistema GEOS / MERRA-2",
+    "producto": "MERRA2",
+    "estado": "V"
+   },
+   {
+    "insumo": "Sistema GEOS / MERRA-2",
+    "producto": "SMAP_L4",
+    "estado": "V"
+   },
+   {
+    "insumo": "Sistema GEOS / MERRA-2",
+    "producto": "SMAP_L3",
+    "estado": "V"
+   },
+   {
+    "insumo": "Sistema GEOS / MERRA-2",
+    "producto": "MOD17",
+    "estado": "V"
+   },
+   {
+    "insumo": "ERA5",
+    "producto": "IMERG",
+    "estado": "V"
+   },
+   {
+    "insumo": "ERA5",
+    "producto": "TerraClimate",
+    "estado": "V"
+   },
+   {
+    "insumo": "ERA5",
+    "producto": "GEOGLOWS",
+    "estado": "V"
+   },
+   {
+    "insumo": "NCEP (CFSv2 / GDAS)",
+    "producto": "CHIRPS",
+    "estado": "V"
+   },
+   {
+    "insumo": "NCEP (CFSv2 / GDAS)",
+    "producto": "GLDAS_forzamiento",
+    "estado": "V"
+   }
+  ]
+ },
+ "avisos": [
+  "Ver procedencia_matriz.csv para las URL de cada afirmación."
+ ],
+ "alt_en": "An alluvial diagram: 12 inputs on the left (rain gauges, satellite sensors, models) connect through curved lines to 12 products on the right. Vermillion curves show that 7 inputs, led by the WMO GTS SYNOP rain gauges, each feed two or more of the four rainfall products used in the drought audit (IMERG, CHIRPS, GLDAS forcing, MERRA-2). Only GRACE gravimetry (green) is gauge-free, at about 3 degrees resolution.",
+ "alt_es": "Diagrama aluvial: 12 insumos a la izquierda (pluviómetros, sensores satelitales, modelos) se conectan con 12 productos a la derecha. Las curvas bermellón muestran que 7 insumos, empezando por los pluviómetros SYNOP del GTS, alimentan a dos o más de los cuatro productos de lluvia de la auditoría de sequía. Solo la gravimetría GRACE (verde) es independiente de los pluviómetros, con ~3° de resolución.",
+ "software": {
+  "python": "3.12.16",
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "pandas": "3.1.1"
+ },
+ "nota_ia": "matplotlib; figure code written with AI assistance (Claude), data unaltered"
+}

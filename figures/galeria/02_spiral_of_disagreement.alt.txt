@@ -1,0 +1,3 @@
+EN: An Archimedean spiral of 288 monthly segments, 2001 at the centre and 2024 at the rim, January at the top. Segment colour (cividis) shows how many of 32 provinces had a non-unanimous drought call among four rainfall products. Bright bands appear in drought years; 180 of 286 months had at least one province in disagreement; maximum 32 provinces in 2001-09.
+
+ES: Espiral de Arquímedes de 288 segmentos mensuales (2001 en el centro, 2024 en el borde, enero arriba). El color indica en cuántas de las 32 provincias los cuatro productos de lluvia no fueron unánimes sobre la sequía. 180 de 286 meses tuvieron al menos una; máximo 32 provincias en 2001-09.
