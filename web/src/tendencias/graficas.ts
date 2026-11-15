@@ -4,6 +4,9 @@ import { esc, LL, num, sgn, type TrendData, type Sel, type Tr } from "./datos";
 
 export const PROD_COLOR: Record<string, string> = { IMERG: "#ffffff", CHIRPS: "#8fd3ff" };
 const pc = (p: string) => PROD_COLOR[p] ?? "#bbbbbb";
+/** Texto acordado con el equipo: la deriva de IMERG en la frecuencia de días de lluvia no está confirmada. */
+export const DRIFT_ES = "Posible deriva de IMERG en el conteo de días de lluvia (no confirmada; ver testigos)";
+export const DRIFT_EN = "Possible IMERG drift in the rain-day count (not confirmed; see witnesses)";
 export const WARN = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8l6.6 11.6H1.4z" fill="#ffd60a"/><path d="M8 6v3.4" stroke="#000" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="11.4" r=".9" fill="#000"/></svg>';
 
 /** El medidor: un semicírculo cuyo extremo izquierdo y derecho dicen en palabras qué significa cada lado (con los
@@ -18,7 +21,7 @@ export function capsule(d: TrendData, s: Sel) {
   const DRY = "#ff9f0a", WET = "#28a0f0";
   const right = dry ? LL("más seco", "drier") : LL("más lluvia", "more rain"), left = dry ? LL("menos seco", "less dry") : LL("menos lluvia", "less rain");
   const cR = dry ? DRY : WET, cL = dry ? WET : DRY;
-  const W = 340, R = 132, cx = W / 2, cy = R + 30, H = cy + 30, rf = 112, rn = 104;
+  const W = 340, R = 132, cx = W / 2, cy = R + 30, H = cy + 46, rf = 112, rn = 104;
   const deg = (val: number) => Math.max(-90, Math.min(90, (val / ext) * 90));
   const pt = (a: number, r: number) => { const t = (a * Math.PI) / 180; return `${(cx + r * Math.sin(t)).toFixed(1)},${(cy - r * Math.cos(t)).toFixed(1)}`; };
   const band = (a1: number, a2: number, ro: number, ri: number) => `M${pt(a1, ro)} A${ro} ${ro} 0 0 1 ${pt(a2, ro)} L${pt(a2, ri)} A${ri} ${ri} 0 0 0 ${pt(a1, ri)}Z`;
@@ -46,7 +49,7 @@ export function capsule(d: TrendData, s: Sel) {
   const read = rows.map((r, i) => ({ ...r, i })).sort((a, b) => a.t.pendiente_decada - b.t.pendiente_decada).map(({ p, t, i }) => {
     const up = t.pendiente_decada > 0, side = up ? right : left, sc = up ? cR : cL;
     return `<div class="cr">
-      <p class="cr-p"><i style="background:${pc(p)}"></i>${p}${p === "IMERG" && d.stepped(s.ind) ? `<button class="cr-warn" data-go13 title="${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}" aria-label="${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}">${WARN}</button>` : ""}</p>
+      <p class="cr-p"><i style="background:${pc(p)}"></i>${p}${p === "IMERG" && d.stepped(s.ind) ? `<button class="cr-warn" data-go13 title="${esc(LL(DRIFT_ES, DRIFT_EN))}" aria-label="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}</button>` : ""}</p>
       <p class="cr-v num">${sgn(t.pendiente_decada)}</p>
       <p class="cr-s"><b style="color:${sc}">${esc(side)}</b> · ${esc(sig[i] ? LL("claro", "clear") : LL("incierto", "uncertain"))}</p>
     </div>`;
@@ -59,7 +62,7 @@ export function capsule(d: TrendData, s: Sel) {
     <circle cx="${cx}" cy="${cy}" r="8" class="cap-hub"/>
     <text x="${cx - R}" y="${cy + 22}" class="cap-end" fill="${cL}">◀ ${esc(left)}</text>
     <text x="${cx + R}" y="${cy + 22}" text-anchor="end" class="cap-end" fill="${cR}">${esc(right)} ▶</text>
-    <text x="${cx}" y="${cy + 26}" text-anchor="middle" class="cap-t">${esc(v.unidad_tendencia)}</text>
+    <text x="${cx}" y="${cy + 42}" text-anchor="middle" class="cap-t">${esc(v.unidad_tendencia)}</text>
   </svg>
   <div class="cap-read">${read}</div>
   <p class="cap-key">

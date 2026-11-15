@@ -1,8 +1,10 @@
-"""Variante «sin el escalón de 2013-10» para la vista de Tendencias (web/public/data/tendencias/sin_escalon.json).
+"""Capa de SENSIBILIDAD «ajuste hacia CHIRPS» para la vista de Tendencias (web/public/data/tendencias/sin_escalon.json).
 
-No calcula nada: reordena results/tropical/recalculo/ (variante A_frec, producida por el chat de datos con el mismo
-motor P0) en la forma de rejilla.json, solo para los índices de frecuencia e intensidad, donde IMERG cambió en
-2013-10 su forma de contar días de lluvia. Comprueba con assert:
+No es una corrección: es la variante A_frec de results/tropical/recalculo/ (mismo motor P0), que resta a IMERG su
+diferencia con CHIRPS desde 2014 en los índices de frecuencia e intensidad. La revisión independiente
+(reports_nacional/REVISION_JANE.md) mostró que ese ajuste quita buena parte de una tendencia sintética sin salto y que
+produce valores imposibles; ERA5 sitúa el cambio de IMERG en una deriva gradual, no en un escalón de 2013-10.
+El archivo conserva su nombre para no romper la carga. Comprueba con assert:
   · que la celda→índice es la misma que la de rejilla.json (los índices sin corregir dan la misma clase y la misma q),
   · que los recuentos por índice y época son los de comparacion_clases.csv y el total el de resumen.json.
 
@@ -90,17 +92,29 @@ def main() -> None:
             "pendiente_decada": r(row["pendiente_decada"]), "pendiente_pct_decada": r(row["pendiente_pct_decada"], 2),
             "p": r(row["p"]), "clase": row["clase_confianza"]}
     sens = pd.read_csv(REC / "sensibilidad_corte.csv", encoding="utf-8")
+    rev = json.loads((ROOT / "results/tropical/revision/resumen.json").read_text(encoding="utf-8"))["contraejemplo"]
+    era = json.loads((ROOT / "results/tropical/era5/resumen.json").read_text(encoding="utf-8"))
     doc = {
         "fuente": "results/tropical/recalculo/ (variante A_frec, corte " + str(resumen["corte"]) + ", commit 317724b)",
         "indices": FRECUENCIA, "corte": resumen["corte"],
         "total_en_disputa": {"publicado": resumen["total_en_disputa"]["original"], "sin_escalon": resumen["total_en_disputa"]["A_frec"]},
         "recuentos": recuentos, "nacional_IMERG": nacional,
         "sensibilidad_corte": sens.to_dict(orient="records"),
+        "revision": {"fuente": "results/tropical/revision/resumen.json (datos SINTETICOS)",
+                     "reduccion_pendiente_sintetica_pct": round(rev["reduccion_pendiente_pct"], 1),
+                     "pettitt_p_sintetica": round(rev["pettitt_p_mismo_nulo_bloques12"], 4)},
+        "era5": {"fuente": "results/tropical/era5/resumen.json", "n_puntos": len(era["puntos"]),
+                 "punto_de_cambio_IMERG_menos_ERA5": era["pettitt"]["IMERG_menos_ERA5"]["punto_de_cambio"],
+                 "p_IMERG_menos_ERA5": round(era["pettitt"]["IMERG_menos_ERA5"]["p_bloques_12m"], 4),
+                 "cambio_medio_pp": {k: round(v, 1) for k, v in era["cambio_medio_pp"].items()}},
         "capas": capas,
     }
     OUT.write_text(json.dumps(doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     FIG.mkdir(parents=True, exist_ok=True)
-    for f in ["07_the_step_in_2013_dark.png", "08_after_the_correction_dark.png"]:
+    old = FIG / "07_the_step_in_2013_dark.png"  # la figura 07 afirmaba un escalón en 2013 que ERA5 no confirma
+    if old.exists():
+        old.unlink()
+    for f in ["08_after_the_correction_dark.png", "09_tercer_testigo_era5_dark.png"]:
         shutil.copy2(ROOT / "figures/tropical" / f, FIG / f)
     print(OUT, f"{OUT.stat().st_size / 1024:.0f} KB", "en disputa (frecuencia):", total,
           "· total del recálculo:", resumen["total_en_disputa"])

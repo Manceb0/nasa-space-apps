@@ -36,13 +36,15 @@ export interface Rej {
   clases_codigo?: string[];
   capas: Record<string, Record<string, Record<string, CellLayer | (number | null)[]>>>;
 }
-/** Variante «sin el escalón de 2013-10» (results/tropical/recalculo, A_frec): solo IMERG, solo índices de frecuencia. */
+/** Capa de sensibilidad «ajuste hacia CHIRPS» (results/tropical/recalculo, A_frec): solo IMERG, solo índices de frecuencia. No es una corrección. */
 export interface Nac13 { pendiente_decada: number; pendiente_pct_decada: number; p: number; clase: string }
 export interface Step13 {
   indices: string[]; corte: number; total_en_disputa: { publicado: number; sin_escalon: number };
   recuentos: Record<string, Record<string, { en_disputa_publicado: number; en_disputa_sin_escalon: number }>>;
   nacional_IMERG: Record<string, Record<string, { publicado?: Nac13; sin_escalon?: Nac13 }>>;
   capas: Record<string, Record<string, { IMERG: CellLayer; clase: (number | null)[] }>>;
+  revision?: { reduccion_pendiente_sintetica_pct: number; pettitt_p_sintetica: number };
+  era5?: { n_puntos: number; punto_de_cambio_IMERG_menos_ERA5: string; p_IMERG_menos_ERA5: number; cambio_medio_pp: Record<string, number> };
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FC = { features: any[] };
@@ -88,9 +90,9 @@ export class TrendData {
   series(s: Sel, src = s.src, reg = s.reg) { return this.P.series[s.ind]?.[this.perFor(s.ind, s.per)]?.[src]?.[reg] ?? null; }
   row(s: Sel, reg = s.reg) { return this.P.tendencias[s.ind]?.[this.perFor(s.ind, s.per)]?.[reg] ?? null; }
   tr(s: Sel, src = s.src, reg = s.reg) { return (this.row(s, reg)?.[src] as Tr | undefined) ?? null; }
-  /** true: el mapa usa IMERG sin el escalón de 2013-10 en los índices de frecuencia (el panel sigue con lo publicado). */
+  /** true: el mapa muestra la sensibilidad (IMERG ajustado hacia CHIRPS) en los índices de frecuencia; el panel sigue con lo publicado. */
   fix = false;
-  /** ¿Este índice es de los que IMERG cuenta distinto desde 2013-10? */
+  /** ¿Este índice depende del conteo de días de lluvia, donde IMERG podría derivar? */
   stepped(ind: string) { return !!this.s13?.indices.includes(ind) && this.prods.includes("IMERG"); }
   private fixLayer(s: Sel) { return this.fix ? this.s13?.capas[s.ind]?.[this.perFor(s.ind, s.per)] : undefined; }
   cells(s: Sel, src = s.src) { const f = this.fixLayer(s); if (f && src === "IMERG") return f.IMERG; return this.R.capas[s.ind]?.[this.perFor(s.ind, s.per)]?.[src] as CellLayer | undefined; }
