@@ -1,0 +1,129 @@
+provincia,codigo,escala,tolerancia_dias,n_A,n_B,A_confirmado_por_B,B_confirmado_por_A,tasa_cambio_decision
+Azua,DO-02,maximo_celda,0,55,54,13,13,0.761468
+Azua,DO-02,maximo_celda,1,55,54,15,13,0.743119
+Bahoruco,DO-03,maximo_celda,0,26,26,4,4,0.846154
+Bahoruco,DO-03,maximo_celda,1,26,26,4,4,0.846154
+Barahona,DO-04,maximo_celda,0,40,111,26,26,0.655629
+Barahona,DO-04,maximo_celda,1,40,111,30,34,0.576159
+Dajabón,DO-05,maximo_celda,0,46,77,8,8,0.869919
+Dajabón,DO-05,maximo_celda,1,46,77,10,14,0.804878
+Distrito Nacional,DO-01,maximo_celda,0,36,60,15,15,0.6875
+Distrito Nacional,DO-01,maximo_celda,1,36,60,16,22,0.604167
+Duarte,DO-06,maximo_celda,0,74,187,33,33,0.747126
+Duarte,DO-06,maximo_celda,1,74,187,38,54,0.64751
+El Seybo,DO-08,maximo_celda,0,86,180,36,36,0.729323
+El Seybo,DO-08,maximo_celda,1,86,180,49,52,0.620301
+Espaillat,DO-09,maximo_celda,0,95,168,38,38,0.711027
+Espaillat,DO-09,maximo_celda,1,95,168,42,59,0.61597
+Hato Mayor,DO-30,maximo_celda,0,73,186,35,35,0.72973
+Hato Mayor,DO-30,maximo_celda,1,73,186,44,50,0.637066
+Hermanas,DO-19,maximo_celda,0,58,90,18,18,0.756757
+Hermanas,DO-19,maximo_celda,1,58,90,19,26,0.695946
+Independencia,DO-10,maximo_celda,0,31,130,20,20,0.751553
+Independencia,DO-10,maximo_celda,1,31,130,23,24,0.708075
+La Altagracia,DO-11,maximo_celda,0,104,160,34,34,0.742424
+La Altagracia,DO-11,maximo_celda,1,104,160,44,48,0.651515
+La Estrelleta,DO-07,maximo_celda,0,40,85,11,11,0.824
+La Estrelleta,DO-07,maximo_celda,1,40,85,13,13,0.792
+La Romana,DO-12,maximo_celda,0,61,56,20,20,0.65812
+La Romana,DO-12,maximo_celda,1,61,56,27,22,0.581197
+La Vega,DO-13,maximo_celda,0,65,196,17,17,0.869732
+La Vega,DO-13,maximo_celda,1,65,196,21,23,0.831418
+María Trinidad Sánchez,DO-14,maximo_celda,0,94,200,47,47,0.680272
+María Trinidad Sánchez,DO-14,maximo_celda,1,94,200,54,73,0.568027
+Monseñor Nouel,DO-28,maximo_celda,0,44,152,18,18,0.816327
+Monseñor Nouel,DO-28,maximo_celda,1,44,152,20,28,0.755102
+Monte Cristi,DO-15,maximo_celda,0,59,38,9,9,0.814433
+Monte Cristi,DO-15,maximo_celda,1,59,38,10,13,0.762887
+Monte Plata,DO-29,maximo_celda,0,85,186,39,39,0.712177
+Monte Plata,DO-29,maximo_celda,1,85,186,43,65,0.601476
+Pedernales,DO-16,maximo_celda,0,67,34,14,14,0.722772
+Pedernales,DO-16,maximo_celda,1,67,34,17,15,0.683168
+Peravia,DO-17,maximo_celda,0,53,31,15,15,0.642857
+Peravia,DO-17,maximo_celda,1,53,31,19,17,0.571429
+Puerto Plata,DO-18,maximo_celda,0,108,174,37,37,0.737589
+Puerto Plata,DO-18,maximo_celda,1,108,174,41,56,0.656028
+Samaná,DO-20,maximo_celda,0,86,193,43,43,0.691756
+Samaná,DO-20,maximo_celda,1,86,193,47,65,0.598566
+San Cristóbal,DO-21,maximo_celda,0,66,143,27,27,0.741627
+San Cristóbal,DO-21,maximo_celda,1,66,143,31,38,0.669856
+San José de Ocoa,DO-31,maximo_celda,0,39,56,13,13,0.726316
+San José de Ocoa,DO-31,maximo_celda,1,39,56,15,16,0.673684
+San Juan,DO-22,maximo_celda,0,59,116,16,16,0.817143
+San Juan,DO-22,maximo_celda,1,59,116,18,19,0.788571
+San Pedro de Macorís,DO-23,maximo_celda,0,77,83,30,30,0.625
+San Pedro de Macorís,DO-23,maximo_celda,1,77,83,42,37,0.50625
+Santiago,DO-25,maximo_celda,0,113,229,33,33,0.807018
+Santiago,DO-25,maximo_celda,1,113,229,40,49,0.739766
+Santiago Rodríguez,DO-26,maximo_celda,0,49,124,14,14,0.83815
+Santiago Rodríguez,DO-26,maximo_celda,1,49,124,16,21,0.786127
+Santo Domingo,DO-32,maximo_celda,0,71,117,35,35,0.62766
+Santo Domingo,DO-32,maximo_celda,1,71,117,42,49,0.515957
+Sánchez Ramírez,DO-24,maximo_celda,0,62,125,20,20,0.786096
+Sánchez Ramírez,DO-24,maximo_celda,1,62,125,22,33,0.705882
+Valverde,DO-27,maximo_celda,0,44,44,9,9,0.795455
+Valverde,DO-27,maximo_celda,1,44,44,10,15,0.715909
+Azua,DO-02,media_provincia,0,19,1,1,1,0.9
+Azua,DO-02,media_provincia,1,19,1,2,1,0.85
+Bahoruco,DO-03,media_provincia,0,14,2,1,1,0.875
+Bahoruco,DO-03,media_provincia,1,14,2,2,1,0.8125
+Barahona,DO-04,media_provincia,0,25,17,8,8,0.619048
+Barahona,DO-04,media_provincia,1,25,17,9,9,0.571429
+Dajabón,DO-05,media_provincia,0,4,18,1,1,0.909091
+Dajabón,DO-05,media_provincia,1,4,18,1,2,0.863636
+Distrito Nacional,DO-01,media_provincia,0,30,38,12,12,0.647059
+Distrito Nacional,DO-01,media_provincia,1,30,38,13,12,0.632353
+Duarte,DO-06,media_provincia,0,16,29,6,6,0.733333
+Duarte,DO-06,media_provincia,1,16,29,7,11,0.6
+El Seybo,DO-08,media_provincia,0,22,33,9,9,0.672727
+El Seybo,DO-08,media_provincia,1,22,33,11,12,0.581818
+Espaillat,DO-09,media_provincia,0,20,39,6,6,0.79661
+Espaillat,DO-09,media_provincia,1,20,39,6,9,0.745763
+Hato Mayor,DO-30,media_provincia,0,20,41,10,10,0.672131
+Hato Mayor,DO-30,media_provincia,1,20,41,11,15,0.57377
+Hermanas,DO-19,media_provincia,0,16,27,4,4,0.813953
+Hermanas,DO-19,media_provincia,1,16,27,4,5,0.790698
+Independencia,DO-10,media_provincia,0,13,14,3,3,0.777778
+Independencia,DO-10,media_provincia,1,13,14,4,3,0.740741
+La Altagracia,DO-11,media_provincia,0,33,18,8,8,0.686275
+La Altagracia,DO-11,media_provincia,1,33,18,10,10,0.607843
+La Estrelleta,DO-07,media_provincia,0,2,7,1,1,0.777778
+La Estrelleta,DO-07,media_provincia,1,2,7,1,2,0.666667
+La Romana,DO-12,media_provincia,0,38,22,11,11,0.633333
+La Romana,DO-12,media_provincia,1,38,22,13,13,0.566667
+La Vega,DO-13,media_provincia,0,12,21,5,5,0.69697
+La Vega,DO-13,media_provincia,1,12,21,5,7,0.636364
+María Trinidad Sánchez,DO-14,media_provincia,0,26,60,10,10,0.767442
+María Trinidad Sánchez,DO-14,media_provincia,1,26,60,12,16,0.674419
+Monseñor Nouel,DO-28,media_provincia,0,12,41,8,8,0.698113
+Monseñor Nouel,DO-28,media_provincia,1,12,41,8,11,0.641509
+Monte Cristi,DO-15,media_provincia,0,10,3,2,2,0.692308
+Monte Cristi,DO-15,media_provincia,1,10,3,3,2,0.615385
+Monte Plata,DO-29,media_provincia,0,14,34,7,7,0.708333
+Monte Plata,DO-29,media_provincia,1,14,34,7,8,0.6875
+Pedernales,DO-16,media_provincia,0,21,1,1,1,0.909091
+Pedernales,DO-16,media_provincia,1,21,1,2,1,0.863636
+Peravia,DO-17,media_provincia,0,31,3,2,2,0.882353
+Peravia,DO-17,media_provincia,1,31,3,3,3,0.823529
+Puerto Plata,DO-18,media_provincia,0,19,38,8,8,0.719298
+Puerto Plata,DO-18,media_provincia,1,19,38,8,9,0.701754
+Samaná,DO-20,media_provincia,0,21,53,7,7,0.810811
+Samaná,DO-20,media_provincia,1,21,53,8,10,0.756757
+San Cristóbal,DO-21,media_provincia,0,25,29,12,12,0.555556
+San Cristóbal,DO-21,media_provincia,1,25,29,14,13,0.5
+San José de Ocoa,DO-31,media_provincia,0,20,4,2,2,0.833333
+San José de Ocoa,DO-31,media_provincia,1,20,4,4,2,0.75
+San Juan,DO-22,media_provincia,0,9,7,3,3,0.625
+San Juan,DO-22,media_provincia,1,9,7,4,3,0.5625
+San Pedro de Macorís,DO-23,media_provincia,0,32,15,9,9,0.617021
+San Pedro de Macorís,DO-23,media_provincia,1,32,15,12,10,0.531915
+Santiago,DO-25,media_provincia,0,8,27,5,5,0.714286
+Santiago,DO-25,media_provincia,1,8,27,5,6,0.685714
+Santiago Rodríguez,DO-26,media_provincia,0,6,23,2,2,0.862069
+Santiago Rodríguez,DO-26,media_provincia,1,6,23,2,2,0.862069
+Santo Domingo,DO-32,media_provincia,0,23,23,10,10,0.565217
+Santo Domingo,DO-32,media_provincia,1,23,23,10,10,0.565217
+Sánchez Ramírez,DO-24,media_provincia,0,8,28,4,4,0.777778
+Sánchez Ramírez,DO-24,media_provincia,1,8,28,4,5,0.75
+Valverde,DO-27,media_provincia,0,10,4,3,3,0.571429
+Valverde,DO-27,media_provincia,1,10,4,3,3,0.571429

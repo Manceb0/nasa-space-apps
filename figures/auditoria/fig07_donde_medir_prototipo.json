@@ -1,0 +1,11 @@
+{
+  "archivos": [
+    "fig07_donde_medir_prototipo.pdf",
+    "fig07_donde_medir_prototipo.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    92.0
+  ],
+  "fuente": "results/auditoria/donde_medir_prototipo.csv"
+}

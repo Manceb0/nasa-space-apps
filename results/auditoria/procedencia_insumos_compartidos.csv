@@ -1,0 +1,13 @@
+insumo,IMERG,CHIRPS,GLDAS_forzamiento,SMAP_L4,MERRA2,Estaciones,TerraClimate,SMAP_L3,MOD17,GEOGLOWS,MOD13A3,GRACE
+Pluviómetros GTS/SYNOP,V,V,V,V,V,V,,,,,,
+GPCC,V,I,V,V,,,,,,,,
+GHCN/GSOD,I,V,,,,V,I,,,,,
+CPC Unified,,,,I,V,,,,,,,
+IR geoestacionario,V,V,V,,,,,,,,,
+Microondas pasivas,V,I,V,,,,,,,,,
+Sistema GEOS / MERRA-2,V,,,V,V,,,V,V,,,
+ERA5,V,,,,,,V,,,V,,
+NCEP (CFSv2 / GDAS),,V,V,,,,,,,,,
+Tb SMAP banda L,,,,V,,,,V,,,,
+Reflectancia MODIS,,,V,,,,,V,V,,V,
+Gravimetría GRACE,,,,,,,,,,,,V

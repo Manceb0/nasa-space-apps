@@ -16,3 +16,12 @@ data/nacional/gesdisc/
 # Datos crudos de alta resolución (se regeneran con: docker compose run --rm alta_resolucion)
 data/nacional_hr/*
 !data/nacional_hr/MANIFEST.json
+# Datos crudos de los motores Evidence Intelligence (se regeneran; cada uno guarda su MANIFEST.json)
+data/tendencias/*
+!data/tendencias/MANIFEST.json
+data/auditoria/*
+!data/auditoria/MANIFEST.json
+data/yuna/*
+!data/yuna/MANIFEST.json
+data/testigos/*
+!data/testigos/MANIFEST.json

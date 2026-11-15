@@ -46,3 +46,68 @@ services:
       - ./figures/nacional_hr:/app/figures/nacional_hr
       - ./reports_nacional:/app/reports_nacional
       - ./notebooks:/app/notebooks
+
+  # ── Evidence Intelligence (2026-11-14): cuatro motores que corren en paralelo. ──
+  # El código se monta desde el disco (no hace falta reconstruir la imagen). Cada motor escribe SOLO en su carpeta
+  # de data/, results/ y figures/; lee todo lo demás en solo lectura.
+  #   docker compose run --rm tendencias   # P0: tendencias de sequía y lluvia extrema, con significancia
+  #   docker compose run --rm auditoria    # auditoría de confianza: procedencia, desacuerdos y decisiones que cambian
+  #   docker compose run --rm yuna         # caso Yuna: cuenca, presa de Hatillo, inundaciones observadas
+  #   docker compose run --rm testigos     # testigos independientes (SMAP L3) y pruebas de hipótesis
+  tendencias: &motor
+    image: phantom:latest
+    entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.tendencias.run"]
+    command: []
+    volumes:
+      - ./.secrets:/run/secrets:ro
+      - ./earthmemory:/app/earthmemory:ro
+      - ./tests:/app/tests:ro
+      - ./data:/app/data:ro
+      - ./results:/app/results:ro
+      - ./data/tendencias:/app/data/tendencias
+      - ./results/tendencias:/app/results/tendencias
+      - ./figures/tendencias:/app/figures/tendencias
+      - ./reports_nacional:/app/reports_nacional
+      - ./notebooks:/app/notebooks
+  auditoria:
+    <<: *motor
+    entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.auditoria.run"]
+    volumes:
+      - ./.secrets:/run/secrets:ro
+      - ./earthmemory:/app/earthmemory:ro
+      - ./tests:/app/tests:ro
+      - ./data:/app/data:ro
+      - ./results:/app/results:ro
+      - ./data/auditoria:/app/data/auditoria
+      - ./results/auditoria:/app/results/auditoria
+      - ./figures/auditoria:/app/figures/auditoria
+      - ./reports_nacional:/app/reports_nacional
+      - ./notebooks:/app/notebooks
+  yuna:
+    <<: *motor
+    entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.yuna.run"]
+    volumes:
+      - ./.secrets:/run/secrets:ro
+      - ./earthmemory:/app/earthmemory:ro
+      - ./tests:/app/tests:ro
+      - ./data:/app/data:ro
+      - ./results:/app/results:ro
+      - ./data/yuna:/app/data/yuna
+      - ./results/yuna:/app/results/yuna
+      - ./figures/yuna:/app/figures/yuna
+      - ./reports_nacional:/app/reports_nacional
+      - ./notebooks:/app/notebooks
+  testigos:
+    <<: *motor
+    entrypoint: ["uv", "run", "--frozen", "--no-sync", "python", "-m", "earthmemory.testigos.run"]
+    volumes:
+      - ./.secrets:/run/secrets:ro
+      - ./earthmemory:/app/earthmemory:ro
+      - ./tests:/app/tests:ro
+      - ./data:/app/data:ro
+      - ./results:/app/results:ro
+      - ./data/testigos:/app/data/testigos
+      - ./results/testigos:/app/results/testigos
+      - ./figures/testigos:/app/figures/testigos
+      - ./reports_nacional:/app/reports_nacional
+      - ./notebooks:/app/notebooks

@@ -1,0 +1,11 @@
+{
+  "archivos": [
+    "fig03_reauditoria_50_96.pdf",
+    "fig03_reauditoria_50_96.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    118.0
+  ],
+  "fuente": "results/auditoria/reauditoria_*.csv; GLDAS-2.1, IMERG V07, Copernicus DEM GLO-90"
+}

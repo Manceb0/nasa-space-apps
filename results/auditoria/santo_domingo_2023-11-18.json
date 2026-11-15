@@ -1,0 +1,112 @@
+{
+ "chirps": {
+  "celda_18": 86.25027101447537,
+  "celda_19": 61.6071523076997,
+  "celda_18_19": 147.85742332217507,
+  "vecinas_max_18": 91.31819074685365,
+  "vecinas_max_18_19": 148.3920580563846,
+  "region_max_18_19_en_RD": 304.32303803090076
+ },
+ "imerg_diario": {
+  "celda_dia_utc_18": 139.8800048828125,
+  "celda_dia_utc_19": 40.29499435424805
+ },
+ "ghcn_78486": {
+  "2023-11-16": null,
+  "2023-11-17": null,
+  "2023-11-18": 9.7,
+  "2023-11-19": 313.2,
+  "2023-11-20": 0.0,
+  "2023-11-21": null
+ },
+ "descomposicion": {
+  "estacion_mm": 431.0,
+  "imerg_celda_dia_utc_mm": 139.8799969777465,
+  "efecto_ventana_mm": 20.49499975144863,
+  "imerg_celda_mejor_ventana_mm": 160.37499672919512,
+  "efecto_escala_vecinas_mm": 24.82000157982111,
+  "imerg_mejor_vecina_mejor_ventana_mm": 185.19499830901623,
+  "brecha_restante_mm": 245.80500169098377,
+  "media_11_pluviometros_prensa_mm": 335.86909090909086,
+  "mediana_11_pluviometros_prensa_mm": 316.7,
+  "brecha_restante_vs_media_pluviometros_mm": 150.67409260007463,
+  "chirps_mejor_vecina_18_19_mm": 148.3920580563846
+ },
+ "celda": {
+  "i": 10,
+  "j": 21,
+  "lat": 18.45,
+  "lon": -69.95
+ },
+ "ventanas": [
+  {
+   "ventana": "día UTC 18-nov (00-24 UTC)",
+   "inicio_utc": "2023-11-18T00:00",
+   "fin_utc": "2023-11-19T00:00",
+   "medias_horas": 48,
+   "imerg_celda_mm": 139.8799969777465,
+   "imerg_vecinas_max_mm": 170.17999850213528,
+   "imerg_vecinas_media_mm": 127.70999744161963,
+   "imerg_vecinas_min_mm": 85.6299975886941
+  },
+  {
+   "ventana": "día civil local 18-nov (04 UTC 18 → 04 UTC 19)",
+   "inicio_utc": "2023-11-18T04:00",
+   "fin_utc": "2023-11-19T04:00",
+   "medias_horas": 48,
+   "imerg_celda_mm": 157.25999679416418,
+   "imerg_vecinas_max_mm": 182.4549984484911,
+   "imerg_vecinas_media_mm": 146.23999713154302,
+   "imerg_vecinas_min_mm": 106.26499713212252
+  },
+  {
+   "ventana": "24 h que terminan 12 UTC 18-nov (SYNOP, 08 h local)",
+   "inicio_utc": "2023-11-17T12:00",
+   "fin_utc": "2023-11-18T12:00",
+   "medias_horas": 48,
+   "imerg_celda_mm": 25.999999368563294,
+   "imerg_vecinas_max_mm": 47.73999851569533,
+   "imerg_vecinas_media_mm": 27.523888165752094,
+   "imerg_vecinas_min_mm": 14.229999620467424
+  },
+  {
+   "ventana": "24 h que terminan 12 UTC 19-nov (SYNOP fechado 19)",
+   "inicio_utc": "2023-11-18T12:00",
+   "fin_utc": "2023-11-19T12:00",
+   "medias_horas": 48,
+   "imerg_celda_mm": 159.19499677792192,
+   "imerg_vecinas_max_mm": 178.99499866366386,
+   "imerg_vecinas_media_mm": 149.50555265115366,
+   "imerg_vecinas_min_mm": 118.89999664202332
+  },
+  {
+   "ventana": "07-07 local que termina el 19 (11 UTC 18 → 11 UTC 19)",
+   "inicio_utc": "2023-11-18T11:00",
+   "fin_utc": "2023-11-19T11:00",
+   "medias_horas": 48,
+   "imerg_celda_mm": 159.38499676436186,
+   "imerg_vecinas_max_mm": 179.6249986588955,
+   "imerg_vecinas_media_mm": 149.82055264421635,
+   "imerg_vecinas_min_mm": 118.81999664381146
+  },
+  {
+   "ventana": "máximo de 24 h móviles (17-19 nov)",
+   "inicio_utc": "2023-11-18 10:00:00",
+   "fin_utc": "2023-11-19 10:00:00",
+   "medias_horas": 48,
+   "imerg_celda_mm": 160.37499672919512,
+   "imerg_vecinas_max_mm": 185.19499830901623,
+   "imerg_vecinas_media_mm": 152.94055251984133,
+   "imerg_vecinas_min_mm": 119.62999664619565
+  }
+ ],
+ "veredicto": {
+  "conclusion": "inconclusa en la descomposición; se sostiene que los productos de 10 km no reproducen el extremo puntual",
+  "motivo": "La ventana exacta de 24 h de los 431 mm no está publicada (NHC: '24-h period ending on 18 November'); la coordenada de la estación no es pública. Aun con la ventana más favorable y la mejor celda vecina, IMERG queda en 185 mm; la media de 11 pluviómetros de ONAMET publicados en prensa es 336 mm."
+ },
+ "fuentes": {
+  "NHC TCR AL222023": "https://www.nhc.noaa.gov/data/tcr/AL222023_Twenty-Two.pdf",
+  "Listín Diario 21-nov-2023 (boletín ONAMET)": "https://listindiario.com/la-republica/20231121/viejo-arroyo-hondo-estacion-registro-mas-lluvias-sabado_783610.html",
+  "Diario Libre 19-nov-2023": "https://www.diariolibre.com/actualidad/nacional/2023/11/19/disturbio-tropical-dejo-lluvias-sin-precedentes-en-rd/2527677"
+ }
+}

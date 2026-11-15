@@ -1,0 +1,10 @@
+resultado,covariable,n_celdas,rho_spearman,p_nominal,p_toroidal,n_sustitutos
+desacuerdo_spi3_imerg_vs_modelo,elevacion_m,65,0.390253,0.00131021,0.207161,390
+desacuerdo_spi3_imerg_vs_modelo,pendiente_grados,65,0.289685,0.0192512,0.316456,394
+desacuerdo_spi3_imerg_vs_modelo,dist_costa_km,65,0.299563,0.0153401,0.190104,383
+n_posible_diferencia,elevacion_m,65,0.159305,0.20496,0.38874,372
+n_posible_diferencia,pendiente_grados,65,0.142369,0.257921,0.612048,414
+n_posible_diferencia,dist_costa_km,65,0.1427,0.256804,0.28496,378
+n_sin_explicar,elevacion_m,65,0.0103439,0.934822,0.931204,406
+n_sin_explicar,pendiente_grados,65,-0.0532461,0.67357,0.75641,389
+n_sin_explicar,dist_costa_km,65,0.135445,0.282031,0.516291,398

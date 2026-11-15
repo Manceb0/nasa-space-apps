@@ -1,0 +1,7 @@
+ventana,inicio_utc,fin_utc,medias_horas,imerg_celda_mm,imerg_vecinas_max_mm,imerg_vecinas_media_mm,imerg_vecinas_min_mm
+día UTC 18-nov (00-24 UTC),2023-11-18T00:00,2023-11-19T00:00,48,139.88,170.18,127.71,85.63
+día civil local 18-nov (04 UTC 18 → 04 UTC 19),2023-11-18T04:00,2023-11-19T04:00,48,157.26,182.455,146.24,106.265
+"24 h que terminan 12 UTC 18-nov (SYNOP, 08 h local)",2023-11-17T12:00,2023-11-18T12:00,48,26,47.74,27.5239,14.23
+24 h que terminan 12 UTC 19-nov (SYNOP fechado 19),2023-11-18T12:00,2023-11-19T12:00,48,159.195,178.995,149.506,118.9
+07-07 local que termina el 19 (11 UTC 18 → 11 UTC 19),2023-11-18T11:00,2023-11-19T11:00,48,159.385,179.625,149.821,118.82
+máximo de 24 h móviles (17-19 nov),2023-11-18 10:00:00,2023-11-19 10:00:00,48,160.375,185.195,152.941,119.63

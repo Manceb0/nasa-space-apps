@@ -1,0 +1,158 @@
+[
+ {
+  "umbral_spi3": -1.0,
+  "productos": "4 productos",
+  "n_casos": 9152,
+  "n_alguna_alarma": 3111,
+  "n_no_unanime": 2836,
+  "tasa_global": 0.3098776223776224,
+  "tasa_condicional": 0.9116039858566377,
+  "ic95_global": [
+   0.23578016493055556,
+   0.3839641185179257
+  ],
+  "ic95_condicional": [
+   0.8489348359745249,
+   0.9633661413217279
+  ],
+  "n_contradiccion_clara": 1201,
+  "tasa_contradiccion_clara": 0.3860495017679203,
+  "ic95_contradiccion_clara": [
+   0.28355976266876165,
+   0.5074805361802828
+  ],
+  "n_frontera": 665,
+  "tasa_frontera": 0.21375763420122149,
+  "n_unanime_sequia": 275
+ },
+ {
+  "umbral_spi3": -1.0,
+  "productos": "IMERG vs CHIRPS",
+  "n_casos": 9152,
+  "n_alguna_alarma": 2245,
+  "n_no_unanime": 1498,
+  "tasa_global": 0.16368006993006992,
+  "tasa_condicional": 0.667260579064588,
+  "ic95_global": [
+   0.12412359775641026,
+   0.20401059108145372
+  ],
+  "ic95_condicional": [
+   0.568521680318184,
+   0.7849209061828333
+  ],
+  "n_contradiccion_clara": 316,
+  "tasa_contradiccion_clara": 0.14075723830734965,
+  "ic95_contradiccion_clara": [
+   0.08421864801097065,
+   0.21881107389013246
+  ],
+  "n_frontera": 710,
+  "tasa_frontera": 0.31625835189309576,
+  "n_unanime_sequia": 747
+ },
+ {
+  "umbral_spi3": -1.0,
+  "productos": "3 sin MERRA-2",
+  "n_casos": 9152,
+  "n_alguna_alarma": 2636,
+  "n_no_unanime": 2000,
+  "tasa_global": 0.21853146853146854,
+  "tasa_condicional": 0.7587253414264037,
+  "ic95_global": [
+   0.16643880208333334,
+   0.2742101917057903
+  ],
+  "ic95_condicional": [
+   0.670319773453565,
+   0.859094145938877
+  ],
+  "n_contradiccion_clara": 506,
+  "tasa_contradiccion_clara": 0.19195751138088013,
+  "ic95_contradiccion_clara": [
+   0.1247498905560353,
+   0.2816498550030825
+  ],
+  "n_frontera": 816,
+  "tasa_frontera": 0.3095599393019727,
+  "n_unanime_sequia": 636
+ },
+ {
+  "umbral_spi3": -1.5,
+  "productos": "4 productos",
+  "n_casos": 9152,
+  "n_alguna_alarma": 1419,
+  "n_no_unanime": 1396,
+  "tasa_global": 0.15253496503496503,
+  "tasa_condicional": 0.9837914023960536,
+  "ic95_global": [
+   0.09516749526515152,
+   0.2132169481734155
+  ],
+  "ic95_condicional": [
+   0.9675571361852463,
+   0.9964002035266138
+  ],
+  "n_contradiccion_clara": 441,
+  "tasa_contradiccion_clara": 0.3107822410147992,
+  "ic95_contradiccion_clara": [
+   0.17373102271389904,
+   0.4564806456922134
+  ],
+  "n_frontera": 234,
+  "tasa_frontera": 0.1649048625792812,
+  "n_unanime_sequia": 23
+ },
+ {
+  "umbral_spi3": -1.5,
+  "productos": "IMERG vs CHIRPS",
+  "n_casos": 9152,
+  "n_alguna_alarma": 897,
+  "n_no_unanime": 660,
+  "tasa_global": 0.07211538461538461,
+  "tasa_condicional": 0.7357859531772575,
+  "ic95_global": [
+   0.046440972222222224,
+   0.09771196995804614
+  ],
+  "ic95_condicional": [
+   0.6486383147853736,
+   0.8629136298195887
+  ],
+  "n_contradiccion_clara": 97,
+  "tasa_contradiccion_clara": 0.10813823857302118,
+  "ic95_contradiccion_clara": [
+   0.02968705221679029,
+   0.23899466217566295
+  ],
+  "n_frontera": 262,
+  "tasa_frontera": 0.29208472686733555,
+  "n_unanime_sequia": 237
+ },
+ {
+  "umbral_spi3": -1.5,
+  "productos": "3 sin MERRA-2",
+  "n_casos": 9152,
+  "n_alguna_alarma": 1182,
+  "n_no_unanime": 1003,
+  "tasa_global": 0.10959353146853147,
+  "tasa_condicional": 0.8485617597292724,
+  "ic95_global": [
+   0.06857367621527778,
+   0.15107834507042253
+  ],
+  "ic95_condicional": [
+   0.7880522661762022,
+   0.9298856199093165
+  ],
+  "n_contradiccion_clara": 157,
+  "tasa_contradiccion_clara": 0.13282571912013535,
+  "ic95_contradiccion_clara": [
+   0.05933976391825229,
+   0.2534515907555431
+  ],
+  "n_frontera": 356,
+  "tasa_frontera": 0.3011844331641286,
+  "n_unanime_sequia": 179
+ }
+]

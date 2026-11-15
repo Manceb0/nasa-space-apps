@@ -1,0 +1,11 @@
+{
+  "archivos": [
+    "fig02_estaciones.pdf",
+    "fig02_estaciones.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    125.0
+  ],
+  "fuentes": "GHCN-Daily (doi:10.7289/V5D21VHZ), GSOD, IMERG V07, CHIRPS v2.0, POWER/MERRA-2"
+}

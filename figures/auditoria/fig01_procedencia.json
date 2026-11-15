@@ -1,0 +1,11 @@
+{
+  "archivos": [
+    "fig01_procedencia.pdf",
+    "fig01_procedencia.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    120.0
+  ],
+  "fuente": "earthmemory/auditoria/procedencia.py (URLs en results/auditoria/procedencia.json)"
+}

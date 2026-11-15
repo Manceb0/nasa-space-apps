@@ -1,0 +1,19 @@
+variable,comparacion,categoria,n_base,n_marcados,fraccion,chi2,p_perm
+region,A vs todos con retorno,este/sureste,241,42,0.174274,5.63798,0.064
+region,A vs todos con retorno,norte (Cibao),129,12,0.0930233,5.63798,0.064
+region,A vs todos con retorno,oeste/suroeste,344,42,0.122093,5.63798,0.064
+region,posible diferencia vs A,este/sureste,42,17,0.404762,4.22161,0.132
+region,posible diferencia vs A,norte (Cibao),12,8,0.666667,4.22161,0.132
+region,posible diferencia vs A,oeste/suroeste,42,25,0.595238,4.22161,0.132
+temporada,A vs todos con retorno,primera AMJJ,230,9,0.0391304,26.5861,0.001
+temporada,A vs todos con retorno,seca DEFM,290,51,0.175862,26.5861,0.001
+temporada,A vs todos con retorno,segunda ASON,194,36,0.185567,26.5861,0.001
+temporada,posible diferencia vs A,primera AMJJ,9,5,0.555556,2.21627,0.324
+temporada,posible diferencia vs A,seca DEFM,51,23,0.45098,2.21627,0.324
+temporada,posible diferencia vs A,segunda ASON,36,22,0.611111,2.21627,0.324
+enso,A vs todos con retorno,El Niño,242,39,0.161157,15.6481,0.001
+enso,A vs todos con retorno,La Niña,118,26,0.220339,15.6481,0.001
+enso,A vs todos con retorno,neutro,354,31,0.0875706,15.6481,0.001
+enso,posible diferencia vs A,El Niño,39,22,0.564103,6.94547,0.029
+enso,posible diferencia vs A,La Niña,26,8,0.307692,6.94547,0.029
+enso,posible diferencia vs A,neutro,31,20,0.645161,6.94547,0.029

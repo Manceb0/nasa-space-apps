@@ -1,0 +1,89 @@
+{
+ "definicion": "Re-auditoría de \"50 de 96 episodios = posible diferencia entre productos\".\n\nDefinición exacta en el código del motor nacional (earthmemory/episodes.py + nacional.match_episodes_across_products):\n- Celda = celda GLDAS 0.25° incluida (65). Lluvia = IMERG mensual remapeada de forma conservativa a la celda.\n- Episodio = racha de SPI-3 <= −1 durante >= 2 meses. Retorno = primer mes posterior con SPI-3 >= 0 (antes\n  del siguiente episodio).\n- Contradicción A (raíz) = z robusto de la humedad de la zona de raíces GLDAS < −1 en el mes de retorno y el\n  siguiente.\n- Etiqueta: se repite TODO con la lluvia que forzó a GLDAS-2.1 (Rainf_f_tavg, GPCP 1DD desagregado). Si en la\n  misma celda hay un episodio de esa lluvia que se solapa (±2 meses) y también es contradicción A → \"también con\n  la lluvia del modelo\"; si no → \"posible diferencia entre productos\". OJO: la humedad del suelo es la MISMA serie\n  en las dos ramas; la etiqueta solo cambia por la lluvia (¿hubo sequía? ¿en qué mes volvió?).",
+ "reproduccion": {
+  "n_A_original": 96,
+  "n_posible_diferencia_original": 50,
+  "n_A_reproducido": 96,
+  "n_posible_diferencia_reproducido": 50
+ },
+ "n_posible_diferencia": 50,
+ "explica_a_escala": 14,
+ "explica_b_tiempo": 9,
+ "explica_b_desplazamiento_dia": 7,
+ "explica_b_tolerancia_mes": 3,
+ "explica_c_variable_umbral": 12,
+ "atribucion_secuencial": {
+  "sin_explicar": 28,
+  "a_escala": 14,
+  "c_variable_umbral": 6,
+  "b_tiempo": 2
+ },
+ "sin_explicar": 28,
+ "sin_explicar_chirps_con_imerg": 2,
+ "sin_explicar_chirps_con_modelo": 26,
+ "todos_50_chirps_con_imerg": 5,
+ "recuento_05": {
+  "bloques": 23,
+  "n_A_imerg_05": 28,
+  "n_posible_diferencia_05": 16
+ },
+ "recuento_desde_diario": {
+  "0": {
+   "n_A": 111,
+   "n_posible_diferencia": 58
+  },
+  "-1": {
+   "n_A": 113,
+   "n_posible_diferencia": 61
+  },
+  "1": {
+   "n_A": 112,
+   "n_posible_diferencia": 56
+  }
+ },
+ "n_A_con_chirps": 94,
+ "persistencia": {
+  "por_anio": [
+   {
+    "anio_fin": 2002,
+    "n_A": 13,
+    "n_posible_diferencia": 13
+   },
+   {
+    "anio_fin": 2014,
+    "n_A": 4,
+    "n_posible_diferencia": 4
+   },
+   {
+    "anio_fin": 2015,
+    "n_A": 13,
+    "n_posible_diferencia": 3
+   },
+   {
+    "anio_fin": 2019,
+    "n_A": 23,
+    "n_posible_diferencia": 12
+   },
+   {
+    "anio_fin": 2020,
+    "n_A": 22,
+    "n_posible_diferencia": 16
+   },
+   {
+    "anio_fin": 2022,
+    "n_A": 17,
+    "n_posible_diferencia": 0
+   },
+   {
+    "anio_fin": 2023,
+    "n_A": 4,
+    "n_posible_diferencia": 2
+   }
+  ],
+  "max_fraccion_anual_obs": 1.0,
+  "p_perm_max_fraccion_anual": 0.141,
+  "celdas_con_2mas_obs": 11,
+  "p_perm_celdas_repetidas": 0.9536,
+  "nota": "permutación de la etiqueta entre los 96 episodios A (conserva cuántos hay por año y celda)"
+ }
+}

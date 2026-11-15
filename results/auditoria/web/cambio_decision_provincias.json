@@ -1,0 +1,1786 @@
+{
+ "version": 1,
+ "generado_por": "earthmemory/auditoria/run.py",
+ "periodo": "2001-2024",
+ "productos_sequia": [
+  "IMERG",
+  "CHIRPS",
+  "GLDAS_forzamiento",
+  "MERRA2"
+ ],
+ "periodo_inundacion": [
+  2001,
+  2002,
+  2003,
+  2004,
+  2005,
+  2006,
+  2007,
+  2008,
+  2009,
+  2010,
+  2011,
+  2013,
+  2014
+ ],
+ "nacional_sequia": [
+  {
+   "umbral_spi3": -1.0,
+   "productos": "4 productos",
+   "n_casos": 9152,
+   "n_alguna_alarma": 3111,
+   "n_no_unanime": 2836,
+   "tasa_global": 0.3098776223776224,
+   "tasa_condicional": 0.9116039858566377,
+   "ic95_global": [
+    0.23578016493055556,
+    0.3839641185179257
+   ],
+   "ic95_condicional": [
+    0.8489348359745249,
+    0.9633661413217279
+   ],
+   "n_contradiccion_clara": 1201,
+   "tasa_contradiccion_clara": 0.3860495017679203,
+   "ic95_contradiccion_clara": [
+    0.28355976266876165,
+    0.5074805361802828
+   ],
+   "n_frontera": 665,
+   "tasa_frontera": 0.21375763420122149,
+   "n_unanime_sequia": 275
+  },
+  {
+   "umbral_spi3": -1.0,
+   "productos": "IMERG vs CHIRPS",
+   "n_casos": 9152,
+   "n_alguna_alarma": 2245,
+   "n_no_unanime": 1498,
+   "tasa_global": 0.16368006993006992,
+   "tasa_condicional": 0.667260579064588,
+   "ic95_global": [
+    0.12412359775641026,
+    0.20401059108145372
+   ],
+   "ic95_condicional": [
+    0.568521680318184,
+    0.7849209061828333
+   ],
+   "n_contradiccion_clara": 316,
+   "tasa_contradiccion_clara": 0.14075723830734965,
+   "ic95_contradiccion_clara": [
+    0.08421864801097065,
+    0.21881107389013246
+   ],
+   "n_frontera": 710,
+   "tasa_frontera": 0.31625835189309576,
+   "n_unanime_sequia": 747
+  },
+  {
+   "umbral_spi3": -1.0,
+   "productos": "3 sin MERRA-2",
+   "n_casos": 9152,
+   "n_alguna_alarma": 2636,
+   "n_no_unanime": 2000,
+   "tasa_global": 0.21853146853146854,
+   "tasa_condicional": 0.7587253414264037,
+   "ic95_global": [
+    0.16643880208333334,
+    0.2742101917057903
+   ],
+   "ic95_condicional": [
+    0.670319773453565,
+    0.859094145938877
+   ],
+   "n_contradiccion_clara": 506,
+   "tasa_contradiccion_clara": 0.19195751138088013,
+   "ic95_contradiccion_clara": [
+    0.1247498905560353,
+    0.2816498550030825
+   ],
+   "n_frontera": 816,
+   "tasa_frontera": 0.3095599393019727,
+   "n_unanime_sequia": 636
+  },
+  {
+   "umbral_spi3": -1.5,
+   "productos": "4 productos",
+   "n_casos": 9152,
+   "n_alguna_alarma": 1419,
+   "n_no_unanime": 1396,
+   "tasa_global": 0.15253496503496503,
+   "tasa_condicional": 0.9837914023960536,
+   "ic95_global": [
+    0.09516749526515152,
+    0.2132169481734155
+   ],
+   "ic95_condicional": [
+    0.9675571361852463,
+    0.9964002035266138
+   ],
+   "n_contradiccion_clara": 441,
+   "tasa_contradiccion_clara": 0.3107822410147992,
+   "ic95_contradiccion_clara": [
+    0.17373102271389904,
+    0.4564806456922134
+   ],
+   "n_frontera": 234,
+   "tasa_frontera": 0.1649048625792812,
+   "n_unanime_sequia": 23
+  },
+  {
+   "umbral_spi3": -1.5,
+   "productos": "IMERG vs CHIRPS",
+   "n_casos": 9152,
+   "n_alguna_alarma": 897,
+   "n_no_unanime": 660,
+   "tasa_global": 0.07211538461538461,
+   "tasa_condicional": 0.7357859531772575,
+   "ic95_global": [
+    0.046440972222222224,
+    0.09771196995804614
+   ],
+   "ic95_condicional": [
+    0.6486383147853736,
+    0.8629136298195887
+   ],
+   "n_contradiccion_clara": 97,
+   "tasa_contradiccion_clara": 0.10813823857302118,
+   "ic95_contradiccion_clara": [
+    0.02968705221679029,
+    0.23899466217566295
+   ],
+   "n_frontera": 262,
+   "tasa_frontera": 0.29208472686733555,
+   "n_unanime_sequia": 237
+  },
+  {
+   "umbral_spi3": -1.5,
+   "productos": "3 sin MERRA-2",
+   "n_casos": 9152,
+   "n_alguna_alarma": 1182,
+   "n_no_unanime": 1003,
+   "tasa_global": 0.10959353146853147,
+   "tasa_condicional": 0.8485617597292724,
+   "ic95_global": [
+    0.06857367621527778,
+    0.15107834507042253
+   ],
+   "ic95_condicional": [
+    0.7880522661762022,
+    0.9298856199093165
+   ],
+   "n_contradiccion_clara": 157,
+   "tasa_contradiccion_clara": 0.13282571912013535,
+   "ic95_contradiccion_clara": [
+    0.05933976391825229,
+    0.2534515907555431
+   ],
+   "n_frontera": 356,
+   "tasa_frontera": 0.3011844331641286,
+   "n_unanime_sequia": 179
+  }
+ ],
+ "provincias": [
+  {
+   "provincia": "Azua",
+   "codigo": "DO-02",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8829787234042553,
+    "ic95": [
+     0.7862745098039216,
+     0.960790679908327
+    ],
+    "tasa_contradiccion_clara": 0.3723404255319149,
+    "tasa_global": 0.2902097902097902,
+    "n_casos": 286,
+    "n_alguna_alarma": 94,
+    "n_no_unanime": 83
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9777777777777777,
+    "ic95": [
+     0.925,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.28888888888888886,
+    "tasa_global": 0.15384615384615385,
+    "n_casos": 286,
+    "n_alguna_alarma": 45,
+    "n_no_unanime": 44
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7614678899082569,
+     "disparos_imerg": 55,
+     "disparos_chirps": 54
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.7431192660550459,
+     "disparos_imerg": 55,
+     "disparos_chirps": 54
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.9,
+     "disparos_imerg": 19,
+     "disparos_chirps": 1
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.85,
+     "disparos_imerg": 19,
+     "disparos_chirps": 1
+    }
+   }
+  },
+  {
+   "provincia": "Bahoruco",
+   "codigo": "DO-03",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9130434782608695,
+    "ic95": [
+     0.8389680705358671,
+     0.9733333333333334
+    ],
+    "tasa_contradiccion_clara": 0.358695652173913,
+    "tasa_global": 0.2937062937062937,
+    "n_casos": 286,
+    "n_alguna_alarma": 92,
+    "n_no_unanime": 84
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.96,
+    "ic95": [
+     0.9024390243902439,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.3,
+    "tasa_global": 0.16783216783216784,
+    "n_casos": 286,
+    "n_alguna_alarma": 50,
+    "n_no_unanime": 48
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.8461538461538461,
+     "disparos_imerg": 26,
+     "disparos_chirps": 26
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.8461538461538461,
+     "disparos_imerg": 26,
+     "disparos_chirps": 26
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.875,
+     "disparos_imerg": 14,
+     "disparos_chirps": 2
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.8125,
+     "disparos_imerg": 14,
+     "disparos_chirps": 2
+    }
+   }
+  },
+  {
+   "provincia": "Barahona",
+   "codigo": "DO-04",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9292929292929293,
+    "ic95": [
+     0.8588235294117647,
+     0.9840153846153845
+    ],
+    "tasa_contradiccion_clara": 0.35353535353535354,
+    "tasa_global": 0.32167832167832167,
+    "n_casos": 286,
+    "n_alguna_alarma": 99,
+    "n_no_unanime": 92
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9795918367346939,
+    "ic95": [
+     0.9301910299003322,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.2857142857142857,
+    "tasa_global": 0.16783216783216784,
+    "n_casos": 286,
+    "n_alguna_alarma": 49,
+    "n_no_unanime": 48
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.6556291390728477,
+     "disparos_imerg": 40,
+     "disparos_chirps": 111
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.576158940397351,
+     "disparos_imerg": 40,
+     "disparos_chirps": 111
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6190476190476191,
+     "disparos_imerg": 25,
+     "disparos_chirps": 17
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5714285714285714,
+     "disparos_imerg": 25,
+     "disparos_chirps": 17
+    }
+   }
+  },
+  {
+   "provincia": "Dajabón",
+   "codigo": "DO-05",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.875,
+    "ic95": [
+     0.7941100667070952,
+     0.9411764705882353
+    ],
+    "tasa_contradiccion_clara": 0.4583333333333333,
+    "tasa_global": 0.2937062937062937,
+    "n_casos": 286,
+    "n_alguna_alarma": 96,
+    "n_no_unanime": 84
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.46153846153846156,
+    "tasa_global": 0.18181818181818182,
+    "n_casos": 286,
+    "n_alguna_alarma": 52,
+    "n_no_unanime": 52
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.8699186991869918,
+     "disparos_imerg": 46,
+     "disparos_chirps": 77
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.8048780487804879,
+     "disparos_imerg": 46,
+     "disparos_chirps": 77
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.9090909090909091,
+     "disparos_imerg": 4,
+     "disparos_chirps": 18
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.8636363636363636,
+     "disparos_imerg": 4,
+     "disparos_chirps": 18
+    }
+   }
+  },
+  {
+   "provincia": "Distrito Nacional",
+   "codigo": "DO-01",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.912621359223301,
+    "ic95": [
+     0.8297742605085625,
+     0.9756171025565676
+    ],
+    "tasa_contradiccion_clara": 0.3592233009708738,
+    "tasa_global": 0.32867132867132864,
+    "n_casos": 286,
+    "n_alguna_alarma": 103,
+    "n_no_unanime": 94
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.23255813953488372,
+    "tasa_global": 0.15034965034965034,
+    "n_casos": 286,
+    "n_alguna_alarma": 43,
+    "n_no_unanime": 43
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.6875,
+     "disparos_imerg": 36,
+     "disparos_chirps": 60
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6041666666666667,
+     "disparos_imerg": 36,
+     "disparos_chirps": 60
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6470588235294117,
+     "disparos_imerg": 30,
+     "disparos_chirps": 38
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6323529411764706,
+     "disparos_imerg": 30,
+     "disparos_chirps": 38
+    }
+   }
+  },
+  {
+   "provincia": "Duarte",
+   "codigo": "DO-06",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8804347826086957,
+    "ic95": [
+     0.7466320754716982,
+     0.9714484126984125
+    ],
+    "tasa_contradiccion_clara": 0.3695652173913043,
+    "tasa_global": 0.28321678321678323,
+    "n_casos": 286,
+    "n_alguna_alarma": 92,
+    "n_no_unanime": 81
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9534883720930233,
+    "ic95": [
+     0.8999489795918367,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.27906976744186046,
+    "tasa_global": 0.14335664335664336,
+    "n_casos": 286,
+    "n_alguna_alarma": 43,
+    "n_no_unanime": 41
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7471264367816092,
+     "disparos_imerg": 74,
+     "disparos_chirps": 187
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6475095785440613,
+     "disparos_imerg": 74,
+     "disparos_chirps": 187
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7333333333333334,
+     "disparos_imerg": 16,
+     "disparos_chirps": 29
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6,
+     "disparos_imerg": 16,
+     "disparos_chirps": 29
+    }
+   }
+  },
+  {
+   "provincia": "El Seybo",
+   "codigo": "DO-08",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9494949494949495,
+    "ic95": [
+     0.8823395721925134,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.40404040404040403,
+    "tasa_global": 0.32867132867132864,
+    "n_casos": 286,
+    "n_alguna_alarma": 99,
+    "n_no_unanime": 94
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.3333333333333333,
+    "tasa_global": 0.13636363636363635,
+    "n_casos": 286,
+    "n_alguna_alarma": 39,
+    "n_no_unanime": 39
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7293233082706767,
+     "disparos_imerg": 86,
+     "disparos_chirps": 180
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6203007518796992,
+     "disparos_imerg": 86,
+     "disparos_chirps": 180
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6727272727272727,
+     "disparos_imerg": 22,
+     "disparos_chirps": 33
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5818181818181818,
+     "disparos_imerg": 22,
+     "disparos_chirps": 33
+    }
+   }
+  },
+  {
+   "provincia": "Espaillat",
+   "codigo": "DO-09",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8631578947368421,
+    "ic95": [
+     0.7472527472527473,
+     0.9626254759432329
+    ],
+    "tasa_contradiccion_clara": 0.3473684210526316,
+    "tasa_global": 0.2867132867132867,
+    "n_casos": 286,
+    "n_alguna_alarma": 95,
+    "n_no_unanime": 82
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9545454545454546,
+    "ic95": [
+     0.9047619047619048,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.22727272727272727,
+    "tasa_global": 0.14685314685314685,
+    "n_casos": 286,
+    "n_alguna_alarma": 44,
+    "n_no_unanime": 42
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7110266159695817,
+     "disparos_imerg": 95,
+     "disparos_chirps": 168
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6159695817490494,
+     "disparos_imerg": 95,
+     "disparos_chirps": 168
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7966101694915254,
+     "disparos_imerg": 20,
+     "disparos_chirps": 39
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.7457627118644068,
+     "disparos_imerg": 20,
+     "disparos_chirps": 39
+    }
+   }
+  },
+  {
+   "provincia": "Hato Mayor",
+   "codigo": "DO-30",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9690721649484536,
+    "ic95": [
+     0.9384536082474226,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.36082474226804123,
+    "tasa_global": 0.32867132867132864,
+    "n_casos": 286,
+    "n_alguna_alarma": 97,
+    "n_no_unanime": 94
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.2894736842105263,
+    "tasa_global": 0.13286713286713286,
+    "n_casos": 286,
+    "n_alguna_alarma": 38,
+    "n_no_unanime": 38
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7297297297297297,
+     "disparos_imerg": 73,
+     "disparos_chirps": 186
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6370656370656371,
+     "disparos_imerg": 73,
+     "disparos_chirps": 186
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6721311475409837,
+     "disparos_imerg": 20,
+     "disparos_chirps": 41
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5737704918032787,
+     "disparos_imerg": 20,
+     "disparos_chirps": 41
+    }
+   }
+  },
+  {
+   "provincia": "Hermanas",
+   "codigo": "DO-19",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8586956521739131,
+    "ic95": [
+     0.7391180830039525,
+     0.9615506329113923
+    ],
+    "tasa_contradiccion_clara": 0.358695652173913,
+    "tasa_global": 0.2762237762237762,
+    "n_casos": 286,
+    "n_alguna_alarma": 92,
+    "n_no_unanime": 79
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9791666666666666,
+    "ic95": [
+     0.9347826086956522,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.25,
+    "tasa_global": 0.16433566433566432,
+    "n_casos": 286,
+    "n_alguna_alarma": 48,
+    "n_no_unanime": 47
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7567567567567568,
+     "disparos_imerg": 58,
+     "disparos_chirps": 90
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6959459459459459,
+     "disparos_imerg": 58,
+     "disparos_chirps": 90
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.813953488372093,
+     "disparos_imerg": 16,
+     "disparos_chirps": 27
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.7906976744186046,
+     "disparos_imerg": 16,
+     "disparos_chirps": 27
+    }
+   }
+  },
+  {
+   "provincia": "Independencia",
+   "codigo": "DO-10",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9270833333333334,
+    "ic95": [
+     0.8536238913525499,
+     0.9823008849557522
+    ],
+    "tasa_contradiccion_clara": 0.375,
+    "tasa_global": 0.3111888111888112,
+    "n_casos": 286,
+    "n_alguna_alarma": 96,
+    "n_no_unanime": 89
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.30612244897959184,
+    "tasa_global": 0.17132867132867133,
+    "n_casos": 286,
+    "n_alguna_alarma": 49,
+    "n_no_unanime": 49
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7515527950310559,
+     "disparos_imerg": 31,
+     "disparos_chirps": 130
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.7080745341614907,
+     "disparos_imerg": 31,
+     "disparos_chirps": 130
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7777777777777778,
+     "disparos_imerg": 13,
+     "disparos_chirps": 14
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.7407407407407407,
+     "disparos_imerg": 13,
+     "disparos_chirps": 14
+    }
+   }
+  },
+  {
+   "provincia": "La Altagracia",
+   "codigo": "DO-11",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9591836734693877,
+    "ic95": [
+     0.9142733990147783,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.42857142857142855,
+    "tasa_global": 0.32867132867132864,
+    "n_casos": 286,
+    "n_alguna_alarma": 98,
+    "n_no_unanime": 94
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.3076923076923077,
+    "tasa_global": 0.13636363636363635,
+    "n_casos": 286,
+    "n_alguna_alarma": 39,
+    "n_no_unanime": 39
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7424242424242424,
+     "disparos_imerg": 104,
+     "disparos_chirps": 160
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6515151515151515,
+     "disparos_imerg": 104,
+     "disparos_chirps": 160
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6862745098039216,
+     "disparos_imerg": 33,
+     "disparos_chirps": 18
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.607843137254902,
+     "disparos_imerg": 33,
+     "disparos_chirps": 18
+    }
+   }
+  },
+  {
+   "provincia": "La Estrelleta",
+   "codigo": "DO-07",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9439252336448598,
+    "ic95": [
+     0.9051621510673235,
+     0.9805871919342793
+    ],
+    "tasa_contradiccion_clara": 0.48598130841121495,
+    "tasa_global": 0.3531468531468531,
+    "n_casos": 286,
+    "n_alguna_alarma": 107,
+    "n_no_unanime": 101
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.44680851063829785,
+    "tasa_global": 0.16433566433566432,
+    "n_casos": 286,
+    "n_alguna_alarma": 47,
+    "n_no_unanime": 47
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.8240000000000001,
+     "disparos_imerg": 40,
+     "disparos_chirps": 85
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.792,
+     "disparos_imerg": 40,
+     "disparos_chirps": 85
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7777777777777778,
+     "disparos_imerg": 2,
+     "disparos_chirps": 7
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6666666666666667,
+     "disparos_imerg": 2,
+     "disparos_chirps": 7
+    }
+   }
+  },
+  {
+   "provincia": "La Romana",
+   "codigo": "DO-12",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.96,
+    "ic95": [
+     0.919179600886918,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.52,
+    "tasa_global": 0.3356643356643357,
+    "n_casos": 286,
+    "n_alguna_alarma": 100,
+    "n_no_unanime": 96
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.45,
+    "tasa_global": 0.13986013986013987,
+    "n_casos": 286,
+    "n_alguna_alarma": 40,
+    "n_no_unanime": 40
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.6581196581196581,
+     "disparos_imerg": 61,
+     "disparos_chirps": 56
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.5811965811965811,
+     "disparos_imerg": 61,
+     "disparos_chirps": 56
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6333333333333333,
+     "disparos_imerg": 38,
+     "disparos_chirps": 22
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5666666666666667,
+     "disparos_imerg": 38,
+     "disparos_chirps": 22
+    }
+   }
+  },
+  {
+   "provincia": "La Vega",
+   "codigo": "DO-13",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8791208791208791,
+    "ic95": [
+     0.7404561802701116,
+     0.9701602282704126
+    ],
+    "tasa_contradiccion_clara": 0.3626373626373626,
+    "tasa_global": 0.27972027972027974,
+    "n_casos": 286,
+    "n_alguna_alarma": 91,
+    "n_no_unanime": 80
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9555555555555556,
+    "ic95": [
+     0.9107142857142857,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.35555555555555557,
+    "tasa_global": 0.15034965034965034,
+    "n_casos": 286,
+    "n_alguna_alarma": 45,
+    "n_no_unanime": 43
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.8697318007662835,
+     "disparos_imerg": 65,
+     "disparos_chirps": 196
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.8314176245210728,
+     "disparos_imerg": 65,
+     "disparos_chirps": 196
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.696969696969697,
+     "disparos_imerg": 12,
+     "disparos_chirps": 21
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6363636363636364,
+     "disparos_imerg": 12,
+     "disparos_chirps": 21
+    }
+   }
+  },
+  {
+   "provincia": "María Trinidad Sánchez",
+   "codigo": "DO-14",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8631578947368421,
+    "ic95": [
+     0.7327386242445787,
+     0.963420177383592
+    ],
+    "tasa_contradiccion_clara": 0.35789473684210527,
+    "tasa_global": 0.2867132867132867,
+    "n_casos": 286,
+    "n_alguna_alarma": 95,
+    "n_no_unanime": 82
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.95,
+    "ic95": [
+     0.8928571428571429,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.325,
+    "tasa_global": 0.13286713286713286,
+    "n_casos": 286,
+    "n_alguna_alarma": 40,
+    "n_no_unanime": 38
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.6802721088435374,
+     "disparos_imerg": 94,
+     "disparos_chirps": 200
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.5680272108843538,
+     "disparos_imerg": 94,
+     "disparos_chirps": 200
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7674418604651163,
+     "disparos_imerg": 26,
+     "disparos_chirps": 60
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6744186046511628,
+     "disparos_imerg": 26,
+     "disparos_chirps": 60
+    }
+   }
+  },
+  {
+   "provincia": "Monseñor Nouel",
+   "codigo": "DO-28",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9183673469387755,
+    "ic95": [
+     0.8545454545454545,
+     0.9733421052631579
+    ],
+    "tasa_contradiccion_clara": 0.37755102040816324,
+    "tasa_global": 0.3146853146853147,
+    "n_casos": 286,
+    "n_alguna_alarma": 98,
+    "n_no_unanime": 90
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9761904761904762,
+    "ic95": [
+     0.9166666666666666,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.30952380952380953,
+    "tasa_global": 0.14335664335664336,
+    "n_casos": 286,
+    "n_alguna_alarma": 42,
+    "n_no_unanime": 41
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.8163265306122449,
+     "disparos_imerg": 44,
+     "disparos_chirps": 152
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.7551020408163265,
+     "disparos_imerg": 44,
+     "disparos_chirps": 152
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6981132075471699,
+     "disparos_imerg": 12,
+     "disparos_chirps": 41
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6415094339622642,
+     "disparos_imerg": 12,
+     "disparos_chirps": 41
+    }
+   }
+  },
+  {
+   "provincia": "Monte Cristi",
+   "codigo": "DO-15",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8645833333333334,
+    "ic95": [
+     0.7738039083557952,
+     0.9375
+    ],
+    "tasa_contradiccion_clara": 0.3854166666666667,
+    "tasa_global": 0.2902097902097902,
+    "n_casos": 286,
+    "n_alguna_alarma": 96,
+    "n_no_unanime": 83
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.30434782608695654,
+    "tasa_global": 0.16083916083916083,
+    "n_casos": 286,
+    "n_alguna_alarma": 46,
+    "n_no_unanime": 46
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.8144329896907216,
+     "disparos_imerg": 59,
+     "disparos_chirps": 38
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.7628865979381443,
+     "disparos_imerg": 59,
+     "disparos_chirps": 38
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6923076923076923,
+     "disparos_imerg": 10,
+     "disparos_chirps": 3
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6153846153846154,
+     "disparos_imerg": 10,
+     "disparos_chirps": 3
+    }
+   }
+  },
+  {
+   "provincia": "Monte Plata",
+   "codigo": "DO-29",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.91,
+    "ic95": [
+     0.825,
+     0.9759036144578314
+    ],
+    "tasa_contradiccion_clara": 0.37,
+    "tasa_global": 0.3181818181818182,
+    "n_casos": 286,
+    "n_alguna_alarma": 100,
+    "n_no_unanime": 91
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.24324324324324326,
+    "tasa_global": 0.12937062937062938,
+    "n_casos": 286,
+    "n_alguna_alarma": 37,
+    "n_no_unanime": 37
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7121771217712177,
+     "disparos_imerg": 85,
+     "disparos_chirps": 186
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6014760147601477,
+     "disparos_imerg": 85,
+     "disparos_chirps": 186
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7083333333333333,
+     "disparos_imerg": 14,
+     "disparos_chirps": 34
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6875,
+     "disparos_imerg": 14,
+     "disparos_chirps": 34
+    }
+   }
+  },
+  {
+   "provincia": "Pedernales",
+   "codigo": "DO-16",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.93,
+    "ic95": [
+     0.8557667525773196,
+     0.9891304347826086
+    ],
+    "tasa_contradiccion_clara": 0.41,
+    "tasa_global": 0.32517482517482516,
+    "n_casos": 286,
+    "n_alguna_alarma": 100,
+    "n_no_unanime": 93
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.375,
+    "tasa_global": 0.16783216783216784,
+    "n_casos": 286,
+    "n_alguna_alarma": 48,
+    "n_no_unanime": 48
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7227722772277227,
+     "disparos_imerg": 67,
+     "disparos_chirps": 34
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6831683168316831,
+     "disparos_imerg": 67,
+     "disparos_chirps": 34
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.9090909090909091,
+     "disparos_imerg": 21,
+     "disparos_chirps": 1
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.8636363636363636,
+     "disparos_imerg": 21,
+     "disparos_chirps": 1
+    }
+   }
+  },
+  {
+   "provincia": "Peravia",
+   "codigo": "DO-17",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9183673469387755,
+    "ic95": [
+     0.8371925313059034,
+     0.9793867031348621
+    ],
+    "tasa_contradiccion_clara": 0.3163265306122449,
+    "tasa_global": 0.3146853146853147,
+    "n_casos": 286,
+    "n_alguna_alarma": 98,
+    "n_no_unanime": 90
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9761904761904762,
+    "ic95": [
+     0.9117647058823529,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.16666666666666666,
+    "tasa_global": 0.14335664335664336,
+    "n_casos": 286,
+    "n_alguna_alarma": 42,
+    "n_no_unanime": 41
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.6428571428571428,
+     "disparos_imerg": 53,
+     "disparos_chirps": 31
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.5714285714285714,
+     "disparos_imerg": 53,
+     "disparos_chirps": 31
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.8823529411764706,
+     "disparos_imerg": 31,
+     "disparos_chirps": 3
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.8235294117647058,
+     "disparos_imerg": 31,
+     "disparos_chirps": 3
+    }
+   }
+  },
+  {
+   "provincia": "Puerto Plata",
+   "codigo": "DO-18",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8571428571428571,
+    "ic95": [
+     0.7419264226168902,
+     0.9468225083986561
+    ],
+    "tasa_contradiccion_clara": 0.32967032967032966,
+    "tasa_global": 0.2727272727272727,
+    "n_casos": 286,
+    "n_alguna_alarma": 91,
+    "n_no_unanime": 78
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9767441860465116,
+    "ic95": [
+     0.9193439407149084,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.2558139534883721,
+    "tasa_global": 0.14685314685314685,
+    "n_casos": 286,
+    "n_alguna_alarma": 43,
+    "n_no_unanime": 42
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7375886524822695,
+     "disparos_imerg": 108,
+     "disparos_chirps": 174
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6560283687943262,
+     "disparos_imerg": 108,
+     "disparos_chirps": 174
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7192982456140351,
+     "disparos_imerg": 19,
+     "disparos_chirps": 38
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.7017543859649122,
+     "disparos_imerg": 19,
+     "disparos_chirps": 38
+    }
+   }
+  },
+  {
+   "provincia": "Samaná",
+   "codigo": "DO-20",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9340659340659341,
+    "ic95": [
+     0.8673469387755102,
+     0.9879518072289156
+    ],
+    "tasa_contradiccion_clara": 0.38461538461538464,
+    "tasa_global": 0.2972027972027972,
+    "n_casos": 286,
+    "n_alguna_alarma": 91,
+    "n_no_unanime": 85
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9767441860465116,
+    "ic95": [
+     0.9148936170212766,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.3488372093023256,
+    "tasa_global": 0.14685314685314685,
+    "n_casos": 286,
+    "n_alguna_alarma": 43,
+    "n_no_unanime": 42
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.6917562724014337,
+     "disparos_imerg": 86,
+     "disparos_chirps": 193
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.5985663082437276,
+     "disparos_imerg": 86,
+     "disparos_chirps": 193
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.8108108108108107,
+     "disparos_imerg": 21,
+     "disparos_chirps": 53
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.7567567567567568,
+     "disparos_imerg": 21,
+     "disparos_chirps": 53
+    }
+   }
+  },
+  {
+   "provincia": "San Cristóbal",
+   "codigo": "DO-21",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9245283018867925,
+    "ic95": [
+     0.8617656415694592,
+     0.9770180250783699
+    ],
+    "tasa_contradiccion_clara": 0.36792452830188677,
+    "tasa_global": 0.34265734265734266,
+    "n_casos": 286,
+    "n_alguna_alarma": 106,
+    "n_no_unanime": 98
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.2608695652173913,
+    "tasa_global": 0.16083916083916083,
+    "n_casos": 286,
+    "n_alguna_alarma": 46,
+    "n_no_unanime": 46
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7416267942583732,
+     "disparos_imerg": 66,
+     "disparos_chirps": 143
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6698564593301435,
+     "disparos_imerg": 66,
+     "disparos_chirps": 143
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.5555555555555556,
+     "disparos_imerg": 25,
+     "disparos_chirps": 29
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5,
+     "disparos_imerg": 25,
+     "disparos_chirps": 29
+    }
+   }
+  },
+  {
+   "provincia": "San José de Ocoa",
+   "codigo": "DO-31",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9029126213592233,
+    "ic95": [
+     0.831858407079646,
+     0.9642962184873949
+    ],
+    "tasa_contradiccion_clara": 0.3883495145631068,
+    "tasa_global": 0.32517482517482516,
+    "n_casos": 286,
+    "n_alguna_alarma": 103,
+    "n_no_unanime": 93
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9782608695652174,
+    "ic95": [
+     0.9259027777777777,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.2826086956521739,
+    "tasa_global": 0.15734265734265734,
+    "n_casos": 286,
+    "n_alguna_alarma": 46,
+    "n_no_unanime": 45
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7263157894736842,
+     "disparos_imerg": 39,
+     "disparos_chirps": 56
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.6736842105263158,
+     "disparos_imerg": 39,
+     "disparos_chirps": 56
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.8333333333333334,
+     "disparos_imerg": 20,
+     "disparos_chirps": 4
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.75,
+     "disparos_imerg": 20,
+     "disparos_chirps": 4
+    }
+   }
+  },
+  {
+   "provincia": "San Juan",
+   "codigo": "DO-22",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9519230769230769,
+    "ic95": [
+     0.9120879120879121,
+     0.9888919413919414
+    ],
+    "tasa_contradiccion_clara": 0.47115384615384615,
+    "tasa_global": 0.34615384615384615,
+    "n_casos": 286,
+    "n_alguna_alarma": 104,
+    "n_no_unanime": 99
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.3333333333333333,
+    "tasa_global": 0.17832167832167833,
+    "n_casos": 286,
+    "n_alguna_alarma": 51,
+    "n_no_unanime": 51
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.8171428571428572,
+     "disparos_imerg": 59,
+     "disparos_chirps": 116
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.7885714285714286,
+     "disparos_imerg": 59,
+     "disparos_chirps": 116
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.625,
+     "disparos_imerg": 9,
+     "disparos_chirps": 7
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5625,
+     "disparos_imerg": 9,
+     "disparos_chirps": 7
+    }
+   }
+  },
+  {
+   "provincia": "San Pedro de Macorís",
+   "codigo": "DO-23",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9595959595959596,
+    "ic95": [
+     0.9230769230769231,
+     0.9901960784313726
+    ],
+    "tasa_contradiccion_clara": 0.40404040404040403,
+    "tasa_global": 0.3321678321678322,
+    "n_casos": 286,
+    "n_alguna_alarma": 99,
+    "n_no_unanime": 95
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.2631578947368421,
+    "tasa_global": 0.13286713286713286,
+    "n_casos": 286,
+    "n_alguna_alarma": 38,
+    "n_no_unanime": 38
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.625,
+     "disparos_imerg": 77,
+     "disparos_chirps": 83
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.50625,
+     "disparos_imerg": 77,
+     "disparos_chirps": 83
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.6170212765957447,
+     "disparos_imerg": 32,
+     "disparos_chirps": 15
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5319148936170213,
+     "disparos_imerg": 32,
+     "disparos_chirps": 15
+    }
+   }
+  },
+  {
+   "provincia": "Santiago",
+   "codigo": "DO-25",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9,
+    "ic95": [
+     0.8374927325581396,
+     0.9642857142857143
+    ],
+    "tasa_contradiccion_clara": 0.3333333333333333,
+    "tasa_global": 0.28321678321678323,
+    "n_casos": 286,
+    "n_alguna_alarma": 90,
+    "n_no_unanime": 81
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9791666666666666,
+    "ic95": [
+     0.9285714285714286,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.3125,
+    "tasa_global": 0.16433566433566432,
+    "n_casos": 286,
+    "n_alguna_alarma": 48,
+    "n_no_unanime": 47
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.8070175438596492,
+     "disparos_imerg": 113,
+     "disparos_chirps": 229
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.739766081871345,
+     "disparos_imerg": 113,
+     "disparos_chirps": 229
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7142857142857143,
+     "disparos_imerg": 8,
+     "disparos_chirps": 27
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.6857142857142857,
+     "disparos_imerg": 8,
+     "disparos_chirps": 27
+    }
+   }
+  },
+  {
+   "provincia": "Santiago Rodríguez",
+   "codigo": "DO-26",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8979591836734694,
+    "ic95": [
+     0.8433565723568431,
+     0.9466702127659574
+    ],
+    "tasa_contradiccion_clara": 0.4387755102040816,
+    "tasa_global": 0.3076923076923077,
+    "n_casos": 286,
+    "n_alguna_alarma": 98,
+    "n_no_unanime": 88
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9795918367346939,
+    "ic95": [
+     0.9324267063673843,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.40816326530612246,
+    "tasa_global": 0.16783216783216784,
+    "n_casos": 286,
+    "n_alguna_alarma": 49,
+    "n_no_unanime": 48
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.838150289017341,
+     "disparos_imerg": 49,
+     "disparos_chirps": 124
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.7861271676300579,
+     "disparos_imerg": 49,
+     "disparos_chirps": 124
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.8620689655172413,
+     "disparos_imerg": 6,
+     "disparos_chirps": 23
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.8620689655172413,
+     "disparos_imerg": 6,
+     "disparos_chirps": 23
+    }
+   }
+  },
+  {
+   "provincia": "Santo Domingo",
+   "codigo": "DO-32",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.91,
+    "ic95": [
+     0.8461340206185567,
+     0.9651162790697675
+    ],
+    "tasa_contradiccion_clara": 0.35,
+    "tasa_global": 0.3181818181818182,
+    "n_casos": 286,
+    "n_alguna_alarma": 100,
+    "n_no_unanime": 91
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 1.0,
+    "ic95": [
+     1.0,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.1794871794871795,
+    "tasa_global": 0.13636363636363635,
+    "n_casos": 286,
+    "n_alguna_alarma": 39,
+    "n_no_unanime": 39
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.6276595744680851,
+     "disparos_imerg": 71,
+     "disparos_chirps": 117
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.5159574468085106,
+     "disparos_imerg": 71,
+     "disparos_chirps": 117
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.5652173913043479,
+     "disparos_imerg": 23,
+     "disparos_chirps": 23
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5652173913043479,
+     "disparos_imerg": 23,
+     "disparos_chirps": 23
+    }
+   }
+  },
+  {
+   "provincia": "Sánchez Ramírez",
+   "codigo": "DO-24",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.8958333333333334,
+    "ic95": [
+     0.7850467289719626,
+     0.972611995557201
+    ],
+    "tasa_contradiccion_clara": 0.3541666666666667,
+    "tasa_global": 0.3006993006993007,
+    "n_casos": 286,
+    "n_alguna_alarma": 96,
+    "n_no_unanime": 86
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9512195121951219,
+    "ic95": [
+     0.883686730506156,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.36585365853658536,
+    "tasa_global": 0.13636363636363635,
+    "n_casos": 286,
+    "n_alguna_alarma": 41,
+    "n_no_unanime": 39
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.786096256684492,
+     "disparos_imerg": 62,
+     "disparos_chirps": 125
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.7058823529411764,
+     "disparos_imerg": 62,
+     "disparos_chirps": 125
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.7777777777777778,
+     "disparos_imerg": 8,
+     "disparos_chirps": 28
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.75,
+     "disparos_imerg": 8,
+     "disparos_chirps": 28
+    }
+   }
+  },
+  {
+   "provincia": "Valverde",
+   "codigo": "DO-27",
+   "spi3_menor_igual_1_0": {
+    "tasa_condicional": 0.9052631578947369,
+    "ic95": [
+     0.8586956521739131,
+     0.9518215720022948
+    ],
+    "tasa_contradiccion_clara": 0.3684210526315789,
+    "tasa_global": 0.3006993006993007,
+    "n_casos": 286,
+    "n_alguna_alarma": 95,
+    "n_no_unanime": 86
+   },
+   "spi3_menor_igual_1_5": {
+    "tasa_condicional": 0.9795918367346939,
+    "ic95": [
+     0.9333333333333333,
+     1.0
+    ],
+    "tasa_contradiccion_clara": 0.32653061224489793,
+    "tasa_global": 0.16783216783216784,
+    "n_casos": 286,
+    "n_alguna_alarma": 49,
+    "n_no_unanime": 48
+   },
+   "inundacion_48h_100mm": {
+    "maximo_celda_tol0": {
+     "tasa_cambio_decision": 0.7954545454545454,
+     "disparos_imerg": 44,
+     "disparos_chirps": 44
+    },
+    "maximo_celda_tol1": {
+     "tasa_cambio_decision": 0.7159090909090908,
+     "disparos_imerg": 44,
+     "disparos_chirps": 44
+    },
+    "media_provincia_tol0": {
+     "tasa_cambio_decision": 0.5714285714285714,
+     "disparos_imerg": 10,
+     "disparos_chirps": 4
+    },
+    "media_provincia_tol1": {
+     "tasa_cambio_decision": 0.5714285714285714,
+     "disparos_imerg": 10,
+     "disparos_chirps": 4
+    }
+   }
+  }
+ ]
+}

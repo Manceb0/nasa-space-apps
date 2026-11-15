@@ -1,0 +1,11 @@
+{
+  "archivos": [
+    "fig04_cambio_decision_sequia.pdf",
+    "fig04_cambio_decision_sequia.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    165.0
+  ],
+  "fuente": "results/auditoria/cambio_decision_sequia_*.csv"
+}

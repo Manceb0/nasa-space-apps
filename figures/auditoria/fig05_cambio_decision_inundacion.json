@@ -1,0 +1,11 @@
+{
+  "archivos": [
+    "fig05_cambio_decision_inundacion.pdf",
+    "fig05_cambio_decision_inundacion.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    80.0
+  ],
+  "fuente": "results/auditoria/cambio_decision_inundacion_48h*.csv; CHIRPS v2.0 diario (IRI), IMERG V07"
+}
