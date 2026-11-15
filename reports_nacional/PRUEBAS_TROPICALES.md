@@ -370,3 +370,21 @@ La pista de GOES-16 pierde fuerza como causa principal, pero no queda refutada.
 - La calibración mensual con pluviómetros (GPCC).
 - Cambios en la constelación de microondas o en GPROF.
 - Un cambio en CHIRPS, la referencia.
+
+**Corrección de la prueba anterior (segunda revisión, comprobada en los datos).** La fracción `f_ir` se calculaba
+restando contadores: `(tc − mc) / (tot − mw)`. Eso solo vale si las medias horas lluviosas de microondas son un
+subconjunto de las del producto combinado, y **no lo son**. En el 2,0 % de los celda-días (el 6,0 % de los que tienen
+lluvia de microondas), `MWprecipitation_cnt_cond` supera a `precipitation_cnt_cond`. NASA aplica el umbral de
+0,01 mm/h a cada estimación por separado. Además, **ningún** celda-día carece de microondas (unas 12 de las 48 medias
+horas tienen microondas siempre), así que el producto diario tampoco permite aislar la vía infrarroja de otro modo.
+
+Por tanto, la diferencia −0,17 [−0,57, +0,28] **no prueba** lo que pretendía, y el veredicto «la pista solo
+infrarroja pierde fuerza» **se retira**. Además, un intervalo que incluye cero no demuestra igualdad.
+
+Lo que sí se sostiene: en esta ventana bajan tanto la frecuencia de lluvia del producto combinado (−3,1 pp) como la
+de las observaciones de microondas disponibles (−3,0 pp). Puede ser tiempo real (2019 frente a 2016-2017) o un cambio
+en el muestreo; esta prueba no lo separa.
+
+**GOES-16: sin resolver.** La prueba válida necesita los archivos de media hora: los mismos instantes, separados por
+presencia de microondas, con `precipitationUncal` e `IRinfluence`. Antes de ampliar la descarga, habría que comprobar
+en una muestra pequeña que el contraste se puede construir.

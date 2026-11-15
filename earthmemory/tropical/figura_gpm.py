@@ -19,6 +19,11 @@ OUT = Path("figures/tropical")
 
 
 def titulo(R):
+    # Revisión 15-nov: en el 2 % de los celda-días MWprecipitation_cnt_cond > precipitation_cnt_cond, así que las
+    # medias horas lluviosas de microondas NO son un subconjunto de las del producto combinado y la resta que define
+    # f_ir no es válida. No hay celda-días sin microondas para aislar la vía infrarroja de otro modo.
+    if R.get("resta_invalida", True):
+        return "La prueba diaria no separa infrarrojo y microondas: la pista GOES sigue sin resolver."
     V, n = R["veredicto"], R["zonas"]["nacional"]
     if not V["H3"]:
         return "La cobertura de microondas también cambió: la prueba es ambigua."
@@ -59,7 +64,7 @@ def figura(t):
     # b) cambios con IC
     ax = fig.add_subplot(gs[1, 0])
     filas = [("f_mw", "con microondas (f_mw)", OI["blue"]), ("f_ir", "sin microondas (f_ir)", OI["vermillion"]),
-             ("ir_menos_mw", "diferencia f_ir − f_mw", OI["orange"]), ("cob", "cobertura de microondas", t["muted"]),
+             ("ir_menos_mw", "f_ir − f_mw (resta NO válida)", OI["orange"]), ("cob", "cobertura de microondas", t["muted"]),
              ("dias_humedos", "días ≥ 1 mm (IMERG)", t["ink"])]
     for y, (k, lab, col) in enumerate(filas):
         d, (lo, hi) = 100 * n[k]["delta"], [100 * v for v in n[k]["ic95"]]
