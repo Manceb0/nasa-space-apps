@@ -105,7 +105,7 @@ export function terrain3d(el: HTMLElement, opts: {
       map.addSource("prov", { type: "geojson", data: opts.provinces as GeoJSON.FeatureCollection, promoteId: "shapeID" });
       map.addLayer({ id: "prov-fill", type: "fill", source: "prov", layout: { visibility: "none" }, paint: {
         "fill-color": ["coalesce", ["feature-state", "c"], "rgba(120,120,128,.15)"],
-        "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.92, 0.72],
+        "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.92, ["coalesce", ["feature-state", "o"], 0.72]],
       } }, "zone-fill");
       map.addLayer({ id: "prov-line", type: "line", source: "prov", paint: {
         "line-color": ["case", ["boolean", ["feature-state", "sel"], false], "#ffffff", "rgba(255,255,255,.35)"],
@@ -114,11 +114,13 @@ export function terrain3d(el: HTMLElement, opts: {
       let hov: string | number | undefined;
       map.on("mousemove", "prov-fill", (e) => {
         const f = e.features?.[0]; if (!f) return;
-        if (hov !== undefined && hov !== f.id) map.setFeatureState({ source: "prov", id: hov }, { hover: false });
-        hov = f.id; map.setFeatureState({ source: "prov", id: hov! }, { hover: true });
         map.getCanvas().style.cursor = "pointer";
+        if (hov === f.id) return;
+        if (hov !== undefined) map.setFeatureState({ source: "prov", id: hov }, { hover: false });
+        hov = f.id; map.setFeatureState({ source: "prov", id: hov! }, { hover: true });
+        refresh3d();
       });
-      map.on("mouseleave", "prov-fill", () => { if (hov !== undefined) map.setFeatureState({ source: "prov", id: hov }, { hover: false }); hov = undefined; map.getCanvas().style.cursor = ""; });
+      map.on("mouseleave", "prov-fill", () => { if (hov !== undefined) { map.setFeatureState({ source: "prov", id: hov }, { hover: false }); refresh3d(); } hov = undefined; map.getCanvas().style.cursor = ""; });
       map.on("click", "prov-fill", (e) => { const f = e.features?.[0]; if (f && opts.onProvince) opts.onProvince(String(f.id), String(f.properties?.shapeName ?? "")); });
     }
     res();
@@ -203,18 +205,47 @@ export function terrain3d(el: HTMLElement, opts: {
     else map.easeTo({ pitch: 52, bearing: -14, duration: 1400 });
   };
   let selProv: string | null = null;
-  const setLayer = (kind: "rain" | "prov") => {
+  // Con relieve 3D, MapLibre guarda la escena en texturas y no las rehace al cambiar el feature-state:
+  // hay que soltarlas para que el mapa pinte los colores nuevos (si no, se queda la variable anterior)
+  const refresh3d = () => {
+    (map as unknown as { terrain?: { sourceCache?: { freeRtt: () => void } } }).terrain?.sourceCache?.freeRtt();
+    map.triggerRepaint();
+  };
+  const setLayer = (kind: "rain" | "prov" | "cells") => {
     if (map.getLayer("rain")) map.setLayoutProperty("rain", "visibility", kind === "rain" ? "visible" : "none");
     if (map.getLayer("prov-fill")) map.setLayoutProperty("prov-fill", "visibility", kind === "prov" ? "visible" : "none");
+    if (map.getLayer("cells")) map.setLayoutProperty("cells", "visibility", kind === "cells" ? "visible" : "none");
   };
-  const setChoro = (colors: Record<string, string>) => {
-    for (const [id, c] of Object.entries(colors)) map.setFeatureState({ source: "prov", id }, { c });
+  // Capa genérica de celdas: una imagen RGBA (fila 0 = norte) estirada sobre su caja [oeste, sur, este, norte]
+  const cvsCells = document.createElement("canvas");
+  const setCells = (px: Uint8ClampedArray, w: number, h: number, b: [number, number, number, number]) => {
+    cvsCells.width = w; cvsCells.height = h;
+    const ctx = cvsCells.getContext("2d")!;
+    const img = ctx.createImageData(w, h);
+    img.data.set(px);
+    ctx.putImageData(img, 0, 0);
+    const url = cvsCells.toDataURL();
+    const coords: [[number, number], [number, number], [number, number], [number, number]] = [[b[0], b[3]], [b[2], b[3]], [b[2], b[1]], [b[0], b[1]]];
+    const src = map.getSource("cells") as maplibregl.ImageSource | undefined;
+    if (src) { src.updateImage({ url, coordinates: coords }); return; }
+    map.addSource("cells", { type: "image", url, coordinates: coords });
+    map.addLayer({ id: "cells", type: "raster", source: "cells", layout: { visibility: "none" }, paint: {
+      "raster-resampling": "linear", "raster-fade-duration": 400,
+      "raster-opacity": ["interpolate", ["linear"], ["zoom"], 9.5, 0.92, 11.5, 0.35],
+    } }, map.getLayer("prov-line") ? "prov-line" : "zone-fill");
+  };
+  const setChoro = (colors: Record<string, string>, opacity?: Record<string, number>) => {
+    for (const [id, c] of Object.entries(colors)) map.setFeatureState({ source: "prov", id }, { c, ...(opacity ? { o: opacity[id] ?? 0.72 } : {}) });
+    refresh3d();
   };
   const selectProvince = (id: string | null, bounds?: [[number, number], [number, number]]) => {
     if (selProv) map.setFeatureState({ source: "prov", id: selProv }, { sel: false });
     selProv = id;
     if (id) map.setFeatureState({ source: "prov", id }, { sel: true });
-    if (bounds) map.fitBounds(bounds, { padding: { top: 260, bottom: 340, left: 60, right: 460 }, pitch: map.getPitch(), duration: 1800, maxZoom: 10 });
+    refresh3d();
+    if (bounds) map.fitBounds(bounds, { padding: fitPad, pitch: map.getPitch(), duration: 1800, maxZoom: 10 });
   };
-  return { setMode, setLayer, setChoro, selectProvince, map, ready, setGrid, setField, tintZone, country, flyToSite, destroy: () => { markers.forEach((m) => m.remove()); map.remove(); } };
+  let fitPad = { top: 260, bottom: 340, left: 60, right: 460 };
+  const setFitPadding = (p: typeof fitPad) => { fitPad = p; };
+  return { setMode, setLayer, setChoro, selectProvince, setCells, setFitPadding, map, ready, setGrid, setField, tintZone, country, flyToSite, destroy: () => { markers.forEach((m) => m.remove()); map.remove(); } };
 }
