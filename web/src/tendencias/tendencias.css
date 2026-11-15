@@ -592,3 +592,11 @@ button.vd:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-r
 .claims .yes b { color: #30d158; }
 .claims .no b { color: #ffd60a; }
 .claims .why b { color: #64d2ff; }
+
+/* ── Botones al final de la respuesta ── */
+.ans-go { display: grid; gap: 8px; margin-top: 20px; }
+/* ── Preparar dentro de Tendencias: el tablero cubre el mapa y se desplaza por dentro ── */
+.prep-over { position: absolute; inset: 0; z-index: 2; overflow-y: auto; background: #08090b; animation: cy-in .45s cubic-bezier(.22, 1, .36, 1) both; }
+.prep-over .prep { max-width: none; padding: 76px 24px 120px; }
+@media (min-width: 760px) { #wx .prep-over .prep { padding-left: calc(var(--lw) + 32px); padding-right: calc(var(--rw) + 32px); } }
+@media (max-width: 759px) { .wx .prep-over { bottom: 172px; } .prep-over .prep { padding: 64px 14px 40px; } }

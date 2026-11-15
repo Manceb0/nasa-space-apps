@@ -22,9 +22,9 @@ function restore(){
 function save(){try{localStorage.setItem(STORE,JSON.stringify({history,locals}));}catch{message=LL("No se pudo guardar en este navegador. Descarga el expediente.","Browser storage unavailable. Download the case.");}}
 function withHistory(site:Site):Site{return {...site,evidence:[...site.evidence,...history.filter(r=>r.site_id===site.id)]};}
 export function destroyPreparation(){alive++;hx?.destroy();hx=null;hxHost=null;}
-export async function viewPreparation(view:HTMLElement){
+export async function viewPreparation(view:HTMLElement,embedded=false){
   const token=++alive;
-  document.body.classList.remove("wx-on");
+  if(!embedded)document.body.classList.remove("wx-on");
   view.innerHTML=`<div class="prep"><p>${esc(LL("Conectando las evidencias…","Connecting evidence…"))}</p></div>`;
   restore();decision=isoNow();
   if(!data){

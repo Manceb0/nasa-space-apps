@@ -125,7 +125,9 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
       const k = j * w.nx + i, o = ((w.ny - 1 - j) * w.nx + i) * 4;
       const u = (A.u[k] ?? 0) * (1 - fk) + (B.u[k] ?? 0) * fk, v = (A.v[k] ?? 0) * (1 - fk) + (B.v[k] ?? 0) * fk;
       const [r, gg, b] = ramp(Math.hypot(u, v));
-      img.data[o] = r; img.data[o + 1] = gg; img.data[o + 2] = b; img.data[o + 3] = 175;
+      // el borde de la rejilla se desvanece: sin rectángulo cortado sobre el mapa
+      const edge = Math.min(i, j, w.nx - 1 - i, w.ny - 1 - j), fade = Math.min(1, edge / 6);
+      img.data[o] = r; img.data[o + 1] = gg; img.data[o + 2] = b; img.data[o + 3] = Math.round(175 * fade);
     }
     fg.putImageData(img, 0, 0);
     (map?.getSource("field") as maplibregl.CanvasSource | undefined)?.play();

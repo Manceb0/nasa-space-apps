@@ -16,6 +16,8 @@ import { bottomSheet, PEEK } from "./hoja";
 import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
 import { openPop } from "./pop";
+import { hallazgo } from "./hallazgo";
+import { destroyPreparation, viewPreparation } from "../preparacion/vista";
 import { openAuditAt } from "../auditoria/vista";
 import { hurricanes, type CyInfo } from "../preparacion/huracanes";
 import { timeline } from "./tiempo";
@@ -37,6 +39,7 @@ const PANEL_R = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2
 const SEASON: Record<string, [string, string]> = { anual: ["Año", "Year"], seca: ["Seca", "Dry"], humeda_temprana: ["May–jul", "May–Jul"], humeda_tardia: ["Ago–nov", "Aug–Nov"] };
 
 let cyOff: (() => void) | null = null;
+let prepOff: (() => void) | null = null;
 let rios: Rio[] | null = null;
 let cyApi: { setPlace: (p: string) => void } | null = null;
 export function destroyTrends() {
@@ -113,6 +116,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
             <h2 id="ans-h" class="sr">${esc(LL("Qué dicen las dos fuentes", "What the two sources say"))}</h2>
             <div id="ans" aria-live="polite"></div>
           </section>
+          <section class="blk-land blk-cy" aria-labelledby="pq-h"><h2 id="pq-h">${esc(LL("¿Y hoy?", "And today?"))}</h2><div class="lqs"><button class="ql" data-prepq aria-pressed="false"><i></i>${esc(LL("¿Qué municipio vigilar hoy?", "Which municipality to watch today?"))}</button></div></section>
           <section class="blk-land blk-cy" aria-labelledby="cq-h"><h2 id="cq-h">${esc(LL("¿Y los ciclones?", "And the cyclones?"))}</h2><div class="lqs"><button class="ql" data-cyq aria-pressed="false"><i></i>${esc(LL("¿Con cuánto aviso llegan aquí?", "How much warning before they arrive here?"))}</button></div></section>
           ${land ? `<section class="blk-land" aria-labelledby="lq-h"><h2 id="lq-h">${esc(LL("¿Y la vegetación?", "And the vegetation?"))}</h2><div class="lqs" id="lqs"></div></section>` : ""}
           ${layout === "wide" ? "" : extra}
@@ -145,6 +149,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       <button class="s13-x" aria-label="${esc(LL("Cerrar", "Close"))}">×</button>
       <h2 id="s13-lb-h">${esc(LL("¿IMERG cuenta menos días de lluvia?", "Is IMERG counting fewer rain days?"))}</h2>
       <p>${esc(LL("En los lugares comparados, IMERG pierde de media más días de lluvia que las referencias. No se detectó un cambio en la relación de cantidad IMERG/ERA5; eso no demuestra que la lluvia total sea constante. El origen y la forma temporal siguen abiertos. Arriba, la comparación con ERA5; abajo, el mapa publicado frente al ajuste hacia CHIRPS.", "At the compared sites, IMERG loses more rain days on average than the references. No change was detected in the IMERG/ERA5 amount ratio; that does not prove total rainfall is constant. The origin and temporal shape remain unresolved. Top, the ERA5 comparison; bottom, the published map versus adjustment towards CHIRPS."))}</p>
+      ${hallazgo()}
       ${warn13}
       <img data-src="figuras/09_tercer_testigo_era5_dark.png" alt="${esc(LL("Diferencia de días de lluvia de IMERG y de CHIRPS frente a ERA5 en seis puntos de República Dominicana, 2001-2024.", "Rain-day difference of IMERG and CHIRPS against ERA5 at six points in the Dominican Republic, 2001-2024."))}">
       <img data-src="figuras/08_after_the_correction_dark.png" alt="${esc(LL("Mapas de SDII y de rachas secas de 15 días, publicados y con el ajuste hacia CHIRPS, y celdas en disputa según el año de corte del ajuste.", "SDII and 15-day dry-spell maps, published and with the adjustment towards CHIRPS, and disputed cells by cut year of the adjustment."))}">
@@ -229,7 +234,18 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       <button class="pop-go alt" data-cy-yuna="${i.yuna ? sel.reg : "yuna"}"><span>${esc(i.yuna ? LL(`Volver a ${sel.reg === "DO" ? LL("todo el país", "the whole country") : d.regName(sel.reg)}`, `Back to ${sel.reg === "DO" ? "the whole country" : d.regName(sel.reg)}`) : LL("Ver las inundaciones del Yuna, con su viento", "See the Yuna floods, with their wind"))}</span>${CHEV}</button>
       <p class="cy-src">${esc(LL("Trayectorias IBTrACS (NOAA) · pronósticos NHC tal como se emitieron · lluvia y satélite NASA (IMERG, MODIS). Apoyo para preparar; no es una orden de evacuación.", "Tracks IBTrACS (NOAA) · NHC forecasts as issued · NASA rain and satellite (IMERG, MODIS). Support for preparedness, not an evacuation order."))}</p>`;
   };
+  const prepStart = () => {
+    if (cyApi) cyOff?.();
+    const col = wx.querySelector<HTMLElement>(".wx-mapcol")!;
+    const over = document.createElement("div"); over.className = "prep-over"; col.appendChild(over);
+    viewPreparation(over, true);
+    wx.dataset.cy = "on";
+    const b = wx.querySelector("[data-prepq]"); b?.setAttribute("aria-pressed", "true"); b?.classList.add("on");
+    prepOff = () => { destroyPreparation(); over.remove(); prepOff = null; wx.dataset.cy = "off"; b?.setAttribute("aria-pressed", "false"); b?.classList.remove("on"); };
+    cleanup.push(() => prepOff?.());
+  };
   const cyStart = () => {
+    if (prepOff) prepOff();
     const col = wx.querySelector<HTMLElement>(".wx-mapcol")!;
     const over = document.createElement("div"); over.className = "cy-over"; col.appendChild(over);
     const h = hurricanes(over, { place: sel.reg, hidePlace: true, onInfo: cyAnswer });
@@ -284,6 +300,10 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
         <li class="no"><b>${esc(LL("Falta saber:", "Still unknown:"))}</b> ${esc(no)}</li>
         <li class="why"><b>${esc(LL("Importa porque:", "It matters because:"))}</b> ${esc(v.por_que_importa)}</li>
       </ul>
+      <div class="ans-go">
+        <button class="pop-go" data-act-audit><span>${esc(LL(`¿Coinciden los 4 productos en la sequía? Ver ${sel.reg === "DO" ? "el país" : d.regName(sel.reg)} en la Auditoría`, `Do the 4 products agree on drought? See ${sel.reg === "DO" ? "the country" : d.regName(sel.reg)} in the Audit`))}</span>${CHEV}</button>
+        <button class="pop-go alt" data-fig13><span>${esc(LL("Lo que encontramos sobre IMERG", "What we found about IMERG"))}</span>${CHEV}</button>
+      </div>
       <details class="ans-more">
       <summary>${esc(LL("Estadística y notas", "Statistics and notes"))}${CHEV}</summary>
       <table class="stats-t">
@@ -557,6 +577,9 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const el = e.target as Element;
     if (el.closest("[data-reg-all]")) { pickRegion("DO"); return; }
     // Ciclones: una pregunta del panel; el mapa de tormentas cubre el de tendencias y el panel explica cómo leerlo
+    if (el.closest("[data-act-audit]")) { openAuditAt(sel.reg); location.hash = "#auditoria"; return; }
+    // Preparar: el tablero de municipios cubre el mapa; el panel sigue a la izquierda
+    if (el.closest("[data-prepq]")) { if (prepOff) prepOff(); else prepStart(); return; }
     if (el.closest("[data-cyq]")) { if (cyApi) { cyOff?.(); renderAnswer(); } else cyStart(); return; }
     const cyy = el.closest<HTMLElement>("[data-cy-yuna]");
     if (cyy && cyApi) { cyApi.setPlace(cyy.dataset.cyYuna!); return; }
@@ -603,6 +626,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const lq = el.closest<HTMLElement>("[data-landq]");
     if (lq) {
       if (cyApi) cyOff?.();
+      if (prepOff) prepOff();
       if (ui.land !== lq.dataset.landq) { ui.land = lq.dataset.landq as LandQ; ui.year = null; ui.landSite = ""; renderStyle(); renderPanels(); renderMap(); frameSites(); $("ans").scrollIntoView({ block: "start", behavior: RM() ? "auto" : "smooth" }); }
       return;
     }
@@ -612,6 +636,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     if (st) { ui.landSite = ui.landSite === st.dataset.site ? "" : st.dataset.site!; renderAnswer(); renderMap(); return; }
     const q = el.closest<HTMLElement>("[data-q]");
     if (q) {
+      if (prepOff) { prepOff(); if (questionOf(sel.ind).id === q.dataset.q && !ui.land) return; }
       if (cyApi) { cyOff?.(); if (questionOf(sel.ind).id === q.dataset.q && !ui.land) { renderAnswer(); return; } }
       const back = !!ui.land;
       if (back) { ui.land = ""; renderStyle(); }

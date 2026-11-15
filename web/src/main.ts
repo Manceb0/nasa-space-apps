@@ -84,7 +84,6 @@ function shell(): void {
       logoAlt: `Stellar Horizons · ${esc(t.brand)}`, logoHref: "#tendencias", ariaLabel: esc(t.brand),
       items: [
         { key: "tendencias", href: "#tendencias", label: getLang() === "es" ? "Tendencias" : "Trends", short: getLang() === "es" ? "Tendencias" : "Trends" },
-        { key: "preparar", href: "#preparar", label: getLang() === "es" ? "Preparar" : "Prepare", short: getLang() === "es" ? "Preparar" : "Prepare" },
         { key: "auditoria", href: "#auditoria", label: esc(t.navAudit), short: esc(t.navAudit) },
         { key: "metodo", href: "#metodo", label: esc(t.navMethod), short: getLang() === "es" ? "Método" : "Method" },
       ],
