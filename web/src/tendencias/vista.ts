@@ -17,6 +17,7 @@ import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
 import { openPop } from "./pop";
 import { hallazgo, type Hallazgos } from "./hallazgo";
+import { startTour, stopTour } from "./tour";
 import { destroyPreparation, viewPreparation } from "../preparacion/vista";
 import { openAuditAt } from "../auditoria/vista";
 import { hurricanes, type CyInfo } from "../preparacion/huracanes";
@@ -43,7 +44,9 @@ let prepOff: (() => void) | null = null;
 let rios: Rio[] | null = null;
 let hzData: Hallazgos | null = null;
 let cyApi: { setPlace: (p: string) => void } | null = null;
+export let autoTour = { on: false };
 export function destroyTrends() {
+  stopTour();
   cleanup.forEach((f) => f()); cleanup = [];
   t3?.destroy(); t3 = null;
   document.body.classList.remove("wx-on");
@@ -98,6 +101,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-land="${ui.land ? "on" : "off"}" data-sty="${ui.style}" data-d3="${ui.d3 ? "on" : "off"}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
     <header class="wx-top">
       <a class="wx-brand" href="#tendencias">${MARK}<b>Stellar Horizons</b><span>${esc(LL("Detective de tendencias", "Trend detective"))}</span></a>
+      <button class="tour-start" id="tour-go"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg><span>${esc(LL("Ver el recorrido", "Watch the tour"))}</span></button>
       ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}">${esc(LL("Preliminar: solo IMERG", "Preliminary: IMERG only"))}</p>`}
     </header>
     <div class="wx-main">
@@ -245,7 +249,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       <p class="cy-src">${esc(LL("Trayectorias IBTrACS (NOAA) · pronósticos NHC tal como se emitieron · lluvia y satélite NASA (IMERG, MODIS). Apoyo para preparar; no es una orden de evacuación.", "Tracks IBTrACS (NOAA) · NHC forecasts as issued · NASA rain and satellite (IMERG, MODIS). Support for preparedness, not an evacuation order."))}</p>`;
   };
   const prepStart = () => {
-    if (cyApi) cyOff?.();
+    if (cyApi) { cyOff?.(); renderAnswer(); }
     const col = wx.querySelector<HTMLElement>(".wx-mapcol")!;
     const over = document.createElement("div"); over.className = "prep-over"; col.appendChild(over);
     viewPreparation(over, true);
@@ -595,7 +599,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     // Ciclones: una pregunta del panel; el mapa de tormentas cubre el de tendencias y el panel explica cómo leerlo
     if (el.closest("[data-act-audit]")) { openAuditAt(sel.reg); location.hash = "#auditoria"; return; }
     // Preparar: el tablero de municipios cubre el mapa; el panel sigue a la izquierda
-    if (el.closest("[data-prepq]")) { if (prepOff) prepOff(); else prepStart(); return; }
+    if (el.closest("[data-prepq]")) { if (prepOff) { prepOff(); renderAnswer(); } else prepStart(); return; }
     if (el.closest("[data-cyq]")) { if (cyApi) { cyOff?.(); renderAnswer(); } else cyStart(); return; }
     const cyy = el.closest<HTMLElement>("[data-cy-yuna]");
     if (cyy && cyApi) { cyApi.setPlace(cyy.dataset.cyYuna!); return; }
@@ -772,8 +776,15 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   });
   const mine = t3;
   renderStyle(); renderPanels(); paintRidge(false);
+  const tour = () => {
+    const ys = d.rel?.yuna ?? [];
+    const yb: [[number, number], [number, number]] | null = ys.length ? [[Math.min(...ys.map((p) => p[0])), Math.min(...ys.map((p) => p[1]))], [Math.max(...ys.map((p) => p[0])), Math.max(...ys.map((p) => p[1]))]] : null;
+    startTour({ wx, map: () => (t3 ? t3.map as never : null), yuna: yb, reset: () => { if (sel.reg !== "DO") pickRegion("DO"); frame(true); } });
+  };
+  $("tour-go").addEventListener("click", tour);
   mine.ready.then(() => {
     if (t3 !== mine) return;
+    if (autoTour.on) { autoTour.on = false; setTimeout(tour, 1200); }
     mine.setFitPadding(fitPad());
     mine.setView(base(), ui.d3, ui.style === "crestas" ? 4 : 1.8);
     renderMap(false);

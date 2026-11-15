@@ -1,0 +1,29 @@
+/* Recorrido: barras de escena arriba, subtítulo grande abajo, controles discretos. La interfaz se acerca con escala. */
+.tour { position: fixed; inset: 0; z-index: 80; pointer-events: none; }
+.tour > * { pointer-events: auto; }
+.tour-bars { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: min(560px, calc(100% - 32px)); display: flex; gap: 4px; }
+.tour-bars i { flex: 1; height: 4px; border-radius: 999px; background: rgba(255, 255, 255, .25); overflow: hidden; }
+.tour-bars b { display: block; height: 100%; background: #fff; transform-origin: left; transform: scaleX(0); }
+.tour-cap { position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%); width: min(880px, calc(100% - 32px)); margin: 0; padding: 18px 26px; border-radius: 22px; background: rgba(8, 9, 11, .9); color: #fff; font-size: clamp(19px, 2vw, 28px); line-height: 1.3; font-weight: 600; letter-spacing: -.01em; text-align: center; text-wrap: balance; }
+.tour-cap span { display: inline-block; opacity: 0; transform: translateY(14px); transition: opacity .45s cubic-bezier(.22, 1, .36, 1), transform .45s cubic-bezier(.22, 1, .36, 1); transition-delay: calc(var(--k) * 45ms); }
+.tour-cap.in span { opacity: 1; transform: none; }
+.tour-cap a { color: #000; background: #fff; padding: 6px 14px; border-radius: 999px; font-size: 18px; text-decoration: none; margin-left: 8px; }
+.tour-ctl { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); display: flex; gap: 8px; align-items: center; }
+.tour-ctl button { height: 44px; min-width: 44px; display: grid; place-items: center; padding: 0 14px; border: 0; border-radius: 999px; background: rgba(8, 9, 11, .9); color: #fff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s, transform .15s cubic-bezier(.22, 1, .36, 1); }
+.tour-ctl button:hover { background: #2a2d31; }
+.tour-ctl button:active { transform: scale(.95); }
+.tour-ctl button[data-t="play"] { background: #fff; color: #000; }
+.tour-ctl svg { width: 16px; height: 16px; }
+.tour-ctl button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* la «cámara» sobre la interfaz */
+#wx { transition: transform 1.4s cubic-bezier(.65, 0, .25, 1); }
+#wx.tour-zoomed { overflow: hidden; }
+.tour-focus { box-shadow: 0 0 0 3px #fff; border-radius: 14px; transition: box-shadow .4s; }
+body.touring .wx-time, body.touring .pill-nav { opacity: .35; transition: opacity .4s; }
+/* botón para empezar */
+.tour-start { display: inline-flex; align-items: center; gap: 8px; height: 36px; margin-left: 14px; padding: 0 14px 0 10px; border: 0; border-radius: 999px; background: #fff; color: #000; font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: transform .15s cubic-bezier(.22, 1, .36, 1), background .2s; }
+.tour-start:hover { background: #e6e6e6; }
+.tour-start:active { transform: scale(.96); }
+.tour-start svg { width: 16px; height: 16px; }
+@media (max-width: 759px) { .tour-cap { bottom: 84px; padding: 14px 16px; } .tour-ctl button.x { font-size: 13px; } .tour-start span { display: none; } }
+@media (prefers-reduced-motion: reduce) { #wx { transition: none; } .tour-cap span { transition: none; opacity: 1; transform: none; } }

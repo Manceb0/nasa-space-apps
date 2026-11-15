@@ -10,7 +10,7 @@ import { pillNav, wirePillNav } from "./pillnav";
 import { type Grid } from "./field";
 import { terrain3d } from "./terrain3d";
 import { provinceStats, type ProvStat } from "./provincias";
-import { destroyTrends, openLand, viewTrends } from "./tendencias/vista";
+import { autoTour, destroyTrends, openLand, viewTrends } from "./tendencias/vista";
 import { destroyAudit, viewAudit } from "./auditoria/vista";
 import { destroyPreparation, viewPreparation } from "./preparacion/vista";
 import { viewMethodV2 } from "./metodo/vista";
@@ -1372,7 +1372,8 @@ function drawPointMap(pts: Puntos) {
 async function route(scrollTop = true) {
   // «Investigar» y «Recovery Ribbon» viven ahora dentro de Tendencias como preguntas de la vegetación; sus pantallas
   // anteriores quedan en #investigar-v1 y #ribbon-v1, fuera del menú
-  const raw = location.hash.replace("#", "") || "tendencias";
+  let raw = location.hash.replace("#", "") || "tendencias";
+  if (raw === "recorrido") { autoTour.on = true; raw = "tendencias"; history.replaceState(null, "", "#tendencias"); }
   if (raw === "investigar" || raw === "ribbon") { openLand(raw === "investigar" ? "verde" : "recupera"); history.replaceState(null, "", "#tendencias"); }
   const r = (raw === "investigar" || raw === "ribbon" ? "tendencias" : raw === "investigar-v1" ? "investigar" : raw === "ribbon-v1" ? "ribbon" : raw) as "respuesta" | "preparar" | "tendencias" | "investigar" | "ribbon" | "expedientes" | "auditoria" | "metodo";
   setNav(r);
@@ -1402,7 +1403,7 @@ async function start() {
   shell();
   index = await load<Index>("index.json");
   window.addEventListener("hashchange", () => {
-    if (["#respuesta", "#preparar", "#tendencias", "#investigar", "#ribbon", "#investigar-v1", "#ribbon-v1", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
+    if (["#recorrido", "#respuesta", "#preparar", "#tendencias", "#investigar", "#ribbon", "#investigar-v1", "#ribbon-v1", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
   });
   let timer: number | undefined;
   let lastW = window.innerWidth;
