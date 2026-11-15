@@ -1,0 +1,40 @@
+[
+  {
+    "storm": "MARIA",
+    "source_url": "https://www.nhc.noaa.gov/archive/2017/al15/al152017.fstadv.002.shtml",
+    "path": "maria.html",
+    "sha256": "474516661e146e7261e5c534c22301852c092fe9d89c40043cb4bbc7eb32ff9a",
+    "bulletin_header": [
+      "",
+      "TROPICAL STORM MARIA FORECAST/ADVISORY NUMBER   2",
+      "NWS NATIONAL HURRICANE CENTER MIAMI FL       AL152017",
+      "2100 UTC SAT SEP 16 2017",
+      ""
+    ],
+    "csv_atcf_base_time": "2017-09-16 18:00:00",
+    "bulletin_issued_at": "2017-09-16T21:00:00+00:00",
+    "lead_hours_in_csv": 106.0,
+    "lead_hours_from_bulletin_using_same_onset_convention": 103.0,
+    "onset_convention": "04 UTC on catalogued date; actual onset hour not established",
+    "operational_flood_warning_validated": false
+  },
+  {
+    "storm": "FIONA",
+    "source_url": "https://www.nhc.noaa.gov/archive/2022/al07/al072022.fstadv.001.shtml",
+    "path": "fiona.html",
+    "sha256": "81d4c1263c3d0d96ee91cba13d41ac433ca12d687796cc6fc27618f5d1a388e8",
+    "bulletin_header": [
+      " ",
+      "TROPICAL DEPRESSION SEVEN FORECAST/ADVISORY NUMBER   1",
+      "NWS NATIONAL HURRICANE CENTER MIAMI FL       AL072022",
+      "1500 UTC WED SEP 14 2022",
+      " "
+    ],
+    "csv_atcf_base_time": "2022-09-14 12:00:00",
+    "bulletin_issued_at": "2022-09-14T15:00:00+00:00",
+    "lead_hours_in_csv": 88.0,
+    "lead_hours_from_bulletin_using_same_onset_convention": 85.0,
+    "onset_convention": "04 UTC on catalogued date; actual onset hour not established",
+    "operational_flood_warning_validated": false
+  }
+]

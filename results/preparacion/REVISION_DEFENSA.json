@@ -1,0 +1,161 @@
+{
+  "reviewed_at": "2026-11-15T19:15:02.072716+00:00",
+  "nhc_issuance_checks": [
+    {
+      "storm": "MARIA",
+      "source_url": "https://www.nhc.noaa.gov/archive/2017/al15/al152017.fstadv.002.shtml",
+      "path": "maria.html",
+      "sha256": "474516661e146e7261e5c534c22301852c092fe9d89c40043cb4bbc7eb32ff9a",
+      "bulletin_header": [
+        "",
+        "TROPICAL STORM MARIA FORECAST/ADVISORY NUMBER   2",
+        "NWS NATIONAL HURRICANE CENTER MIAMI FL       AL152017",
+        "2100 UTC SAT SEP 16 2017",
+        ""
+      ],
+      "csv_atcf_base_time": "2017-09-16 18:00:00",
+      "bulletin_issued_at": "2017-09-16T21:00:00+00:00",
+      "lead_hours_in_csv": 106.0,
+      "lead_hours_from_bulletin_using_same_onset_convention": 103.0,
+      "onset_convention": "04 UTC on catalogued date; actual onset hour not established",
+      "operational_flood_warning_validated": false
+    },
+    {
+      "storm": "FIONA",
+      "source_url": "https://www.nhc.noaa.gov/archive/2022/al07/al072022.fstadv.001.shtml",
+      "path": "fiona.html",
+      "sha256": "81d4c1263c3d0d96ee91cba13d41ac433ca12d687796cc6fc27618f5d1a388e8",
+      "bulletin_header": [
+        " ",
+        "TROPICAL DEPRESSION SEVEN FORECAST/ADVISORY NUMBER   1",
+        "NWS NATIONAL HURRICANE CENTER MIAMI FL       AL072022",
+        "1500 UTC WED SEP 14 2022",
+        " "
+      ],
+      "csv_atcf_base_time": "2022-09-14 12:00:00",
+      "bulletin_issued_at": "2022-09-14T15:00:00+00:00",
+      "lead_hours_in_csv": 88.0,
+      "lead_hours_from_bulletin_using_same_onset_convention": 85.0,
+      "onset_convention": "04 UTC on catalogued date; actual onset hour not established",
+      "operational_flood_warning_validated": false
+    }
+  ],
+  "prediction_registry_snapshot": [
+    {
+      "path": "results/tropical/alerta_acuerdo/predicciones_registradas.json",
+      "ids": [
+        "K1",
+        "K2"
+      ],
+      "count": 2,
+      "sha256": "d2e2c17643102915f8aba515835b3cc5b08ec4b64e3a6e8d560f2526fd47b149",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/alerta_causal/predicciones_registradas.json",
+      "ids": [
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "count": 3,
+      "sha256": "f946746abd1c59208e13751c60fd997915fa9ccc2b01d5e87a926030acecdf7e",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/ciclones/predicciones_registradas.json",
+      "ids": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "count": 3,
+      "sha256": "6abe58f18426614fbb4bb30fce434bb3bad34e4fe5ac3a97cb0c5e9cbf544f99",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/ciclones_sequia/predicciones_registradas.json",
+      "ids": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "count": 3,
+      "sha256": "1da3589a70290b1cfb577147f5781604cc12c6d460a49e8b426f3b340019ed39",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/era5/predicciones_registradas.json",
+      "ids": [
+        "E1",
+        "E2",
+        "E3",
+        "E4"
+      ],
+      "count": 4,
+      "sha256": "9a544950741c3a8425a141e45768e94898e5a3d26a6898cc1dfde1ef2d81236f",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/forma/predicciones_registradas.json",
+      "ids": [
+        "F1",
+        "F2",
+        "F3"
+      ],
+      "count": 3,
+      "sha256": "250d8054596337e65e8b7e29fcd3a447b8a27362a4e2b9c5c04170fc8cf96dfc",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/gpm_fuentes/predicciones_registradas.json",
+      "ids": [
+        "H1",
+        "H2",
+        "H3"
+      ],
+      "count": 3,
+      "sha256": "af8fedfda8b79828d72d5e07be155600ccec46a028bdb8ce07ac54e8d6899b75",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/merra2/predicciones_registradas.json",
+      "ids": [
+        "N1",
+        "N2",
+        "N3",
+        "N4"
+      ],
+      "count": 4,
+      "sha256": "ebe6cfe46ef54c037154e04664075cb1987af7da9607c50a13d9205447f078fa",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/predicciones_registradas.json",
+      "ids": [
+        "P1_ciclones",
+        "P1b_extremos",
+        "P2_barlovento",
+        "P2b_lluvia_debil",
+        "P3_sin_explicar",
+        "P4_instrumento"
+      ],
+      "count": 6,
+      "sha256": "2c732113c48eb6fbb71d50fc6f1effc92903101007f4476a340d2fcec1fd7e92",
+      "status": "entries_in_local_registry_not_independent_confirmations"
+    },
+    {
+      "path": "results/tropical/puerto_rico/predicciones_registradas.json",
+      "ids": [
+        "PR1",
+        "PR2",
+        "PR3"
+      ],
+      "count": 3,
+      "sha256": "fe411164405d62f2f6c59a81d61e10fdbffa855f13bfad87e78985e0a2af584a",
+      "status": "registered_only_results_missing_at_review"
+    }
+  ],
+  "total_registered_entries": 34,
+  "number_is_not_external_preregistration_or_validated_claim_count": true
+}
