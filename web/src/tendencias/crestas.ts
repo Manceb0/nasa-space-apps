@@ -69,13 +69,18 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
   const merc = (lat: number) => Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
   const unmerc = (m: number) => ((2 * Math.atan(Math.exp(m)) - Math.PI / 2) * 180) / Math.PI;
 
-  const geom = () => {
-    const r = host.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1), p = o.pad();
+  const size = () => {
+    const r = host.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+    const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
     W = r.width; H = r.height;
-    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
-    cv.style.width = `${W}px`; cv.style.height = `${H}px`;
+    if (cv.width !== w || cv.height !== h) {
+      cv.width = w; cv.height = h;
+      cv.style.width = `${W}px`; cv.style.height = `${H}px`;
+    }
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const pr = o.proj();
+  };
+  const camera = () => {
+    const p = o.pad(), pr = o.proj();
     if (pr) {
       const a = pr(LON[0], LAT[0]), b = pr(LON[1], LAT[1]);
       bx = (b.x - a.x) / (LON[1] - LON[0]); ax = a.x - bx * LON[0];
@@ -90,8 +95,14 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     ax = p.left + (aw - s * lonRad) / 2 - bx * LON[0];
     ay = p.top + (ah - s * (m1 - m0)) / 2 + s * m1;
   };
+  const geom = () => { size(); camera(); };
   const X = (lon: number) => ax + bx * lon;
   const Y = (lat: number) => ay + by * merc(lat);
+  // Lo fijo se calcula una vez: la Mercator de cada muestra (base y cresta)
+  const baseM = rel.filas.map((f) => merc(f.lat));
+  const topM = rel.filas.map((f) => f.z.map((z) => merc(f.lat + z * K)));
+  // Colores ya resueltos cuando no hay transición (arrastrar no recalcula cadenas)
+  let still: string[] | null = null;
   const target = (k: number): RGBA => {
     if (k < 0 || !R.incluida[k]) return OUT;
     const c = o.color(k) ?? OUT;
@@ -110,7 +121,8 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     rel.filas.forEach((f, r) => {
       const t = (now - t0 - (r / n) * SWEEP) / FADE;
       if (t < 1) busy = true;
-      const zs = f.z, base = Y(f.lat);
+      const zs = f.z, base = ay + by * baseM[r], tm = topM[r], off = r * rel.nlon;
+      const col = (q: number) => (still && t >= 1 ? still[off + q] : css(mix(prev[off + q] ?? OUT, next[off + q], t)));
       // tramos de tierra contiguos: se rellena debajo con el fondo para tapar las filas de atrás
       let i = 0;
       while (i < zs.length) {
@@ -118,17 +130,17 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
         let j = i; while (j < zs.length && zs[j]) j++;
         const a = Math.max(0, i - 1), b = Math.min(zs.length - 1, j);
         g.beginPath(); g.moveTo(X(lons[a]), base + 1.5);
-        for (let s = a; s <= b; s++) g.lineTo(X(lons[s]), Y(f.lat + zs[s] * K));
+        for (let s = a; s <= b; s++) g.lineTo(ax + bx * lons[s], ay + by * tm[s]);
         g.lineTo(X(lons[b]), base + 1.5); g.closePath();
         g.fillStyle = ground; g.fill();
         // la línea, en carreras del mismo color
         let s = a;
         while (s < b) {
-          const c0 = css(mix(prev[r * rel.nlon + s] ?? OUT, next[r * rel.nlon + s], t));
+          const c0 = col(s);
           let e = s + 1;
-          while (e < b && css(mix(prev[r * rel.nlon + e] ?? OUT, next[r * rel.nlon + e], t)) === c0) e++;
-          g.beginPath(); g.moveTo(X(lons[s]), Y(f.lat + zs[s] * K));
-          for (let q = s + 1; q <= e; q++) g.lineTo(X(lons[q]), Y(f.lat + zs[q] * K));
+          while (e < b && col(e) === c0) e++;
+          g.beginPath(); g.moveTo(ax + bx * lons[s], ay + by * tm[s]);
+          for (let q = s + 1; q <= e; q++) g.lineTo(ax + bx * lons[q], ay + by * tm[q]);
           g.strokeStyle = c0; g.stroke();
           s = e;
         }
@@ -161,7 +173,7 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     const cw = g.measureText(o.labels.credit).width;
     label(o.labels.credit, Math.max(8, W - o.pad().right - cw), W < 600 ? o.pad().top - 2 : H - o.pad().bottom + 24, muted);
     if (busy) raf = requestAnimationFrame(paint);
-    else prev = next;
+    else if (!still) { prev = next; still = next.map(css); }
   };
 
   const draw = (anim: boolean) => {
@@ -169,6 +181,7 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     cancelAnimationFrame(raf);
     const cur = next;
     next = cellIdx.flatMap((row) => row.map(target));
+    still = null;
     prev = anim && cur.length ? cur : next;
     t0 = performance.now() - (anim && cur.length ? 0 : SWEEP + FADE);
     geom();
@@ -184,8 +197,8 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     return k >= 0 && R.incluida[k] ? k : -1;
   };
   // El lienzo no recibe el puntero: arrastrar, la rueda y el pellizco llegan al mapa, y las crestas lo siguen
-  const reframe = () => { if (on) { geom(); cancelAnimationFrame(raf); raf = requestAnimationFrame(paint); } };
-  const ro = new ResizeObserver(reframe);
+  const reframe = () => { if (!on) return; camera(); cancelAnimationFrame(raf); paint(performance.now()); };
+  const ro = new ResizeObserver(() => { if (on) { geom(); cancelAnimationFrame(raf); paint(performance.now()); } });
   ro.observe(host);
 
   return {

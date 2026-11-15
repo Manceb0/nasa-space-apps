@@ -99,13 +99,16 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .seg button.on { background: var(--text); color: #000; }
 .seg button:disabled { opacity: .35; cursor: not-allowed; }
 .stats-t th i, .pa-w i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
-.ans-sent { margin-top: 10px; font-size: 14px; line-height: 1.45; text-wrap: pretty; }
-.ladder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 18px; }
-.ladder span { position: relative; padding-top: 12px; font-size: 12px; line-height: 1.3; color: var(--faint); }
-.ladder span i { position: absolute; inset: 0 0 auto; height: 5px; border-radius: 3px; background: var(--raised); overflow: hidden; }
-.ladder span i::after { content: ""; position: absolute; inset: 0; background: var(--c); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
-.ladder span.on { color: var(--text); font-weight: 500; }
-.ladder span.on i::after { transform: scaleX(1); }
+.ans-sent { margin-top: 14px; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ans-sent b { color: var(--c); font-weight: 600; }
+.ans-more { margin-top: 14px; }
+.ans-more summary { display: flex; align-items: center; justify-content: space-between; min-height: 40px; font-size: 13px; font-weight: 600; color: var(--muted); list-style: none; cursor: pointer; }
+.ans-more summary::-webkit-details-marker { display: none; }
+.ans-more summary:hover { color: var(--text); }
+.ans-more summary:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ans-more[open] summary .chev { transform: rotate(180deg); }
+.ans-more summary .chev { margin-left: auto; }
+.ans-more .stats-t { margin-top: 4px; }
 .sec summary::-webkit-details-marker { display: none; }
 .sec[open] summary .chev { transform: rotate(180deg); }
 .pr-why, .pr-txt { font-size: 13px; line-height: 1.5; color: var(--muted); }
@@ -138,9 +141,11 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .cr-warn:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
 .s13-h:focus { outline: none; }
 /* Escalón de 2013-10: aviso con conmutador, sin caja propia (una regla a la izquierda) */
-.s13 { margin-top: 16px; padding: 2px 0 2px 14px; border-left: 3px solid #ffd60a; }
+.s13 { margin-top: 18px; }
 .s13-h { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--text); }
-.s13-h svg { width: 16px; height: 16px; flex: none; }
+.s13-h { align-items: flex-start; }
+.s13-h svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.s13-h small { display: block; margin-top: 2px; font-size: 12px; font-weight: 500; color: #ffd60a; }
 .s13-t { margin-top: 6px; font-size: 13px; line-height: 1.45; color: var(--muted); }
 .s13-seg { margin-top: 10px; }
 .s13-ns { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-top: 12px; }

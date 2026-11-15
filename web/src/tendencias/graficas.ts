@@ -59,13 +59,13 @@ export function capsule(d: TrendData, s: Sel) {
     <circle cx="${cx}" cy="${cy}" r="8" class="cap-hub"/>
     <text x="${cx - R}" y="${cy + 22}" class="cap-end" fill="${cL}">◀ ${esc(left)}</text>
     <text x="${cx + R}" y="${cy + 22}" text-anchor="end" class="cap-end" fill="${cR}">${esc(right)} ▶</text>
+    <text x="${cx}" y="${cy + 26}" text-anchor="middle" class="cap-t">${esc(v.unidad_tendencia)}</text>
   </svg>
   <div class="cap-read">${read}</div>
   <p class="cap-key">
     <span><svg viewBox="0 0 20 8" aria-hidden="true"><line x1="2" y1="4" x2="18" y2="4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>${esc(LL("claro", "clear"))}</span>
     <span><svg viewBox="0 0 20 8" aria-hidden="true"><line x1="2" y1="4" x2="18" y2="4" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 4"/></svg>${esc(LL("incierto", "uncertain"))}</span>
     <span><svg viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11L1.5 3A9 9 0 0 1 14.5 3Z" fill="currentColor" fill-opacity=".35"/></svg>${esc(LL("margen 95 %", "95 % margin"))}</span>
-    <span class="cap-u">${esc(v.unidad_tendencia)}</span>
   </p>`;
 }
 

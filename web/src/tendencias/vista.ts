@@ -101,7 +101,6 @@ function render(view: HTMLElement, d: TrendData) {
             <h2 id="ans-h">${esc(LL("Qué dicen las dos fuentes", "What the two sources say"))}</h2>
             <div id="ans" aria-live="polite"></div>
           </section>
-          <p class="fine">${esc(LL("IMERG y CHIRPS comparten insumos (infrarrojo y pluviómetros). Si discrepan no es que uno mienta: cada producto lee distinto la misma lluvia, y eso es lo que se investiga.", "IMERG and CHIRPS share inputs (infrared and gauges). If they disagree, neither is lying: each reads the same rain differently, and that is what gets investigated."))} ${esc(d.V.nota_causalidad)}</p>
           ${layout === "wide" ? "" : extra}
         </div>
       </aside>
@@ -178,8 +177,7 @@ function render(view: HTMLElement, d: TrendData) {
     const pair = (a: string, b: string, lab: string, tip = "") => `<div class="s13-n"${tip ? ` title="${esc(tip)}"` : ""}><p class="s13-l">${lab}</p><p class="s13-v"><span class="${d.fix ? "" : "on"}">${a}</span><i aria-hidden="true">→</i><span class="${d.fix ? "on" : ""}">${b}</span></p></div>`;
     const nacTip = nac?.publicado && nac.sin_escalon ? `${pTxt(nac.publicado.p)}, ${clsLab(nac.publicado.clase)} → ${pTxt(nac.sin_escalon.p)}, ${clsLab(nac.sin_escalon.clase)}` : "";
     return `<section class="s13" aria-labelledby="s13-h">
-      <h3 class="s13-h" id="s13-h" tabindex="-1">${WARN}${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}</h3>
-      <p class="s13-t">${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia; los pluviómetros y CHIRPS, no.", "IMERG changed in 2013 the way it counts rain days; the gauges and CHIRPS did not."))}</p>
+      <h3 class="s13-h" id="s13-h" tabindex="-1" title="${esc(LL("Posible artefacto de medición: escalón 2013-10", "Possible measurement artefact: 2013-10 step"))}">${WARN}<span>${esc(LL("IMERG cambió en 2013 su forma de contar días de lluvia", "IMERG changed in 2013 the way it counts rain days"))}<small>${esc(LL("posible artefacto de medición · los pluviómetros no cambiaron", "possible measurement artefact · the gauges did not change"))}</small></span></h3>
       <div class="seg s13-seg" role="radiogroup" aria-label="${esc(LL("Versión de IMERG en el mapa", "IMERG version on the map"))}">
         <button data-fix="0" role="radio" aria-checked="${!d.fix}" class="${d.fix ? "" : "on"}">${esc(LL("Publicado", "Published"))}</button>
         <button data-fix="1" role="radio" aria-checked="${d.fix}" class="${d.fix ? "on" : ""}">${esc(LL("Sin el escalón", "Without the step"))}</button>
@@ -218,14 +216,17 @@ function render(view: HTMLElement, d: TrendData) {
     const pFmt = (t: Tr) => (t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3));
     box.innerHTML = `${ctl}
       ${capsule(d, sel)}
-      <div class="ladder" role="img" aria-label="${esc(`${LL("Evidencia", "Evidence")}: ${ti.label}`)}">${TIERS.map(([, es, en], i) => `<span class="${i === tierIdx ? "on" : ""}" style="--c:${ti.color}" title="${esc(LL(es, en))}"><i></i>${i === tierIdx ? esc(LL(es, en)) : ""}</span>`).join("")}</div>
-      <p class="ans-sent">${esc(sentence)}</p>
+      <p class="ans-sent" style="--c:${ti.color}">${tierIdx >= 0 ? `<b>${esc(LL(TIERS[tierIdx][1], TIERS[tierIdx][2]))}.</b> ` : ""}${esc(sentence)}</p>
       ${stepBlock()}
+      <details class="ans-more">
+      <summary>${esc(LL("Estadística y notas", "Statistics and notes"))}${CHEV}</summary>
       <table class="stats-t">
         <thead><tr><th></th><th class="num" title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}">p</th><th class="num" title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}">q (FDR)</th><th class="num" title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}">${esc(LL("Mín. detect.", "Min. detect."))}</th><th class="num">${esc(LL("Media", "Mean"))}</th></tr></thead>
         <tbody>${ws.map(({ p, t }) => `<tr><th scope="row"><i style="background:${PROD_COLOR[p]}"></i>${p}</th><td class="num">${pFmt(t)}</td><td class="num">${t.q === null ? "—" : num(t.q, 3)}</td><td class="num">±${num(t.mdt)}</td><td class="num">${num(t.media)}</td></tr>`).join("")}</tbody>
       </table>
-      <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))}</p>`;
+      <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}. ${v.descripcion}`, `Significant if ${d.sigRule(sel.reg)}. ${v.descripcion}`))}</p>
+      <p class="rule">${esc(LL("IMERG y CHIRPS comparten insumos (infrarrojo y pluviómetros): si discrepan, cada uno lee distinto la misma lluvia, y eso es lo que se investiga.", "IMERG and CHIRPS share inputs (infrared and gauges): if they disagree, each reads the same rain differently, and that is what gets investigated."))} ${esc(d.V.nota_causalidad)}</p>
+      </details>`;
   };
 
   // ── Año a año y las 32 provincias (plegables) ──
