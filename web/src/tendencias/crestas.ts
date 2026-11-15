@@ -14,6 +14,7 @@ export interface Relieve {
 }
 /** Color de una celda: [r, g, b, alfa] o null (fuera del dominio). */
 export type RGBA = [number, number, number, number];
+export interface Rio { name: string; len_deg: number; parts: [number, number][][] }
 type Pad = { top: number; bottom: number; left: number; right: number };
 
 const K = 1e-4; // grados de latitud por metro: exageración vertical ≈ ×11, igual que la figura del informe
@@ -54,7 +55,17 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
   labels: { yuna: string; hatillo: string; scale: string; credit: string };
   /** Proyección del mapa (lon, lat) → píxel del contenedor; null mientras el mapa no está listo. */
   proj: () => ((lon: number, lat: number) => { x: number; y: number }) | null;
+  /** Ríos (OpenStreetMap): se dibujan sobre el relieve, a la altura de cada punto. */
+  rivers?: () => Rio[] | null;
 }) {
+  // altura del relieve en un punto: entre las dos filas de perfil que lo rodean, en la columna más cercana
+  const zAt = (lon: number, lat: number) => {
+    const F = rel.filas, c = Math.max(0, Math.min(rel.nlon - 1, Math.round((lon - rel.lon0) / rel.dlon)));
+    let i = 0; while (i < F.length - 1 && !((F[i].lat - lat) * (F[i + 1].lat - lat) <= 0)) i++;
+    if (i >= F.length - 1) return 0;
+    const a = F[i], b = F[i + 1], k = (lat - a.lat) / (b.lat - a.lat || 1);
+    return Math.max(0, (a.z[c] ?? 0) * (1 - k) + (b.z[c] ?? 0) * k);
+  };
   const cv = document.createElement("canvas");
   cv.className = "ridge";
   cv.setAttribute("role", "img");
@@ -148,6 +159,16 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
         i = j;
       }
     });
+    // los ríos, elevados sobre el relieve: se ve cómo bajan por los valles hasta la costa
+    const rios = o.rivers?.();
+    if (rios) {
+      g.lineCap = "round"; g.lineJoin = "round";
+      for (const r of rios) {
+        const big = r.len_deg > 0.8;
+        g.strokeStyle = big ? "rgba(100,190,255,.95)" : "rgba(100,190,255,.6)"; g.lineWidth = big ? 1.8 : 1.1;
+        for (const part of r.parts) { g.beginPath(); part.forEach(([lo, la], i) => { const x = X(lo), y = Y(la + zAt(lo, la) * K); if (i) g.lineTo(x, y); else g.moveTo(x, y); }); g.stroke(); }
+      }
+    }
     // la cuenca del Yuna, elevada sobre el relieve, y la presa de Hatillo
     const ink = getComputedStyle(host).getPropertyValue("--text").trim() || "#f2f2f2", muted = getComputedStyle(host).getPropertyValue("--muted").trim() || "#9a9ea6";
     g.setLineDash([4, 3]); g.lineWidth = 1.2; g.strokeStyle = ink; g.beginPath();
@@ -165,6 +186,19 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     if (W >= 520) {
       label(o.labels.yuna, X(east[0]) + 10, Y(east[1] + east[2] * K) - 14, ink);
       label(o.labels.hatillo, hx + 10, hy + 12, "#E69F00");
+      // nombres de los ríos más largos: cada uno busca un tramo donde no pise otra etiqueta
+      if (rios) {
+        const used: [number, number, number, number][] = [[hx, hy - 4, 160, 20], [X(east[0]) + 10, Y(east[1] + east[2] * K) - 24, 130, 20]];
+        const free = (x: number, y: number, w: number) => !used.some(([a, b, c, d2]) => x < a + c && x + w > a && y - 9 < b + d2 && y + 9 > b);
+        for (const r of rios.slice(0, 6)) {
+          const name = r.name.replace(/^R[ií]o /, ""), w = g.measureText(name).width + 8;
+          const part = r.parts.reduce((m, p) => (p.length > m.length ? p : m), r.parts[0]);
+          for (const f of [0.45, 0.25, 0.7, 0.15, 0.85]) {
+            const [lo, la] = part[Math.floor((part.length - 1) * f)], x = X(lo) + 6, y = Y(la + zAt(lo, la) * K) - 8;
+            if (free(x, y, w)) { label(name, x, y, "#8fd3ff"); used.push([x, y - 9, w, 18]); break; }
+          }
+        }
+      }
       // barra de escala vertical: 1000 m
       const sx0 = X(-68.55), sy0 = Y(17.75), sy1 = Y(17.75 + 1000 * K);
       g.strokeStyle = ink; g.lineWidth = 1.2; g.beginPath(); g.moveTo(sx0, sy0); g.lineTo(sx0, sy1); g.stroke();

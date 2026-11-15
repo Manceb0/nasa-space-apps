@@ -10,7 +10,8 @@ import { esc, LL, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from
 import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
 import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verdeAnswer, type Land, type LandQ } from "./tierra";
 import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart } from "./graficas";
-import { cellProvinces, ridges, type RGBA } from "./crestas";
+import { cellProvinces, ridges, type RGBA, type Rio } from "./crestas";
+import { load } from "../data";
 import { bottomSheet, PEEK } from "./hoja";
 import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
@@ -36,6 +37,7 @@ const PANEL_R = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2
 const SEASON: Record<string, [string, string]> = { anual: ["Año", "Year"], seca: ["Seca", "Dry"], humeda_temprana: ["May–jul", "May–Jul"], humeda_tardia: ["Ago–nov", "Aug–Nov"] };
 
 let cyOff: (() => void) | null = null;
+let rios: Rio[] | null = null;
 let cyApi: { setPlace: (p: string) => void } | null = null;
 export function destroyTrends() {
   cleanup.forEach((f) => f()); cleanup = [];
@@ -50,7 +52,8 @@ export async function viewTrends(view: HTMLElement) {
   destroyTrends();
   document.body.classList.add("wx-on");
   view.innerHTML = `<div class="wx"><p class="wx-loading">${esc(LL("Cargando tendencias…", "Loading trends…"))}</p></div>`;
-  const [d, land] = await Promise.all([loadTrends(), loadLand()]);
+  const [d, land, riosData] = await Promise.all([loadTrends(), loadLand(), load<{ rios: Rio[] }>("tendencias/rios.json").catch(() => null)]);
+  rios = riosData?.rios ?? null;
   if (!d.prods.includes(sel.src)) sel.src = d.prods[0];
   if (!ui.show || (ui.show === "acuerdo" && !d.both)) ui.show = d.both ? "acuerdo" : sel.src;
   if (!d.rel && ui.style === "crestas") ui.style = "oscuro";
@@ -475,8 +478,10 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       else {
         m.addSource("ridge3d", { type: "geojson", data: fc });
         m.addSource("yuna3d", { type: "geojson", data: rg.yunaLine() });
+        m.addSource("rios3d", { type: "geojson", data: { type: "FeatureCollection", features: (rios ?? []).map((r) => ({ type: "Feature" as const, properties: { w: r.len_deg > 0.8 ? 2 : 1.2 }, geometry: { type: "MultiLineString" as const, coordinates: r.parts } })) } });
         const before = m.getLayer("prov-line") ? "prov-line" : undefined;
         m.addLayer({ id: "ridge3d", type: "line", source: "ridge3d", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["interpolate", ["linear"], ["zoom"], 7, 1.3, 10, 2.4] } }, before);
+        m.addLayer({ id: "rios3d", type: "line", source: "rios3d", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#64beff", "line-width": ["get", "w"], "line-opacity": 0.9 } }, before);
         m.addLayer({ id: "yuna3d", type: "line", source: "yuna3d", paint: { "line-color": "#ffffff", "line-width": 1.6, "line-dasharray": [3, 2] } }, before);
       }
       if (m.getLayer("cells")) m.setLayoutProperty("cells", "visibility", "none");
@@ -485,7 +490,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       d.provs.forEach((r) => { const id = d.isoToShape[r.id]; if (id) { clear[id] = "rgba(0,0,0,0)"; zero[id] = 0; } });
       t3.setChoro(clear, zero);
     }
-    for (const id of ["ridge3d", "yuna3d"]) if (m.getLayer(id)) m.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+    for (const id of ["ridge3d", "yuna3d", "rios3d"]) if (m.getLayer(id)) m.setLayoutProperty(id, "visibility", on ? "visible" : "none");
     t3.refresh3d();
   };
   const base = (): "none" | "dark" | "sat" => (ui.style === "plano" ? "sat" : "dark");
@@ -688,10 +693,11 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   // ── Las crestas ──
   if (d.rel) {
     rg = ridges(wx.querySelector<HTMLElement>(".wx-mapcol")!, d.rel, d.R, {
+      rivers: () => rios,
       color: (k) => ridgeColor(k),
       dim: (k) => (sel.reg === "DO" ? null : cellProv[k] !== sel.reg),
       pad: () => (layout === "phone" ? { top: 62, bottom: PEEK + 110, left: 10, right: 10 } : { ...fitPad(), top: 70 }),
-      labels: { yuna: LL("Cuenca del Yuna", "Yuna basin"), hatillo: LL("Presa de Hatillo", "Hatillo dam"), scale: LL("1000 m (×11)", "1,000 m (×11)"), credit: LL("Relieve: Copernicus GLO-90 · color: celdas de 0,1° del mapa", "Relief: Copernicus GLO-90 · colour: the map's 0.1° cells") },
+      labels: { yuna: LL("Cuenca del Yuna", "Yuna basin"), hatillo: LL("Presa de Hatillo", "Hatillo dam"), scale: LL("1000 m (×11)", "1,000 m (×11)"), credit: LL("Relieve: Copernicus GLO-90 · ríos: OpenStreetMap · color: celdas de 0,1° del mapa", "Relief: Copernicus GLO-90 · rivers: OpenStreetMap · colour: the map's 0.1° cells") },
       proj: () => (t3 ? (lon, lat) => t3!.map.project([lon, lat]) : null),
     });
     const mineRg = rg;
