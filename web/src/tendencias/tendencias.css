@@ -415,3 +415,4 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .qs { grid-template-columns: minmax(0, 1fr); }
 .mpick { min-width: 0; }
 .mpick select { min-width: 0; width: 100%; }
+.adj:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
