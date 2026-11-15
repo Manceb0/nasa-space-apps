@@ -513,8 +513,9 @@ button.vd:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-r
 .cy-over { position: absolute; inset: 0; z-index: 2; animation: cy-in .45s cubic-bezier(.22, 1, .36, 1) both; }
 .cy-over .hx { height: 100%; border-radius: 0; --hx-top: 64px; }
 .wx[data-cy="on"] .map-top { z-index: 8; }
-.wx[data-cy="on"] .map-sty, .wx[data-cy="on"] .map-cam, .wx[data-cy="on"] .map-data, .wx[data-cy="on"] .map-top .sp, .wx[data-cy="on"] .wx-time { display: none; }
-.wx[data-cy="on"] .map-top { right: auto; }
+.wx[data-cy="on"] .map-cam, .wx[data-cy="on"] .map-data, .wx[data-cy="on"] .wx-time { display: none; }
+/* en huracanes, «Vista» queda arriba a la derecha, a la izquierda de las capas */
+.wx[data-cy="on"] .map-sty { margin-right: 60px; }
 @keyframes cy-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
 @media (prefers-reduced-motion: reduce) { .cy-over { animation: none; } }
 @media (max-width: 759px) { .cy-over .hx { --hx-top: 58px; } }

@@ -260,7 +260,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     cyApi = h; wx.dataset.cy = "on";
     wx.querySelector("[data-cyq]")?.setAttribute("aria-pressed", "true");
     wx.querySelector("[data-cyq]")?.classList.add("on");
-    cyOff = () => { h.destroy(); over.remove(); cyOff = null; cyApi = null; wx.dataset.cy = "off"; wx.querySelector("[data-cyq]")?.setAttribute("aria-pressed", "false"); wx.querySelector("[data-cyq]")?.classList.remove("on"); };
+    $("sty-l").textContent = LL("Huracanes", "Hurricanes");
+    cyOff = () => { h.destroy(); over.remove(); cyOff = null; cyApi = null; wx.dataset.cy = "off"; $("sty-l").textContent = styles.find(([k]) => k === ui.style)?.[1] ?? ""; wx.querySelector("[data-cyq]")?.setAttribute("aria-pressed", "false"); wx.querySelector("[data-cyq]")?.classList.remove("on"); };
     cleanup.push(() => cyOff?.());
     $("ans").innerHTML = `<p class="cy-src">${esc(LL("Cargando las tormentas…", "Loading the storms…"))}</p>`;
     $("ans").scrollIntoView({ block: "start", behavior: RM() ? "auto" : "smooth" });
@@ -628,7 +629,14 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
         oscuro: LL("Mapa oscuro con las celdas de color", "Dark map with coloured cells"),
         plano: LL("Imagen de satélite con las celdas de color", "Satellite image with coloured cells"),
       };
-      openMenu(sb, styles.map(([k, l]) => ({ value: k, label: l, hint: hint[k] })), ui.style, (v) => { ui.style = v as Style; renderStyle(); applyView(false); }, LL("Cómo se dibuja el mapa", "How the map is drawn"));
+      openMenu(sb, [
+        ...styles.map(([k, l]) => ({ value: k, label: l, hint: hint[k] })),
+        { value: "ciclones", label: LL("Huracanes", "Hurricanes"), hint: LL("73 tormentas 2001–2024: trayectoria, aviso oficial del NHC, viento, lluvia y satélite NASA", "73 storms 2001–2024: track, official NHC advisory, wind, NASA rain and satellite") },
+      ], cyApi ? "ciclones" : ui.style, (v) => {
+        if (v === "ciclones") { if (!cyApi) cyStart(); $("sty-l").textContent = LL("Huracanes", "Hurricanes"); return; }
+        if (cyApi) { cyOff?.(); renderAnswer(); }
+        ui.style = v as Style; renderStyle(); applyView(false);
+      }, LL("Cómo se dibuja el mapa", "How the map is drawn"));
       return;
     }
     const lq = el.closest<HTMLElement>("[data-landq]");
