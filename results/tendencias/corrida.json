@@ -1,0 +1,19 @@
+{
+  "fecha_utc": "2026-11-15T01:58:47Z",
+  "n_sustitutos": 1000,
+  "descarga_chirps": {
+    "estado": "omitida (--sin-descarga)"
+  },
+  "coherencia_diaria": {
+    "media_diaria_IMERG_mm": 3.6503489017486572,
+    "media_diaria_CHIRPS_mm": 3.6986496448516846,
+    "fraccion_dias_humedos_IMERG": 0.3315106804054745,
+    "fraccion_dias_humedos_CHIRPS": 0.31310426028991073,
+    "correlacion_diaria_mediana_celdas": 0.5525954536624074
+  },
+  "productos": [
+    "IMERG",
+    "CHIRPS"
+  ],
+  "segundos_calculo": 319
+}
