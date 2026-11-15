@@ -29,6 +29,7 @@ Este README es la guía para el líder y el equipo: qué hay, qué leer primero 
 
 | Orden | Archivo | Para qué |
 |---|---|---|
+| 0 | `reports_nacional/ESTADO_CONCLUSIONES.md` | **Primero esto:** cada hallazgo con su grado de certeza (manda sobre los demás documentos) |
 | 1 | `reports_nacional/AUDITORIA_CONFIANZA.md` (sección «En corto») | El hallazgo central |
 | 2 | `reports_nacional/TENDENCIAS_P0.md` (sección «Resumen») | Lo que pide el reto |
 | 3 | `reports_nacional/CASO_YUNA.md` | El caso concreto |
