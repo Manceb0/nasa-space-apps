@@ -534,7 +534,7 @@ button.vd:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-r
 @media (max-width: 759px) { .wx[data-cy="on"] .cy-over { bottom: 172px; } .wx[data-cy="on"] .cy-over .hx-key { display: none; } }
 
 /* ── Pantalla ancha: el mapa es todo el fondo; paneles, barra de arriba y tiempo flotan encima ── */
-@media (min-width: 1180px) {
+@media (min-width: 760px) {
   #wx .wx-main { position: relative; display: block; }
   #wx .wx-mapcol { position: absolute; inset: 0; }
   #wx .wx-left, #wx .wx-right { position: absolute; z-index: 5; top: 0; bottom: 0; transition: width .4s var(--ease), margin .4s var(--ease); }
@@ -545,9 +545,10 @@ button.vd:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-r
   #wx[data-land="on"] .map-top, #wx[data-land="on"] .wx-time { right: 24px; }
   #wx .cy-over .hx { --pl: calc(var(--lw) + 24px); --pr: calc(var(--rw) + 24px); }
 }
-@media (min-width: 1180px) {
+@media (min-width: 760px) {
   #wx .wx-time { height: auto; flex-wrap: wrap; row-gap: 6px; padding: 12px 18px 10px; }
   #wx .wx-legend { flex: 1 1 100%; width: auto; padding-left: 54px; }
   #wx .wx-legend .lg-cls { margin-top: 0; }
   #wx .wx-left, #wx .wx-right { background: rgba(26, 28, 32, .92); }
 }
+#wx[data-layout="mid"] { --rw: 0px; }

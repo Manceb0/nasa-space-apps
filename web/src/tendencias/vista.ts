@@ -502,8 +502,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const describeRidge = () => rg?.describe(`${LL("Perfiles de relieve de La Española apilados de norte a sur; cada tramo lleva el color de su celda en el mapa.", "Relief profiles of Hispaniola stacked north to south; each stretch takes its cell's map colour.")} ${$("wx-legend").textContent?.replace(/\s+/g, " ").trim() ?? ""}`);
   // El margen inferior sale de la altura real de la línea de tiempo (cambia cuando la leyenda baja a otra fila)
   const barH = () => document.getElementById("wx-bar")?.offsetHeight ?? 76;
-  const sideL = () => (layout === "wide" && ui.left ? 372 : 0), sideR = () => (layout === "wide" && ui.right && !ui.land ? 352 : 0);
-  const fitPad = () => (layout === "phone" ? { top: 70, bottom: PEEK + 120, left: 16, right: 16 } : { top: 64, bottom: barH() + (layout === "wide" ? 52 : 34), left: 32 + sideL(), right: 32 + sideR() });
+  const sideL = () => (layout !== "phone" && ui.left ? 372 : 0), sideR = () => (layout === "wide" && ui.right && !ui.land ? 352 : 0);
+  const fitPad = () => (layout === "phone" ? { top: 70, bottom: PEEK + 120, left: 16, right: 16 } : { top: 64, bottom: barH() + 52, left: 32 + sideL(), right: 32 + sideR() });
   const frame = (fly = true) => {
     if (!t3) return;
     t3.setFitPadding(fitPad());
