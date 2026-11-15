@@ -1,0 +1,16 @@
+id,mcdwd_observa,mcdwd_inund_km2_max_yuna,mcdwd_insuf_min_yuna,a_lluvia100,a2_lluvia_media_cal,c_antecedente,b_lluvia100_y_ant_p90,b2_umbral_rebajado_si_humedo,b3_lluvia100_o_rebajado_gldas,b4_lluvia100_o_rebajado_smap
+2003-11,True,19.228509666642758,0.23040899891749422,False,False,True,False,True,False,False
+2007-10,True,70.75687809090064,0.324516402315621,True,True,True,True,True,True,True
+2007-12,True,59.048179291265164,0.07337506471501859,True,True,True,True,True,True,True
+2011-06,,,0.995316985927425,True,False,False,False,True,True,True
+2012-08,True,5.652475282582648,0.242057702263849,True,False,False,False,True,True,True
+2012-10,True,8.579649982491519,0.0019061514566762366,True,True,False,True,True,True,True
+2016-11,True,31.795173464527394,0.1472913823127971,True,False,True,True,True,True,True
+2017-04,True,13.071349090972374,0.07796394785146138,True,False,False,False,True,True,True
+2017-09,True,10.951670860003881,0.2946768955617264,True,False,False,False,True,True,True
+2020-07,False,0.4542167637789628,0.08601214289076105,True,False,False,False,True,True,True
+2022-09,True,5.450601165347553,0.21475973078552266,True,False,False,False,True,True,True
+2023-11,True,63.237067223893376,0.05212500588318351,True,True,False,False,True,True,True
+2024-11,True,4.239356461936986,0.1138984327199134,False,False,False,False,False,False,False
+2024-12,True,7.4693423376984995,0.4457570480538429,True,False,False,False,True,True,True
+2025-10,False,1.564524408571983,0.08323528027486234,False,False,False,False,False,False,False

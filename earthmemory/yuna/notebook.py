@@ -50,13 +50,19 @@ print(json.dumps({k: cu[k] for k in ("areas_km2", "hatillo", "camu", "salidas")}
 display(cat["zona"].value_counts())
 cat[["id", "inicio", "fin", "precision", "zona", "confianza", "n_fuentes", "n_fuentes_leidas", "usable_backtest", "motivo_exclusion"]]'''),
     code('''cat.loc[cat["hatillo_menciones"].fillna("").str.len() > 0, ["id", "hatillo_menciones"]]'''),
-    md("## 3 · Agua observada (JRC GSW mensual, Landsat) y el embalse de Hatillo\n\n"
-       "MODIS MCDWD (archivo reprocesado 2003-2025 en LAADS) quedó **bloqueado**: LAADS pide aceptar una licencia en el "
-       "perfil de Earthdata (acción de cuenta) y el archivo es HDF que la imagen no lee. Se usó JRC GSW 2001-2020."),
+    md("## 3 · Agua observada (JRC GSW mensual, Landsat) y el embalse de Hatillo"),
     code('fig("fig_y2_agua_observada_gsw")'),
-    code('''print(json.loads((RES / "gsw_mascaras.json").read_text()))
-man = json.loads((ROOT / "data/yuna/MANIFEST.json").read_text(encoding="utf-8"))
-print(json.dumps(man["rutas"].get("MCDWD_L3"), ensure_ascii=False, indent=1))'''),
+    code('''print(json.loads((RES / "gsw_mascaras.json").read_text()))'''),
+    md("## 3b · Inundación observada con MODIS MCDWD_L3 (2003-2025)\n\n"
+       "Compuesto de 2 días (Flood_2Day_250m): 0 sin agua · 1 agua de referencia · 2 inundación recurrente · "
+       "3 inundación inusual · 255 datos insuficientes (nubes). Inundación observada = clase 3 por encima del p95 de días "
+       "secos de referencia y ≥ 2 km². Sin días visibles = indeterminado, no «sin inundación»."),
+    code('fig("fig_y6_inundacion_observada_mcdwd")'),
+    code('''r = json.loads((RES / "mcdwd_resumen.json").read_text(encoding="utf-8"))
+print(json.dumps({k: r[k] for k in ("n_dias", "insuf_media_yuna_2d", "MAX_INSUF", "MIN_KM2")}, indent=1))
+pd.read_csv(RES / "mcdwd_por_evento.csv")[["id", "observa", "inund_km2_max_yuna", "anomalia_km2_yuna", "insuf_min_yuna", "n_obs_yuna", "n_dias"]]'''),
+    code('''pd.read_csv(RES / "mcdwd_meses_gsw_sin_evento.csv")[["mes", "observa", "inund_km2_max_yuna", "insuf_min_yuna"]]'''),
+    code('''pd.read_csv(RES / "backtest_verificacion_mcdwd.csv")'''),
     md("## 4 · Paneles por evento (mismas escalas)"),
     code('''for f in sorted(FIG.glob("fig_y3_paneles_eventos_*.png")):
     display(Image(filename=str(f), width=950))'''),

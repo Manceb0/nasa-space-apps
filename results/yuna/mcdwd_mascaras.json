@@ -1,0 +1,27 @@
+{
+ "yuna": {
+  "pixeles": 111097,
+  "km2": 5606.902200616825,
+  "frac_siempre_enmascarada": 0.617505423188745
+ },
+ "alto_hatillo": {
+  "pixeles": 24749,
+  "km2": 1249.045631862839,
+  "frac_siempre_enmascarada": 0.8034264010667098
+ },
+ "camu": {
+  "pixeles": 49256,
+  "km2": 2485.877879632955,
+  "frac_siempre_enmascarada": 0.5748538249147312
+ },
+ "bajo_yuna": {
+  "pixeles": 37092,
+  "km2": 1871.978689121032,
+  "frac_siempre_enmascarada": 0.5500916639706676
+ },
+ "llanura": {
+  "pixeles": 7375,
+  "km2": 372.20540365220563,
+  "frac_siempre_enmascarada": 0.002711864406779661
+ }
+}

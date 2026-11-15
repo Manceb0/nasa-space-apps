@@ -28,6 +28,7 @@ Clases de variables (se repiten en cada figura): **OBSERVACIÓN** (JRC GSW, Land
    antecedente **no mejora de forma detectable** el disparador con estos datos (detalle abajo).
 5. Presa: no hay series públicas de nivel/descarga; el área del embalse (JRC GSW) es un sustituto mensual. Con él,
    la prueba del confusor **no detecta** que la presa cambie la relación arriba-abajo: los intervalos se solapan.
+6. Inundación observada (MODIS MCDWD, 2003-2025, independiente de la lluvia): confirma 12 de 15 eventos del catálogo, no ve inundación anómala en 2 y las nubes impiden decidir en 1.
 
 ## 1 · Cuenca: qué drena dónde
 
@@ -127,10 +128,48 @@ están verificadas** con fuente primaria.
 
 ## 3 · Inundación observada, independiente de la lluvia
 
-- **MODIS MCDWD_L3** (archivo reprocesado 2003-2025 en LAADS): **bloqueado**. Estado registrado en el manifiesto:
-  «bloqueado: LAADS exige aceptar una licencia de datos en el perfil de Earthdata (acción de cuenta que debe hacer la persona usuaria)». Además el archivo es HDF; la imagen Docker trae GDAL con HDF5/netCDF pero no HDF4. El NRT de LANCE
-  solo guarda los últimos días (el gránulo más antiguo en CMR era del 7-nov-2026). Para usarlo: aceptar la licencia
-  en el perfil de Earthdata/LAADS y añadir un lector HDF4.
+- **MODIS MCDWD_L3 C6.1** (archivo reprocesado 2003-2025 en LAADS, doi:10.5067/MODIS/MCDWD_L3.061; teselas h10v07 y
+  h11v07, 250 m): se desbloqueó al autorizar la aplicación LAADS en la cuenta de Earthdata y se lee con pyhdf. Solo se
+  bajaron 209 días (por evento, los días −1, +1, +3, +5 y +7, que con el compuesto de 2 días cubren de −2 a +7; un día seco de referencia por año, el día +3 de cada
+  episodio de lluvia ≥ p99 y 4 días de cada mes GSW con señal sin evento); de cada HDF se guardó el recorte de la
+  cuenca y el SHA-256 del original. Capa principal: **Flood_2Day_250m** (la guía de usuario y el visor de NASA prefieren
+  el compuesto de 2 días; el de 1 día se contamina con sombras de nube); Flood_3Day para los episodios.
+  Valores del propio HDF: 0 sin agua · 1 agua de referencia · 2 inundación recurrente (estacional) · 3 inundación
+  (inusual) · 255 datos insuficientes (nubes/sin pasada). «Inundación» = clase 3; la clase 2 se informa aparte.
+- **Máscara fija:** el 62 % de los píxeles de la cuenca salen como 255 en todos los días bajados (el producto
+  enmascara sombra de relieve y terreno alto sobre el drenaje, filtro HAND): casi toda la montaña, pero solo el
+  0.3 % de la llanura. Esos píxeles no cuentan como nubes y MCDWD no puede ver inundación en ellos
+  (sirve para la llanura, no para las cabeceras).
+- **Nubes:** en promedio el 57 % de los píxeles restantes de la cuenca son «datos insuficientes» en el compuesto de 2 días.
+  Un día cuenta si < 80 % de la zona está cubierta. Referencia (días secos): p95 = 2.0 km² de clase 3 en la
+  cuenca. Inundación observada = máximo del evento > p95 y ≥ 2 km².
+- **Resultado por evento:** confirmados por MCDWD: 2003-11, 2007-10, 2007-12, 2012-08, 2012-10, 2016-11, 2017-04, 2017-09, 2022-09, 2023-11, 2024-11, 2024-12; vistos sin inundación anómala: 2020-07, 2025-10;
+  indeterminados por nubes: 2011-06. Detalle en `results/yuna/mcdwd_por_evento.csv` y la figura 6. El umbral
+  (p95 de días secos ≈ 2.0 km²) es bajo: confirmaciones de 4-8 km² son débiles; las fuertes (> 15 km²) son
+  2003-11, 2007-10, 2007-12, 2016-11, 2023-11. El máximo puede caer antes del inicio oficial (la ventana empieza 2 días antes; p. ej. 2007-12 llega
+  a su máximo el 10-dic, antes de que Olga tocara tierra, posible agua remanente de Noel): hay que mirar la imagen.
+- **Meses GSW con señal sin evento, vistos con MCDWD:** 2004-05: sí (2.1 km²); 2012-04: no (1.2 km²); 2017-01: sí (8.5 km²).
+
+| id | observa | inund_km2_max_yuna | anomalia_km2_yuna | recurrente_km2_max_yuna | dia_max_yuna | insuf_min_yuna | n_obs_yuna | n_dias | inund_km2_max_alto_hatillo | inund_km2_max_camu | inund_km2_max_bajo_yuna |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2003-11 | True | 19.2 | 19.1 | 3.2 | 2003-11-21 | 0.23 | 4 | 7 | 0.3 | 4.4 | 14.7 |
+| 2007-10 | True | 70.8 | 70.7 | 8.3 | 2007-11-04 | 0.32 | 1 | 5 | 5.6 | 0.1 | 65.1 |
+| 2007-12 | True | 59.0 | 58.9 | 12.5 | 2007-12-10 | 0.07 | 3 | 5 | 2.4 | 53.3 | 46.4 |
+| 2011-06 | — | — | — | — | — | 1.00 | 0 | 5 | — | — | — |
+| 2012-08 | True | 5.7 | 5.6 | 0.0 | 2012-08-29 | 0.24 | 2 | 5 | 0.1 | 0.3 | 5.7 |
+| 2012-10 | True | 8.6 | 8.5 | 1.4 | 2012-10-28 | 0.00 | 3 | 5 | 0.1 | 0.0 | 8.5 |
+| 2016-11 | True | 31.8 | 31.7 | 22.2 | 2016-11-26 | 0.15 | 6 | 12 | 0.8 | 11.6 | 19.4 |
+| 2017-04 | True | 13.1 | 13.0 | 0.1 | 2017-05-05 | 0.08 | 3 | 8 | 0.9 | 0.2 | 12.7 |
+| 2017-09 | True | 11.0 | 10.9 | 0.1 | 2017-09-24 | 0.29 | 3 | 5 | 0.2 | 0.0 | 10.8 |
+| 2020-07 | False | 0.5 | 0.4 | 0.1 | 2020-08-02 | 0.09 | 4 | 5 | 0.0 | 0.0 | 0.5 |
+| 2022-09 | True | 5.5 | 5.3 | 0.1 | 2022-09-23 | 0.21 | 3 | 5 | 0.0 | 0.0 | 5.5 |
+| 2023-11 | True | 63.2 | 63.1 | 21.8 | 2023-11-22 | 0.05 | 3 | 5 | 0.1 | 1.7 | 62.1 |
+| 2024-11 | True | 4.2 | 4.1 | 9.9 | 2024-11-21 | 0.11 | 1 | 6 | 0.1 | 1.7 | 2.5 |
+| 2024-12 | True | 7.5 | 7.4 | 4.1 | 2024-12-20 | 0.45 | 2 | 5 | 1.1 | 5.2 | 7.1 |
+| 2025-10 | False | 1.6 | 1.5 | 1.1 | 2025-10-20 | 0.08 | 2 | 6 | 1.4 | 0.2 | 0.0 |
+
+![MCDWD](../figures/yuna/fig_y6_inundacion_observada_mcdwd.png)
+
 - **JRC Global Surface Water, Monthly Water History v1.4** (Pekel et al. 2016, *Nature* 540: 418-422,
   doi:10.1038/nature20584): usado, 2001-2020 (240 meses; 2021 da 404 en el FTP del JRC). Lectura por
   ventanas HTTP (sin bajar mosaicos completos). Máscaras: embalse de Hatillo (30.4 km²
@@ -160,9 +199,9 @@ boletines. Sustituto: área de agua del embalse en JRC GSW (152 meses con ≥ 50
 ## 5 · Paneles por evento (mismas escalas)
 
 `results/yuna/paneles_eventos.csv`; figuras `fig_y3_paneles_eventos_1/2`. Para cada evento: lluvia de 48/72 h
-(media y máximo de celda, IMERG; CHIRPS cuando el otro motor ya bajó el año), antecedente de 30/60/90 días (IMERG,
+(media y máximo de celda, IMERG; CHIRPS diario completo en 2001-2024 (24 años)), antecedente de 30/60/90 días (IMERG,
 como percentil del mismo mes), raíz SMAP L4 (2015+) y GLDAS (mes anterior, z), lluvia de 48 h por zona (¿cayó
-sobre la presa o abajo?) y agua GSW.
+sobre la presa o abajo?) e inundación diaria MCDWD por zona (con el agua GSW del mes en el texto).
 
 ![Paneles 1](../figures/yuna/fig_y3_paneles_eventos_1.png)
 ![Paneles 2](../figures/yuna/fig_y3_paneles_eventos_2.png)
@@ -184,35 +223,35 @@ GEOGLOWS; las series bajadas quedan en `data/yuna/geoglows/` solo como registro.
 
 Suficiencia de datos por evento (`results/yuna/datos_suficientes_por_evento.csv`):
 
-| id | zona | usable_backtest | motivo | IMERG_antecedente_y_evento | SMAP_L4 | GEOGLOWS | GSW_mes_validos_llanura | GSW_observa |
-|---|---|---|---|---|---|---|---|---|
-| 2003-11 | bajo_yuna | True |  | True | False | True | 0.7011009377065833 | True |
-| 2007-10 | bajo_yuna | True |  | True | False | True | 0.8921375716559429 | True |
-| 2007-12 | bajo_yuna | True |  | True | False | True | 0.9532600667270221 | True |
-| 2011-06 | alto_yuna | True |  | True | False | True | 0.6584417825148837 | True |
-| 2012-08 | cuenca_general | True |  | True | False | True | 0.0 | False |
-| 2012-10 | cuenca_general | True |  | True | False | True | 0.8188813046082744 | True |
-| 2016-11 | bajo_yuna | True |  | True | True | True | 0.9855961134708326 | True |
-| 2017-04 | bajo_yuna | True |  | True | True | True | 0.9999883683285095 | True |
-| 2017-09 | bajo_yuna | True |  | True | True | True | 0.8502247820515555 | True |
-| 2020-07 | bajo_yuna | True |  | True | True | True | 0.926834847712341 | True |
-| 2022-09 | bajo_yuna | True |  | True | True | True | — | False |
-| 2023-11 | bajo_yuna | True |  | True | True | True | — | False |
-| 2024-11 | bajo_yuna | True |  | True | True | True | — | False |
-| 2024-12 | bajo_yuna | True |  | True | True | True | — | False |
-| 2025-10 | bajo_yuna | False | fuera de 2001-2024 (sin IMERG diario local) | False | False | False | — | False |
-| 2026-04 | cuenca_general | False | fuera de 2001-2024 (sin IMERG diario local) | False | False | False | — | False |
-| H-2016-11-16 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | 0.5839719444083648 | True |
-| H-2017-04-24 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | 0.8840942708202073 | True |
-| H-2017-09-07 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | 0.8502247820515555 | True |
-| H-2017-09-22 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | 0.8502247820515555 | True |
-| H-2021-08-12 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False |
-| H-2022-09-20 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False |
-| H-2023-08-25 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False |
-| H-2023-11-21 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False |
-| H-2024-05 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False |
-| H-2026-04 | hatillo_operacion | False | no es evento de inundación en la cuenca; fuera de 2001-2024 (sin IMERG diario local) | False | False | False | — | False |
-| PRECEDENTE-Tavera-2007-12 | fuera_yuna_precedente_presa | False | otra cuenca (precedente de operación de presa) | True | False | True | 0.9532600667270221 | True |
+| id | zona | usable_backtest | motivo | IMERG_antecedente_y_evento | SMAP_L4 | GEOGLOWS | GSW_mes_validos_llanura | GSW_observa | mcdwd_observa | mcdwd_n_obs_yuna | mcdwd_insuf_min_yuna |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2003-11 | bajo_yuna | True |  | True | False | True | 0.7011009377065833 | True | True | 4.0 | 0.23040899891749422 |
+| 2007-10 | bajo_yuna | True |  | True | False | True | 0.8921375716559429 | True | True | 1.0 | 0.324516402315621 |
+| 2007-12 | bajo_yuna | True |  | True | False | True | 0.9532600667270221 | True | True | 3.0 | 0.07337506471501859 |
+| 2011-06 | alto_yuna | True |  | True | False | True | 0.6584417825148837 | True | — | 0.0 | 0.995316985927425 |
+| 2012-08 | cuenca_general | True |  | True | False | True | 0.0 | False | True | 2.0 | 0.242057702263849 |
+| 2012-10 | cuenca_general | True |  | True | False | True | 0.8188813046082744 | True | True | 3.0 | 0.0019061514566762366 |
+| 2016-11 | bajo_yuna | True |  | True | True | True | 0.9855961134708326 | True | True | 6.0 | 0.1472913823127971 |
+| 2017-04 | bajo_yuna | True |  | True | True | True | 0.9999883683285095 | True | True | 3.0 | 0.07796394785146138 |
+| 2017-09 | bajo_yuna | True |  | True | True | True | 0.8502247820515555 | True | True | 3.0 | 0.2946768955617264 |
+| 2020-07 | bajo_yuna | True |  | True | True | True | 0.926834847712341 | True | False | 4.0 | 0.08601214289076105 |
+| 2022-09 | bajo_yuna | True |  | True | True | True | — | False | True | 3.0 | 0.21475973078552266 |
+| 2023-11 | bajo_yuna | True |  | True | True | True | — | False | True | 3.0 | 0.05212500588318351 |
+| 2024-11 | bajo_yuna | True |  | True | True | True | — | False | True | 1.0 | 0.1138984327199134 |
+| 2024-12 | bajo_yuna | True |  | True | True | True | — | False | True | 2.0 | 0.4457570480538429 |
+| 2025-10 | bajo_yuna | False | fuera de 2001-2024 (sin IMERG diario local) | False | False | False | — | False | False | 2.0 | 0.08323528027486234 |
+| 2026-04 | cuenca_general | False | fuera de 2001-2024 (sin IMERG diario local) | False | False | False | — | False | — | — | — |
+| H-2016-11-16 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | 0.5839719444083648 | True | — | — | — |
+| H-2017-04-24 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | 0.8840942708202073 | True | — | — | — |
+| H-2017-09-07 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | 0.8502247820515555 | True | — | — | — |
+| H-2017-09-22 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | 0.8502247820515555 | True | — | — | — |
+| H-2021-08-12 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False | — | — | — |
+| H-2022-09-20 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False | — | — | — |
+| H-2023-08-25 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False | — | — | — |
+| H-2023-11-21 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False | — | — | — |
+| H-2024-05 | hatillo_operacion | False | no es evento de inundación en la cuenca | True | True | True | — | False | — | — | — |
+| H-2026-04 | hatillo_operacion | False | no es evento de inundación en la cuenca; fuera de 2001-2024 (sin IMERG diario local) | False | False | False | — | False | — | — | — |
+| PRECEDENTE-Tavera-2007-12 | fuera_yuna_precedente_presa | False | otra cuenca (precedente de operación de presa) | True | False | True | 0.9532600667270221 | True | — | — | — |
 
 ## 6 · Backtest de disparadores (n pequeño; se dice claro)
 
@@ -258,6 +297,27 @@ Umbrales calibrados: media de cuenca 115 mm/48 h; antecedente elegido 90 días,
 p95 = 723 mm; p90 del antecedente = 633 mm; umbral rebajado si el
 antecedente es húmedo = 95 mm/48 h (casi el mismo 100: la calibración no encontró valor en rebajarlo).
 
+**Verificación observada (MCDWD).** ¿Los disparadores detectan los eventos que MODIS confirma? (`results/yuna/backtest_verificacion_mcdwd.csv`;
+«observa» vacío = nubes):
+
+| id | mcdwd_observa | mcdwd_inund_km2_max_yuna | mcdwd_insuf_min_yuna | a_lluvia100 | a2_lluvia_media_cal | c_antecedente | b_lluvia100_y_ant_p90 | b2_umbral_rebajado_si_humedo | b3_lluvia100_o_rebajado_gldas | b4_lluvia100_o_rebajado_smap |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2003-11 | True | 19.2 | 0.23 | False | False | True | False | True | False | False |
+| 2007-10 | True | 70.8 | 0.32 | True | True | True | True | True | True | True |
+| 2007-12 | True | 59.0 | 0.07 | True | True | True | True | True | True | True |
+| 2011-06 | — | — | 1.00 | True | False | False | False | True | True | True |
+| 2012-08 | True | 5.7 | 0.24 | True | False | False | False | True | True | True |
+| 2012-10 | True | 8.6 | 0.00 | True | True | False | True | True | True | True |
+| 2016-11 | True | 31.8 | 0.15 | True | False | True | True | True | True | True |
+| 2017-04 | True | 13.1 | 0.08 | True | False | False | False | True | True | True |
+| 2017-09 | True | 11.0 | 0.29 | True | False | False | False | True | True | True |
+| 2020-07 | False | 0.5 | 0.09 | True | False | False | False | True | True | True |
+| 2022-09 | True | 5.5 | 0.21 | True | False | False | False | True | True | True |
+| 2023-11 | True | 63.2 | 0.05 | True | True | False | False | True | True | True |
+| 2024-11 | True | 4.2 | 0.11 | False | False | False | False | False | False | False |
+| 2024-12 | True | 7.5 | 0.45 | True | False | False | False | True | True | True |
+| 2025-10 | False | 1.6 | 0.08 | False | False | False | False | False | False | False |
+
 ## 7 · ¿Cambia la presa la relación arriba-abajo? (prueba del confusor)
 
 (1) Episodios de lluvia fuerte (máx. de celda ≥ p99 = 135 mm/48 h): 57
@@ -269,6 +329,17 @@ inundación, por zona (IC 95 % bootstrap):
 | ant30_pct | 0.41 [0.25, 0.59] | 0.44 [0.27, 0.62] | 0.42 [0.24, 0.60] | -0.03 [-0.14, 0.07] |
 | gldas_z | 0.39 [0.23, 0.56] | 0.48 [0.31, 0.67] | 0.49 [0.31, 0.66] | -0.09 [-0.25, 0.03] |
 | r48 | 0.72 [0.53, 0.89] | 0.82 [0.70, 0.92] | 0.79 [0.64, 0.92] | -0.10 [-0.25, 0.02] |
+
+(1b) La misma prueba con **verdad observada** (MCDWD, independiente de la prensa y de la lluvia): episodios de lluvia
+≥ p99 con inundación de clase 3 sobre el p95 de los días secos (compuesto de 3 días en el día +3). 34 episodios visibles (3 con inundación observada) y 23 tapados por nubes. Con antecedente húmedo (IMERG 30 d ≥ p90 en las tres zonas, de media) se inundó la fracción 0.00 de los episodios; sin él, 0.09 (Fisher p = 1.000).
+Con tan pocos episodios con inundación observada la prueba **no tiene potencia**: ningún AUC (ni siquiera el de la
+lluvia) se separa de 0,5 con estos IC, y la diferencia Hatillo − Camú tampoco.
+
+| variable | alto_hatillo | camu | bajo_yuna | Δ alto−Camú [IC95] |
+|---|---|---|---|---|
+| ant30_pct | 0.44 [0.10, 0.81] | 0.54 [0.26, 0.81] | 0.48 [0.16, 0.77] | -0.10 [-0.32, 0.09] |
+| gldas_z | 0.57 [0.37, 0.75] | 0.55 [0.35, 0.73] | 0.52 [0.32, 0.71] | 0.02 [-0.10, 0.15] |
+| r48 | 0.49 [0.16, 0.97] | 0.45 [0.16, 0.84] | 0.52 [0.18, 0.97] | 0.04 [-0.16, 0.21] |
 
 (2) Meses 2001-2020 con agua observada en la llanura (GSW): ρ de Spearman entre la lluvia del mes en cada zona y la
 anomalía de agua, según el estado del embalse (área GSW ≥ o < mediana):
@@ -305,8 +376,11 @@ llega al Bajo Yuna sin pasar por Hatillo.
 - El Bajo Yuna se inunda de forma recurrente: 16 eventos con fuente entre 2003 y 2026.
 - Hatillo vertió durante Fiona (2022), nov-2023 y mayo-2024 (notas INDRHI/COE), y no vertió con Franklin ni Melissa.
 - JRC GSW (observación) ve agua anómala en la llanura en el mes de estos eventos: 2003-11, 2007-10, 2007-12, 2016-11, 2017-04.
+- MODIS MCDWD (observación) confirma inundación anómala en: 2003-11, 2007-10, 2007-12, 2012-08, 2012-10, 2016-11, 2017-04, 2017-09, 2022-09, 2023-11, 2024-11, 2024-12; las nubes impiden decidir en: 2011-06.
 
 ## Lo que creemos saber
+- MODIS MCDWD ve inundación anómala en la llanura en la mayoría de los eventos del catálogo (confirma 12 de 15 eventos del catálogo, no ve inundación anómala en 2 y las nubes impiden decidir en 1.), incluidos
+  Fiona 2022 y noviembre de 2023, que GSW no cubre; pero el umbral es bajo y la mayoría de los días están tapados.
 - La lluvia del episodio pesa más que el antecedente para que haya un evento registrado (AUC 0,7-0,8 frente a ≈ 0,4).
 - Un disparador de 100 mm/48 h sobre el máximo de celda detecta casi todo, pero con 5.9 (2001-2015) y 4.3 (2016-2024) episodios sin evento por año.
 - El antecedente de 30-90 días, solo o combinado, no añade capacidad detectable con 14 eventos.
@@ -314,8 +388,8 @@ llega al Bajo Yuna sin pasar por Hatillo.
 ## Lo que hay que comprobar
 - Series diarias de nivel y descarga de Hatillo (INDRHI/EGEHID, por la Ley 200-04 de acceso a la información).
   Sin ellas, la presa como confusor no se puede probar a escala de evento.
-- MCDWD 2003-2025 (aceptar la licencia de LAADS y usar un lector HDF4), y Sentinel-1 para 2017-2025 (radar, no lo
-  tapan las nubes).
+- Sentinel-1 (radar, 2017-2025) para los eventos que MCDWD no ve por nubes, y revisar en Worldview las imágenes de
+  los días que MCDWD marca como inundados (falsos positivos por sombra de nube o de relieve).
 - Aforos del INDRHI en Villa Riva/Cotuí, y GEOGLOWS en el cauce principal, para pasar de «evento en prensa» a caudal.
 - Un catálogo más completo (EM-DAT con cuenta; DesInventar no cubre RD después de 2000).
 - Que IMERG, SMAP L4 y CHIRPS comparten insumos (GPCC/GTS; SMAP L4 v6+ ajusta su lluvia a IMERG): su acuerdo no es

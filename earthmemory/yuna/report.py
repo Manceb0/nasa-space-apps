@@ -122,8 +122,73 @@ def run(res: dict) -> None:
     meses_sin_cat = ", ".join(sin_cat) if sin_cat else "ninguno"
     n_sobre = int(lla["sobre_p90"].sum())
     fa_anio_c, fa_anio_t = a_c["falsas_alarmas"] / 15, a["falsas_alarmas"] / 9
+    # CHIRPS: años con ≥ 300 días válidos en la serie de la cuenca
+    ch = res["d"].get("chirps_media_yuna")
+    if ch is not None:
+        yrs = ch.notna().groupby(ch.index.year).sum()
+        full = [int(y) for y, n in yrs.items() if n >= 300]
+        part = [int(y) for y, n in yrs.items() if 0 < n < 300]
+        chirps_txt = (f"diario completo en {min(full)}-{max(full)} ({len(full)} años)" if full else "sin años completos")
+        if part:
+            chirps_txt += f"; parcial en {', '.join(map(str, part))}"
+        miss = [y for y in range(2001, 2025) if y not in full and y not in part]
+        if miss:
+            chirps_txt += f"; faltan {', '.join(map(str, miss))}"
+    else:
+        chirps_txt = "no disponible"
+    # MCDWD
+    mv = res.get("mcdwd")
+    tablas_mc = {"TABLA_MC_EV": "", "TABLA_VER": "", "TABLA_AUC_OBS": ""}
+    if mv is not None:
+        evm = mv["eventos"].sort_values("id")
+        ok_ = evm["observa"].map(lambda x: x is True or x == True)  # noqa: E712
+        no_ = evm["observa"].map(lambda x: x is False or x == False)  # noqa: E712
+        indet = evm["observa"].isna()
+        ref2 = mv["ref"]["Flood_2Day_250m"]
+        aum = mv["auc"]
+        gmm = mv["gsw"]
+        gtxt = "; ".join(f"{r_.mes}: " + ("nubes" if r_.observa is None or (isinstance(r_.observa, float) and np.isnan(r_.observa))
+                                           else f"{'sí' if r_.observa else 'no'} ({_f(r_.inund_km2_max_yuna, 1)} km²)")
+                         for r_ in gmm.itertuples()) if len(gmm) else "—"
+        auc_txt = ""
+        if aum:
+            auc_txt = (f"{aum['n_episodios_determinables']} episodios visibles ({aum['n_con_inundacion_observada']} con "
+                       f"inundación observada) y {aum['n_indeterminados_nubes']} tapados por nubes. Con antecedente húmedo "
+                       f"(IMERG 30 d ≥ p90 en las tres zonas, de media) se inundó la fracción {_f(aum.get('frac_inund_si_humedo'))} "
+                       f"de los episodios; sin él, {_f(aum.get('frac_inund_si_no_humedo'))} (Fisher p = {_f(aum.get('fisher_p'), 3)}).")
+            tablas_mc["TABLA_AUC_OBS"] = _tabla(pd.DataFrame([
+                {"variable": v_, **{z: f"{_f(aum[f'AUC_{v_}_{z}'])} {_ci(aum[f'AUC_{v_}_{z}_ic95'])}" for z in ("alto_hatillo", "camu", "bajo_yuna")},
+                 "Δ alto−Camú [IC95]": f"{_f(aum[f'dAUC_{v_}_alto_menos_camu'])} {_ci(aum[f'dAUC_{v_}_alto_menos_camu_ic95'])}"}
+                for v_ in ("ant30_pct", "gldas_z", "r48")]))
+        mj = json.loads((RES / "mcdwd_mascaras.json").read_text(encoding="utf-8"))
+        fuertes = ", ".join(evm.loc[evm["inund_km2_max_yuna"] > 15, "id"]) or "ninguna"
+        mcx = {"fijo": f"{mj['yuna']['frac_siempre_enmascarada'] * 100:.0f} %",
+               "fijo_llanura": f"{mj['llanura']['frac_siempre_enmascarada'] * 100:.1f} %", "fuertes": fuertes,
+               "n_dias": mv["resumen"]["n_dias"], "insuf": f"{mv['resumen']['insuf_media_yuna_2d'] * 100:.0f} %",
+               "p95": _f(ref2["p95_yuna"], 1), "obs_si": ", ".join(evm.loc[ok_, "id"]) or "ninguno",
+               "obs_no": ", ".join(evm.loc[no_, "id"]) or "ninguno", "indet": ", ".join(evm.loc[indet, "id"]) or "ninguno",
+               "gsw": gtxt, "auc_txt": auc_txt,
+               "resumen": (f"confirma {int(ok_.sum())} de {len(evm)} eventos del catálogo, no ve inundación anómala en "
+                           f"{int(no_.sum())} y las nubes impiden decidir en {int(indet.sum())}.")}
+        cols = ["id", "observa", "inund_km2_max_yuna", "anomalia_km2_yuna", "recurrente_km2_max_yuna", "dia_max_yuna",
+                "insuf_min_yuna", "n_obs_yuna", "n_dias", "inund_km2_max_alto_hatillo", "inund_km2_max_camu", "inund_km2_max_bajo_yuna"]
+        t_ = evm[[c for c in cols if c in evm]].copy()
+        for c in t_.columns:
+            if t_[c].dtype.kind == "f":
+                t_[c] = t_[c].map(lambda x: _f(x, 2) if c.startswith("insuf") else _f(x, 1))
+        tablas_mc["TABLA_MC_EV"] = _tabla(t_.fillna("—"))
+        if "verificacion" in mv:
+            vt = mv["verificacion"].copy()
+            vt["mcdwd_inund_km2_max_yuna"] = vt["mcdwd_inund_km2_max_yuna"].map(lambda x: _f(x, 1))
+            vt["mcdwd_insuf_min_yuna"] = vt["mcdwd_insuf_min_yuna"].map(lambda x: _f(x, 2))
+            tablas_mc["TABLA_VER"] = _tabla(vt.fillna("—"))
+    else:
+        mcx = {k: "no disponible" for k in ("n_dias", "insuf", "p95", "obs_si", "obs_no", "indet", "gsw", "auc_txt", "resumen",
+                                            "fijo", "fijo_llanura", "fuertes")}
     tx = TEXTO.format(**locals(), **{k: _f(v, 0) for k, v in A.items() if k.isidentifier()})
     tx = tx.replace("{TABLA_GG}", _tabla(gg))
+    for k_, t_ in tablas_mc.items():
+        tx = tx.replace("{" + k_ + "}", t_)
     tx = tx.replace("{TABLA_QD}", _tabla(qtab)).replace("{TABLA_CAT}", _tabla(ctab)).replace("{TABLA_BT}", _tabla(tb))
     tx = tx.replace("{TABLA_DESC}", _tabla(desc)).replace("{TABLA_AUC}", _tabla(atab)).replace("{TABLA_MENS}", mtab)
     tx = tx.replace("{TABLA_INS}", _tabla(ins.fillna("—")))
@@ -161,6 +226,7 @@ Clases de variables (se repiten en cada figura): **OBSERVACIÓN** (JRC GSW, Land
    antecedente **no mejora de forma detectable** el disparador con estos datos (detalle abajo).
 5. Presa: no hay series públicas de nivel/descarga; el área del embalse (JRC GSW) es un sustituto mensual. Con él,
    la prueba del confusor **no detecta** que la presa cambie la relación arriba-abajo: los intervalos se solapan.
+6. Inundación observada (MODIS MCDWD, 2003-2025, independiente de la lluvia): {mcx[resumen]}
 
 ## 1 · Cuenca: qué drena dónde
 
@@ -216,10 +282,32 @@ están verificadas** con fuente primaria.
 
 ## 3 · Inundación observada, independiente de la lluvia
 
-- **MODIS MCDWD_L3** (archivo reprocesado 2003-2025 en LAADS): **bloqueado**. Estado registrado en el manifiesto:
-  «{mc[estado]}». Además el archivo es HDF; la imagen Docker trae GDAL con HDF5/netCDF pero no HDF4. El NRT de LANCE
-  solo guarda los últimos días (el gránulo más antiguo en CMR era del 7-nov-2026). Para usarlo: aceptar la licencia
-  en el perfil de Earthdata/LAADS y añadir un lector HDF4.
+- **MODIS MCDWD_L3 C6.1** (archivo reprocesado 2003-2025 en LAADS, doi:10.5067/MODIS/MCDWD_L3.061; teselas h10v07 y
+  h11v07, 250 m): se desbloqueó al autorizar la aplicación LAADS en la cuenta de Earthdata y se lee con pyhdf. Solo se
+  bajaron {mcx[n_dias]} días (por evento, los días −1, +1, +3, +5 y +7, que con el compuesto de 2 días cubren de −2 a +7; un día seco de referencia por año, el día +3 de cada
+  episodio de lluvia ≥ p99 y 4 días de cada mes GSW con señal sin evento); de cada HDF se guardó el recorte de la
+  cuenca y el SHA-256 del original. Capa principal: **Flood_2Day_250m** (la guía de usuario y el visor de NASA prefieren
+  el compuesto de 2 días; el de 1 día se contamina con sombras de nube); Flood_3Day para los episodios.
+  Valores del propio HDF: 0 sin agua · 1 agua de referencia · 2 inundación recurrente (estacional) · 3 inundación
+  (inusual) · 255 datos insuficientes (nubes/sin pasada). «Inundación» = clase 3; la clase 2 se informa aparte.
+- **Máscara fija:** el {mcx[fijo]} de los píxeles de la cuenca salen como 255 en todos los días bajados (el producto
+  enmascara sombra de relieve y terreno alto sobre el drenaje, filtro HAND): casi toda la montaña, pero solo el
+  {mcx[fijo_llanura]} de la llanura. Esos píxeles no cuentan como nubes y MCDWD no puede ver inundación en ellos
+  (sirve para la llanura, no para las cabeceras).
+- **Nubes:** en promedio el {mcx[insuf]} de los píxeles restantes de la cuenca son «datos insuficientes» en el compuesto de 2 días.
+  Un día cuenta si < 80 % de la zona está cubierta. Referencia (días secos): p95 = {mcx[p95]} km² de clase 3 en la
+  cuenca. Inundación observada = máximo del evento > p95 y ≥ 2 km².
+- **Resultado por evento:** confirmados por MCDWD: {mcx[obs_si]}; vistos sin inundación anómala: {mcx[obs_no]};
+  indeterminados por nubes: {mcx[indet]}. Detalle en `results/yuna/mcdwd_por_evento.csv` y la figura 6. El umbral
+  (p95 de días secos ≈ {mcx[p95]} km²) es bajo: confirmaciones de 4-8 km² son débiles; las fuertes (> 15 km²) son
+  {mcx[fuertes]}. El máximo puede caer antes del inicio oficial (la ventana empieza 2 días antes; p. ej. 2007-12 llega
+  a su máximo el 10-dic, antes de que Olga tocara tierra, posible agua remanente de Noel): hay que mirar la imagen.
+- **Meses GSW con señal sin evento, vistos con MCDWD:** {mcx[gsw]}.
+
+{{TABLA_MC_EV}}
+
+![MCDWD](../figures/yuna/fig_y6_inundacion_observada_mcdwd.png)
+
 - **JRC Global Surface Water, Monthly Water History v1.4** (Pekel et al. 2016, *Nature* 540: 418-422,
   doi:10.1038/nature20584): usado, 2001-2020 ({gm[meses_gsw]} meses; 2021 da 404 en el FTP del JRC). Lectura por
   ventanas HTTP (sin bajar mosaicos completos). Máscaras: embalse de Hatillo ({gm[embalse_km2_max_posible]:.1f} km²
@@ -249,9 +337,9 @@ boletines. Sustituto: área de agua del embalse en JRC GSW ({n_emb} meses con �
 ## 5 · Paneles por evento (mismas escalas)
 
 `results/yuna/paneles_eventos.csv`; figuras `fig_y3_paneles_eventos_1/2`. Para cada evento: lluvia de 48/72 h
-(media y máximo de celda, IMERG; CHIRPS cuando el otro motor ya bajó el año), antecedente de 30/60/90 días (IMERG,
+(media y máximo de celda, IMERG; CHIRPS {chirps_txt}), antecedente de 30/60/90 días (IMERG,
 como percentil del mismo mes), raíz SMAP L4 (2015+) y GLDAS (mes anterior, z), lluvia de 48 h por zona (¿cayó
-sobre la presa o abajo?) y agua GSW.
+sobre la presa o abajo?) e inundación diaria MCDWD por zona (con el agua GSW del mes en el texto).
 
 ![Paneles 1](../figures/yuna/fig_y3_paneles_eventos_1.png)
 ![Paneles 2](../figures/yuna/fig_y3_paneles_eventos_2.png)
@@ -291,6 +379,11 @@ Umbrales calibrados: media de cuenca {info[a2_umbral]:.0f} mm/48 h; antecedente 
 p{c_pct:.0f} = {info[c][umbral_mm]:.0f} mm; p90 del antecedente = {info[antecedente_p90_mm]:.0f} mm; umbral rebajado si el
 antecedente es húmedo = {info[b2_umbral_bajo]:.0f} mm/48 h (casi el mismo 100: la calibración no encontró valor en rebajarlo).
 
+**Verificación observada (MCDWD).** ¿Los disparadores detectan los eventos que MODIS confirma? (`results/yuna/backtest_verificacion_mcdwd.csv`;
+«observa» vacío = nubes):
+
+{{TABLA_VER}}
+
 ## 7 · ¿Cambia la presa la relación arriba-abajo? (prueba del confusor)
 
 (1) Episodios de lluvia fuerte (máx. de celda ≥ p99 = {au[umbral_r48max_p99_mm]:.0f} mm/48 h): {au[n_episodios]}
@@ -298,6 +391,13 @@ episodios, {au[n_con_inundacion]} con evento del catálogo. AUC de cada variable
 inundación, por zona (IC 95 % bootstrap):
 
 {{TABLA_AUC}}
+
+(1b) La misma prueba con **verdad observada** (MCDWD, independiente de la prensa y de la lluvia): episodios de lluvia
+≥ p99 con inundación de clase 3 sobre el p95 de los días secos (compuesto de 3 días en el día +3). {mcx[auc_txt]}
+Con tan pocos episodios con inundación observada la prueba **no tiene potencia**: ningún AUC (ni siquiera el de la
+lluvia) se separa de 0,5 con estos IC, y la diferencia Hatillo − Camú tampoco.
+
+{{TABLA_AUC_OBS}}
 
 (2) Meses 2001-2020 con agua observada en la llanura (GSW): ρ de Spearman entre la lluvia del mes en cada zona y la
 anomalía de agua, según el estado del embalse (área GSW ≥ o < mediana):
@@ -324,8 +424,11 @@ llega al Bajo Yuna sin pasar por Hatillo.
 - El Bajo Yuna se inunda de forma recurrente: {ncu} eventos con fuente entre 2003 y 2026.
 - Hatillo vertió durante Fiona (2022), nov-2023 y mayo-2024 (notas INDRHI/COE), y no vertió con Franklin ni Melissa.
 - JRC GSW (observación) ve agua anómala en la llanura en el mes de estos eventos: {ev_obs}.
+- MODIS MCDWD (observación) confirma inundación anómala en: {mcx[obs_si]}; las nubes impiden decidir en: {mcx[indet]}.
 
 ## Lo que creemos saber
+- MODIS MCDWD ve inundación anómala en la llanura en la mayoría de los eventos del catálogo ({mcx[resumen]}), incluidos
+  Fiona 2022 y noviembre de 2023, que GSW no cubre; pero el umbral es bajo y la mayoría de los días están tapados.
 - La lluvia del episodio pesa más que el antecedente para que haya un evento registrado (AUC 0,7-0,8 frente a ≈ 0,4).
 - Un disparador de 100 mm/48 h sobre el máximo de celda detecta casi todo, pero con {fa_anio_c:.1f} (2001-2015) y {fa_anio_t:.1f} (2016-2024) episodios sin evento por año.
 - El antecedente de 30-90 días, solo o combinado, no añade capacidad detectable con 14 eventos.
@@ -333,8 +436,8 @@ llega al Bajo Yuna sin pasar por Hatillo.
 ## Lo que hay que comprobar
 - Series diarias de nivel y descarga de Hatillo (INDRHI/EGEHID, por la Ley 200-04 de acceso a la información).
   Sin ellas, la presa como confusor no se puede probar a escala de evento.
-- MCDWD 2003-2025 (aceptar la licencia de LAADS y usar un lector HDF4), y Sentinel-1 para 2017-2025 (radar, no lo
-  tapan las nubes).
+- Sentinel-1 (radar, 2017-2025) para los eventos que MCDWD no ve por nubes, y revisar en Worldview las imágenes de
+  los días que MCDWD marca como inundados (falsos positivos por sombra de nube o de relieve).
 - Aforos del INDRHI en Villa Riva/Cotuí, y GEOGLOWS en el cauce principal, para pasar de «evento en prensa» a caudal.
 - Un catálogo más completo (EM-DAT con cuenta; DesInventar no cubre RD después de 2000).
 - Que IMERG, SMAP L4 y CHIRPS comparten insumos (GPCC/GTS; SMAP L4 v6+ ajusta su lluvia a IMERG): su acuerdo no es

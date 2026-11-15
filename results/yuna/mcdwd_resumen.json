@@ -1,0 +1,142 @@
+{
+ "referencia": {
+  "Flood_2Day_250m": {
+   "n_dias": 22,
+   "n_observables_yuna": 19,
+   "mediana_yuna": 0.10093705861754729,
+   "p95_yuna": 1.9783663489039203,
+   "agua_ref_mediana_yuna": 13.424628796133788,
+   "insuf_media_yuna": 0.3478191573569745,
+   "n_observables_alto_hatillo": 16,
+   "mediana_alto_hatillo": 0.07570279396316046,
+   "p95_alto_hatillo": 0.4668338961061562,
+   "agua_ref_mediana_alto_hatillo": 14.358296588346102,
+   "insuf_media_alto_hatillo": 0.39947678221059524,
+   "n_observables_camu": 19,
+   "mediana_camu": 0.050468529308773644,
+   "p95_camu": 0.8377775865256375,
+   "agua_ref_mediana_camu": 0.857964998249152,
+   "insuf_media_camu": 0.3352232028513008,
+   "n_observables_bajo_yuna": 18,
+   "mediana_bajo_yuna": 0.0,
+   "p95_bajo_yuna": 1.0068471597100332,
+   "agua_ref_mediana_bajo_yuna": 0.15140558792632092,
+   "insuf_media_bajo_yuna": 0.3485656541445131,
+   "n_observables_llanura": 18,
+   "mediana_llanura": 0.0,
+   "p95_llanura": 0.2422489406821126,
+   "agua_ref_mediana_llanura": 0.10093705861754729,
+   "insuf_media_llanura": 0.2872319386935294
+  },
+  "Flood_3Day_250m": {
+   "n_dias": 22,
+   "n_observables_yuna": 18,
+   "mediana_yuna": 0.0,
+   "p95_yuna": 0.3482328522305377,
+   "agua_ref_mediana_yuna": 11.557293211709165,
+   "insuf_media_yuna": 0.3879409757360382,
+   "n_observables_alto_hatillo": 18,
+   "mediana_alto_hatillo": 0.0,
+   "p95_alto_hatillo": 0.10850733801386327,
+   "agua_ref_mediana_alto_hatillo": 11.20401350654775,
+   "insuf_media_alto_hatillo": 0.39791187632026614,
+   "n_observables_camu": 18,
+   "mediana_camu": 0.0,
+   "p95_camu": 0.19682726430421676,
+   "agua_ref_mediana_camu": 0.428982499124576,
+   "insuf_media_camu": 0.35130301149115917,
+   "n_observables_bajo_yuna": 16,
+   "mediana_bajo_yuna": 0.0,
+   "p95_bajo_yuna": 0.06308566163596706,
+   "agua_ref_mediana_bajo_yuna": 0.10093705861754729,
+   "insuf_media_bajo_yuna": 0.4310132547383102,
+   "n_observables_llanura": 17,
+   "mediana_llanura": 0.0,
+   "p95_llanura": 0.050468529308773644,
+   "agua_ref_mediana_llanura": 0.10093705861754729,
+   "insuf_media_llanura": 0.38244237068166365
+  }
+ },
+ "auc_observado": {
+  "n_episodios_determinables": 34,
+  "n_con_inundacion_observada": 3,
+  "n_indeterminados_nubes": 23,
+  "AUC_ant30_pct_alto_hatillo": 0.44086021505376344,
+  "AUC_ant30_pct_alto_hatillo_ic95": [
+   0.0967741935483871,
+   0.8064516129032258
+  ],
+  "AUC_ant30_pct_camu": 0.5376344086021505,
+  "AUC_ant30_pct_camu_ic95": [
+   0.25806451612903225,
+   0.8064516129032258
+  ],
+  "AUC_ant30_pct_bajo_yuna": 0.4838709677419355,
+  "AUC_ant30_pct_bajo_yuna_ic95": [
+   0.16129032258064516,
+   0.7741935483870968
+  ],
+  "dAUC_ant30_pct_alto_menos_camu": -0.09677419354838707,
+  "dAUC_ant30_pct_alto_menos_camu_ic95": [
+   -0.3225806451612903,
+   0.09090909090909094
+  ],
+  "AUC_gldas_z_alto_hatillo": 0.5698924731182796,
+  "AUC_gldas_z_alto_hatillo_ic95": [
+   0.3655913978494624,
+   0.7526881720430108
+  ],
+  "AUC_gldas_z_camu": 0.5483870967741935,
+  "AUC_gldas_z_camu_ic95": [
+   0.3548387096774194,
+   0.7311827956989247
+  ],
+  "AUC_gldas_z_bajo_yuna": 0.5161290322580645,
+  "AUC_gldas_z_bajo_yuna_ic95": [
+   0.3225806451612903,
+   0.7096774193548387
+  ],
+  "dAUC_gldas_z_alto_menos_camu": 0.021505376344086113,
+  "dAUC_gldas_z_alto_menos_camu_ic95": [
+   -0.09677419354838707,
+   0.15006720430107529
+  ],
+  "AUC_r48_alto_hatillo": 0.4946236559139785,
+  "AUC_r48_alto_hatillo_ic95": [
+   0.16129032258064516,
+   0.967741935483871
+  ],
+  "AUC_r48_camu": 0.45161290322580644,
+  "AUC_r48_camu_ic95": [
+   0.1610215053763441,
+   0.8387096774193549
+  ],
+  "AUC_r48_bajo_yuna": 0.5161290322580645,
+  "AUC_r48_bajo_yuna_ic95": [
+   0.1827956989247312,
+   0.967741935483871
+  ],
+  "dAUC_r48_alto_menos_camu": 0.04301075268817206,
+  "dAUC_r48_alto_menos_camu_ic95": [
+   -0.15625,
+   0.21212121212121213
+  ],
+  "tabla_humedo_x_observa": [
+   [
+    29,
+    3
+   ],
+   [
+    2,
+    0
+   ]
+  ],
+  "fisher_p": 1.0,
+  "frac_inund_si_humedo": 0.0,
+  "frac_inund_si_no_humedo": 0.09375
+ },
+ "insuf_media_yuna_2d": 0.5749165150925896,
+ "n_dias": 209,
+ "MAX_INSUF": 0.8,
+ "MIN_KM2": 2.0
+}

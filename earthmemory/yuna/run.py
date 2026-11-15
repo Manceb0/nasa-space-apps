@@ -110,6 +110,28 @@ def solo_geoglows() -> None:
     (RES / "geoglows_ids.json").write_text(json.dumps(ids, indent=1), encoding="utf-8")
 
 
+def bajar_mcdwd() -> None:
+    """Días de MCDWD_L3 que hacen falta (eventos, referencia seca, episodios p99, meses GSW sin evento)."""
+    from . import analisis, catalogo, mcdwd
+    from .observacion import anomalias
+    cat = catalogo.construir()
+    d, g, w = analisis.cargar()
+    v = analisis.variables(d, g)
+    ep = pd.read_csv(RES / "presa_episodios_lluvia_fuerte.csv", parse_dates=["inicio", "fin"])
+    lla = anomalias(w, "llanura")
+    ev_meses = set()
+    for r in cat[cat["usable_backtest"]].itertuples():
+        ev_meses |= set(pd.date_range(pd.Timestamp(r.inicio).replace(day=1), pd.Timestamp(r.fin) + pd.offsets.MonthBegin(1), freq="MS"))
+    sin_cat = [x.strftime("%Y-%m") for x in lla.index[lla["sobre_p90"]] if x not in ev_meses]
+    dias = mcdwd.dias_necesarios(cat, v, ep, sin_cat)
+    mcdwd.guardar_dias(dias)
+    print(f"  MCDWD: {dias['fecha'].nunique()} días únicos", flush=True)
+    prio = {"evento": 0, "referencia_seca": 1, "gsw_sin_evento": 2, "episodio_p99": 3}
+    orden = dias.assign(p=dias["motivo"].map(prio)).sort_values(["p", "fecha"])
+    est = mcdwd.bajar(list(orden["fecha"]))
+    mcdwd.resumen_json(est)
+
+
 def analizar() -> None:
     from . import analisis, catalogo, figuras, notebook, report, web
     cat = catalogo.construir()
@@ -123,13 +145,18 @@ def analizar() -> None:
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--sin-descarga", action="store_true")
-    ap.add_argument("--etapa", choices=["todo", "preparar", "geoglows", "analisis"], default="todo")
+    ap.add_argument("--etapa", choices=["todo", "preparar", "geoglows", "mcdwd", "analisis"], default="todo")
     a = ap.parse_args(argv)
     if a.etapa == "geoglows":
         solo_geoglows()
         return
+    if a.etapa == "mcdwd":
+        bajar_mcdwd()
+        return
     if a.etapa in ("todo", "preparar"):
         preparar(a.sin_descarga)
+    if a.etapa == "todo" and not a.sin_descarga:
+        bajar_mcdwd()
     if a.etapa in ("todo", "analisis"):
         analizar()
 

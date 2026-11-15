@@ -35,6 +35,12 @@ faltantes son `null`. Cada variable lleva su CLASE; la pantalla debe mostrarla j
 - `backtest.json` — `tabla` (una fila por disparador y periodo: POD, FAR, CSI con `*_ic95`, n de eventos,
   episodios), `info` (umbrales calibrados), `presa` (AUC por zona) y `presa_mensual` (ρ por estado del embalse).
 
+- `mcdwd.json` — inundación observada MODIS MCDWD (OBSERVACIÓN): `reglas`, `referencia` (días secos: mediana y p95
+  de km² de clase 3 por zona), `eventos` (por evento del catálogo: `observa` true/false/null = nubes,
+  `inund_km2_max_<zona>`, `anomalia_km2_<zona>`, `insuf_min_<zona>`, `dia_max_<zona>`) y `dias` (por fecha bajada:
+  `insuf_<zona>` fracción de datos insuficientes, `agua_ref_km2_<zona>`, `recurrente_km2_<zona>`, `inund_km2_<zona>`).
+  Zonas: `yuna`, `alto_hatillo`, `camu`, `bajo_yuna`, `llanura` (Bajo Yuna < 20 m).
+
 ## Reglas de lectura
 - No decir «Hatillo regula/controla las crecidas»; la presa opera en «vertido libre» según INDRHI (2021).
 - No decir «predice» ni «alerta temprana»: es evidencia retrospectiva con n pequeño.

@@ -1,0 +1,15 @@
+{
+  "archivos": [
+    "fig_y6_inundacion_observada_mcdwd.pdf",
+    "fig_y6_inundacion_observada_mcdwd.png"
+  ],
+  "tamano_mm": [
+    180.0,
+    78.0
+  ],
+  "fuente": "MODIS MCDWD_L3 C6.1 (doi:10.5067/MODIS/MCDWD_L3.061)",
+  "tablas": [
+    "results/yuna/mcdwd_por_evento.csv",
+    "results/yuna/mcdwd_episodios_lluvia_fuerte.csv"
+  ]
+}

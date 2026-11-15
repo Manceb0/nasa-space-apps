@@ -87,6 +87,15 @@ def run(res: dict) -> None:
     _dump("backtest.json", {"tabla": bt.to_dict("records"), "info": res["info"],
                             "presa": {k: v_ for k, v_ in res["presa"]["auc"].items()},
                             "presa_mensual": res["presa"]["mensual"].to_dict("records") if "mensual" in res["presa"] else []})
+    mv = res.get("mcdwd")
+    if mv is not None:
+        st = mv["st"].copy()
+        st["fecha"] = pd.to_datetime(st["fecha"]).dt.strftime("%Y-%m-%d")
+        _dump("mcdwd.json", {"clase": "OBSERVACIÓN", "producto": "MODIS MCDWD_L3 C6.1 (doi:10.5067/MODIS/MCDWD_L3.061)",
+                             "reglas": {"capa_eventos": "Flood_2Day_250m", "capa_episodios": "Flood_3Day_250m",
+                                        "inundacion": "clase 3 (inusual)", "max_insuf_dia": 0.8, "min_km2": 2.0},
+                             "referencia": mv["ref"], "eventos": mv["eventos"].to_dict("records"),
+                             "dias": st[st["capa"] == "Flood_2Day_250m"].drop(columns="capa").to_dict("records")})
     (WEB / "CONTRATO.md").write_text(CONTRATO, encoding="utf-8", newline="\n")
 
 
@@ -126,6 +135,12 @@ faltantes son `null`. Cada variable lleva su CLASE; la pantalla debe mostrarla j
   usar solo meses con fracción válida ≥ 0.5 en el embalse y ≥ 0.3 en la llanura).
 - `backtest.json` — `tabla` (una fila por disparador y periodo: POD, FAR, CSI con `*_ic95`, n de eventos,
   episodios), `info` (umbrales calibrados), `presa` (AUC por zona) y `presa_mensual` (ρ por estado del embalse).
+
+- `mcdwd.json` — inundación observada MODIS MCDWD (OBSERVACIÓN): `reglas`, `referencia` (días secos: mediana y p95
+  de km² de clase 3 por zona), `eventos` (por evento del catálogo: `observa` true/false/null = nubes,
+  `inund_km2_max_<zona>`, `anomalia_km2_<zona>`, `insuf_min_<zona>`, `dia_max_<zona>`) y `dias` (por fecha bajada:
+  `insuf_<zona>` fracción de datos insuficientes, `agua_ref_km2_<zona>`, `recurrente_km2_<zona>`, `inund_km2_<zona>`).
+  Zonas: `yuna`, `alto_hatillo`, `camu`, `bajo_yuna`, `llanura` (Bajo Yuna < 20 m).
 
 ## Reglas de lectura
 - No decir «Hatillo regula/controla las crecidas»; la presa opera en «vertido libre» según INDRHI (2021).

@@ -106,3 +106,28 @@ def test_pct_mes_rango():
     s = pd.Series(np.arange(len(idx), dtype=float), index=idx)
     p = A.pct_mes(s)
     assert p.min() > 0 and p.max() == 100
+
+
+def test_mcdwd_resumir_reglas():
+    from earthmemory.yuna import verificacion as V
+    f = pd.to_datetime(["2016-11-10", "2016-11-12", "2016-11-14"])
+    filas = []
+    for d, ins, km2 in zip(f, (0.95, 0.30, 0.50), (50.0, 8.0, 3.0)):   # el primer día está tapado: no cuenta
+        r = {"fecha": d, "capa": "Flood_2Day_250m"}
+        for z in V.ZONAS:
+            r.update({f"insuf_{z}": ins, f"inund_km2_{z}": km2, f"recurrente_km2_{z}": 0.0, f"agua_ref_km2_{z}": 1.0})
+        filas.append(r)
+    st = pd.DataFrame(filas)
+    ref = {"Flood_2Day_250m": {f"{k}_{z}": v for z in V.ZONAS for k, v in (("mediana", 0.5), ("p95", 2.5))}}
+    r = V.resumir(st, f, "Flood_2Day_250m", ref)
+    assert r["inund_km2_max_yuna"] == 8.0 and r["observa"] is True and r["dia_max_yuna"] == "2016-11-12"
+    st[[c for c in st if c.startswith("insuf_")]] = 0.99                  # todo nublado → indeterminado
+    assert V.resumir(st, f, "Flood_2Day_250m", ref)["observa"] is None
+
+
+def test_mcdwd_ventana_alineada():
+    from earthmemory.yuna import mcdwd as M
+    h, w = M.shape()
+    assert (h, w) == (432, 816)
+    for lon in (M.WIN[0], M.WIN[2]):
+        assert abs((lon + 80) / M.DX - round((lon + 80) / M.DX)) < 1e-6

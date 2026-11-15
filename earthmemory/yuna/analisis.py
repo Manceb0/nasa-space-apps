@@ -429,7 +429,33 @@ def run(cat: pd.DataFrame) -> dict:
     pr["episodios"].to_csv(RES / "presa_episodios_lluvia_fuerte.csv", index=False)
     if "mensual" in pr:
         pr["mensual"].to_csv(RES / "presa_correlaciones_mensuales.csv", index=False)
+    # Verificación observada MODIS MCDWD (si se bajó)
+    from . import verificacion
+    from shapely.geometry import shape as _shape
+    gj = json.loads((RES / "cuencas_yuna.geojson").read_text(encoding="utf-8"))
+    zg = {f["properties"]["zona"]: _shape(f["geometry"]) for f in gj["features"]}
+    ver = verificacion.run(zg, cat, pr["episodios"])
+    if ver is not None:
+        ev = ver["eventos"]
+        keep = ["id", "observa", "observa_3d", "inund_km2_max_yuna", "anomalia_km2_yuna", "dia_max_yuna", "insuf_min_yuna",
+                "n_obs_yuna", "n_dias", "inund_km2_max_bajo_yuna", "inund_km2_max_llanura", "inund_km2_max_camu",
+                "inund_km2_max_alto_hatillo", "recurrente_km2_max_yuna"]
+        evk = ev[[c for c in keep if c in ev]].rename(columns=lambda c: c if c == "id" else f"mcdwd_{c}")
+        pan = pan.merge(evk, on="id", how="left")
+        pan.to_csv(RES / "paneles_eventos.csv", index=False)
+        ins = ins.merge(evk[["id", "mcdwd_observa", "mcdwd_n_obs_yuna", "mcdwd_insuf_min_yuna"]], on="id", how="left")
+        ins.to_csv(RES / "datos_suficientes_por_evento.csv", index=False)
+        # tabla de verificación: ¿cada disparador detectó los eventos que MCDWD confirma?
+        det = {}
+        for r in tab.itertuples():
+            det.setdefault(r.disparador, set()).update(str(r.detectados).split(",") if isinstance(r.detectados, str) else [])
+        vt = evk[["id", "mcdwd_observa", "mcdwd_inund_km2_max_yuna", "mcdwd_insuf_min_yuna"]].copy()
+        for k, s in det.items():
+            vt[k] = vt["id"].isin(s)
+        vt.to_csv(RES / "backtest_verificacion_mcdwd.csv", index=False)
+        ver["verificacion"] = vt
     resumen = {"backtest_info": info, "presa_auc": pr["auc"],
+               "mcdwd": ver["resumen"] if ver is not None else None,
                "presa_embalse_mediana_km2": pr.get("embalse_mediana_km2"),
                "embalse_vs_lluvia_alta": pr.get("embalse_vs_lluvia_alta"),
                "n_eventos_catalogo_cuenca": int(cat["zona"].isin({"bajo_yuna", "alto_yuna", "camu", "cuenca_general"}).sum()),
@@ -439,4 +465,4 @@ def run(cat: pd.DataFrame) -> dict:
     (RES / "analisis_resumen.json").write_text(json.dumps(resumen, ensure_ascii=False, indent=1, default=str),
                                               encoding="utf-8")
     return {"d": d, "g": g, "w": w, "v": v, "cat": cat, "backtest": tab, "info": info, "insuf": ins,
-            "paneles": pan, "presa": pr, "resumen": resumen}
+            "paneles": pan, "presa": pr, "resumen": resumen, "mcdwd": ver}

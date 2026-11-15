@@ -200,7 +200,18 @@ def fig_paneles(res: dict) -> None:
     from .observacion import anomalias
     an = anomalias(w, "llanura") if not w.empty else None
     pan = pan[pan["r48_max_yuna"].notna()] if "r48_max_yuna" in pan else pan.iloc[0:0]
-    grupos = [pan.iloc[i:i + 7] for i in range(0, len(pan), 7)]
+    mc = None
+    if res.get("mcdwd") is not None:
+        st = res["mcdwd"]["st"].copy()
+        st["fecha"] = pd.to_datetime(st["fecha"])
+        s2 = st[st["capa"] == "Flood_2Day_250m"].set_index("fecha")
+        dias = res["mcdwd"]["dias"]
+        ev_f = pd.to_datetime(dias.loc[dias["motivo"] == "evento", "fecha"])
+        se = s2[s2.index.isin(ev_f)]
+        ymax = max(5.0, float(np.nanmax([se.loc[se[f"insuf_{z}"] < 0.8, f"inund_km2_{z}"].max()
+                                         for z in ("alto_hatillo", "camu", "bajo_yuna")])) * 1.1)
+        mc = {"s2": s2, "dias": dias, "p95": res["mcdwd"]["ref"]["Flood_2Day_250m"]["p95_yuna"], "ymax": ymax}
+    grupos =[pan.iloc[i:i + 7] for i in range(0, len(pan), 7)]
     for gi, sub in enumerate(grupos):
         with style():
             fig, axs = plt.subplots(len(sub), 4, figsize=(180 * MM, (22 + 30 * len(sub)) * MM),
@@ -257,7 +268,27 @@ def fig_paneles(res: dict) -> None:
                 ax.set_ylabel("mm / 48 h", fontsize=5.5)
                 # (4) agua observada GSW
                 ax = axs[i, 3]
-                if an is not None and a.year <= 2020:
+                if mc is not None and r.id in set(mc["dias"].loc[mc["dias"]["motivo"] == "evento", "id"]):
+                    fe = pd.to_datetime(mc["dias"].loc[(mc["dias"]["motivo"] == "evento") & (mc["dias"]["id"] == r.id), "fecha"])
+                    s2 = mc["s2"][mc["s2"].index.isin(fe)].sort_index()
+                    for z in ("alto_hatillo", "camu", "bajo_yuna"):
+                        ok = s2[f"insuf_{z}"] < 0.8
+                        ax.plot(s2.index[ok], s2.loc[ok, f"inund_km2_{z}"], "o-", ms=2, lw=0.7, color=Z_COL[z])
+                    nub = s2["insuf_yuna"] >= 0.8
+                    ax.plot(s2.index[nub], np.zeros(nub.sum()), "x", ms=3, color="#888888", mew=0.6)
+                    ax.axhline(mc["p95"], color="black", lw=0.5, ls="--")
+                    ax.axvspan(a, b, color=OI["yellow"], alpha=0.35, lw=0)
+                    ax.set_ylim(0, mc["ymax"])
+                    ax.xaxis.set_major_locator(mdates.AutoDateLocator(maxticks=3))
+                    ax.xaxis.set_major_formatter(mdates.DateFormatter("%d-%b"))
+                    ax.set_ylabel("km² inundación (cl. 3)", fontsize=5)
+                    txt = f"nubes {s2['insuf_yuna'].min() * 100:.0f}-{s2['insuf_yuna'].max() * 100:.0f} %"
+                    if an is not None and a.year <= 2020:
+                        mm = pd.Timestamp(a.year, a.month, 1)
+                        if mm in an.index and an.loc[mm, "usable"]:
+                            txt += chr(10) + f"GSW {an.loc[mm, 'anomalia'] * 100:+.1f} p.p."
+                    ax.text(0.02, 0.95, txt, transform=ax.transAxes, fontsize=4.6, va="top")
+                elif an is not None and a.year <= 2020:
                     m0 = pd.Timestamp(a.year, a.month, 1)
                     meses = [m0 - pd.offsets.MonthBegin(1), m0, m0 + pd.offsets.MonthBegin(1)]
                     for k, mm in enumerate(meses):
@@ -273,7 +304,7 @@ def fig_paneles(res: dict) -> None:
                     ax.set_xlim(-0.6, 2.6)
                     ax.set_ylabel("% agua (válidos)", fontsize=5)
                 else:
-                    ax.text(0.5, 0.5, "sin observación\n(GSW termina en 2020;\nMCDWD bloqueado)", ha="center",
+                    ax.text(0.5, 0.5, "sin observación\n(sin días MCDWD;\nGSW termina en 2020)", ha="center",
                             va="center", fontsize=5, transform=ax.transAxes)
                     ax.set_xticks([]); ax.set_yticks([])
                 for x in axs[i]:
@@ -281,7 +312,7 @@ def fig_paneles(res: dict) -> None:
             heads = ["a · Lluvia diaria\nbarras: media de cuenca; línea: máx. de celda\nIMERG · RECUPERACIÓN SATELITAL",
                      "b · Antecedente (percentil del mismo mes)\nIMERG · SMAP L4 (CON ASIMILACIÓN)\nGLDAS (MODELO FORZADO)",
                      "c · Lluvia 48 h por zona\n¿cayó arriba o abajo de la presa?\nIMERG · RECUPERACIÓN SATELITAL",
-                     "d · Agua en la llanura\nmes −1/0/+1 (-- = p90 del mes)\nJRC GSW · OBSERVACIÓN"]
+                     "d · Inundación diaria por zona" + chr(10) + "(2 días; x = nubes; -- = p95 secos)" + chr(10) + "MODIS MCDWD · OBSERVACIÓN"]
             for k, h in enumerate(heads):
                 axs[0, k].annotate(h, (0.5, 1.0), xycoords="axes fraction", xytext=(0, 14), textcoords="offset points",
                                    ha="center", va="bottom", fontsize=4.9, linespacing=1.15)
@@ -366,9 +397,66 @@ def fig_presa(res: dict) -> None:
                                                              "results/yuna/presa_correlaciones_mensuales.csv"]})
 
 
+def fig_mcdwd(res: dict) -> None:
+    mc = res.get("mcdwd")
+    if mc is None:
+        return
+    ev, ref, au = mc["eventos"].copy(), mc["ref"]["Flood_2Day_250m"], mc["auc"]
+    ev = ev.sort_values("id")
+    with style():
+        fig, axs = plt.subplots(1, 2, figsize=(180 * MM, 78 * MM), gridspec_kw={"width_ratios": [1.25, 1]})
+        fig.subplots_adjust(left=0.08, right=0.98, top=0.76, bottom=0.25, wspace=0.32)
+        ax = axs[0]
+        x = np.arange(len(ev))
+        for j, r in enumerate(ev.itertuples()):
+            val = getattr(r, "inund_km2_max_yuna", np.nan)
+            if not np.isfinite(val):
+                ax.plot(j, 0.3, "x", color="#888888", ms=4, mew=0.8)
+                continue
+            col = OI["vermillion"] if r.observa else GREY
+            bott = 0.0
+            for z in ("alto_hatillo", "camu", "bajo_yuna"):
+                vz = getattr(r, f"inund_km2_max_{z}", np.nan)
+                vz = 0.0 if not np.isfinite(vz) else vz
+                ax.bar(j, vz, bottom=bott, color=Z_COL[z], width=0.7, alpha=0.9 if r.observa else 0.35, lw=0)
+                bott += vz
+            ax.plot(j, val, "_", color="black", ms=7, mew=1)
+        ax.axhline(ref["p95_yuna"], color="black", lw=0.5, ls="--")
+        ax.set_xticks(x); ax.set_xticklabels(ev["id"], rotation=60, ha="right", fontsize=5.3)
+        ax.set_ylabel("km² de inundación (clase 3), máx. del evento", fontsize=6)
+        panel_letter(ax, "a")
+        ax.text(0.06, 1.04, "Eventos del catálogo · MODIS MCDWD 2 días (OBSERVACIÓN)" + chr(10) +
+                "barras: máx. de cada zona · —: máx. de la cuenca" + chr(10) + "x: solo nubes · --: p95 de días secos",
+                transform=ax.transAxes, fontsize=5.6, va="bottom")
+        ax = axs[1]
+        if au:
+            labs = [("ant30_pct", "Antecedente 30 d" + chr(10) + "(IMERG)"), ("gldas_z", "Raíz mes anterior" + chr(10) + "(GLDAS)"),
+                    ("r48", "Lluvia 48 h" + chr(10) + "(IMERG)")]
+            for i, (var, lab) in enumerate(labs):
+                for j, z in enumerate(("alto_hatillo", "camu", "bajo_yuna")):
+                    a = au.get(f"AUC_{var}_{z}", np.nan); ci = au.get(f"AUC_{var}_{z}_ic95", [np.nan, np.nan])
+                    if not np.isfinite(a):
+                        continue
+                    ax.errorbar(i + (j - 1) * 0.22, a, yerr=[[max(a - ci[0], 0)], [max(ci[1] - a, 0)]], fmt="o", ms=3.2,
+                                color=Z_COL[z], capsize=1.2, lw=0.7, label=Z_LAB[z] if i == 0 else None)
+            ax.axhline(0.5, color="black", lw=0.4, ls="--")
+            ax.set_xticks(range(3)); ax.set_xticklabels([l for _, l in labs], fontsize=5.3)
+            ax.set_ylim(0, 1.05); ax.set_ylabel("AUC (inundación observada sí/no)", fontsize=6)
+            ax.legend(fontsize=5, frameon=False, loc="lower left")
+            panel_letter(ax, "b")
+            ax.text(0.06, 1.04, f"Episodios de lluvia ≥ p99: {au['n_episodios_determinables']} con MCDWD visible," + chr(10) +
+                    f"{au['n_con_inundacion_observada']} con inundación observada; {au['n_indeterminados_nubes']} tapados por nubes",
+                    transform=ax.transAxes, fontsize=5.6, va="bottom")
+        for a in axs:
+            a.tick_params(labelsize=5.5)
+        save(fig, FIG / "fig_y6_inundacion_observada_mcdwd", {"fuente": "MODIS MCDWD_L3 C6.1 (doi:10.5067/MODIS/MCDWD_L3.061)",
+                                                               "tablas": ["results/yuna/mcdwd_por_evento.csv",
+                                                                          "results/yuna/mcdwd_episodios_lluvia_fuerte.csv"]})
+
+
 def run(res: dict) -> None:
     FIG.mkdir(parents=True, exist_ok=True)
     res["cuencas"] = json.loads((RES / "cuencas_resumen.json").read_text(encoding="utf-8"))
-    for f in (fig_mapa, fig_gsw, fig_paneles, fig_backtest, fig_presa):
+    for f in (fig_mapa, fig_gsw, fig_paneles, fig_backtest, fig_presa, fig_mcdwd):
         print(f"  figura {f.__name__}", flush=True)
         f(res)
