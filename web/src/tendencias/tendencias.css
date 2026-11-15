@@ -424,7 +424,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .place .pin { width: 18px; height: 18px; flex: none; }
 .place h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .place .chev { width: 14px; height: 14px; color: var(--muted); }
-.place select { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; }
+.place select { position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; opacity: 0; pointer-events: none; }
 .place select option { background: #24272b; color: #fff; }
 .place-hint { margin-top: 4px; font-size: 13px; color: var(--faint); }
 .place-back { padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }

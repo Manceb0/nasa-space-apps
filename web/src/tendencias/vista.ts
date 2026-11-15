@@ -92,13 +92,13 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       <aside class="wx-left" id="wx-left">
         ${layout === "phone" ? `<button class="wx-grab" id="wx-grab" aria-label="${esc(LL("Subir o bajar el panel", "Raise or lower the panel"))}"><i></i></button>` : ""}
         <section class="blk-reg" id="wx-peek">
-          <label class="place" title="${esc(LL("Elegir el lugar", "Choose the place"))}">
+          <div class="place" title="${esc(LL("Elegir el lugar", "Choose the place"))}">
             ${PIN}<h1 id="wx-h1"></h1>${CHEV}
             <select id="r-sel" aria-label="${esc(LL("Lugar", "Place"))}">
               <option value="DO">${esc(LL("Toda la República Dominicana", "Whole Dominican Republic"))}</option>
               ${d.provs.map((r) => `<option value="${r.id}">${esc(r.nombre)}</option>`).join("")}
             </select>
-          </label>
+          </div>
           <p class="place-hint" id="finding"></p>
           ${layout === "phone" ? `<p class="peek-ans" id="peek-ans"></p>` : ""}
         </section>
@@ -515,6 +515,12 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   wx.addEventListener("click", (e) => {
     const el = e.target as Element;
     if (el.closest("[data-reg-all]")) { pickRegion("DO"); return; }
+    // el nombre del lugar abre la lista de lugares (el selector está debajo, sin tapar el título)
+    if (el.closest(".place") && !(el instanceof HTMLSelectElement)) {
+      const rs = $<HTMLSelectElement>("r-sel");
+      try { rs.showPicker(); } catch { rs.focus(); }
+      return;
+    }
     const lq = el.closest<HTMLElement>("[data-landq]");
     if (lq) {
       if (ui.land !== lq.dataset.landq) { ui.land = lq.dataset.landq as LandQ; ui.year = null; ui.landSite = ""; renderStyle(); renderPanels(); renderMap(); frameSites(); $("ans").scrollIntoView({ block: "start", behavior: RM() ? "auto" : "smooth" }); }
