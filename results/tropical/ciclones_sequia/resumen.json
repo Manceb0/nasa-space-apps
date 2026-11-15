@@ -1,0 +1,39 @@
+{
+  "fraccion_ciclon_media": 0.1095872942204786,
+  "fraccion_ciclon_rango": [
+    0.005975388330315186,
+    0.3321642794904222
+  ],
+  "dias_sequia_dic_may_8_menos_ciclon": 32.625,
+  "dias_sequia_dic_may_8_mas_ciclon": 38.125,
+  "anios_menos_ciclon": [
+    2019,
+    2009,
+    2018,
+    2015,
+    2003,
+    2001,
+    2002,
+    2013
+  ],
+  "anios_mas_ciclon": [
+    2007,
+    2020,
+    2017,
+    2012,
+    2004,
+    2010,
+    2011,
+    2008
+  ],
+  "p_permutacion_S2": 0.6321,
+  "spearman_lluvia_ciclon_vs_sequia": 0.07433134936396159,
+  "frac_dias_sequia_90d_tras_ciclon": 0.15832784726793944,
+  "frac_dias_sequia_resto_ago_dic": 0.20977917981072555,
+  "veredicto": {
+    "S1": true,
+    "S2": false,
+    "S2_significativa_p05": false,
+    "S3": true
+  }
+}
