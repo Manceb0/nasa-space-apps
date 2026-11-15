@@ -16,7 +16,7 @@ import { bottomSheet, PEEK } from "./hoja";
 import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
 import { openPop } from "./pop";
-import { hallazgo } from "./hallazgo";
+import { hallazgo, type Hallazgos } from "./hallazgo";
 import { destroyPreparation, viewPreparation } from "../preparacion/vista";
 import { openAuditAt } from "../auditoria/vista";
 import { hurricanes, type CyInfo } from "../preparacion/huracanes";
@@ -41,6 +41,7 @@ const SEASON: Record<string, [string, string]> = { anual: ["Año", "Year"], seca
 let cyOff: (() => void) | null = null;
 let prepOff: (() => void) | null = null;
 let rios: Rio[] | null = null;
+let hzData: Hallazgos | null = null;
 let cyApi: { setPlace: (p: string) => void } | null = null;
 export function destroyTrends() {
   cleanup.forEach((f) => f()); cleanup = [];
@@ -55,8 +56,8 @@ export async function viewTrends(view: HTMLElement) {
   destroyTrends();
   document.body.classList.add("wx-on");
   view.innerHTML = `<div class="wx"><p class="wx-loading">${esc(LL("Cargando tendencias…", "Loading trends…"))}</p></div>`;
-  const [d, land, riosData] = await Promise.all([loadTrends(), loadLand(), load<{ rios: Rio[] }>("tendencias/rios.json").catch(() => null)]);
-  rios = riosData?.rios ?? null;
+  const [d, land, riosData, hz] = await Promise.all([loadTrends(), loadLand(), load<{ rios: Rio[] }>("tendencias/rios.json").catch(() => null), load<Hallazgos>("tendencias/hallazgos.json").catch(() => null)]);
+  rios = riosData?.rios ?? null; hzData = hz;
   if (!d.prods.includes(sel.src)) sel.src = d.prods[0];
   if (!ui.show || (ui.show === "acuerdo" && !d.both)) ui.show = d.both ? "acuerdo" : sel.src;
   if (!d.rel && ui.style === "crestas") ui.style = "oscuro";
@@ -149,7 +150,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       <button class="s13-x" aria-label="${esc(LL("Cerrar", "Close"))}">×</button>
       <h2 id="s13-lb-h">${esc(LL("¿IMERG cuenta menos días de lluvia?", "Is IMERG counting fewer rain days?"))}</h2>
       <p>${esc(LL("En los lugares comparados, IMERG pierde de media más días de lluvia que las referencias. No se detectó un cambio en la relación de cantidad IMERG/ERA5; eso no demuestra que la lluvia total sea constante. El origen y la forma temporal siguen abiertos. Arriba, la comparación con ERA5; abajo, el mapa publicado frente al ajuste hacia CHIRPS.", "At the compared sites, IMERG loses more rain days on average than the references. No change was detected in the IMERG/ERA5 amount ratio; that does not prove total rainfall is constant. The origin and temporal shape remain unresolved. Top, the ERA5 comparison; bottom, the published map versus adjustment towards CHIRPS."))}</p>
-      ${hallazgo()}
+      ${hallazgo(hzData)}
       ${warn13}
       <img data-src="figuras/09_tercer_testigo_era5_dark.png" alt="${esc(LL("Diferencia de días de lluvia de IMERG y de CHIRPS frente a ERA5 en seis puntos de República Dominicana, 2001-2024.", "Rain-day difference of IMERG and CHIRPS against ERA5 at six points in the Dominican Republic, 2001-2024."))}">
       <img data-src="figuras/08_after_the_correction_dark.png" alt="${esc(LL("Mapas de SDII y de rachas secas de 15 días, publicados y con el ajuste hacia CHIRPS, y celdas en disputa según el año de corte del ajuste.", "SDII and 15-day dry-spell maps, published and with the adjustment towards CHIRPS, and disputed cells by cut year of the adjustment."))}">
@@ -231,6 +232,13 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
         <li>${G('<rect x="2" y="6" width="36" height="5" rx="2.5" fill="#2a2d31"/><rect x="11" y="2" width="2" height="13" rx="1" fill="#64d2ff"/><rect x="27" y="2" width="2" height="13" rx="1" fill="#ff9f0a"/>')}<span>${esc(LL("Abajo, el tiempo: azul cuando avisó el NHC, naranja cuando llegó.", "Below, time: blue when NHC warned, orange when it arrived."))}</span></li>
         <li>${G('<circle cx="10" cy="8" r="6" fill="#64d2ff"/><circle cx="20" cy="8" r="6" fill="#30d158"/><circle cx="30" cy="8" r="6" fill="#8a9099"/>')}<span>${esc(LL("A la derecha, la capa: viento (solo en las inundaciones del Yuna), lluvia NASA IMERG o la foto del satélite NASA MODIS de ese día.", "On the right, the layer: wind (Yuna floods only), NASA IMERG rain or that day's NASA MODIS satellite photo."))}</span></li>
       </ul>
+      ${hzData ? (() => { const c = hzData!.ciclones_sequia, pct = (x: number) => `${(x * 100 < 1 ? Math.round(x * 1000) / 10 : Math.round(x * 100)).toLocaleString(LL("es-DO", "en-US"))} %`;
+        return `<h3 class="cy-h">${esc(LL("¿Dejan sequía los ciclones?", "Do cyclones leave drought behind?"))} <b class="cy-no">${esc(LL("No se sostiene", "Not supported"))}</b></h3>
+        <ul class="cy-facts">
+          <li><b>${pct(c.fraccion_ciclon_media)}</b> ${esc(LL(`de la lluvia de junio a noviembre llega con un ciclón a menos de 500 km (según el año, de ${pct(c.fraccion_ciclon_rango[0])} a ${pct(c.fraccion_ciclon_rango[1])}).`, `of June–November rain comes with a cyclone within 500 km (from ${pct(c.fraccion_ciclon_rango[0])} to ${pct(c.fraccion_ciclon_rango[1])} depending on the year).`))}</li>
+          <li><b>${pct(c.frac_dias_sequia_90d_tras_ciclon)}</b> ${esc(LL(`de los días está en sequía en los 90 días tras un ciclón, frente a ${pct(c.frac_dias_sequia_resto_ago_dic)} el resto del tiempo.`, `of days are in drought in the 90 days after a cyclone, against ${pct(c.frac_dias_sequia_resto_ago_dic)} otherwise.`))}</li>
+          <li><b>p ${c.p_permutacion_S2.toLocaleString(LL("es-DO", "en-US"), { maximumFractionDigits: 2 })}</b> ${esc(LL("Las temporadas con poca lluvia de ciclón no traen más sequía después.", "Seasons with little cyclone rain do not bring more drought afterwards."))}</li>
+        </ul>`; })() : ""}
       <button class="pop-go alt" data-cy-yuna="${i.yuna ? sel.reg : "yuna"}"><span>${esc(i.yuna ? LL(`Volver a ${sel.reg === "DO" ? LL("todo el país", "the whole country") : d.regName(sel.reg)}`, `Back to ${sel.reg === "DO" ? "the whole country" : d.regName(sel.reg)}`) : LL("Ver las inundaciones del Yuna, con su viento", "See the Yuna floods, with their wind"))}</span>${CHEV}</button>
       <p class="cy-src">${esc(LL("Trayectorias IBTrACS (NOAA) · pronósticos NHC tal como se emitieron · lluvia y satélite NASA (IMERG, MODIS). Apoyo para preparar; no es una orden de evacuación.", "Tracks IBTrACS (NOAA) · NHC forecasts as issued · NASA rain and satellite (IMERG, MODIS). Support for preparedness, not an evacuation order."))}</p>`;
   };

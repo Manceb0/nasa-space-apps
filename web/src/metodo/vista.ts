@@ -4,7 +4,8 @@
 import { esc, LL, loadTrends, num, sgn, type Sel, type TrendData } from "../tendencias/datos";
 import { PROD_COLOR } from "../tendencias/graficas";
 import "./metodo.css";
-import { hallazgo } from "../tendencias/hallazgo";
+import { hallazgo, type Hallazgos } from "../tendencias/hallazgo";
+import { load } from "../data";
 
 const SEL: Sel = { ind: "SDII", per: "anual", reg: "DO", src: "IMERG" };
 const median = (a: number[]) => { const s = [...a].sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
@@ -39,7 +40,7 @@ function chart(d: TrendData, stage: number) {
 
 export async function viewMethodV2(view: HTMLElement, glossary: [string, string][], limitsH: string, limits: string) {
   document.body.classList.remove("wx-on");
-  const d = await loadTrends();
+  const [d, hz] = await Promise.all([loadTrends(), load<Hallazgos>("tendencias/hallazgos.json").catch(() => null)]);
   const tI = d.tr(SEL, "IMERG")!, tC = d.tr(SEL, "CHIRPS")!;
   const pd = (v: number) => `${sgn(v, 0)} %`;
   const steps = [
@@ -73,7 +74,7 @@ export async function viewMethodV2(view: HTMLElement, glossary: [string, string]
       </div>
       <p class="mt-rule-s">${esc(LL("En provincias, la significancia se corrige por las 32 pruebas a la vez (Benjamini-Hochberg, q ≤ 0,10).", "In provinces, significance is corrected for all 32 tests at once (Benjamini-Hochberg, q ≤ 0.10)."))}</p>
     </section>
-    <div class="mt-hz">${hallazgo()}</div>
+    <div class="mt-hz">${hallazgo(hz)}</div>
     <details class="mt-more"><summary>${esc(LL("Glosario", "Glossary"))}</summary><dl>${glossary.map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl></details>
     <details class="mt-more"><summary>${esc(limitsH)}</summary><p>${esc(limits)}</p></details>
   </div>`;

@@ -14,3 +14,14 @@
 .hz-pr ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 13.5px; line-height: 1.4; color: #fff; }
 .hz-open { margin: 0; font-size: 14px; line-height: 1.5; color: #d6d6d6; }
 .hz-open b { color: #ffd60a; }
+.hz-maps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.hz-map { margin: 0; display: grid; gap: 6px; }
+.hz-map figcaption { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; font-size: 13px; }
+.hz-map figcaption b { font-weight: 700; color: #fff; }
+.hz-map figcaption span { font-weight: 700; font-variant-numeric: tabular-nums; }
+.hz-map figcaption .dn { color: #ff6b35; }
+.hz-map figcaption .up { color: #64beff; }
+.hz-map svg { width: 100%; height: auto; }
+.hz-b h4 em.ok { background: #1f3b2a; color: #30d158; }
+.hz-big { font-size: 15px !important; color: #fff !important; }
+.hz-big b { font-size: 26px; font-weight: 700; margin-right: 4px; }

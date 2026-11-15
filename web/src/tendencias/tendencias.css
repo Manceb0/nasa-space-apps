@@ -601,3 +601,7 @@ button.vd:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-r
 @media (min-width: 760px) { #wx .prep-over .prep { padding-left: calc(var(--lw) + 32px); padding-right: calc(var(--rw) + 32px); } }
 @media (max-width: 759px) { .wx .prep-over { bottom: 172px; } .prep-over .prep { padding: 64px 14px 40px; } }
 @media (min-width: 760px) and (max-width: 900px) { #wx .map-sty > span { display: none; } #wx .map-top { gap: 6px; } }
+.cy-no { margin-left: 6px; padding: 2px 8px; border-radius: 999px; background: #24272b; color: #ffd60a; font-size: 12px; font-weight: 600; }
+.cy-facts { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; }
+.cy-facts li { font-size: 14px; line-height: 1.4; color: var(--muted); }
+.cy-facts b { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
