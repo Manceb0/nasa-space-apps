@@ -51,7 +51,8 @@ export function capsule(d: TrendData, s: Sel) {
     return `<div class="cr">
       <p class="cr-p"><i style="background:${pc(p)}"></i>${p}${p === "IMERG" && d.stepped(s.ind) ? `<button class="cr-warn" data-go13 title="${esc(LL(DRIFT_ES, DRIFT_EN))}" aria-label="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}</button>` : ""}</p>
       <p class="cr-v num">${sgn(t.pendiente_decada)}<small>${sgn(t.pendiente_pct_decada, 0)} %</small></p>
-      <p class="cr-s"><b style="color:${sc}">${esc(side)}</b> · ${esc(sig[i] ? LL("claro", "clear") : LL("incierto", "uncertain"))} <span class="num">(p ${t.p < 0.001 ? `&lt; ${num(0.001, 3)}` : num(t.p, 3)})</span></p>
+      <p class="cr-s"><b style="color:${sc}">${esc(side)}</b> · ${esc(sig[i] ? LL("claro", "clear") : LL("incierto", "uncertain"))}</p>
+      <p class="cr-pv num">p ${t.p < 0.001 ? `&lt; ${num(0.001, 3)}` : num(t.p, 3)}</p>
     </div>`;
   }).join("");
   return `<svg class="tr-cap" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(rows.map(({ p, t }, i) => `${p} ${sgn(t.pendiente_decada)} ${v.unidad_tendencia} (IC ${num(t.ic95[0])} a ${num(t.ic95[1])})${sig[i] ? "" : `, ${LL("no significativa", "not significant")}`}`).join("; "))}">

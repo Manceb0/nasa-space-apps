@@ -12,14 +12,14 @@ import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verd
 import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart, WARN } from "./graficas";
 import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
-import { finding, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
+import { chip, finding, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { timeline } from "./tiempo";
 
 type Style = "crestas" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { land: "" as LandQ, landVar: "modis_ndvi", landSite: "", d3: false, style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
+const ui = { trail: [] as { label: string; color: string; short: string }[], land: "" as LandQ, landVar: "modis_ndvi", landSite: "", d3: false, style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -103,11 +103,11 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
         </section>
         <div class="wx-scroll">
           <section class="blk-q" aria-labelledby="q-h">
-            <h2 id="q-h">${esc(LL("Lo que quieres saber", "What you want to know"))}</h2>
+            <h2 id="q-h">${esc(LL("¿Está cambiando la lluvia?", "Is the rain changing?"))}</h2>
             <div class="qs" id="qs" role="radiogroup" aria-labelledby="q-h"></div>
           </section>
           <section class="blk-ans" aria-labelledby="ans-h">
-            <h2 id="ans-h">${esc(LL("Qué dicen las dos fuentes", "What the two sources say"))}</h2>
+            <h2 id="ans-h" class="sr">${esc(LL("Qué dicen las dos fuentes", "What the two sources say"))}</h2>
             <div id="ans" aria-live="polite"></div>
           </section>
           ${layout === "wide" ? "" : extra}
@@ -168,42 +168,40 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   // ── Preguntas: una lista de selección (un solo nivel); la respuesta de la elegida va siempre debajo ──
   const renderQuestions = () => {
     const q0 = questionOf(sel.ind);
-    $("qs").innerHTML = QUESTIONS.map((q) => {
+    const qChips = QUESTIONS.map((q) => {
       const v = verdict(d, sel, pick[q.id]), on = !ui.land && q.id === q0.id;
-      return `<button class="q-h ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}" title="${esc(v.text)}">
-          <span class="q-t">${esc(LL(q.es, q.en))}</span>
-          <span class="q-v ${v.strong ? "sig" : ""}" style="--c:${v.color}"><i></i>${esc(v.short)}</span>
-        </button>`;
-    }).join("") + (land ? `<p class="q-g">${esc(LL("La vegetación (MODIS, 5 lugares)", "Vegetation (MODIS, 5 sites)"))}</p>` + LAND_Q.map((q) => {
+      return `<button class="qc ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}" title="${esc(`${LL(q.es, q.en)} ${v.text}`)}"><i style="--c:${v.color}" class="${v.strong ? "" : "no"}"></i>${esc(chip(q.id))}</button>`;
+    }).join("");
+    const lChips = land ? LAND_Q.map((q) => {
       const on = ui.land === q.id;
-      return `<button class="q-h ${on ? "on" : ""}" data-landq="${q.id}" role="radio" aria-checked="${on}"><span class="q-t">${esc(LL(q.es, q.en))}</span></button>`;
-    }).join("") : "");
+      return `<button class="qc ${on ? "on" : ""}" data-landq="${q.id}" role="radio" aria-checked="${on}" title="${esc(LL(q.es, q.en))}"><i class="leaf"></i>${esc(q.id === "verde" ? LL("Vegetación", "Vegetation") : LL("Recuperación", "Recovery"))}</button>`;
+    }).join("") : "";
+    const mChips = ui.land ? "" : `<div class="mcs" role="radiogroup" aria-label="${esc(LL("Medido como", "Measured as"))}">${q0.vars.map((id) => {
+      const mv = verdict(d, sel, id), on = id === sel.ind;
+      return `<button class="mc ${on ? "on" : ""}" data-ind="${id}" role="radio" aria-checked="${on}" title="${esc(`${shortName(id)}: ${mv.text}. ${d.vm(id).descripcion}`)}"><i style="--c:${mv.color}" class="${mv.strong ? "" : "no"}"></i>${esc(chip(id))}</button>`;
+    }).join("")}</div>`;
+    $("qs").innerHTML = `<div class="qcs">${qChips}${lChips}</div>${mChips}`;
+    $("q-h").textContent = ui.land ? LL("¿Y la vegetación?", "And the vegetation?") : LL("¿Está cambiando la lluvia?", "Is the rain changing?");
+  };
+
+  // ── El rastro: cómo cambió el veredicto mientras se interrogaba la respuesta ──
+  const stamp = (label: string) => {
+    if (ui.land) return;
+    let v = verdict(d, sel, sel.ind) as { color: string; short: string };
+    const nac = d.fix && sel.reg === "DO" ? d.s13?.nacional_IMERG[sel.ind]?.[d.perFor(sel.ind, sel.per)]?.sin_escalon : undefined;
+    if (nac) v = { color: d.V.clases[nac.clase]?.color ?? v.color, short: d.V.clases[nac.clase] ? d.lab(d.V.clases[nac.clase]) : nac.clase };
+    ui.trail.push({ label, color: v.color, short: v.short });
+    if (ui.trail.length > 6) ui.trail.shift();
   };
 
   // ── La respuesta: época, medidas con su veredicto, los dos testigos, la frase, la escalera y la prueba ──
   // ── Escalón de 2013-10: IMERG cambió su forma de contar días de lluvia; el mapa puede verse sin él ──
-  const stepBlock = () => {
+  const adjLever = () => {
     const S = d.s13;
     if (!S || !d.stepped(sel.ind)) return "";
-    const per = d.perFor(sel.ind, sel.per), rc = S.recuentos[sel.ind]?.[per], nac = sel.reg === "DO" ? S.nacional_IMERG[sel.ind]?.[per] : undefined;
-    const pTxt = (p: number) => (p < 0.001 ? `p < ${num(0.001, 3)}` : `p ${num(p, 3)}`);
-    const clsLab = (c: string) => (d.V.clases[c] ? d.lab(d.V.clases[c]) : c);
-    const pair = (a: string, b: string, lab: string, tip = "") => `<div class="s13-n"${tip ? ` title="${esc(tip)}"` : ""}><p class="s13-l">${lab}</p><p class="s13-v"><span class="${d.fix ? "" : "on"}">${a}</span><i aria-hidden="true">→</i><span class="${d.fix ? "on" : ""}">${b}</span></p></div>`;
-    const nacTip = nac?.publicado && nac.sin_escalon ? `${pTxt(nac.publicado.p)}, ${clsLab(nac.publicado.clase)} → ${pTxt(nac.sin_escalon.p)}, ${clsLab(nac.sin_escalon.clase)}` : "";
-    return `<section class="s13" aria-labelledby="s13-h">
-      <h3 class="s13-h" id="s13-h" tabindex="-1" title="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}<span>${esc(LL("IMERG podría estar contando menos días de lluvia", "IMERG may be counting fewer rain days"))}<small>${esc(LL("posible deriva, no confirmada · ver testigos", "possible drift, not confirmed · see witnesses"))}</small></span></h3>
-      <p class="s13-l">${esc(LL("Sensibilidad del mapa (lo publicado es el resultado principal)", "Map sensitivity (the published result is the main one)"))}</p>
-      <div class="seg s13-seg" role="radiogroup" aria-label="${esc(LL("Sensibilidad del mapa", "Map sensitivity"))}">
-        <button data-fix="0" role="radio" aria-checked="${!d.fix}" class="${d.fix ? "" : "on"}">${esc(LL("Publicado", "Published"))}</button>
-        <button data-fix="1" role="radio" aria-checked="${d.fix}" class="${d.fix ? "on" : ""}" title="${esc(LL("Sensibilidad: ajuste hacia CHIRPS", "Sensitivity: adjustment towards CHIRPS"))}">${esc(LL("Ajuste hacia CHIRPS", "Adjusted to CHIRPS"))}</button>
-      </div>
-      <div class="s13-ns">
-        ${rc ? pair(String(rc.en_disputa_publicado), String(rc.en_disputa_sin_escalon), esc(LL("Celdas en disputa", "Disputed cells"))) : ""}
-        ${nac?.publicado && nac.sin_escalon ? pair(sgn(nac.publicado.pendiente_pct_decada, 1), sgn(nac.sin_escalon.pendiente_pct_decada, 1), esc(LL("IMERG nacional, %/década", "IMERG national, %/decade")), nacTip) : ""}
-      </div>
-      ${d.fix ? `<p class="s13-t">${esc(LL("Solo cambia el mapa. Parte del acuerdo lo induce el propio ajuste, así que aquí no hay «robusta».", "Only the map changes. Part of the agreement is induced by the adjustment itself, so there is no \"robust\" here."))}</p>` : ""}
-      <button class="s13-fig" data-fig13>${esc(LL("Testigos y advertencias", "Witnesses and caveats"))}</button>
-    </section>`;
+    const rc = S.recuentos[sel.ind]?.[d.perFor(sel.ind, sel.per)];
+    return `<button class="adj ${d.fix ? "on" : ""}" id="s13-h" data-fix="${d.fix ? 0 : 1}" aria-pressed="${d.fix}" title="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}<span>${esc(LL("Ajustar IMERG", "Adjust IMERG"))}</span><i aria-hidden="true"></i></button>
+      ${d.fix ? `<p class="adj-on">${esc(LL("Sensibilidad, solo en el mapa", "Sensitivity, map only"))}${rc ? ` · <b class="num">${rc.en_disputa_publicado} → ${rc.en_disputa_sin_escalon}</b> ${esc(LL("celdas en disputa", "disputed cells"))}` : ""} · <button class="s13-fig" data-fig13>${esc(LL("Testigos", "Witnesses"))}</button></p>` : ""}`;
   };
   const renderAnswer = () => {
     const box = $("ans");
@@ -214,33 +212,38 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       return;
     }
     $("ans-h").textContent = LL("Qué dicen las dos fuentes", "What the two sources say");
-    const q = questionOf(sel.ind), v = vm(), ws = both(), cls = d.row(sel)?.clase ?? "";
-    const ctl = `
-      <div class="seg seg-per" role="radiogroup" aria-label="${esc(LL("Época del año", "Season"))}">
+    const v = vm(), ws = both(), cls = d.row(sel)?.clase ?? "";
+    const season = `<div class="seg seg-per" role="radiogroup" aria-label="${esc(LL("Época del año", "Season"))}">
         ${Object.keys(d.V.periodos).map((k) => `<button data-per="${k}" role="radio" aria-checked="${k === sel.per}" class="${k === sel.per ? "on" : ""}" title="${esc(v.periodos.includes(k) ? d.lab(d.V.periodos[k]) : LL("El SPI solo existe para el año completo", "SPI exists for the whole year only"))}" ${v.periodos.includes(k) ? "" : "disabled"}>${esc(LL(...SEASON[k]))}</button>`).join("")}
-      </div>
-      <div class="ms" role="radiogroup" aria-label="${esc(LL("Medido como", "Measured as"))}">
-        ${q.vars.map((id) => { const mv = verdict(d, sel, id), on = id === sel.ind; return `<button class="m ${on ? "on" : ""}" data-ind="${id}" role="radio" aria-checked="${on}" title="${esc(`${mv.text}. ${d.vm(id).descripcion}`)}"><span class="m-t">${esc(shortName(id))}</span><span class="q-v ${mv.strong ? "sig" : ""}" style="--c:${mv.color}"><i></i>${esc(mv.short)}</span></button>`; }).join("")}
       </div>`;
-    if (!ws.length) { box.innerHTML = `${ctl}${stepBlock()}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
-    const ti = d.tier(sel), unit = v.unidad;
-    const sigW = ws.filter((w) => d.isSig(w.t, sel.reg));
+    const levers = `<div class="lev"><p class="lev-h">${esc(LL("Interroga la respuesta", "Question the answer"))}</p>${season}${adjLever()}</div>`;
+    const last = ui.trail.length - 1;
+    const trail = ui.trail.length > 1 ? `<ol class="trail" aria-label="${esc(LL("Cómo cambió el veredicto", "How the verdict changed"))}">${ui.trail.map((t, i) => `<li class="${i === last ? "on" : ""}" style="--c:${t.color}" title="${esc(`${t.label}: ${t.short}`)}"><i></i><span>${esc(t.label)}</span></li>`).join("")}</ol>` : "";
+    if (!ws.length) { box.innerHTML = `${levers}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
+    const ti = d.tier(sel), vv = verdict(d, sel, sel.ind);
+    const sigW = ws.filter((w) => d.isSig(w.t, sel.reg)), other = ws.filter((w) => !d.isSig(w.t, sel.reg));
     const mdt = Math.max(...ws.map((w) => w.t.mdt));
     const up = (sigW[0] ?? ws[0]).t.pendiente_decada > 0, dir = up ? LL("sube", "rising") : LL("baja", "falling");
-    const sentence =
-      cls === "robusta" ? LL(`Las dos coinciden: ${dir}.`, `Both agree: ${dir}.`)
-      : cls === "consistente" ? LL(`Probablemente ${dir}: solo ${sigW.map((w) => w.p).join(" y ")} lo confirma.`, `Probably ${dir}: only ${sigW.map((w) => w.p).join(" and ")} confirms it.`)
-      : cls === "en disputa" ? LL("Se contradicen: no se puede afirmar una tendencia.", "They contradict each other: no trend can be claimed.")
-      : cls === "sin dato" ? LL("Faltan años: no se calcula la tendencia.", "Years missing: no trend computed.")
-      : cls === "un solo producto" && sigW.length ? LL(`${up ? "Sube" : "Baja"} según ${ws[0].p}; falta la segunda fuente.`, `${up ? "Rising" : "Falling"} according to ${ws[0].p}; a second source is missing.`)
-      : LL(`Ninguna detecta tendencia, que no es «sin cambio»: solo se vería uno de más de ±${num(mdt)} ${unit}/década.`, `Neither detects a trend, which is not "no change": only one beyond ±${num(mdt)} ${unit}/decade would show.`);
+    // lo que se puede afirmar y lo que no, en una línea cada uno
+    const [yes, no] =
+      cls === "robusta" ? [LL(`Las dos fuentes coinciden: ${dir}.`, `Both sources agree: ${dir}.`), LL("Por qué: los datos describen, no atribuyen causas.", "Why: the data describe, they do not attribute causes.")]
+      : cls === "consistente" ? [LL(`Probablemente ${dir}: lo confirma ${sigW.map((w) => w.p).join(" y ")}.`, `Probably ${dir}: ${sigW.map((w) => w.p).join(" and ")} confirms it.`), LL(`Si ${other.map((w) => w.p).join(" y ")} lo confirmará con más años.`, `Whether ${other.map((w) => w.p).join(" and ")} will confirm it with more years.`)]
+      : cls === "en disputa" ? [LL("Las dos fuentes apuntan en sentidos opuestos.", "The two sources point in opposite directions."), d.stepped(sel.ind) ? LL("Si cambia la lluvia o la forma en que IMERG cuenta los días.", "Whether the rain changes or the way IMERG counts the days.") : LL("Cuál de las dos lee mejor este lugar.", "Which of the two reads this place better.")]
+      : cls === "sin dato" ? [LL("Faltan años en una de las series.", "Years are missing in one of the series."), LL("La tendencia: no se calcula.", "The trend: it is not computed.")]
+      : cls === "un solo producto" && sigW.length ? [LL(`${up ? "Sube" : "Baja"} según ${ws[0].p}.`, `${up ? "Rising" : "Falling"} according to ${ws[0].p}.`), LL("Falta la segunda fuente.", "The second source is missing.")]
+      : [LL(`No hay cambio mayor de ±${num(mdt)} ${v.unidad} por década.`, `No change larger than ±${num(mdt)} ${v.unidad} per decade.`), LL("Si hay cambios más pequeños: con 24 años no se ven.", "Whether there are smaller changes: 24 years cannot show them.")];
     const tierIdx = TIERS.findIndex(([k]) => k === ti.tier);
     const pFmt = (t: Tr) => (t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3));
-    box.innerHTML = `${ctl}
+    box.innerHTML = `
+      <p class="vd" style="--c:${vv.color}"><b>${esc(vv.short)}</b>${tierIdx >= 0 ? `<span>${esc(LL(TIERS[tierIdx][1], TIERS[tierIdx][2]))}</span>` : ""}</p>
       ${capsule(d, sel)}
-      <p class="ans-sent" style="--c:${ti.color}">${tierIdx >= 0 ? `<b>${esc(LL(TIERS[tierIdx][1], TIERS[tierIdx][2]))}.</b> ` : ""}${esc(sentence)}</p>
-      <p class="ans-why"><b>${esc(LL("Por qué importa", "Why it matters"))}</b> ${esc(v.por_que_importa)}</p>
-      ${stepBlock()}
+      ${levers}
+      ${trail}
+      <ul class="claims">
+        <li class="yes"><b>${esc(LL("Podemos afirmar", "We can claim"))}</b>${esc(yes)}</li>
+        <li class="no"><b>${esc(LL("Aún no sabemos", "We do not know yet"))}</b>${esc(no)}</li>
+        <li class="why"><b>${esc(LL("Por qué importa", "Why it matters"))}</b>${esc(v.por_que_importa)}</li>
+      </ul>
       <details class="ans-more">
       <summary>${esc(LL("Estadística y notas", "Statistics and notes"))}${CHEV}</summary>
       <table class="stats-t">
@@ -496,6 +499,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const renderPanels = () => { renderHead(); renderQuestions(); renderAnswer(); renderSeries(); renderRank(); };
   const pickRegion = (reg: string) => {
     sel.reg = reg;
+    stamp(reg === "DO" ? LL("País", "Country") : d.regName(reg));
     t3?.selectProvince(reg === "DO" ? null : d.isoToShape[reg] ?? null);
     frame();
     renderPanels();
@@ -503,6 +507,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   };
   const setInd = (ind: string) => {
     sel.ind = ind; sel.per = d.perFor(ind, sel.per); pick[questionOf(ind).id] = ind;
+    stamp(chip(ind));
     tl.setYears(years()); renderPanels(); renderMap();
   };
   wx.addEventListener("click", (e) => {
@@ -531,7 +536,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     }
     if (el.closest("[data-go13]")) { const h = document.getElementById("s13-h"); h?.scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "center" }); h?.focus({ preventScroll: true }); return; }
     const fx = el.closest<HTMLButtonElement>("[data-fix]");
-    if (fx) { const on = fx.dataset.fix === "1"; if (on !== d.fix) { d.fix = on; renderAnswer(); renderMap(); } return; }
+    if (fx) { const on = fx.dataset.fix === "1"; if (on !== d.fix) { d.fix = on; stamp(on ? LL("Ajuste", "Adjusted") : LL("Publicado", "Published")); renderAnswer(); renderMap(); } return; }
     if (el.closest("[data-fig13]")) {
       const lb = $<HTMLDialogElement>("s13-lb");
       lb.querySelectorAll<HTMLImageElement>("img[data-src]").forEach((im) => { if (!im.getAttribute("src")) im.src = im.dataset.src!; });
@@ -543,7 +548,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const fo = el.closest<HTMLButtonElement>("[data-fold]");
     if (fo) { const side = fo.dataset.fold as "left" | "right"; ui[side] = !ui[side]; renderStyle(); return; }
     const per = el.closest<HTMLButtonElement>("[data-per]");
-    if (per && !per.disabled) { sel.per = per.dataset.per!; tl.setYears(years()); renderPanels(); renderMap(); return; }
+    if (per && !per.disabled) { sel.per = per.dataset.per!; stamp(LL(...SEASON[sel.per])); tl.setYears(years()); renderPanels(); renderMap(); return; }
     const src = el.closest<HTMLButtonElement>("[data-src]");
     if (src && !src.disabled) { sel.src = src.dataset.src!; renderPanels(); renderMap(); return; }
     const show = el.closest<HTMLButtonElement>("[data-show]");
@@ -627,6 +632,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   };
 
   // ── Arranque ──
+  if (!ui.trail.length) stamp(chip(sel.ind));
   t3 = terrain3d($("map"), {
     zones: [], sites: [], onZone: () => {}, onSite: () => {}, cellLabel: () => "", siteAction: "",
     provinces: (d.fc ?? undefined) as never,

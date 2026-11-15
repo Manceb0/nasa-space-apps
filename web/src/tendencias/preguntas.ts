@@ -42,6 +42,17 @@ export const SHORT: Record<string, [string, string]> = {
 };
 export const shortName = (id: string) => LL(...(SHORT[id] ?? [id, id]));
 
+/** Etiquetas de ficha (dos o tres palabras); el nombre completo y la definición van en el tooltip. */
+const CHIP: Record<string, [string, string]> = {
+  secos: ["Rachas secas", "Dry spells"], sequia: ["Sequías", "Droughts"], fuerte: ["Lluvia fuerte", "Heavy rain"], total: ["Lluvia del año", "Yearly rain"],
+  RACHAS15: ["15+ días", "15+ days"], RACHAS10: ["10+ días", "10+ days"], CDD: ["La más larga", "Longest"],
+  SPI3_MESES: ["Meses · 3 m", "Months · 3 m"], SPI3_EVENTOS: ["Episodios · 3 m", "Episodes · 3 m"], SPI3_SEVER: ["Severidad · 3 m", "Severity · 3 m"], SPI3_DURAC: ["Duración · 3 m", "Duration · 3 m"],
+  SPI12_MESES: ["Meses · 12 m", "Months · 12 m"], SPI12_EVENTOS: ["Episodios · 12 m", "Episodes · 12 m"], SPI12_SEVER: ["Severidad · 12 m", "Severity · 12 m"], SPI12_DURAC: ["Duración · 12 m", "Duration · 12 m"],
+  Rx1day: ["Máx. 1 día", "Max 1 day"], Rx5day: ["Máx. 5 días", "Max 5 days"], SDII: ["Por día de lluvia", "Per wet day"], R20mm: ["Días ≥ 20 mm", "Days ≥ 20 mm"], R50mm: ["Días ≥ 50 mm", "Days ≥ 50 mm"],
+  R95pTOT: ["Días muy lluviosos", "Very wet days"], R99pTOT: ["Días extremos", "Extreme days"], PRCPTOT: ["Total", "Total"], R1mm: ["Días de lluvia", "Wet days"], CWD: ["Racha húmeda", "Wet spell"],
+};
+export const chip = (id: string) => LL(...(CHIP[id] ?? SHORT[id] ?? [id, id]));
+
 export const questionOf = (ind: string) => QUESTIONS.find((q) => q.vars.includes(ind)) ?? QUESTIONS[0];
 
 /** Respuesta corta de una pregunta en una región, desde la clase de confianza de las dos fuentes. */
