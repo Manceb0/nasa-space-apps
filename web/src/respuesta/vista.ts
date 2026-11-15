@@ -34,7 +34,7 @@ export async function viewAnswer(view: HTMLElement) {
   view.innerHTML = `<div class="rs">
     <header class="rs-head">
       <h1>${esc(LL("¿Está cambiando la lluvia en la RD?", "Is rainfall changing in the DR?"))}</h1>
-      <p>${esc(LL("Parece que sí. Al mirar de cerca, lo que cambia es otra cosa. Y eso cambia cómo hay que avisar de una inundación.", "It looks like it. Looking closely, what changes is something else. And that changes how to warn of a flood."))}</p>
+      <p>${esc(LL("Un satélite dice que la lluvia se intensifica; otro, que se debilita. Lo que de verdad cambia es cómo IMERG cuenta los días de lluvia, y eso cambia cómo avisar de una inundación.", "One satellite says rain is intensifying; another, that it is weakening. What really changes is how IMERG counts rain days, and that changes how to warn of a flood."))}</p>
     </header>
 
     <section class="rs-act" aria-labelledby="rs-a1">
