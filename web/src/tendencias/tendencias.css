@@ -257,7 +257,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .lg-w { color: var(--faint); }
 .lg-cls { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; font-size: 12px; color: var(--muted); }
 .lg-cls span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
-.lg-cls i { width: 10px; height: 10px; border-radius: 2px; }
+.lg-cls i { width: 10px; height: 10px; border-radius: 50%; }
 .lg-cls b { color: var(--text); font-weight: 600; }
 
 /* La barra se adapta al ancho del mapa (no al de la ventana): si no cabe, la leyenda baja a otra fila */
@@ -388,7 +388,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .claims li::before { position: absolute; left: 0; top: 2px; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; }
 .claims .yes::before { content: "✓"; background: #1f3b2a; color: #30d158; }
 .claims .no::before { content: "?"; background: #3b2f12; color: #ffd60a; }
-.claims .why::before { content: "→"; background: var(--raised); color: var(--muted); }
+.claims .why::before { content: "i"; background: var(--raised); color: var(--muted); }
 
 /* ── Entrada: cuatro aspectos en cuadrícula, la medida en un selector, la vegetación al final ── */
 .qgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 0 8px; }

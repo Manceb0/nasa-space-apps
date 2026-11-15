@@ -25,7 +25,7 @@ let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
 const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const TIERS = [["sabemos", "Lo que sabemos", "What we know"], ["creemos", "Lo que creemos saber", "What we think we know"], ["comprobar", "Lo que hay que comprobar", "What still needs checking"]] as const;
-const PIN = '<svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 15s5-4.6 5-8.6A5 5 0 0 0 3 6.4C3 10.4 8 15 8 15z" fill="#f2b33d"/><circle cx="8" cy="6.4" r="1.9" fill="#0c0d0f"/></svg>';
+const PIN = '<svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#f2b33d" fill-opacity=".22"/><circle cx="8" cy="8" r="3.6" fill="#f2b33d"/></svg>';
 const CHEV = '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const MARK = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="#f2b33d"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
 const PANEL_L = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 3v10" stroke="currentColor" stroke-width="1.5"/></svg>';
@@ -160,7 +160,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     $("wx-h1").textContent = regName();
     ($("r-sel") as HTMLSelectElement).value = sel.reg;
     // la pista dice cómo cambiar de lugar; con una provincia elegida, cómo volver al país
-    $("finding").innerHTML = sel.reg === "DO" ? esc(LL("o toca una provincia en el mapa", "or tap a province on the map")) : `<button class="place-back" data-reg-all>${esc(LL("← Todo el país", "← Whole country"))}</button>`;
+    $("finding").innerHTML = sel.reg === "DO" ? esc(LL("o toca una provincia en el mapa", "or tap a province on the map")) : `<button class="place-back" data-reg-all>${esc(LL("Ver todo el país", "See the whole country"))}</button>`;
     if (layout === "phone" && ui.land && land) { $("peek-ans").innerHTML = landPeek(land, ui.land, ui.landVar); return; }
     if (layout === "phone") {
       const ti = d.tier(sel), q = questionOf(sel.ind);
@@ -203,7 +203,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     if (!S || !d.stepped(sel.ind)) return "";
     const rc = S.recuentos[sel.ind]?.[d.perFor(sel.ind, sel.per)];
     return `<button class="adj ${d.fix ? "on" : ""}" id="s13-h" data-fix="${d.fix ? 0 : 1}" aria-pressed="${d.fix}" title="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}<span>${esc(LL("Ajustar IMERG", "Adjust IMERG"))}</span><i aria-hidden="true"></i></button>
-      ${d.fix ? `<p class="adj-on">${esc(LL("Sensibilidad, solo en el mapa", "Sensitivity, map only"))}${rc ? ` · <b class="num">${rc.en_disputa_publicado} → ${rc.en_disputa_sin_escalon}</b> ${esc(LL("celdas en disputa", "disputed cells"))}` : ""} · <button class="s13-fig" data-fig13>${esc(LL("Testigos", "Witnesses"))}</button></p>` : ""}`;
+      ${d.fix ? `<p class="adj-on">${esc(LL("Sensibilidad, solo en el mapa", "Sensitivity, map only"))}${rc ? ` · ${esc(LL("celdas en disputa", "disputed cells"))}: <b class="num">${rc.en_disputa_publicado}</b> ${esc(LL("a", "to"))} <b class="num">${rc.en_disputa_sin_escalon}</b>` : ""} · <button class="s13-fig" data-fig13>${esc(LL("Testigos", "Witnesses"))}</button></p>` : ""}`;
   };
   const renderAnswer = () => {
     const box = $("ans");

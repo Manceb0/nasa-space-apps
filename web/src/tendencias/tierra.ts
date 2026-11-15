@@ -62,8 +62,8 @@ function siteChart(L: Land, v: string, focus: string) {
   const cL = WORSE_HIGH[v] ? BETTER : WORSE, cR = WORSE_HIGH[v] ? WORSE : BETTER;
   const d = dig(v);
   return `<svg class="tr-cap land-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(rows.map((s) => `${s.nombre} ${sgn(s.tendencias[v].pendiente_decada, d)}`).join("; "))}">
-    <text x="${L0}" y="12" class="cap-end" fill="${cL}">◀ ${esc(LL(...lo))}</text>
-    <text x="${W - R0}" y="12" text-anchor="end" class="cap-end" fill="${cR}">${esc(LL(...hi))} ▶</text>
+    <text x="${L0}" y="12" class="cap-end" fill="${cL}">${esc(LL(...lo))}</text>
+    <text x="${W - R0}" y="12" text-anchor="end" class="cap-end" fill="${cR}">${esc(LL(...hi))}</text>
     <line x1="${x0}" x2="${x0}" y1="${top - 8}" y2="${H}" class="cap-zero"/>
     <text x="${x0}" y="${top - 14}" text-anchor="middle" class="cap-t">${esc(LL("sin cambio", "no change"))}</text>
     ${rows.map((s, i) => {

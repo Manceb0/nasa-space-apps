@@ -153,7 +153,7 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     rel.yuna.forEach(([x, y, z], i) => (i ? g.lineTo(X(x), Y(y + z * K)) : g.moveTo(X(x), Y(y + z * K))));
     g.stroke(); g.setLineDash([]);
     const h = rel.hatillo, hx = X(h.lon), hy = Y(h.lat + h.z * K);
-    g.fillStyle = "#E69F00"; g.beginPath(); g.moveTo(hx - 5, hy - 7); g.lineTo(hx + 5, hy - 7); g.lineTo(hx, hy + 1); g.closePath(); g.fill();
+    g.fillStyle = "#E69F00"; g.beginPath(); g.arc(hx, hy - 4, 4.5, 0, Math.PI * 2); g.fill();
     g.font = "500 13px Inter, system-ui, sans-serif"; g.textBaseline = "middle";
     const east = rel.yuna.reduce((m, p) => (p[0] > m[0] ? p : m), rel.yuna[0]);
     const label = (txt: string, x: number, y: number, col: string) => {
