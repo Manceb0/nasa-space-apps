@@ -113,13 +113,22 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .pr-txt { margin-top: 10px; }
 .chip { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #000; background: var(--c); white-space: nowrap; }
 .tr-cap { width: 100%; height: auto; display: block; margin-top: 16px; overflow: visible; }
-.cap-zero { stroke: var(--muted); stroke-dasharray: 2 3; }
-.cap-end { font-size: 12px; font-weight: 600; font-family: inherit; }
-.cap-t { font-size: 11px; fill: var(--faint); font-family: inherit; }
-.cap-p { font-size: 13px; font-weight: 600; fill: var(--text); font-family: inherit; }
-.cap-v { font-size: 16px; font-weight: 700; fill: var(--text); font-family: inherit; }
-.cap-note { margin-top: 6px; font-size: 14px; line-height: 1.45; color: var(--text); }
-.cap-note span { display: block; margin-top: 4px; font-size: 13px; color: var(--faint); }
+.cap-zero { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 4; }
+.cap-end { font-size: 13px; font-weight: 600; font-family: inherit; }
+.cap-t { font-size: 12px; fill: var(--muted); font-family: inherit; }
+.cap-hub { fill: var(--surface); stroke: var(--text); stroke-width: 2.5; }
+.cap-n { transform: rotate(var(--a)); animation: cap-sweep .9s var(--ease) both; }
+@keyframes cap-sweep { from { transform: rotate(0deg); } }
+.cap-read { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+.cr { text-align: left; }
+.cap-read .cr + .cr { text-align: right; }
+.cap-read .cr + .cr .cr-p { justify-content: flex-end; }
+.cr-p { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.cr-p i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.cr-v { text-align: inherit; margin-top: 2px; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+.cr-s { font-size: 13px; line-height: 1.35; color: var(--muted); }
+.cr-s b { font-weight: 600; }
+.cap-note { margin-top: 10px; font-size: 13px; line-height: 1.45; color: var(--faint); }
 .stats-t { width: 100%; margin-top: 12px; border-collapse: collapse; font-size: 13px; }
 .stats-t th, .stats-t td { padding: 7px 0; text-align: right; font-weight: 500; }
 .stats-t thead th { font-size: 12px; font-weight: 400; color: var(--faint); cursor: help; }
@@ -268,5 +277,6 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .wx[data-sty="crestas"] .maplibregl-ctrl-attrib, .wx[data-sty="crestas"] .maplibregl-ctrl { visibility: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
+  .cap-n { animation: none; }
   .wx *, .wx *::after { transition: none !important; }
 }

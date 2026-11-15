@@ -5,41 +5,62 @@ import { esc, LL, num, sgn, type TrendData, type Sel, type Tr } from "./datos";
 export const PROD_COLOR: Record<string, string> = { IMERG: "#ffffff", CHIRPS: "#8fd3ff" };
 const pc = (p: string) => PROD_COLOR[p] ?? "#bbbbbb";
 
-/** Las dos flechas: cada fuente es una flecha que sale de «sin cambio» hacia el lado al que apunta, sobre un eje
- *  cuyos extremos dicen en palabras qué significa cada lado (con los colores del mapa). Sólida = cambio claro;
- *  discontinua = puede ser azar. La barra fina es el intervalo del 95 %. Debajo, una frase que lo lee. */
+/** El medidor: un semicírculo cuyo extremo izquierdo y derecho dicen en palabras qué significa cada lado (con los
+ *  colores del mapa); arriba, «sin cambio». Cada fuente es una aguja que gira desde arriba hasta su tendencia, con un
+ *  abanico detrás que es su margen del 95 %. Aguja sólida = cambio claro; discontinua = puede ser azar. El anillo se
+ *  satura hacia los extremos: cuanto más lejos de «sin cambio», más cambio. Debajo, la lectura de cada fuente. */
 export function capsule(d: TrendData, s: Sel) {
   const rows = d.prods.map((p) => ({ p, t: d.tr(s, p) })).filter((x): x is { p: string; t: Tr } => !!x.t);
   if (!rows.length) return "";
-  const W = 340, top = 30, rh = 46, H = top + rows.length * rh + 4;
-  const ext = Math.max(...rows.flatMap((x) => [Math.abs(x.t.ic95[0]), Math.abs(x.t.ic95[1]), Math.abs(x.t.pendiente_decada)])) * 1.08 || 1;
-  const L = 70, R = 10, x = (v: number) => L + ((v + ext) / (2 * ext)) * (W - L - R), x0 = x(0);
+  const ext = Math.max(...rows.flatMap((x) => [Math.abs(x.t.ic95[0]), Math.abs(x.t.ic95[1]), Math.abs(x.t.pendiente_decada)])) * 1.1 || 1;
   const v = d.vm(s.ind), dry = v.tipo === "seco";
   const DRY = "#ff9f0a", WET = "#28a0f0";
   const right = dry ? LL("más seco", "drier") : LL("más lluvia", "more rain"), left = dry ? LL("menos seco", "less dry") : LL("menos lluvia", "less rain");
   const cR = dry ? DRY : WET, cL = dry ? WET : DRY;
+  const W = 340, R = 132, cx = W / 2, cy = R + 30, H = cy + 30, rf = 112, rn = 104;
+  const deg = (val: number) => Math.max(-90, Math.min(90, (val / ext) * 90));
+  const pt = (a: number, r: number) => { const t = (a * Math.PI) / 180; return `${(cx + r * Math.sin(t)).toFixed(1)},${(cy - r * Math.cos(t)).toFixed(1)}`; };
+  const band = (a1: number, a2: number, ro: number, ri: number) => `M${pt(a1, ro)} A${ro} ${ro} 0 0 1 ${pt(a2, ro)} L${pt(a2, ri)} A${ri} ${ri} 0 0 0 ${pt(a1, ri)}Z`;
+  // Anillo graduado: 9 segmentos por lado, más intensos hacia el extremo
+  const N = 9, step = 90 / N, gap = 1.4;
+  const ring = [-1, 1].map((side) => Array.from({ length: N }, (_, k) => {
+    const a1 = side * (k * step + gap / 2), a2 = side * ((k + 1) * step - gap / 2);
+    return `<path d="${band(Math.min(a1, a2), Math.max(a1, a2), R, R - 12)}" fill="${side < 0 ? cL : cR}" fill-opacity="${(0.16 + 0.7 * (k / (N - 1))).toFixed(2)}"/>`;
+  }).join("")).join("");
   const sig = rows.map((r) => d.isSig(r.t, s.reg));
-  const arrows = rows.map(({ p, t }, i) => {
-    const y = top + i * rh + rh / 2, xe = x(t.pendiente_decada), dir = Math.sign(xe - x0) || 1, c = pc(p), solid = sig[i];
-    const lo = x(t.ic95[0]), hi = x(t.ic95[1]), head = Math.abs(xe - x0) > 10 ? 9 : 0;
-    const tx = xe + dir * 6, anchor = dir > 0 ? "start" : "end";
-    const fits = dir > 0 ? tx + 44 < W : tx - 44 > 0;
-    return `<text x="0" y="${y + 4}" class="cap-p">${p}</text>
-      <line x1="${lo}" x2="${hi}" y1="${y + 11}" y2="${y + 11}" stroke="${c}" stroke-opacity=".45" stroke-width="2"/>
-      <line x1="${lo}" x2="${lo}" y1="${y + 8}" y2="${y + 14}" stroke="${c}" stroke-opacity=".45" stroke-width="2"/>
-      <line x1="${hi}" x2="${hi}" y1="${y + 8}" y2="${y + 14}" stroke="${c}" stroke-opacity=".45" stroke-width="2"/>
-      <line class="cap-arrow" x1="${x0}" x2="${xe - dir * head}" y1="${y}" y2="${y}" stroke="${c}" stroke-width="4" stroke-linecap="round" ${solid ? "" : 'stroke-dasharray="5 5" stroke-opacity=".7"'}/>
-      ${head ? `<path d="M${xe},${y} L${xe - dir * 11},${y - 7} L${xe - dir * 11},${y + 7} Z" fill="${c}" ${solid ? "" : 'fill-opacity=".7"'}/>` : `<circle cx="${xe}" cy="${y}" r="4" fill="${c}"/>`}
-      <text x="${fits ? tx : xe - dir * 6}" y="${y - 9}" text-anchor="${fits ? anchor : dir > 0 ? "end" : "start"}" class="cap-v num">${sgn(t.pendiente_decada)}</text>`;
+  const fans = rows.map(({ p, t }, i) => {
+    const a1 = deg(t.ic95[0]), a2 = deg(t.ic95[1]), c = pc(p);
+    if (a2 - a1 < 0.5) return "";
+    return `<path d="M${cx},${cy} L${pt(a1, rf)} A${rf} ${rf} 0 0 1 ${pt(a2, rf)}Z" fill="${c}" fill-opacity="${sig[i] ? 0.16 : 0.08}"/>
+      <path d="M${pt(a1, rf)} A${rf} ${rf} 0 0 1 ${pt(a2, rf)}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-opacity="${sig[i] ? 0.75 : 0.4}"/>`;
   }).join("");
-  return `<svg class="tr-cap" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(rows.map(({ p, t }) => `${p} ${sgn(t.pendiente_decada)} ${v.unidad_tendencia} (IC ${num(t.ic95[0])} a ${num(t.ic95[1])})`).join("; "))}">
-    <text x="${L}" y="12" class="cap-end" fill="${cL}">◀ ${esc(left)}</text>
-    <text x="${W - R}" y="12" text-anchor="end" class="cap-end" fill="${cR}">${esc(right)} ▶</text>
-    <line x1="${x0}" x2="${x0}" y1="${top - 8}" y2="${H}" class="cap-zero"/>
-    <text x="${x0}" y="${top - 12}" text-anchor="middle" class="cap-t">${esc(LL("sin cambio", "no change"))}</text>
-    ${arrows}
+  const needles = rows.map(({ p, t }, i) => {
+    const c = pc(p), a = deg(t.pendiente_decada);
+    return `<g class="cap-n" style="--a:${a.toFixed(1)}deg;transform-origin:${cx}px ${cy}px">
+      <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - rn}" stroke="${c}" stroke-width="4" stroke-linecap="round" ${sig[i] ? "" : 'stroke-dasharray="7 6"'}/>
+      <circle cx="${cx}" cy="${cy - rn}" r="6" fill="${sig[i] ? c : "var(--surface)"}" stroke="${c}" stroke-width="2.5"/>
+    </g>`;
+  }).join("");
+  // La lectura de cada fuente va del lado al que apunta su aguja
+  const read = rows.map((r, i) => ({ ...r, i })).sort((a, b) => a.t.pendiente_decada - b.t.pendiente_decada).map(({ p, t, i }) => {
+    const up = t.pendiente_decada > 0, side = up ? right : left, sc = up ? cR : cL;
+    return `<div class="cr">
+      <p class="cr-p"><i style="background:${pc(p)}"></i>${p}</p>
+      <p class="cr-v num">${sgn(t.pendiente_decada)}</p>
+      <p class="cr-s"><b style="color:${sc}">${esc(side)}</b> · ${esc(sig[i] ? LL("cambio claro", "clear change") : LL("puede ser azar", "may be chance"))}</p>
+    </div>`;
+  }).join("");
+  return `<svg class="tr-cap" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(rows.map(({ p, t }, i) => `${p} ${sgn(t.pendiente_decada)} ${v.unidad_tendencia} (IC ${num(t.ic95[0])} a ${num(t.ic95[1])})${sig[i] ? "" : `, ${LL("no significativa", "not significant")}`}`).join("; "))}">
+    ${ring}
+    <line x1="${cx}" y1="${cy - R - 4}" x2="${cx}" y2="${cy - 18}" class="cap-zero"/>
+    <text x="${cx}" y="${cy - R - 12}" text-anchor="middle" class="cap-t">${esc(LL("sin cambio", "no change"))}</text>
+    ${fans}${needles}
+    <circle cx="${cx}" cy="${cy}" r="8" class="cap-hub"/>
+    <text x="${cx - R}" y="${cy + 22}" class="cap-end" fill="${cL}">◀ ${esc(left)}</text>
+    <text x="${cx + R}" y="${cy + 22}" text-anchor="end" class="cap-end" fill="${cR}">${esc(right)} ▶</text>
   </svg>
-  <p class="cap-note"><span>${esc(LL(`Flecha: ${v.unidad_tendencia}. Sólida: cambio claro · discontinua: puede ser azar · barra fina: intervalo del 95 %.`, `Arrow: ${v.unidad_tendencia}. Solid: clear change · dashed: may be chance · thin bar: 95 % interval.`))}</span></p>`;
+  <div class="cap-read">${read}</div>
+  <p class="cap-note">${esc(LL(`En ${v.unidad_tendencia}. Aguja sólida: cambio claro · discontinua: puede ser azar · abanico: margen del 95 %.`, `In ${v.unidad_tendencia}. Solid needle: clear change · dashed: may be chance · fan: 95 % margin.`))}</p>`;
 }
 
 /** Las 32 provincias en un mismo eje: arriba IMERG, debajo CHIRPS; el punto relleno es significativo
