@@ -60,7 +60,7 @@ function puertoRico(pr: Hallazgos["pr"]) {
     return `<line x1="${x(e.g).toFixed(1)}" x2="${x(e.i).toFixed(1)}" y1="${y}" y2="${y}" stroke="${e.i < e.g ? "#ff6b35" : "#5b6066"}" stroke-width="2" stroke-linecap="round"/>
       <circle cx="${x(e.g).toFixed(1)}" cy="${y}" r="3.5" fill="#8fd3ff"><title>${esc(`${e.id} · ${LL("pluviómetro", "gauge")} ${fmt(e.g)} pp`)}</title></circle>
       <circle cx="${x(e.i).toFixed(1)}" cy="${y}" r="3.5" fill="#ffffff"><title>${esc(`${e.id} · IMERG ${fmt(e.i)} pp`)}</title></circle>`; }).join("");
-  const ticks = [-15, -10, -5, 0, 5, 10].map((t) => `<text x="${x(t)}" y="${H - 6}" text-anchor="middle" fill="#949494" font-size="10">${t > 0 ? "+" : ""}${t}</text>`).join("");
+  const ticks = [-15, -10, -5, 0, 5, 10].map((t) => `<text x="${x(t)}" y="${H - 6}" text-anchor="middle" fill="#949494" font-size="11">${t > 0 ? "+" : ""}${t}</text>`).join("");
   return `<svg class="hz-c" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(LL("19 estaciones de Puerto Rico: cambio del pluviómetro y de IMERG", "19 Puerto Rico stations: gauge and IMERG change"))}">
     <line x1="${x(0)}" x2="${x(0)}" y1="${T - 4}" y2="${H - 18}" stroke="#3a3e44" stroke-width="1.5"/>${rows}${ticks}</svg>`;
 }

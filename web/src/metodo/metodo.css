@@ -48,4 +48,3 @@ main:has(> .mt) { max-width: none; padding: 0; }
 .mt-hz .hz > h3, .mt-hz .hz > .hz-lead, .mt-hz .hz > .hz-open { grid-column: 1 / -1; }
 @media (max-width: 900px) { .mt-hz .hz { grid-template-columns: 1fr; } }
 .mt-hz + .mt-more { margin-top: 64px; }
-.mt-hz .hz { align-items: start; }
