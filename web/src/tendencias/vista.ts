@@ -15,7 +15,6 @@ import { bottomSheet, PEEK } from "./hoja";
 import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
 import { timeline } from "./tiempo";
-import { wireTour } from "./recorrido";
 
 type Style = "crestas" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
@@ -88,7 +87,6 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-land="${ui.land ? "on" : "off"}" data-sty="${ui.style}" data-d3="${ui.d3 ? "on" : "off"}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
     <header class="wx-top">
       <a class="wx-brand" href="#tendencias">${MARK}<b>Stellar Horizons</b><span>${esc(LL("Detective de tendencias", "Trend detective"))}</span></a>
-      <button class="tour-open" id="tour-open">${esc(LL("Recorrido · 90 s", "90-second tour"))}</button>
       ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}"><i></i>${esc(LL("Preliminar: solo IMERG", "Preliminary: IMERG only"))}</p>`}
     </header>
     <div class="wx-main">
@@ -147,7 +145,6 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
 
   const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
   const wx = $("wx"), tip = $("tr-tip");
-  cleanup.push(wireTour($<HTMLButtonElement>("tour-open"), d));
   const vm = () => d.vm(sel.ind);
   const years = () => d.years(sel);
   const regName = () => (sel.reg === "DO" ? LL("República Dominicana", "Dominican Republic") : d.regName(sel.reg));
