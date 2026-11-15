@@ -1,0 +1,46 @@
+{
+  "fuentes": {
+    "results/yuna/series_diarias_zonas.parquet": "a34b97c56c832fba591143c978cb0a8106407982c285270e7a90f751b9c9608b",
+    "results/yuna/catalogo_eventos.csv": "c875c98c9625a2326893a228124b9310f467201ecf765c65ce525ecd7504c838",
+    "results/yuna/cuencas_yuna.geojson": "d3c77607b8e02f80510352640ac45b8837cb510d65befd4ffa658e3d78a89771",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2001.nc": "4e2a4e2a92ade3d4fd6ccff26dc85b8970c09c239979248642387494e221ff06",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2002.nc": "d24ab2531b424feea3b59ad9a481ee908fce17b26f114494073c3ba3542fe1d7",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2003.nc": "f04be92d50844791e3614bad44a10650a7a9f8a949a76ab0f85c32d1ab75bb16",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2004.nc": "2616b68b9878d514925963ff1a6241e2356cde19d29bb29cbfa559fefbd032a1",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2005.nc": "bd65fb16cc85ded194a2f5954859e9f689f02b7a318563d7f1217c4f0fd5ab8a",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2006.nc": "baf236569fe763cf557f048df6e3eaf48d35a58616e5795acadb76442a60133e",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2007.nc": "79a0d19e4e8af029de6e35ab78fae3e7ac3c425cfb9827400c9811bb20fb3f30",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2008.nc": "18fa87ec1bf6e87e08b1c6891cc6804c6d119be7a1e66d69cec60b96a4020add",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2009.nc": "fe13fb9ce6dfe540c6aa51c948196646aaaded1f115dc1f1c1c3203da2552823",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2010.nc": "795fb84b7e972cbada170322053dc33b6bcffd7e4b0f9342bdafbbc0340ff308",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2011.nc": "414ecbfe86ce77dfadcb8974b11f24691d467e2986b94bc268ca13d7d23ec00c",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2012.nc": "f1821b54f3143c837fa931779c45f9a404e88ae0f2929b8c2a9cd75af8cb7997",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2013.nc": "cb2f3cbff5ad1e0cb50116bafddfe6679563faa25d82ef87082b7fb9d8578510",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2014.nc": "5fdd267550ed832f4d2543f2e3a6a0969eeb2d2fe1924206f8de0454fab98151",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2015.nc": "444e9fcfb73db179dd492b3906510eaa1f8de43c600079a2b3638b4f0b29a1a8",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2016.nc": "bf1a0e9fd55db7633566b4866a178ce4c01a93ecca7be0582027f5a016f0af40",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2017.nc": "517acb41baf9b6247a84da71466fe948202c117532bbd1b434863b18fdc7fbf5",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2018.nc": "2876c385b87abf534087afd2cf1bd3bc84c33f048bc9893b2a8bc2a3d60fa90a",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2019.nc": "cb01ada6efe30d99860cdcdc3fb252e6d928a1d562218c7be4535380057d7a93",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2020.nc": "ea2c44b0b5526c891dd5e9489125cc759c3b627a7a0f112bef355d172ddb2bff",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2021.nc": "1719a7741eb54b22804e44d688cb99cd7baef1dee3da4d261084d08f5351e4b7",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2022.nc": "e6250b6be8da806fc8b8922ea29b8f88812f1664cad4b0e61fed380a7cfac43c",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2023.nc": "07427fc768eda3b09f26fc9cdbf2e800ad0fca6dee21a095199c71debdcaf3a5",
+    "data/tendencias/chirps_diario/chirps_v2p0_diario_RD_2024.nc": "4e066f6c324169dab03e5125a0a60532ca7d016b945644d706a2d667b99bc6fc"
+  },
+  "comprobaciones": [
+    "reproduce 7/8 y 39 originales",
+    "reproduce 7/8 y 20 con futuro",
+    "reproduce 6/8 y 16 con CHIRPS de misma celda",
+    "confirmacion_pasado invariante a cambios futuros",
+    "serie diaria sin huecos"
+  ],
+  "limites": [
+    "Retrospectivo; no reconstruye fechas de disponibilidad de IMERG Final ni CHIRPS.",
+    "Las reglas sin 'misma_celda' conservan el proxy antiguo, solo para descomponer los cambios.",
+    "Inicio del catalogo con precision diaria o semanal; no permite anticipacion horaria real.",
+    "Episodios sin evento catalogado no equivalen a ausencia comprobada de inundacion.",
+    "Prueba reutilizada para varias exploraciones; no es validacion externa ni test nuevo intacto.",
+    "CSI heredado combina aciertos por evento y falsas por episodio; no es precision de alertas."
+  ]
+}

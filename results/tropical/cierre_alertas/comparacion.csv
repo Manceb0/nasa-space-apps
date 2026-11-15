@@ -1,0 +1,11 @@
+periodo,regla,h,m,fa,ep,POD,FAR,CSI,eventos_senal_fecha_anterior,eventos_senal_durante,eventos_sin_senal,eventos_margen_ideal_positivo_sin_latencia
+2001-2015,IMERG,5,1,89,94,0.833333,0.946809,0.052632,2,3,1,1
+2001-2015,acuerdo_original_mas_menos_1d,4,2,46,50,0.666667,0.920000,0.076923,2,2,2,1
+2001-2015,acuerdo_hoy_o_ayer,4,2,43,47,0.666667,0.914894,0.081633,1,3,2,1
+2001-2015,acuerdo_mismo_dia,4,2,42,46,0.666667,0.913043,0.083333,1,3,2,1
+2001-2015,acuerdo_misma_celda_hoy_o_ayer,4,2,35,39,0.666667,0.897436,0.097561,1,3,2,1
+2016-2024,IMERG,7,1,39,48,0.875000,0.812500,0.148936,0,7,1,0
+2016-2024,acuerdo_original_mas_menos_1d,7,1,20,29,0.875000,0.689655,0.250000,0,7,1,0
+2016-2024,acuerdo_hoy_o_ayer,7,1,20,29,0.875000,0.689655,0.250000,0,7,1,0
+2016-2024,acuerdo_mismo_dia,7,1,19,28,0.875000,0.678571,0.259259,0,7,1,0
+2016-2024,acuerdo_misma_celda_hoy_o_ayer,6,2,16,24,0.750000,0.666667,0.250000,0,6,2,0

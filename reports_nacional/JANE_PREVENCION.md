@@ -1,5 +1,10 @@
 # Pasada Jane: ¿qué solución preventiva entregamos? (15-nov-2026, noche)
 
+> **Actualización de cierre:** rige la versión de misma celda de `JANE_PREVENCION_CAUSAL.md`: 6/8 eventos y
+> 16 episodios sin evento catalogado frente a 7/8 y 39. `CIERRE_ALERTAS.md` reproduce ambas pruebas y separa
+> «mismo día» de «antes»: ninguna primera señal precede estrictamente al inicio catalogado en 2016–2024.
+> Las afirmaciones preventivas y de fiabilidad general que siguen son propuestas históricas, no validación operativa.
+
 > **Superado por `JANE_PREVENCION_CAUSAL.md`.** La prueba de este documento miraba al día siguiente, contaba alertas
 > que llegaban durante la inundación y sumaba celdas distintas de CHIRPS. En la versión causal, el testigo deja 16
 > falsas alarmas en vez de 39 y detecta 6 de 8 eventos, pero casi nunca avisa **antes** del inicio (1 o 2 de 8).
