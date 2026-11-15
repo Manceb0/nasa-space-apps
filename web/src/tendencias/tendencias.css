@@ -613,3 +613,20 @@ button.vd:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-r
 .tr-what span { display: block; margin-top: 2px; color: var(--faint); }
 .tr-read { margin: 8px 0 0; font-size: 13px; line-height: 1.45; color: #ffd60a; }
 .tr-forest .fz { stroke: #6b6f75; stroke-width: 1.5; }
+
+/* Vista Huracanes: el panel derecho muestra las tormentas; lo de la lluvia se aparta mientras tanto */
+.wx[data-cyl="on"] #wx-right .wx-scroll > :not(.cy-list) { display: none; }
+.cy-list { padding: 14px 6px 8px; animation: cy-in .45s cubic-bezier(.22, 1, .36, 1) both; }
+.cy-def { margin: 10px 0 0; font-size: 13px; line-height: 1.4; color: var(--muted); }
+.cy-read li.cy-cats { display: flex; flex-wrap: wrap; gap: 4px 12px; padding-left: 54px; margin-top: -4px; font-size: 12.5px; }
+.cy-cats em { font-style: normal; font-weight: 600; color: var(--k); }
+.cy-read li { align-items: center; }
+.cy-b { font-style: normal; font-weight: 600; color: #64d2ff; }
+.cy-o { font-style: normal; font-weight: 600; color: #ff9f0a; }
+dl.cy-facts { display: grid; gap: 12px; margin: 0 0 16px; }
+dl.cy-facts > div { display: grid; grid-template-columns: 74px 1fr; gap: 12px; align-items: baseline; }
+dl.cy-facts dt { font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+dl.cy-facts dd { margin: 0; font-size: 14px; line-height: 1.35; color: var(--text); }
+dl.cy-facts dd span { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+.cy-list .hxl-h, .cy-list .hxl-sub { padding: 0 10px; }
+.cy-over .hx-cats { display: none; }

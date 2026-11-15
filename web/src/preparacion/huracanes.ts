@@ -52,12 +52,13 @@ const circle = (lat: number, lon: number, km: number) => {
 const toPt = (r: Tr): Pt => ({ t: r[0], lat: r[1], lon: r[2], kt: r[3], hpa: r[4] });
 
 export interface CyInfo { place: string; label: string; n: number; med: number | null; late: number; none: number; yuna: boolean }
-export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?: boolean; onInfo?: (i: CyInfo) => void } = {}) {
+// `list`: si se da, las tormentas se listan ahí (un panel lateral) en vez de en la fila de abajo
+export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?: boolean; onInfo?: (i: CyInfo) => void; list?: HTMLElement | null } = {}) {
   let alive = true, raf = 0, map: maplibregl.Map | null = null, fi: FloodIndex | null = null, rd: Rd | null = null;
   let cs: Case | null = null, place = opts.place ?? "yuna", layer: Layer = "wind", satDay = "", autoRain = false;
   let t = 0, playing = !matchMedia("(prefers-reduced-motion: reduce)").matches, last = 0;
   const floods: Record<string, Flood> = {};
-  host.innerHTML = `<div class="hx ${opts.hidePlace ? "no-place" : ""}">
+  host.innerHTML = `<div class="hx ${opts.hidePlace ? "no-place" : ""} ${opts.list ? "ext-list" : ""}">
     <div class="hx-map" id="hx-map"></div>
     <canvas class="hx-wind" id="hx-wind" aria-hidden="true"></canvas>
     <div class="hx-layers" role="radiogroup" aria-label="${esc(LL("Capa", "Layer"))}">
@@ -97,7 +98,7 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
     sat: `<span>${esc(LL("NASA MODIS Terra, color real, imagen del día · franjas negras: entre dos pasadas", "NASA MODIS Terra, true colour, image of the day · black stripes: between two passes"))}</span>`,
   };
   const cats = `<span class="hx-cats">${[20, 50, 70, 90, 100, 120, 140].map((k) => `<em style="--k:${CAT(k)}">${esc(CAT_L(k))}</em>`).join("")}</span>`;
-  const setKey = () => { $("hx-key").innerHTML = keys[layer] + cats; };
+  const setKey = () => { $("hx-key").innerHTML = keys[layer] + (opts.list ? "" : cats); };
   setKey();
   const dayFmt = (ms: number) => new Date(ms).toLocaleString(getLang() === "es" ? "es-DO" : "en-US", { timeZone: "America/Santo_Domingo", weekday: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
   const metr = (kt?: number | null, hpa?: number | null) => [kt != null ? `${kt} kt` : "", hpa ? `${hpa} hPa` : ""].filter(Boolean).join(" | ");
@@ -324,30 +325,41 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
   // ── Lugar: lista de tormentas y la maraña de todas sus trayectorias ──
   const setPlace = async (p: string) => {
     place = p; $("hx-place-l").textContent = placeName(p);
-    let chips: { key: string; html: string }[] = [], tracks: RdStorm[] = [];
+    type Row = { key: string; name: string; year: number; lead: number | null; k: string | null };
+    let rows: Row[] = [], tracks: RdStorm[] = [];
     if (p === "yuna") {
-      const order = [...fi!.storms].sort((a, b) => (b.lead_h ?? -99) - (a.lead_h ?? -99));
-      chips = order.map((s) => ({ key: s.id, html: `<b>${esc(s.name)}</b><span>${s.year} · ${s.lead_h === null ? esc(LL("sin aviso", "no advisory")) : `${pubLead(s.lead_h)} h`}</span>` }));
-      tracks = rd!.storms.filter((s) => order.some((o) => o.name.toUpperCase() === s.name.toUpperCase() && o.year === s.year));
+      rows = fi!.storms.map((s) => ({ key: s.id, name: s.name, year: s.year, lead: pubLead(s.lead_h), k: null }));
+      tracks = rd!.storms.filter((s) => fi!.storms.some((o) => o.name.toUpperCase() === s.name.toUpperCase() && o.year === s.year));
     } else {
       const hs = rd!.hits[p] ?? [];
-      chips = hs.map((h) => { const s = rd!.storms.find((x) => x.sid === h.sid)!;
-        const ld = pubLead(h.lead_h), lead = ld === null ? LL("sin aviso", "no advisory") : ld < 0 ? LL("aviso tarde", "late advisory") : `${ld} h`;
-        return { key: h.sid, html: `<b style="--k:${CAT(s.peak_kt)}">${esc(s.name)}</b><span>${s.year} · ${esc(lead)}</span>` }; });
+      rows = hs.map((h) => { const s = rd!.storms.find((x) => x.sid === h.sid)!; return { key: h.sid, name: s.name, year: s.year, lead: pubLead(h.lead_h), k: CAT(s.peak_kt) }; });
       tracks = hs.map((h) => rd!.storms.find((x) => x.sid === h.sid)!);
     }
-    $("hx-pick").innerHTML = chips.length ? chips.map((c) => `<button data-hx="${esc(c.key)}" role="radio" aria-checked="false">${c.html}</button>`).join("")
-      : `<p class="hx-empty">${esc(LL("Ninguna tormenta pasó a menos de 200 km entre 2001 y 2024.", "No storm passed within 200 km between 2001 and 2024."))}</p>`;
+    rows.sort((a, b) => (b.lead ?? -999) - (a.lead ?? -999));
+    const leadTxt = (l: number | null) => l === null ? LL("sin aviso", "no advisory") : l < 0 ? LL("aviso tarde", "late advisory") : `${l} h`;
+    const empty = `<p class="hx-empty">${esc(LL("Ninguna tormenta pasó a menos de 200 km entre 2001 y 2024.", "No storm passed within 200 km between 2001 and 2024."))}</p>`;
+    $("hx-pick").innerHTML = rows.length ? rows.map((r) => `<button data-hx="${esc(r.key)}" role="radio" aria-checked="false"><b${r.k ? ` style="--k:${r.k}"` : ""}>${esc(r.name)}</b><span>${r.year} · ${esc(leadTxt(r.lead))}</span></button>`).join("") : empty;
+    if (opts.list) {
+      // La lista lateral: cada tormenta con sus horas de aviso como un punto sobre una misma escala
+      const top = Math.max(24, ...rows.map((r) => r.lead ?? 0)), x = (l: number) => Math.max(0, Math.min(100, (l / top) * 100));
+      opts.list.innerHTML = `<h2 class="hxl-h">${esc(p === "yuna" ? LL("Las inundaciones, una a una", "The floods, one by one") : LL("Las tormentas, una a una", "The storms, one by one"))}</h2>
+        <p class="hxl-sub">${esc(LL("Horas de aviso del NHC antes de llegar. Toca una para verla.", "Hours of NHC warning before arrival. Tap one to see it."))}</p>
+        ${rows.length ? `<p class="hxl-ax" aria-hidden="true"><span>0 h</span><span>${top} h</span></p>
+        <div class="hxl" role="radiogroup" aria-label="${esc(LL("Tormenta", "Storm"))}">${rows.map((r) => `<button class="hxl-r" data-hx="${esc(r.key)}" role="radio" aria-checked="false">
+          <b${r.k ? ` style="--k:${r.k}"` : ""}>${esc(r.name)}</b><span class="hxl-y">${r.year}</span>
+          <i class="hxl-s" aria-hidden="true">${r.lead !== null && r.lead >= 0 ? `<i style="left:${x(r.lead).toFixed(1)}%"></i>` : ""}</i>
+          <em class="${r.lead === null || r.lead < 0 ? "w" : ""}">${esc(leadTxt(r.lead))}</em></button>`).join("")}</div>` : empty}`;
+    }
     (map!.getSource("all") as maplibregl.GeoJSONSource).setData({ type: "FeatureCollection", features: tracks.map((s) => ({ type: "Feature" as const, properties: { c: CAT(s.peak_kt) }, geometry: { type: "LineString" as const, coordinates: s.track.map((r) => [r[2], r[1]]) } })) });
     if (opts.onInfo) {
       const leads = (p === "yuna" ? fi!.storms.map((s) => s.lead_h) : (rd!.hits[p] ?? []).map((h) => h.lead_h)).map(pubLead);
       const ok = leads.filter((x): x is number => x !== null && x >= 0).sort((a, b) => a - b);
       opts.onInfo({ place: p, label: placeName(p), n: leads.length, med: ok.length ? ok[ok.length >> 1] : null, late: leads.filter((x) => x !== null && x < 0).length, none: leads.filter((x) => x === null).length, yuna: p === "yuna" });
     }
-    if (chips.length) await pickStorm(chips[0].key);
+    if (rows.length) await pickStorm(rows[0].key);
   };
   const pickStorm = async (key: string) => {
-    host.querySelectorAll<HTMLButtonElement>("[data-hx]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.hx === key)));
+    [host, opts.list].forEach((r) => r?.querySelectorAll<HTMLButtonElement>("[data-hx]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.hx === key))));
     const c = place === "yuna" ? await floodCase(key) : await placeCase((rd!.hits[place] ?? []).find((h) => h.sid === key)!, place);
     await show(c);
   };
@@ -418,6 +430,7 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
     const b = el.closest<HTMLButtonElement>("[data-hx]"); if (b) { pickStorm(b.dataset.hx!); playing = true; syncPlay(); return; }
     if (el.closest("#hx-play")) { playing = !playing; syncPlay(); }
   });
+  opts.list?.addEventListener("click", (e) => { const b = (e.target as Element).closest<HTMLButtonElement>("[data-hx]"); if (b) { pickStorm(b.dataset.hx!); playing = true; syncPlay(); } });
   $("hx-bar").addEventListener("pointerdown", (e) => {
     if (!cs) return;
     const r = $("hx-bar").getBoundingClientRect(); t = cs.t0 + Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * (cs.t1 - cs.t0); clearTrails();

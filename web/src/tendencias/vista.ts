@@ -223,27 +223,30 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const box = $("ans"); if (!cyApi) return;
     $("ans-h").textContent = LL("Ciclones", "Cyclones");
     const G = (svg: string) => `<svg viewBox="0 0 40 16" aria-hidden="true">${svg}</svg>`;
+    const CATS: [string, string, string][] = [["#8fd3ff", "depresión", "depression"], ["#30d1c5", "tormenta", "storm"], ["#ffe066", "H1", "H1"], ["#ffb347", "H2", "H2"], ["#ff6b35", "H3", "H3"], ["#ff3b5c", "H4", "H4"], ["#d33ad3", "H5", "H5"]];
+    const nf = (x: number, dg = 0) => x.toLocaleString(LL("es-DO", "en-US"), { maximumFractionDigits: dg });
     box.innerHTML = `
       <p class="vd" style="--c:#64d2ff"><b>${esc(i.yuna ? LL(`${i.n} inundaciones`, `${i.n} floods`) : LL(`${i.n} tormentas`, `${i.n} storms`))}</b><span>${esc(i.yuna ? LL("del río Yuna llegaron con un ciclón, 2001–2024", "of the Yuna river came with a cyclone, 2001–2024") : (i.place === "DO" ? LL("pasaron a menos de 200 km de alguna provincia, 2001–2024", "passed within 200 km of some province, 2001–2024") : LL(`pasaron a menos de 200 km de ${i.label}, 2001–2024`, `passed within 200 km of ${i.label}, 2001–2024`)))}</span></p>
       <div class="cy-k">
-        <p><b>${i.med === null ? "—" : `${i.med} h`}</b><span>${esc(LL("de aviso mediano: desde que el NHC publicó el boletín hasta que llegaron", "median warning: from the NHC advisory's publication to arrival"))}</span></p>
-        <p><b class="w">${i.late + i.none}</b><span>${esc(LL("llegaron sin aviso o con el aviso tarde", "arrived with no or late warning"))}</span></p>
+        <p><b>${i.med === null ? "—" : `${i.med} h`}</b><span>${esc(LL("de aviso mediano", "median warning"))}</span></p>
+        <p><b class="w">${i.late + i.none}</b><span>${esc(LL("sin aviso o tarde", "no or late warning"))}</span></p>
       </div>
-      <h3 class="cy-h">${esc(LL("Cómo leer el mapa", "How to read the map"))}</h3>
+      <p class="cy-def">${esc(LL("Aviso: desde que el NHC publica el boletín hasta que la tormenta llega.", "Warning: from the NHC advisory's publication until the storm arrives."))}</p>
+      <h3 class="cy-h">${esc(LL("En el mapa", "On the map"))}</h3>
       <ul class="cy-read">
-        <li>${G('<path d="M2 8h36" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="8" r="4" fill="#ffe066"/><circle cx="28" cy="8" r="4" fill="#ff3b5c"/>')}<span>${esc(LL("Por dónde pasó la tormenta. El color de cada punto es su fuerza en ese momento.", "Where the storm went. Each dot's colour is its strength at that moment."))}</span></li>
-        <li>${G('<path d="M2 8h36" stroke="#fff" stroke-width="3" stroke-dasharray="5 5" stroke-linecap="round"/><circle cx="20" cy="8" r="4" fill="#fff" stroke="#ff3b30" stroke-width="2"/>')}<span>${esc(LL("El primer pronóstico oficial del NHC que la ponía a menos de 200 km, tal como se emitió.", "The first official NHC forecast putting it within 200 km, as issued."))}</span></li>
-        <li>${G('<circle cx="20" cy="8" r="6.5" fill="none" stroke="#ff9f0a" stroke-width="2" stroke-dasharray="3 3"/>')}<span>${esc(i.place === "DO" ? LL("200 km alrededor de la provincia por la que pasó más cerca.", "200 km around the province it passed closest to.") : LL(`200 km alrededor de ${i.label}.`, `200 km around ${i.label}.`))}</span></li>
-        <li>${G('<rect x="2" y="6" width="36" height="5" rx="2.5" fill="#2a2d31"/><rect x="11" y="2" width="2" height="13" rx="1" fill="#64d2ff"/><rect x="27" y="2" width="2" height="13" rx="1" fill="#ff9f0a"/>')}<span>${esc(LL("Abajo, el tiempo: azul cuando avisó el NHC, naranja cuando llegó.", "Below, time: blue when NHC warned, orange when it arrived."))}</span></li>
-        <li>${G('<circle cx="10" cy="8" r="6" fill="#64d2ff"/><circle cx="20" cy="8" r="6" fill="#30d158"/><circle cx="30" cy="8" r="6" fill="#8a9099"/>')}<span>${esc(LL("A la derecha, la capa: viento (solo en las inundaciones del Yuna), lluvia NASA IMERG o la foto del satélite NASA MODIS de ese día.", "On the right, the layer: wind (Yuna floods only), NASA IMERG rain or that day's NASA MODIS satellite photo."))}</span></li>
+        <li>${G('<path d="M2 8h36" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="8" r="4" fill="#ffe066"/><circle cx="28" cy="8" r="4" fill="#ff3b5c"/>')}<span>${esc(LL("Trayectoria; el color es su fuerza", "Track; colour is strength"))}</span></li>
+        <li class="cy-cats" aria-label="${esc(LL("Fuerza", "Strength"))}">${CATS.map(([c, es, en]) => `<em style="--k:${c}">${esc(LL(es, en))}</em>`).join("")}</li>
+        <li>${G('<path d="M2 8h36" stroke="#fff" stroke-width="3" stroke-dasharray="5 5" stroke-linecap="round"/><circle cx="20" cy="8" r="4" fill="#fff" stroke="#ff3b30" stroke-width="2"/>')}<span>${esc(LL("Primer pronóstico del NHC", "First NHC forecast"))}</span></li>
+        <li>${G('<circle cx="20" cy="8" r="6.5" fill="none" stroke="#ff9f0a" stroke-width="2" stroke-dasharray="3 3"/>')}<span>${esc(i.place === "DO" ? LL("200 km de la provincia más cercana", "200 km of the nearest province") : LL(`200 km de ${i.label}`, `200 km of ${i.label}`))}</span></li>
+        <li>${G('<rect x="2" y="6" width="36" height="5" rx="2.5" fill="#2a2d31"/><rect x="11" y="2" width="2" height="13" rx="1" fill="#64d2ff"/><rect x="27" y="2" width="2" height="13" rx="1" fill="#ff9f0a"/>')}<span><i class="cy-b">${esc(LL("Aviso", "Warning"))}</i> · <i class="cy-o">${esc(LL("llegada", "arrival"))}</i></span></li>
       </ul>
-      ${hzData ? (() => { const c = hzData!.ciclones_sequia, pct = (x: number) => `${(x * 100 < 1 ? Math.round(x * 1000) / 10 : Math.round(x * 100)).toLocaleString(LL("es-DO", "en-US"))} %`;
+      ${hzData ? (() => { const c = hzData!.ciclones_sequia, pct = (x: number) => `${nf(x * 100 < 1 ? Math.round(x * 1000) / 10 : Math.round(x * 100), 1)} %`;
         return `<h3 class="cy-h">${esc(LL("¿Dejan sequía los ciclones?", "Do cyclones leave drought behind?"))} <b class="cy-no">${esc(LL("No se sostiene", "Not supported"))}</b></h3>
-        <ul class="cy-facts">
-          <li><b>${pct(c.fraccion_ciclon_media)}</b> ${esc(LL(`de la lluvia de junio a noviembre llega con un ciclón a menos de 500 km (según el año, de ${pct(c.fraccion_ciclon_rango[0])} a ${pct(c.fraccion_ciclon_rango[1])}).`, `of June–November rain comes with a cyclone within 500 km (from ${pct(c.fraccion_ciclon_rango[0])} to ${pct(c.fraccion_ciclon_rango[1])} depending on the year).`))}</li>
-          <li><b>${pct(c.frac_dias_sequia_90d_tras_ciclon)}</b> ${esc(LL(`de los días está en sequía en los 90 días tras un ciclón, frente a ${pct(c.frac_dias_sequia_resto_ago_dic)} el resto del tiempo.`, `of days are in drought in the 90 days after a cyclone, against ${pct(c.frac_dias_sequia_resto_ago_dic)} otherwise.`))}</li>
-          <li><b>p ${c.p_permutacion_S2.toLocaleString(LL("es-DO", "en-US"), { maximumFractionDigits: 2 })}</b> ${esc(LL("Las temporadas con poca lluvia de ciclón no traen más sequía después.", "Seasons with little cyclone rain do not bring more drought afterwards."))}</li>
-        </ul>`; })() : ""}
+        <dl class="cy-facts">
+          <div><dt>${pct(c.fraccion_ciclon_media)}</dt><dd>${esc(LL("de la lluvia de junio a noviembre llega con un ciclón", "of June–November rain comes with a cyclone"))}<span>${esc(LL(`a menos de 500 km · de ${pct(c.fraccion_ciclon_rango[0])} a ${pct(c.fraccion_ciclon_rango[1])} según el año`, `within 500 km · ${pct(c.fraccion_ciclon_rango[0])} to ${pct(c.fraccion_ciclon_rango[1])} by year`))}</span></dd></div>
+          <div><dt>${pct(c.frac_dias_sequia_90d_tras_ciclon)}</dt><dd>${esc(LL("de los días en sequía, 90 días tras un ciclón", "of days in drought, 90 days after a cyclone"))}<span>${esc(LL(`${pct(c.frac_dias_sequia_resto_ago_dic)} el resto del tiempo`, `${pct(c.frac_dias_sequia_resto_ago_dic)} otherwise`))}</span></dd></div>
+          <div><dt>p ${nf(c.p_permutacion_S2, 2)}</dt><dd>${esc(LL("poca lluvia de ciclón no trae más sequía después", "little cyclone rain does not bring more drought afterwards"))}</dd></div>
+        </dl>`; })() : ""}
       <button class="pop-go alt" data-cy-yuna="${i.yuna ? sel.reg : "yuna"}"><span>${esc(i.yuna ? LL(`Volver a ${sel.reg === "DO" ? LL("todo el país", "the whole country") : d.regName(sel.reg)}`, `Back to ${sel.reg === "DO" ? "the whole country" : d.regName(sel.reg)}`) : LL("Ver las inundaciones del Yuna, con su viento", "See the Yuna floods, with their wind"))}</span>${CHEV}</button>
       <p class="cy-src">${esc(LL("Trayectorias IBTrACS (NOAA) · pronósticos NHC tal como se emitieron · lluvia y satélite NASA (IMERG, MODIS). Apoyo para preparar; no es una orden de evacuación.", "Tracks IBTrACS (NOAA) · NHC forecasts as issued · NASA rain and satellite (IMERG, MODIS). Support for preparedness, not an evacuation order."))}</p>`;
   };
@@ -261,12 +264,15 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     if (prepOff) prepOff();
     const col = wx.querySelector<HTMLElement>(".wx-mapcol")!;
     const over = document.createElement("div"); over.className = "cy-over"; col.appendChild(over);
-    const h = hurricanes(over, { place: sel.reg, hidePlace: true, onInfo: cyAnswer });
+    const rs = wx.querySelector<HTMLElement>("#wx-right .wx-scroll");
+    const list = rs ? Object.assign(document.createElement("section"), { className: "cy-list" }) : null;
+    if (rs && list) { rs.prepend(list); rs.scrollTop = 0; wx.dataset.cyl = "on"; }
+    const h = hurricanes(over, { place: sel.reg, hidePlace: true, onInfo: cyAnswer, list });
     cyApi = h; wx.dataset.cy = "on";
     wx.querySelector("[data-cyq]")?.setAttribute("aria-pressed", "true");
     wx.querySelector("[data-cyq]")?.classList.add("on");
     $("sty-l").textContent = LL("Huracanes", "Hurricanes");
-    cyOff = () => { h.destroy(); over.remove(); cyOff = null; cyApi = null; wx.dataset.cy = "off"; $("sty-l").textContent = styles.find(([k]) => k === ui.style)?.[1] ?? ""; wx.querySelector("[data-cyq]")?.setAttribute("aria-pressed", "false"); wx.querySelector("[data-cyq]")?.classList.remove("on"); };
+    cyOff = () => { h.destroy(); over.remove(); list?.remove(); delete wx.dataset.cyl; cyOff = null; cyApi = null; wx.dataset.cy = "off"; $("sty-l").textContent = styles.find(([k]) => k === ui.style)?.[1] ?? ""; wx.querySelector("[data-cyq]")?.setAttribute("aria-pressed", "false"); wx.querySelector("[data-cyq]")?.classList.remove("on"); };
     cleanup.push(() => cyOff?.());
     $("ans").innerHTML = `<p class="cy-src">${esc(LL("Cargando las tormentas…", "Loading the storms…"))}</p>`;
     $("ans").scrollIntoView({ block: "start", behavior: RM() ? "auto" : "smooth" });

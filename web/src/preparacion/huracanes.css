@@ -131,3 +131,27 @@
 .mk.goal span { top: 18px; }
 .hx-play { margin-top: 34px; }
 .hx-count { font-size: clamp(18px, 1.5vw, 22px); }
+
+/* Con la lista en un panel lateral, abajo solo quedan el tiempo y la escala de la capa */
+.hx.ext-list .hx-row { display: none; }
+.hxl-h { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.hxl-sub { margin: 4px 0 14px; font-size: 13.5px; line-height: 1.4; color: #b4b4b4; }
+.hxl-ax { display: grid; grid-template-columns: 1fr 104px 74px; margin: 0 0 4px; padding: 0 10px; font-size: 11.5px; color: #949494; font-variant-numeric: tabular-nums; }
+.hxl-ax span { grid-column: 2; grid-row: 1; }
+.hxl-ax span:last-child { justify-self: end; }
+.hxl { display: grid; gap: 2px; }
+.hxl-r { display: grid; grid-template-columns: 1fr 104px 74px; grid-template-rows: auto auto; column-gap: 0; align-items: center; padding: 8px 10px; border: 0; border-radius: 12px; background: none; color: #fff; text-align: left; font: inherit; cursor: pointer; transition: background .2s, transform .15s cubic-bezier(.22, 1, .36, 1); }
+.hxl-r:hover { background: #1d2024; }
+.hxl-r:active { transform: scale(.985); }
+.hxl-r[aria-checked="true"] { background: #fff; color: #000; }
+.hxl-r b { grid-column: 1; font-size: 15px; font-weight: 700; }
+.hxl-r b[style] { color: var(--k); }
+.hxl-r[aria-checked="true"] b[style] { color: #000; }
+.hxl-y { grid-column: 1; grid-row: 2; font-size: 12.5px; opacity: .7; font-variant-numeric: tabular-nums; }
+.hxl-s { grid-column: 2; grid-row: 1 / 3; position: relative; height: 2px; background: #3a3e44; border-radius: 2px; }
+.hxl-r[aria-checked="true"] .hxl-s { background: #c8c8c8; }
+.hxl-s i { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #64d2ff; }
+.hxl-r[aria-checked="true"] .hxl-s i { background: #0a84ff; }
+.hxl-r em { grid-column: 3; grid-row: 1 / 3; justify-self: end; font-style: normal; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.hxl-r em.w { color: #ff9f0a; font-size: 13px; }
+.hxl-r[aria-checked="true"] em.w { color: #b25000; }
