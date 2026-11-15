@@ -416,3 +416,17 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .mpick { min-width: 0; }
 .mpick select { min-width: 0; width: 100%; }
 .adj:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* ── El lugar: un solo selector con el nombre como título ── */
+.place { position: relative; display: flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin: -6px -10px 0; padding: 6px 10px; border-radius: 12px; cursor: pointer; transition: background .2s; }
+.place:hover { background: var(--hover); }
+.place:focus-within { outline: 2px solid #fff; outline-offset: 0; }
+.place .pin { width: 18px; height: 18px; flex: none; }
+.place h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.place .chev { width: 14px; height: 14px; color: var(--muted); }
+.place select { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; }
+.place select option { background: #24272b; color: #fff; }
+.place-hint { margin-top: 4px; font-size: 13px; color: var(--faint); }
+.place-back { padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.place-back:hover { text-decoration: underline; text-underline-offset: 3px; }
+.place-back:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }

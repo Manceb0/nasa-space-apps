@@ -12,7 +12,7 @@ import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verd
 import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart, WARN } from "./graficas";
 import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
-import { chip, finding, QUESTIONS, questionOf, verdict } from "./preguntas";
+import { chip, QUESTIONS, questionOf, verdict } from "./preguntas";
 import { timeline } from "./tiempo";
 
 type Style = "crestas" | "plano" | "oscuro";
@@ -25,6 +25,7 @@ let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
 const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const TIERS = [["sabemos", "Lo que sabemos", "What we know"], ["creemos", "Lo que creemos saber", "What we think we know"], ["comprobar", "Lo que hay que comprobar", "What still needs checking"]] as const;
+const PIN = '<svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 15s5-4.6 5-8.6A5 5 0 0 0 3 6.4C3 10.4 8 15 8 15z" fill="#f2b33d"/><circle cx="8" cy="6.4" r="1.9" fill="#0c0d0f"/></svg>';
 const CHEV = '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const MARK = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="#f2b33d"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
 const PANEL_L = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 3v10" stroke="currentColor" stroke-width="1.5"/></svg>';
@@ -91,14 +92,14 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       <aside class="wx-left" id="wx-left">
         ${layout === "phone" ? `<button class="wx-grab" id="wx-grab" aria-label="${esc(LL("Subir o bajar el panel", "Raise or lower the panel"))}"><i></i></button>` : ""}
         <section class="blk-reg" id="wx-peek">
-          <div class="reg-row">
-            <h1 id="wx-h1"></h1>
-            <label class="reg-pick"><span>${esc(LL("Cambiar", "Change"))}</span><select id="r-sel" aria-label="${esc(LL("Región", "Region"))}">
+          <label class="place" title="${esc(LL("Elegir el lugar", "Choose the place"))}">
+            ${PIN}<h1 id="wx-h1"></h1>${CHEV}
+            <select id="r-sel" aria-label="${esc(LL("Lugar", "Place"))}">
               <option value="DO">${esc(LL("Toda la República Dominicana", "Whole Dominican Republic"))}</option>
               ${d.provs.map((r) => `<option value="${r.id}">${esc(r.nombre)}</option>`).join("")}
-            </select>${CHEV}</label>
-          </div>
-          <p class="finding" id="finding"></p>
+            </select>
+          </label>
+          <p class="place-hint" id="finding"></p>
           ${layout === "phone" ? `<p class="peek-ans" id="peek-ans"></p>` : ""}
         </section>
         <div class="wx-scroll">
@@ -158,7 +159,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const renderHead = () => {
     $("wx-h1").textContent = regName();
     ($("r-sel") as HTMLSelectElement).value = sel.reg;
-    $("finding").textContent = finding(d, sel, pick);
+    // la pista dice cómo cambiar de lugar; con una provincia elegida, cómo volver al país
+    $("finding").innerHTML = sel.reg === "DO" ? esc(LL("o toca una provincia en el mapa", "or tap a province on the map")) : `<button class="place-back" data-reg-all>${esc(LL("← Todo el país", "← Whole country"))}</button>`;
     if (layout === "phone" && ui.land && land) { $("peek-ans").innerHTML = landPeek(land, ui.land, ui.landVar); return; }
     if (layout === "phone") {
       const ti = d.tier(sel), q = questionOf(sel.ind);
@@ -512,6 +514,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   };
   wx.addEventListener("click", (e) => {
     const el = e.target as Element;
+    if (el.closest("[data-reg-all]")) { pickRegion("DO"); return; }
     const lq = el.closest<HTMLElement>("[data-landq]");
     if (lq) {
       if (ui.land !== lq.dataset.landq) { ui.land = lq.dataset.landq as LandQ; ui.year = null; ui.landSite = ""; renderStyle(); renderPanels(); renderMap(); frameSites(); $("ans").scrollIntoView({ block: "start", behavior: RM() ? "auto" : "smooth" }); }
