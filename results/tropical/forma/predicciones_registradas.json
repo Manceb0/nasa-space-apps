@@ -1,0 +1,6 @@
+{
+  "registradas_utc": "2026-11-15T14:08:19.963005+00:00",
+  "F1": "Validación: con ruido como el de una celda y un cambio total de 4,5 pp, el procedimiento acierta la forma (tendencia / escalón / ambos) en al menos el 60 % de las series sintéticas con cambio. Si no, la forma por celda se declara no identificable con estos datos.",
+  "F2": "Serie nacional: el escalón NO gana con claridad (ΔBIC ≥ 2) a la tendencia; el resultado será tendencia, tendencia + escalón o indistinguibles.",
+  "F3": "Entre las celdas donde gana un modelo con escalón, ninguna ventana de 12 meses reúne más del 40 % de las fechas de escalón (no hay una fecha común)."
+}

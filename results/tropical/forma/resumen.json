@@ -1,0 +1,57 @@
+{
+  "n_celdas": 442,
+  "clases_celdas": {
+    "sin cambio": 177,
+    "indistinguibles": 107,
+    "escalón": 97,
+    "tendencia": 37,
+    "tendencia + escalón": 24
+  },
+  "acierto_forma_validacion": {
+    "celda 2 pp": 0.024444444444444446,
+    "celda 4.5 pp": 0.10222222222222223,
+    "celda 9 pp": 0.41333333333333333,
+    "nacional 2 pp": 0.06,
+    "nacional 4.5 pp": 0.26666666666666666,
+    "nacional 9 pp": 0.5533333333333333
+  },
+  "falsos_cambios_validacion": {
+    "celda": 0.04666666666666667,
+    "nacional": 0.04
+  },
+  "phi_mediana_celdas": 0.02844260920739341,
+  "sigma_mediana_celdas": 0.11778731029281095,
+  "nacional": {
+    "clase": "escalón",
+    "bic": {
+      "sin cambio": -655.5811110231742,
+      "tendencia": -664.1628146605435,
+      "escalón": -671.2440371014227,
+      "tendencia + escalón": -668.9568266512566
+    },
+    "delta_bic_vs_mejor": {
+      "sin cambio": 15.66292607824846,
+      "tendencia": 7.0812224408791735,
+      "escalón": 0.0,
+      "tendencia + escalón": 2.2872104501660715
+    },
+    "escalon_fecha": "2018-02",
+    "escalon_rango_dbic2": [
+      "2018-02",
+      "2018-11"
+    ],
+    "ambos_fecha": "2006-01",
+    "ambos_rango_dbic2": [
+      "2005-11",
+      "2006-03"
+    ],
+    "pendiente_pp_decada": -2.6213630744447145,
+    "phi": 0.05561547252166945
+  },
+  "max_frac_fechas_escalon_en_12_meses": 0.371900826446281,
+  "veredicto": {
+    "F1": false,
+    "F2": false,
+    "F3": true
+  }
+}

@@ -250,3 +250,55 @@ y sus límites:
 - La figura 08 y el conmutador de la web deben presentarse como *sensibilidad*: «ajuste hacia CHIRPS», no «sin el
   escalón».
 - En los textos, «escalón de 2013» pasa a «posible deriva de IMERG en la frecuencia de días de lluvia».
+
+## ¿Tendencia o escalón? Comparación de modelos con validación (15-nov, noche)
+
+Código: `earthmemory/tropical/forma_cambio.py` y `figura_forma.py`. Salidas: `results/tropical/forma/`. Figura:
+`figures/tropical/10_tendencia_o_escalon_{dark,light}.png`. Sigue la secuencia que propuso la revisión: primero validar
+con series sintéticas, luego aplicar a las 442 celdas sin imponer ninguna fecha. Ideas tomadas de Beaulieu y Killick
+(tendencias, saltos y memoria) y de «Drift vs Shift»; de ambos solo se leyó el resumen.
+
+**Método.** Serie: frecuencia mensual de días ≥ 1 mm, IMERG − CHIRPS, sin ciclo estacional. Cuatro modelos con
+errores AR(1) (Prais-Winsten, verosimilitud exacta): sin cambio, tendencia, escalón y tendencia + escalón. La fecha del
+escalón se busca en toda la serie y cuenta como un parámetro. Se elige por BIC. Si otra forma queda a menos de 2
+unidades, el resultado es «indistinguibles». Las predicciones F1-F3 se registraron al empezar la corrida, pero
+después de ver ERA5.
+
+**Validación** (150 series por caso, ruido AR(1) como el observado):
+
+| Ruido | Cambio total | Acierta la forma | Falsos cambios (sin cambio simulado) |
+|---|---|---|---|
+| Una celda | 4,5 pp | 10 % | 5 % |
+| Una celda | 9 pp | 41 % | 5 % |
+| Serie nacional | 4,5 pp | 27 % | 4 % |
+| Serie nacional | 9 pp | 55 % | 4 % |
+
+Con ruido nacional y 4,5 pp, una tendencia simulada se etiqueta «escalón» solo el 5 % de las veces. Un escalón
+simulado se etiqueta «escalón» el 45 %.
+
+**Resultados.**
+- **Serie nacional:** gana un escalón en **2018-02** (rango con ΔBIC < 2: 2018-02 a 2018-11). Supera a la tendencia por
+  7,1 de BIC y a tendencia + escalón por 2,3. No es 2013. La revisión independiente encontró el mismo corte (2018-02)
+  con otro método.
+- **Celdas:** 265 de 442 muestran un cambio detectable, frente a un 5 % de falsos positivos esperables. La forma elegida
+  por celda (97 escalón, 37 tendencia, 24 ambos, 107 indistinguibles) **no es fiable**: la validación da un 10 % de
+  aciertos con un cambio de 4,5 pp. Las fechas de escalón se agrupan en 2018 (45 celdas, el 37 % en 12 meses), con
+  grupos menores en 2013 (22) y 2006 (17). Las celdas vecinas no son independientes.
+
+| Predicción | Resultado | Veredicto |
+|---|---|---|
+| F1: la forma por celda se acierta en ≥ 60 % (4,5 pp) | 10 % | **No se cumple**: la forma por celda no es identificable con estos datos |
+| F2: en el país el escalón no gana con claridad a la tendencia | Gana el escalón por 7,1 de BIC, en 2018-02 | **No se cumple** |
+| F3: ninguna ventana de 12 meses reúne > 40 % de las fechas de escalón | 37 %, en 2018 | Se cumple, por poco: hay un agrupamiento claro en 2018 |
+
+**Lectura.**
+- Hay un cambio extendido en la diferencia de días de lluvia entre IMERG y CHIRPS. En la serie nacional se parece más
+  a un salto hacia 2018 que a una tendencia recta, y una tendencia pura casi nunca imita ese resultado (5 %).
+- Que tenga forma de escalón no dice quién cambió, ni por qué.
+- Las fechas candidatas dependen de la referencia y del método:
+  - 2013-10: Pettitt frente a CHIRPS.
+  - 2016-10: Pettitt frente a ERA5, en 6 puntos.
+  - 2018-02: este modelo y el de la revisión.
+- No se simularon una deriva curva ni varios saltos, y cualquiera de las dos podría producir un «escalón en 2018».
+- *Pista sin comprobar:* cotejar 2018 con la cronología de sensores de entrada de IMERG V07 (documentación técnica de
+  NASA). No se ha hecho y no se atribuye nada a ningún sensor.

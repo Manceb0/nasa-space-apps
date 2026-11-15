@@ -1,0 +1,25 @@
+ruido,cambio_total_pp,verdad,escalón,indistinguibles,sin cambio,tendencia,tendencia + escalón
+celda,2.000,escalón,0.033,0.053,0.867,0.040,0.007
+celda,2.000,sin cambio,0.007,0.020,0.960,0.013,0.000
+celda,2.000,tendencia,0.033,0.027,0.907,0.027,0.007
+celda,2.000,tendencia + escalón,0.013,0.053,0.887,0.033,0.013
+celda,4.500,escalón,0.193,0.227,0.453,0.107,0.020
+celda,4.500,sin cambio,0.013,0.007,0.953,0.020,0.007
+celda,4.500,tendencia,0.080,0.113,0.700,0.107,0.000
+celda,4.500,tendencia + escalón,0.087,0.133,0.673,0.100,0.007
+celda,9.000,escalón,0.727,0.213,0.000,0.040,0.020
+celda,9.000,sin cambio,0.027,0.020,0.947,0.007,0.000
+celda,9.000,tendencia,0.093,0.320,0.073,0.507,0.007
+celda,9.000,tendencia + escalón,0.293,0.387,0.020,0.293,0.007
+nacional,2.000,escalón,0.067,0.173,0.673,0.080,0.007
+nacional,2.000,sin cambio,0.020,0.000,0.953,0.020,0.007
+nacional,2.000,tendencia,0.020,0.080,0.780,0.113,0.007
+nacional,2.000,tendencia + escalón,0.053,0.100,0.767,0.080,0.000
+nacional,4.500,escalón,0.453,0.347,0.047,0.147,0.007
+nacional,4.500,sin cambio,0.000,0.007,0.987,0.000,0.007
+nacional,4.500,tendencia,0.047,0.287,0.313,0.347,0.007
+nacional,4.500,tendencia + escalón,0.233,0.307,0.153,0.307,0.000
+nacional,9.000,escalón,0.947,0.053,0.000,0.000,0.000
+nacional,9.000,sin cambio,0.027,0.013,0.940,0.020,0.000
+nacional,9.000,tendencia,0.073,0.213,0.000,0.700,0.013
+nacional,9.000,tendencia + escalón,0.427,0.273,0.000,0.287,0.013
