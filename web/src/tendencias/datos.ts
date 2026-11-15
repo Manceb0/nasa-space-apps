@@ -3,6 +3,7 @@
 import { load } from "../data";
 import { getLang } from "../i18n";
 import { fmt } from "../text";
+import type { Relieve } from "./crestas";
 
 export interface VarMeta {
   id: string; label_es: string; label_en: string; unidad: string; unidad_tendencia: string;
@@ -50,11 +51,12 @@ export interface Sel { ind: string; per: string; reg: string; src: string }
 export type Tier = "sabemos" | "creemos" | "comprobar" | "nada";
 
 export async function loadTrends() {
-  const [V, P, R, fc] = await Promise.all([
+  const [V, P, R, fc, rel] = await Promise.all([
     load<Vars>("tendencias/variables.json"), load<Prov>("tendencias/provincias.json"),
     load<Rej>("tendencias/rejilla.json"), load<FC>("limites/provincias.geojson").catch(() => null),
+    load<Relieve>("tendencias/relieve.json").catch(() => null),
   ]);
-  return new TrendData(V, P, R, fc);
+  return new TrendData(V, P, R, fc, rel);
 }
 
 export class TrendData {
@@ -62,7 +64,7 @@ export class TrendData {
   readonly provs: { id: string; nombre: string }[];
   readonly isoToShape: Record<string, string> = {};
   readonly shapeToIso: Record<string, string> = {};
-  constructor(readonly V: Vars, readonly P: Prov, readonly R: Rej, readonly fc: FC | null) {
+  constructor(readonly V: Vars, readonly P: Prov, readonly R: Rej, readonly fc: FC | null, readonly rel: Relieve | null = null) {
     this.prods = Object.keys(V.productos);
     this.provs = P.regiones.filter((r) => !r.es_nacional).sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
     fc?.features.forEach((f) => { this.isoToShape[f.properties.shapeISO] = f.properties.shapeID; this.shapeToIso[f.properties.shapeID] = f.properties.shapeISO; });

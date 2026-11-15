@@ -260,3 +260,9 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 }
 
 .blk-rank .blk-h { flex-direction: column; align-items: flex-start; gap: 2px; }
+
+/* ── Crestas: relieve en perfiles, coloreado por lo que muestra el mapa ── */
+.ridge { position: absolute; inset: 0; z-index: 1; display: block; cursor: crosshair; }
+.ridge[hidden] { display: none; }
+.wx[data-sty="crestas"] #map { visibility: hidden; }
+.wx[data-sty="crestas"] .maplibregl-ctrl-attrib, .wx[data-sty="crestas"] .maplibregl-ctrl { visibility: hidden; }

@@ -10,15 +10,16 @@ import { terrain3d } from "../terrain3d";
 import { esc, LL, digits, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
 import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
 import { capsule, forest, PROD_COLOR, seriesChart } from "./graficas";
+import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
 import { finding, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { timeline } from "./tiempo";
 
-type Style = "3d" | "plano" | "oscuro";
+type Style = "crestas" | "3d" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { style: "oscuro" as Style, year: null as number | null, show: "" as string };
+const ui = { style: "crestas" as Style, year: null as number | null, show: "" as string };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -41,6 +42,7 @@ export async function viewTrends(view: HTMLElement) {
   const d = await loadTrends();
   if (!d.prods.includes(sel.src)) sel.src = d.prods[0];
   if (!ui.show || (ui.show === "acuerdo" && !d.both)) ui.show = d.both ? "acuerdo" : sel.src;
+  if (!d.rel && ui.style === "crestas") ui.style = "oscuro";
   render(view, d);
 }
 
@@ -66,7 +68,7 @@ function render(view: HTMLElement, d: TrendData) {
     <p class="fine">${esc(LL("Fuente: NASA GPM IMERG V07 (Huffman et al. 2023). Tendencia de Theil-Sen con Mann-Kendall de Hamed y Rao (1998); FDR de Benjamini-Hochberg. Describe 2001–2024; no atribuye causas.", "Source: NASA GPM IMERG V07 (Huffman et al. 2023). Theil-Sen trend with Hamed & Rao (1998) Mann-Kendall; Benjamini-Hochberg FDR. Describes 2001–2024; no attribution of causes."))}</p>`;
 
   view.innerHTML = `
-  <div class="wx" id="wx" data-layout="${layout}" data-mode="trend">
+  <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-sty="${ui.style}">
     <header class="wx-top">
       <a class="wx-brand" href="#tendencias">${MARK}<b>Stellar Horizons</b><span>${esc(LL("Detective de tendencias", "Trend detective"))}</span></a>
       ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}"><i></i>${esc(LL("Preliminar: solo IMERG, CHIRPS en camino", "Preliminary: IMERG only, CHIRPS on its way"))}</p>`}
@@ -95,7 +97,7 @@ function render(view: HTMLElement, d: TrendData) {
           ${d.prods.map((p) => `<button data-show="${p}" role="radio">${p}</button>`).join("")}
         </div>
         <div class="seg map-sty" role="radiogroup" aria-label="${esc(LL("Estilo del mapa", "Map style"))}">
-          ${([["oscuro", LL("Oscuro", "Dark")], ["3d", LL("Relieve", "Terrain")], ["plano", LL("Satélite", "Satellite")]] as const).map(([k, l]) => `<button data-sty="${k}" role="radio">${esc(l)}</button>`).join("")}
+          ${([...(d.rel ? [["crestas", LL("Crestas", "Ridges")]] : []), ["oscuro", LL("Oscuro", "Dark")], ["3d", LL("Relieve", "Terrain")], ["plano", LL("Satélite", "Satellite")]] as [Style, string][]).map(([k, l]) => `<button data-sty="${k}" role="radio">${esc(l)}</button>`).join("")}
         </div>
         <div class="wx-time" id="wx-bar" data-mode="trend">
           <button class="wx-play"></button>
@@ -245,10 +247,13 @@ function render(view: HTMLElement, d: TrendData) {
     const vals = s.filter((x): x is number => x !== null), mean = vals.reduce((a, b) => a + b, 0) / vals.length;
     return s[k] === null || !mean ? null : ((s[k]! - mean) / mean) * 100;
   };
-  const renderMap = () => {
+  const hexRGB = (h: string): [number, number, number] => { const n = parseInt(h.replace("#", ""), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  let ridgeColor: (k: number) => RGBA | null = () => null;
+  const renderMap = (anim = true) => {
+    wx.dataset.mode = ui.year === null ? "trend" : "year";
+    paintRidge(anim);
     if (!t3) return;
     const map = t3.map;
-    wx.dataset.mode = ui.year === null ? "trend" : "year";
     if (ui.year === null && ui.show === "acuerdo") {
       const cl = d.cellClass(sel), codes = d.R.clases_codigo ?? [];
       if (!cl) return;
@@ -264,6 +269,7 @@ function render(view: HTMLElement, d: TrendData) {
       const counts = codes.map((_, i) => cl.filter((x, k) => x === i && d.R.incluida[k]).length);
       $("wx-legend").innerHTML = `<p class="lg-w"><span>${esc(LL("Celdas de 11 km según el acuerdo de IMERG y CHIRPS", "11 km cells by IMERG–CHIRPS agreement"))}</span></p>
         <p class="lg-cls">${codes.map((k, i) => `<span><i style="background:${colors[i]}"></i>${esc(d.V.clases[k] ? d.lab(d.V.clases[k]) : k)} <b class="num">${counts[i]}</b></span>`).join("")}</p>`;
+      describeRidge();
       return;
     }
     if (ui.year === null) {
@@ -285,6 +291,7 @@ function render(view: HTMLElement, d: TrendData) {
       t3.setChoro(clear, zero);
       map.setLayoutProperty("prov-fill", "visibility", "visible");
       renderLegend(max, false);
+      describeRidge();
     } else {
       const k = ui.year, key = `${sel.ind}|${sel.per}|${sel.src}`;
       if (!yearMax.has(key)) yearMax.set(key, scaleMax(d.provs.flatMap((r) => years().map((_, j) => anomaly(r.id, j)))));
@@ -299,8 +306,35 @@ function render(view: HTMLElement, d: TrendData) {
       t3.setLayer("prov");
       if (map.getLayer("stip")) map.setLayoutProperty("stip", "visibility", "none");
       renderLegend(max, true);
+      describeRidge();
     }
   };
+  const cellProv = d.rel ? cellProvinces(d.R, d.fc) : [];
+  let rg: ReturnType<typeof ridges> | null = null;
+  const colorFor = (): ((k: number) => RGBA | null) => {
+    if (ui.year === null && ui.show === "acuerdo") {
+      const cl = d.cellClass(sel), codes = d.R.clases_codigo ?? [];
+      if (!cl) return () => null;
+      const rgb = codes.map((k) => hexRGB(d.V.clases[k]?.color ?? "#6b6f75"));
+      return (k) => { const c = cl[k]; if (c === null || c === undefined) return null; return [...rgb[c], codes[c] === "sin señal detectable" ? 0.5 : 1]; };
+    }
+    if (ui.year === null) {
+      const lay = d.cells(sel); if (!lay) return () => null;
+      const max = scaleMax(lay.pendiente_decada), q = d.V.umbral_significancia.q_fdr;
+      return (k) => { const v = lay.pendiente_decada[k]; if (v === null || v === undefined) return null; return [...colorOf(Math.abs(v) / max, d.towardDry(sel.ind, v)), (lay.q[k] ?? 1) <= q ? 1 : 0.5]; };
+    }
+    const yr = ui.year, key = `${sel.ind}|${sel.per}|${sel.src}`;
+    if (!yearMax.has(key)) yearMax.set(key, scaleMax(d.provs.flatMap((r) => years().map((_, j) => anomaly(r.id, j)))));
+    const max = yearMax.get(key)!, memo = new Map<string, number | null>();
+    return (k) => {
+      const iso = cellProv[k]; if (!iso) return null;
+      if (!memo.has(iso)) memo.set(iso, anomaly(iso, yr));
+      const a = memo.get(iso); if (a === null || a === undefined) return null;
+      return [...colorOf(Math.abs(a) / max, d.towardDry(sel.ind, a)), 0.95];
+    };
+  };
+  const paintRidge = (anim = true) => { ridgeColor = colorFor(); if (ui.style === "crestas") rg?.draw(anim && !RM()); };
+  const describeRidge = () => rg?.describe(`${LL("Perfiles de relieve de La Española apilados de norte a sur; cada tramo lleva el color de su celda en el mapa.", "Relief profiles of Hispaniola stacked north to south; each stretch takes its cell's map colour.")} ${$("wx-legend").textContent?.replace(/\s+/g, " ").trim() ?? ""}`);
   const fitPad = () => (layout === "phone" ? { top: 70, bottom: PEEK + 120, left: 16, right: 16 } : { top: 64, bottom: layout === "mid" ? 150 : 110, left: 32, right: 32 });
   const frame = (fly = true) => {
     if (!t3) return;
@@ -309,6 +343,7 @@ function render(view: HTMLElement, d: TrendData) {
     t3.map.fitBounds(b, { padding: fitPad(), pitch: ui.style === "3d" ? 52 : 0, bearing: ui.style === "3d" ? -14 : 0, duration: fly && !RM() ? 1500 : 0, maxZoom: 10 });
   };
   const renderStyle = () => {
+    wx.dataset.sty = ui.style;
     wx.querySelectorAll<HTMLButtonElement>("[data-sty]").forEach((b) => { const on = b.dataset.sty === ui.style; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
     wx.querySelectorAll<HTMLButtonElement>("[data-show]").forEach((b) => { const on = b.dataset.show === ui.show; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
   };
@@ -320,6 +355,7 @@ function render(view: HTMLElement, d: TrendData) {
     t3?.selectProvince(reg === "DO" ? null : d.isoToShape[reg] ?? null);
     frame();
     renderPanels();
+    paintRidge();
   };
   const setInd = (ind: string) => {
     sel.ind = ind; sel.per = d.perFor(ind, sel.per); pick[questionOf(ind).id] = ind;
@@ -340,7 +376,12 @@ function render(view: HTMLElement, d: TrendData) {
       renderStyle(); renderPanels(); renderMap(); return;
     }
     const sty = el.closest<HTMLButtonElement>("[data-sty]");
-    if (sty) { ui.style = sty.dataset.sty as Style; renderStyle(); t3?.setMode(ui.style); frame(false); return; }
+    if (sty) {
+      ui.style = sty.dataset.sty as Style; renderStyle();
+      rg?.show(ui.style === "crestas");
+      if (ui.style !== "crestas") { tip.hidden = true; t3?.setMode(ui.style); frame(false); }
+      return;
+    }
     const fr = el.closest<SVGGElement>(".fr");
     if (fr) pickRegion(fr.dataset.reg!);
   });
@@ -365,6 +406,44 @@ function render(view: HTMLElement, d: TrendData) {
     wx.dataset.sheet = sheet.state;
   }
 
+  // ── Lo que dice una celda (mapa y crestas) ──
+  const lineFor = (k: number, iso: string | null | undefined) => {
+    if (ui.year === null && ui.show === "acuerdo") {
+      const cl = d.cellClass(sel), code = k >= 0 && cl ? cl[k] : null;
+      if (code === null || code === undefined || !d.R.incluida[k]) return "";
+      const name = (d.R.clases_codigo ?? [])[code];
+      return `<b>${esc(d.V.clases[name] ? d.lab(d.V.clases[name]) : name)}</b> · ${d.prods.map((p) => { const v = d.cells(sel, p)?.pendiente_decada[k]; return `${p} ${v === null || v === undefined ? "—" : sgn(v)}`; }).join(" · ")}`;
+    }
+    if (ui.year === null) {
+      const lay = d.cells(sel), v = lay && k >= 0 && d.R.incluida[k] ? lay.pendiente_decada[k] : null;
+      return v !== null && v !== undefined && lay ? `<b class="num">${sgn(v)}</b> ${esc(vm().unidad_tendencia)} · ${esc((lay.q[k] ?? 1) <= d.V.umbral_significancia.q_fdr ? LL("cambio claro", "clear change") : LL("no se distingue del azar", "indistinguishable from chance"))}` : "";
+    }
+    const s = iso ? d.series(sel, sel.src, iso) : null, v = s?.[ui.year];
+    return v !== null && v !== undefined ? `<b class="num">${num(v)}</b> ${esc(vm().unidad)} ${LL("en", "in")} ${years()[ui.year]}` : "";
+  };
+  const showTip = (name: string, line: string, x: number, y: number) => {
+    tip.innerHTML = `<p class="tt-n">${esc(name)}</p>${line ? `<p>${line}</p>` : ""}`;
+    tip.hidden = false;
+    tip.style.left = `${Math.min(innerWidth - tip.offsetWidth - 12, Math.max(12, x - tip.offsetWidth / 2))}px`;
+    tip.style.top = `${y - tip.offsetHeight - 14}px`;
+  };
+
+  // ── Las crestas ──
+  if (d.rel) {
+    rg = ridges(wx.querySelector<HTMLElement>(".wx-mapcol")!, d.rel, d.R, {
+      color: (k) => ridgeColor(k),
+      dim: (k) => (sel.reg === "DO" ? null : cellProv[k] !== sel.reg),
+      pad: () => (layout === "phone" ? { top: 100, bottom: PEEK + 110, left: 10, right: 10 } : { ...fitPad(), top: 70 }),
+      labels: { yuna: LL("Cuenca del Yuna", "Yuna basin"), hatillo: LL("Presa de Hatillo", "Hatillo dam"), scale: LL("1000 m (×11)", "1,000 m (×11)"), credit: LL("Relieve: Copernicus GLO-90 · color: celdas de 0,1° del mapa", "Relief: Copernicus GLO-90 · colour: the map's 0.1° cells") },
+      onHover: (k, x, y) => { const iso = cellProv[k]; showTip(iso ? d.regName(iso) : LL("Celda de 11 km", "11 km cell"), lineFor(k, iso), x, y); },
+      onLeave: () => { tip.hidden = true; },
+      onClick: (k) => { const iso = cellProv[k]; if (iso) pickRegion(iso === sel.reg ? "DO" : iso); },
+    });
+    const mineRg = rg;
+    cleanup.push(() => mineRg.destroy());
+    rg.show(ui.style === "crestas");
+  }
+
   // ── Arranque ──
   t3 = terrain3d($("map"), {
     zones: [], sites: [], onZone: () => {}, onSite: () => {}, cellLabel: () => "", siteAction: "",
@@ -372,39 +451,20 @@ function render(view: HTMLElement, d: TrendData) {
     onProvince: (shape) => { const iso = d.shapeToIso[shape]; if (iso) pickRegion(iso); },
   });
   const mine = t3;
-  renderStyle(); renderPanels();
+  renderStyle(); renderPanels(); paintRidge(false);
   mine.ready.then(() => {
     if (t3 !== mine) return;
     mine.setFitPadding(fitPad());
-    mine.setMode(ui.style);
-    renderMap();
+    mine.setMode(ui.style === "crestas" ? "oscuro" : ui.style);
+    renderMap(false);
     if (sel.reg !== "DO") mine.selectProvince(d.isoToShape[sel.reg] ?? null);
     frame(true);
     const map = mine.map;
     map.on("mousemove", (e) => {
       const f = map.queryRenderedFeatures(e.point, { layers: ["prov-fill"] })[0];
       if (!f) { tip.hidden = true; return; }
-      const iso = d.shapeToIso[String(f.id)];
-      let line = "";
-      if (ui.year === null && ui.show === "acuerdo") {
-        const k = cellAt(d.R, e.lngLat.lng, e.lngLat.lat), cl = d.cellClass(sel), code = k >= 0 && cl ? cl[k] : null;
-        if (code !== null && code !== undefined && d.R.incluida[k]) {
-          const name = (d.R.clases_codigo ?? [])[code];
-          line = `<b>${esc(d.V.clases[name] ? d.lab(d.V.clases[name]) : name)}</b> · ${d.prods.map((p) => { const v = d.cells(sel, p)?.pendiente_decada[k]; return `${p} ${v === null || v === undefined ? "—" : sgn(v)}`; }).join(" · ")}`;
-        }
-      } else if (ui.year === null) {
-        const lay = d.cells(sel), k = cellAt(d.R, e.lngLat.lng, e.lngLat.lat);
-        const v = lay && k >= 0 && d.R.incluida[k] ? lay.pendiente_decada[k] : null;
-        if (v !== null && lay) line = `<b class="num">${sgn(v)}</b> ${esc(vm().unidad_tendencia)} · ${esc((lay.q[k] ?? 1) <= d.V.umbral_significancia.q_fdr ? LL("cambio claro", "clear change") : LL("no se distingue del azar", "indistinguishable from chance"))}`;
-      } else {
-        const s = d.series(sel, sel.src, iso), v = s?.[ui.year];
-        if (v !== null && v !== undefined) line = `<b class="num">${num(v)}</b> ${esc(vm().unidad)} ${LL("en", "in")} ${years()[ui.year]}`;
-      }
       const r = map.getCanvas().getBoundingClientRect();
-      tip.innerHTML = `<p class="tt-n">${esc(String(f.properties?.shapeName ?? ""))}</p>${line ? `<p>${line}</p>` : ""}`;
-      tip.hidden = false;
-      tip.style.left = `${Math.min(innerWidth - tip.offsetWidth - 12, Math.max(12, r.left + e.point.x - tip.offsetWidth / 2))}px`;
-      tip.style.top = `${r.top + e.point.y - tip.offsetHeight - 14}px`;
+      showTip(String(f.properties?.shapeName ?? ""), lineFor(cellAt(d.R, e.lngLat.lng, e.lngLat.lat), d.shapeToIso[String(f.id)]), r.left + e.point.x, r.top + e.point.y);
     });
     map.getCanvas().addEventListener("mouseleave", () => { tip.hidden = true; });
   });
