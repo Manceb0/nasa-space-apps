@@ -106,5 +106,5 @@ export function seriesChart(d: TrendData, s: Sel, width: number, mark: number | 
     ${mark !== null ? `<line class="tr-cur" x1="${X(mark)}" x2="${X(mark)}" y1="${mt}" y2="${H - mb}"/>` : ""}
     <rect x="${ml}" y="0" width="${W - ml - mr}" height="${H}" fill="transparent" class="tr-hit" data-ml="${ml}" data-mr="${mr}" data-w="${W}"/>
   </svg>
-  <p class="tr-key">${lines.map((l) => `<span><i class="ln" style="background:${pc(l.p)}"></i>${esc(l.p)}${l.t ? ` ${sgn(l.t.pendiente_decada)}` : ""}</span>`).join("")}<span>${esc(LL("recta: tendencia (discontinua si no es significativa)", "line: trend (dashed if not significant)"))}</span></p>`;
+  <p class="tr-key">${lines.map((l) => `<span><i class="ln" style="background:${pc(l.p)}"></i>${esc(l.p)}${l.t ? ` ${sgn(l.t.pendiente_decada)}` : ""}</span>`).join("")}<span>${esc(LL("discontinua: no significativa", "dashed: not significant"))}</span></p>`;
 }

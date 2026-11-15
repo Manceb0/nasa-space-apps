@@ -19,7 +19,7 @@ type Style = "crestas" | "3d" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { style: "crestas" as Style, year: null as number | null, show: "" as string };
+const ui = { style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true, open: true, proof: false };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -27,6 +27,8 @@ const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const TIERS = [["sabemos", "Lo que sabemos", "What we know"], ["creemos", "Lo que creemos saber", "What we think we know"], ["comprobar", "Lo que hay que comprobar", "What still needs checking"]] as const;
 const CHEV = '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const MARK = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="#f2b33d"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
+const PANEL_L = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 3v10" stroke="currentColor" stroke-width="1.5"/></svg>';
+const PANEL_R = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3v10" stroke="currentColor" stroke-width="1.5"/></svg>';
 const SEASON: Record<string, [string, string]> = { anual: ["Año", "Year"], seca: ["Seca", "Dry"], humeda_temprana: ["May–jul", "May–Jul"], humeda_tardia: ["Ago–nov", "Aug–Nov"] };
 
 export function destroyTrends() {
@@ -49,34 +51,29 @@ export async function viewTrends(view: HTMLElement) {
 function render(view: HTMLElement, d: TrendData) {
   const layout: Layout = innerWidth < 760 ? "phone" : innerWidth < 1180 ? "mid" : "wide";
   const updated = new Date(d.V.generado_utc).toLocaleString(LL("es-DO", "en-US"), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
-  const side = `
-    <section class="blk blk-q" aria-labelledby="q-h">
-      <h2 id="q-h">${esc(LL("Lo que quieres saber", "What you want to know"))}</h2>
-      <div class="qs" id="qs" role="radiogroup"></div>
-    </section>
-    <section class="blk blk-ans" id="ans" aria-live="polite"></section>`;
+  // Secciones plegables: abiertas en ancho (tienen su columna), cerradas en tableta y teléfono (comparten la hoja)
+  const sect = (id: string, title: string) => `
+    <details class="sec" id="${id}-sec" ${layout === "wide" ? "open" : ""}>
+      <summary><h2 id="${id}-h">${title}</h2><span class="meta num" id="${id}-meta"></span>${CHEV}</summary>
+      <div class="sec-b" id="${id}-plot"></div>
+    </details>`;
   const extra = `
-    <section class="blk blk-series" aria-labelledby="s-h">
-      <div class="blk-h"><h2 id="s-h"></h2><span class="readout num" id="s-read"></span></div>
-      <div id="s-plot"></div>
-    </section>
-    <section class="blk blk-rank" aria-labelledby="r-h">
-      <div class="blk-h"><h2 id="r-h">${esc(LL("Dónde poner atención", "Where to look"))}</h2><span class="meta" id="r-meta"></span></div>
-      <p class="hint">${esc(LL("Las 32 provincias, de más subida a más bajada. Barra: intervalo del 95 %. Punto relleno: cambio claro. Toca una para abrirla.", "All 32 provinces, largest rise to largest fall. Bar: 95 % interval. Filled dot: clear change. Tap one to open it."))}</p>
-      <div class="rank-scroll" id="r-plot"></div>
-    </section>
-    <p class="fine">${esc(LL("Fuente: NASA GPM IMERG V07 (Huffman et al. 2023). Tendencia de Theil-Sen con Mann-Kendall de Hamed y Rao (1998); FDR de Benjamini-Hochberg. Describe 2001–2024; no atribuye causas.", "Source: NASA GPM IMERG V07 (Huffman et al. 2023). Theil-Sen trend with Hamed & Rao (1998) Mann-Kendall; Benjamini-Hochberg FDR. Describes 2001–2024; no attribution of causes."))}</p>`;
+    ${sect("s", "")}
+    ${sect("r", esc(LL("Dónde poner atención", "Where to look")))}
+    <p class="fine">${esc(LL("NASA GPM IMERG V07 y CHC CHIRPS v2.0, 2001–2024. Theil-Sen con Mann-Kendall de Hamed y Rao; FDR de Benjamini-Hochberg. Describe; no atribuye causas.", "NASA GPM IMERG V07 and CHC CHIRPS v2.0, 2001–2024. Theil-Sen with Hamed & Rao Mann-Kendall; Benjamini-Hochberg FDR. Describes; does not attribute causes."))}</p>`;
+  const styles: [Style, string][] = [...(d.rel ? [["crestas", LL("Crestas", "Ridges")] as [Style, string]] : []), ["oscuro", LL("Oscuro", "Dark")], ["3d", LL("Relieve", "Terrain")], ["plano", LL("Satélite", "Satellite")]];
+  const fold = (side: "left" | "right") => layout === "phone" || (side === "right" && layout !== "wide") ? "" : `<button class="fold" data-fold="${side}" aria-controls="wx-${side}">${side === "left" ? PANEL_L : PANEL_R}</button>`;
 
   view.innerHTML = `
-  <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-sty="${ui.style}">
+  <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-sty="${ui.style}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
     <header class="wx-top">
       <a class="wx-brand" href="#tendencias">${MARK}<b>Stellar Horizons</b><span>${esc(LL("Detective de tendencias", "Trend detective"))}</span></a>
-      ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}"><i></i>${esc(LL("Preliminar: solo IMERG, CHIRPS en camino", "Preliminary: IMERG only, CHIRPS on its way"))}</p>`}
+      ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}"><i></i>${esc(LL("Preliminar: solo IMERG", "Preliminary: IMERG only"))}</p>`}
     </header>
     <div class="wx-main">
       <aside class="wx-left" id="wx-left">
         ${layout === "phone" ? `<button class="wx-grab" id="wx-grab" aria-label="${esc(LL("Subir o bajar el panel", "Raise or lower the panel"))}"><i></i></button>` : ""}
-        <section class="blk blk-reg" id="wx-peek">
+        <section class="blk-reg" id="wx-peek">
           <div class="reg-row">
             <h1 id="wx-h1"></h1>
             <label class="reg-pick"><span>${esc(LL("Cambiar", "Change"))}</span><select id="r-sel" aria-label="${esc(LL("Región", "Region"))}">
@@ -85,19 +82,27 @@ function render(view: HTMLElement, d: TrendData) {
             </select>${CHEV}</label>
           </div>
           <p class="finding" id="finding"></p>
-          ${d.both ? "" : `<p class="wx-stamp in-panel"><i></i>${esc(LL("Preliminar: solo IMERG, CHIRPS en camino", "Preliminary: IMERG only, CHIRPS on its way"))}</p>`}
           ${layout === "phone" ? `<p class="peek-ans" id="peek-ans"></p>` : ""}
         </section>
-        <div class="wx-scroll">${side}${layout === "wide" ? "" : extra}</div>
+        <div class="wx-scroll">
+          <section class="blk-q" aria-labelledby="q-h">
+            <h2 id="q-h">${esc(LL("Lo que quieres saber", "What you want to know"))}</h2>
+            <div class="qs" id="qs"></div>
+          </section>
+          ${layout === "wide" ? "" : extra}
+        </div>
       </aside>
       <section class="wx-mapcol" aria-label="${esc(LL("Mapa de tendencias", "Trend map"))}">
         <div id="map"></div>
-        <div class="seg map-data" role="radiogroup" aria-label="${esc(LL("Qué muestra el mapa", "What the map shows"))}">
-          ${d.both ? `<button data-show="acuerdo" role="radio">${esc(LL("¿Coinciden?", "Agree?"))}</button>` : ""}
-          ${d.prods.map((p) => `<button data-show="${p}" role="radio">${p}</button>`).join("")}
-        </div>
-        <div class="seg map-sty" role="radiogroup" aria-label="${esc(LL("Estilo del mapa", "Map style"))}">
-          ${([...(d.rel ? [["crestas", LL("Crestas", "Ridges")]] : []), ["oscuro", LL("Oscuro", "Dark")], ["3d", LL("Relieve", "Terrain")], ["plano", LL("Satélite", "Satellite")]] as [Style, string][]).map(([k, l]) => `<button data-sty="${k}" role="radio">${esc(l)}</button>`).join("")}
+        <div class="map-top">
+          ${fold("left")}
+          <div class="seg map-data" role="radiogroup" aria-label="${esc(LL("Qué muestra el mapa", "What the map shows"))}">
+            ${d.both ? `<button data-show="acuerdo" role="radio">${esc(LL("¿Coinciden?", "Agree?"))}</button>` : ""}
+            ${d.prods.map((p) => `<button data-show="${p}" role="radio">${p}</button>`).join("")}
+          </div>
+          <span class="sp"></span>
+          <label class="pick map-sty"><span>${esc(LL("Vista", "View"))}</span><select id="sty-sel" aria-label="${esc(LL("Vista del mapa", "Map view"))}">${styles.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join("")}</select>${CHEV}</label>
+          ${fold("right")}
         </div>
         <div class="wx-time" id="wx-bar" data-mode="trend">
           <button class="wx-play"></button>
@@ -106,7 +111,7 @@ function render(view: HTMLElement, d: TrendData) {
           <div class="wx-legend" id="wx-legend"></div>
         </div>
       </section>
-      ${layout === "wide" ? `<aside class="wx-right"><div class="wx-scroll">${extra}</div></aside>` : ""}
+      ${layout === "wide" ? `<aside class="wx-right" id="wx-right"><div class="wx-scroll">${extra}</div></aside>` : ""}
     </div>
     <div class="tr-tip" id="tr-tip" role="tooltip" hidden></div>
   </div>`;
@@ -129,19 +134,22 @@ function render(view: HTMLElement, d: TrendData) {
     }
   };
 
-  // ── Preguntas (los objetivos) con su respuesta corta para la región ──
+  // ── Preguntas: un acordeón; la elegida se abre con su respuesta, las demás muestran solo el veredicto ──
   const renderQuestions = () => {
     const q0 = questionOf(sel.ind);
     $("qs").innerHTML = QUESTIONS.map((q) => {
-      const v = verdict(d, sel, pick[q.id]), on = q.id === q0.id;
-      return `<button class="q ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}">
-        <span class="q-t">${esc(LL(q.es, q.en))}</span>
-        <span class="q-v ${v.strong ? "sig" : ""}" style="--c:${v.color}"><i></i>${esc(v.text)}</span>
-      </button>`;
+      const v = verdict(d, sel, pick[q.id]), on = q.id === q0.id, open = on && ui.open;
+      return `<div class="q ${on ? "on" : ""} ${open ? "open" : ""}">
+        <button class="q-h" data-q="${q.id}" aria-expanded="${open}" title="${esc(v.text)}">
+          <span class="q-t">${esc(LL(q.es, q.en))}</span>
+          <span class="q-v ${v.strong ? "sig" : ""}" style="--c:${v.color}"><i></i>${esc(v.short)}</span>${CHEV}
+        </button>
+        ${open ? `<div class="q-b" id="ans" aria-live="polite"></div>` : ""}
+      </div>`;
     }).join("");
   };
 
-  // ── La respuesta: los dos testigos, la frase según su acuerdo, la escalera de evidencia y la prueba ──
+  // ── La respuesta: los dos testigos, una frase y la escalera; la prueba queda plegada ──
   const countUp = (root: HTMLElement) => root.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
     if (RM()) return;
     const to = Number(el.dataset.count), dg = Number(el.dataset.d), t0 = performance.now();
@@ -153,66 +161,69 @@ function render(view: HTMLElement, d: TrendData) {
     requestAnimationFrame(step);
   });
   const renderAnswer = () => {
-    const q = questionOf(sel.ind), v = vm(), ws = both(), row = d.row(sel), cls = row?.clase ?? "";
+    const box = document.getElementById("ans");
+    if (!box) return;
+    const q = questionOf(sel.ind), v = vm(), ws = both(), cls = d.row(sel)?.clase ?? "";
     const ctl = `
       <div class="ans-ctl">
-        <label class="pick"><span>${esc(LL("Medido como", "Measured as"))}</span><select id="v-sel">${q.vars.map((id) => `<option value="${id}" ${id === sel.ind ? "selected" : ""}>${esc(shortName(id))}</option>`).join("")}</select>${CHEV}</label>
+        ${q.vars.length > 1 ? `<label class="pick"><span>${esc(LL("Medido como", "Measured as"))}</span><select id="v-sel">${q.vars.map((id) => `<option value="${id}" ${id === sel.ind ? "selected" : ""}>${esc(shortName(id))}</option>`).join("")}</select>${CHEV}</label>` : ""}
         <div class="seg seg-per" role="radiogroup" aria-label="${esc(LL("Época del año", "Season"))}">
           ${Object.keys(d.V.periodos).map((k) => `<button data-per="${k}" role="radio" aria-checked="${k === sel.per}" class="${k === sel.per ? "on" : ""}" title="${esc(v.periodos.includes(k) ? d.lab(d.V.periodos[k]) : LL("El SPI solo existe para el año completo", "SPI exists for the whole year only"))}" ${v.periodos.includes(k) ? "" : "disabled"}>${esc(LL(...SEASON[k]))}</button>`).join("")}
         </div>
       </div>`;
-    if (!ws.length) { $("ans").innerHTML = `${ctl}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
+    if (!ws.length) { box.innerHTML = `${ctl}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
     const ti = d.tier(sel), unit = v.unidad;
     const sigW = ws.filter((w) => d.isSig(w.t, sel.reg));
     const mdt = Math.max(...ws.map((w) => w.t.mdt));
-    const s0 = ws[0].t, up = (sigW[0] ?? ws[0]).t.pendiente_decada > 0;
-    const says = (lang: "es" | "en") => ws.map((w) => `${w.p} ${lang === "es" ? "dice" : "says"} ${sgn(w.t.pendiente_decada)}`).join(lang === "es" ? " y " : " and ");
+    const up = (sigW[0] ?? ws[0]).t.pendiente_decada > 0, dir = up ? LL("sube", "rising") : LL("baja", "falling");
     const sentence =
-      cls === "robusta" ? LL(`Las dos fuentes coinciden: ${up ? "sube" : "baja"} entre ${ws.map((w) => num(Math.abs(w.t.pendiente_decada))).join(" y ")} ${unit} por década. Es lo que sabemos.`, `Both sources agree: ${up ? "rising" : "falling"} by ${ws.map((w) => num(Math.abs(w.t.pendiente_decada))).join(" to ")} ${unit} per decade. This is what we know.`)
-      : cls === "consistente" ? LL(`Las dos apuntan a que ${up ? "sube" : "baja"}, pero solo ${sigW.map((w) => w.p).join(" y ")} lo confirma. Es probable, todavía no seguro.`, `Both point to it ${up ? "rising" : "falling"}, but only ${sigW.map((w) => w.p).join(" and ")} confirms it. Likely, not yet certain.`)
-      : cls === "en disputa" ? LL(`${says("es")} ${unit} por década: direcciones opuestas y al menos una significativa. No se puede afirmar una tendencia; hay que investigar por qué discrepan.`, `${says("en")} ${unit} per decade: opposite directions, at least one significant. No trend can be claimed; why they disagree needs checking.`)
-      : cls === "sin dato" ? LL("Faltan años en alguna serie, así que no se calcula la tendencia.", "Some years are missing, so no trend is computed.")
-      : cls === "un solo producto" && sigW.length ? LL(`${s0.pendiente_decada > 0 ? "Sube" : "Baja"} ${num(Math.abs(s0.pendiente_decada))} ${unit} por década según ${ws[0].p}; falta la segunda fuente para confirmarlo.`, `${s0.pendiente_decada > 0 ? "Rising" : "Falling"} ${num(Math.abs(s0.pendiente_decada))} ${unit} per decade according to ${ws[0].p}; a second source is needed to confirm it.`)
-      : LL(`Ninguna fuente detecta una tendencia. «Sin señal» no es «sin cambio»: con 24 años solo se vería un cambio mayor de ±${num(mdt)} ${unit} por década.`, `Neither source detects a trend. "No signal" is not "no change": with 24 years only a change beyond ±${num(mdt)} ${unit} per decade would show.`);
+      cls === "robusta" ? LL(`Las dos fuentes coinciden: ${dir}. Es lo que sabemos.`, `Both sources agree: ${dir}. This is what we know.`)
+      : cls === "consistente" ? LL(`Probablemente ${dir}: solo ${sigW.map((w) => w.p).join(" y ")} lo confirma.`, `Probably ${dir}: only ${sigW.map((w) => w.p).join(" and ")} confirms it.`)
+      : cls === "en disputa" ? LL("Se contradicen: no se puede afirmar una tendencia. Hay que investigar por qué.", "They contradict each other: no trend can be claimed. Why needs checking.")
+      : cls === "sin dato" ? LL("Faltan años en alguna serie: no se calcula la tendencia.", "Some years are missing: no trend is computed.")
+      : cls === "un solo producto" && sigW.length ? LL(`${up ? "Sube" : "Baja"} según ${ws[0].p}; falta la segunda fuente.`, `${up ? "Rising" : "Falling"} according to ${ws[0].p}; a second source is missing.`)
+      : LL(`Ninguna detecta tendencia, y eso no es «sin cambio»: solo se vería uno mayor de ±${num(mdt)} ${unit} por década.`, `Neither detects a trend, and that is not "no change": only one beyond ±${num(mdt)} ${unit} per decade would show.`);
     const tierIdx = TIERS.findIndex(([k]) => k === ti.tier);
     const pFmt = (t: Tr) => (t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3));
-    $("ans").innerHTML = `${ctl}
-      <div class="wits">${ws.map(({ p, t }) => { const sg = d.isSig(t, sel.reg); return `<div class="wit">
+    box.innerHTML = `${ctl}
+      <div class="wits">${ws.map(({ p, t }) => `<div class="wit">
         <p class="wit-p"><i style="background:${PROD_COLOR[p]}"></i>${p}</p>
         <p class="wit-n"><b class="num" data-count="${t.pendiente_decada}" data-d="${digits(t.pendiente_decada)}">${sgn(t.pendiente_decada)}</b></p>
-        <p class="wit-s">${esc(v.unidad_tendencia)} · ${esc(sg ? LL("significativa", "significant") : LL("no significativa", "not significant"))}</p>
-      </div>`; }).join("")}</div>
+        <p class="wit-s">${esc(v.unidad_tendencia)}${d.isSig(t, sel.reg) ? "" : ` · ${esc(LL("no signif.", "not signif."))}`}</p>
+      </div>`).join("")}</div>
       <p class="ans-sent">${esc(sentence)}</p>
       <div class="ladder" role="img" aria-label="${esc(`${LL("Evidencia", "Evidence")}: ${ti.label}`)}">${TIERS.map(([, es, en], i) => `<span class="${i === tierIdx ? "on" : ""}" style="--c:${ti.color}"><i></i>${esc(LL(es, en))}</span>`).join("")}</div>
-      <p class="ans-why"><span class="chip" style="--c:${ti.color}">${esc(ti.label)}</span>${esc(ti.why)}</p>
-      ${capsule(d, sel)}
-      <table class="stats-t">
-        <thead><tr><th></th><th class="num" title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}">p</th><th class="num" title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}">q (FDR)</th><th class="num" title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}">${esc(LL("Mín. detect.", "Min. detect."))}</th><th class="num">${esc(LL("Media", "Mean"))}</th></tr></thead>
-        <tbody>${ws.map(({ p, t }) => `<tr><th scope="row"><i style="background:${PROD_COLOR[p]}"></i>${p}</th><td class="num">${pFmt(t)}</td><td class="num">${t.q === null ? "—" : num(t.q, 3)}</td><td class="num">±${num(t.mdt)}</td><td class="num">${num(t.media)}</td></tr>`).join("")}</tbody>
-      </table>
-      <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))} ${ws.map((w) => `${w.p}: ${esc(d.V.productos[w.p]?.tipo_fuente ?? "")}`).join(" · ")}.</p>
-      <details class="why"><summary>${esc(LL("Por qué importa y qué no dice", "Why it matters and what it does not say"))}</summary>
-        <p>${esc(v.descripcion)} ${esc(v.por_que_importa)}</p>
-        <p>${esc(LL("IMERG y CHIRPS no son testigos totalmente independientes: comparten infrarrojo geoestacionario y pluviómetros. Cuando discrepan no es que el satélite mienta: cada producto interpreta distinto la misma lluvia, y eso es lo que hay que investigar.", "IMERG and CHIRPS are not fully independent: they share geostationary infrared and rain gauges. When they disagree it is not that a satellite lies: each product reads the same rain differently, and that is what needs checking."))}</p>
-        <p>${esc(d.V.nota_causalidad)}</p>
+      <details class="proof" ${ui.proof ? "open" : ""}>
+        <summary>${esc(LL("Ver la prueba", "See the evidence"))}${CHEV}</summary>
+        <p class="pr-why"><b>${esc(ti.label)}.</b> ${esc(ti.why)}</p>
+        ${capsule(d, sel)}
+        <table class="stats-t">
+          <thead><tr><th></th><th class="num" title="${esc(LL("Mann-Kendall modificado de Hamed y Rao (1998)", "Hamed & Rao (1998) modified Mann-Kendall"))}">p</th><th class="num" title="${esc(LL("Benjamini-Hochberg entre las 32 provincias", "Benjamini-Hochberg across the 32 provinces"))}">q (FDR)</th><th class="num" title="${esc(LL("80 % de potencia, α = 0,05", "80 % power, α = 0.05"))}">${esc(LL("Mín. detect.", "Min. detect."))}</th><th class="num">${esc(LL("Media", "Mean"))}</th></tr></thead>
+          <tbody>${ws.map(({ p, t }) => `<tr><th scope="row"><i style="background:${PROD_COLOR[p]}"></i>${p}</th><td class="num">${pFmt(t)}</td><td class="num">${t.q === null ? "—" : num(t.q, 3)}</td><td class="num">±${num(t.mdt)}</td><td class="num">${num(t.media)}</td></tr>`).join("")}</tbody>
+        </table>
+        <p class="rule">${esc(LL(`Significativa si ${d.sigRule(sel.reg)}.`, `Significant if ${d.sigRule(sel.reg)}.`))} ${ws.map((w) => `${w.p}: ${esc(d.V.productos[w.p]?.tipo_fuente ?? "")}`).join(" · ")}.</p>
+        <p class="pr-txt">${esc(v.descripcion)} ${esc(v.por_que_importa)}</p>
+        <p class="pr-txt">${esc(LL("IMERG y CHIRPS no son testigos del todo independientes: comparten infrarrojo geoestacionario y pluviómetros. Si discrepan, no es que un satélite mienta: cada producto lee distinto la misma lluvia, y eso es lo que hay que investigar.", "IMERG and CHIRPS are not fully independent: they share geostationary infrared and rain gauges. When they disagree it is not that a satellite lies: each product reads the same rain differently, and that is what needs checking."))} ${esc(d.V.nota_causalidad)}</p>
       </details>`;
-    countUp($("ans"));
+    box.querySelector<HTMLDetailsElement>(".proof")!.addEventListener("toggle", (e) => { ui.proof = (e.target as HTMLDetailsElement).open; });
+    countUp(box);
   };
 
-  // ── Año a año y las 32 provincias ──
+  // ── Año a año y las 32 provincias (plegables) ──
   const plotW = (el: HTMLElement) => Math.max(260, el.clientWidth);
+  const isOpen = (id: string) => (document.getElementById(`${id}-sec`) as HTMLDetailsElement | null)?.open ?? false;
   const showYear = (k: number | null) => {
-    const r = $("s-read");
-    const s = d.series(sel);
+    const r = $("s-meta"), s = d.series(sel);
     if (k === null || !s) { r.textContent = ""; return; }
-    const vals = s.filter((x): x is number => x !== null), mean = vals.reduce((a, b) => a + b, 0) / vals.length, v = s[k];
-    r.textContent = v === null ? `${years()[k]} · —` : `${years()[k]} · ${num(v)} ${vm().unidad} · ${sgn(((v - mean) / mean) * 100, 0)} % ${LL("vs su media", "vs its mean")}`;
+    const v = s[k];
+    r.textContent = v === null ? `${years()[k]} · —` : `${years()[k]} · ${num(v)} ${vm().unidad}`;
   };
   const renderSeries = () => {
+    $("s-h").textContent = LL("Año a año", "Year by year");
+    if (!isOpen("s")) { showYear(ui.year); return; }
     const el = $("s-plot");
-    $("s-h").textContent = LL(`Año a año en ${regName()}`, `Year by year in ${regName()}`);
-    el.innerHTML = seriesChart(d, sel, plotW(el), ui.year === null ? null : years()[ui.year], layout === "wide" ? 200 : 180)
-      + `<p class="hint">${esc(LL("Toca un año para verlo en el mapa.", "Tap a year to see it on the map."))}</p>`;
+    el.innerHTML = seriesChart(d, sel, plotW(el), ui.year === null ? null : years()[ui.year], layout === "wide" ? 190 : 170);
+    el.title = LL("Toca un año para verlo en el mapa", "Tap a year to see it on the map");
     const hit = el.querySelector<SVGRectElement>(".tr-hit");
     if (hit) {
       const yrs = years(), W = Number(hit.dataset.w), ml = Number(hit.dataset.ml), mr = Number(hit.dataset.mr);
@@ -225,12 +236,14 @@ function render(view: HTMLElement, d: TrendData) {
   };
   const renderRank = () => {
     const el = $("r-plot"), f = forest(d, sel, plotW(el));
-    el.innerHTML = f.svg;
     const c = f.counts, n = (k: string) => c[k] ?? 0;
     $("r-meta").textContent = d.both
-      ? LL(`${n("robusta")} robustas · ${n("consistente")} consistentes · ${n("en disputa")} en disputa`, `${n("robusta")} robust · ${n("consistente")} consistent · ${n("en disputa")} disputed`)
-      : LL(`${n("un solo producto")} con una sola fuente`, `${n("un solo producto")} with one source`);
+      ? ([["robusta", "robustas", "robust"], ["consistente", "consistentes", "consistent"], ["en disputa", "en disputa", "disputed"]] as const).filter(([k]) => n(k)).map(([k, es, en]) => `${n(k)} ${LL(es, en)}`).join(" · ") || LL("ninguna con señal", "none with a signal")
+      : LL(`${n("un solo producto")} con una fuente`, `${n("un solo producto")} with one source`);
+    if (!isOpen("r")) return;
+    el.innerHTML = `<p class="hint">${esc(LL("Punto lleno: cambio claro · barra: intervalo del 95 % · toca una provincia", "Filled dot: clear change · bar: 95 % interval · tap a province"))}</p>${f.svg}`;
   };
+  (["s", "r"] as const).forEach((id) => document.getElementById(`${id}-sec`)?.addEventListener("toggle", () => (id === "s" ? renderSeries() : renderRank())));
 
   // ── El mapa ──
   const renderLegend = (max: number, pct: boolean) => {
@@ -343,8 +356,12 @@ function render(view: HTMLElement, d: TrendData) {
     t3.map.fitBounds(b, { padding: fitPad(), pitch: ui.style === "3d" ? 52 : 0, bearing: ui.style === "3d" ? -14 : 0, duration: fly && !RM() ? 1500 : 0, maxZoom: 10 });
   };
   const renderStyle = () => {
-    wx.dataset.sty = ui.style;
-    wx.querySelectorAll<HTMLButtonElement>("[data-sty]").forEach((b) => { const on = b.dataset.sty === ui.style; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
+    wx.dataset.sty = ui.style; wx.dataset.left = ui.left ? "on" : "off"; wx.dataset.right = ui.right ? "on" : "off";
+    ($("sty-sel") as HTMLSelectElement).value = ui.style;
+    wx.querySelectorAll<HTMLButtonElement>("[data-fold]").forEach((b) => {
+      const open = ui[b.dataset.fold as "left" | "right"], t = open ? LL("Ocultar panel", "Hide panel") : LL("Mostrar panel", "Show panel");
+      b.setAttribute("aria-expanded", String(open)); b.setAttribute("aria-label", t); b.title = t;
+    });
     wx.querySelectorAll<HTMLButtonElement>("[data-show]").forEach((b) => { const on = b.dataset.show === ui.show; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
   };
 
@@ -364,7 +381,13 @@ function render(view: HTMLElement, d: TrendData) {
   wx.addEventListener("click", (e) => {
     const el = e.target as Element;
     const q = el.closest<HTMLElement>("[data-q]");
-    if (q) { setInd(pick[q.dataset.q!]); return; }
+    if (q) {
+      if (questionOf(sel.ind).id === q.dataset.q) { ui.open = !ui.open; renderQuestions(); renderAnswer(); }
+      else { ui.open = true; setInd(pick[q.dataset.q!]); }
+      return;
+    }
+    const fo = el.closest<HTMLButtonElement>("[data-fold]");
+    if (fo) { const side = fo.dataset.fold as "left" | "right"; ui[side] = !ui[side]; renderStyle(); return; }
     const per = el.closest<HTMLButtonElement>("[data-per]");
     if (per && !per.disabled) { sel.per = per.dataset.per!; tl.setYears(years()); renderPanels(); renderMap(); return; }
     const src = el.closest<HTMLButtonElement>("[data-src]");
@@ -374,13 +397,6 @@ function render(view: HTMLElement, d: TrendData) {
       ui.show = show.dataset.show!;
       if (ui.show !== "acuerdo") sel.src = ui.show;
       renderStyle(); renderPanels(); renderMap(); return;
-    }
-    const sty = el.closest<HTMLButtonElement>("[data-sty]");
-    if (sty) {
-      ui.style = sty.dataset.sty as Style; renderStyle();
-      rg?.show(ui.style === "crestas");
-      if (ui.style !== "crestas") { tip.hidden = true; t3?.setMode(ui.style); frame(false); }
-      return;
     }
     const fr = el.closest<SVGGElement>(".fr");
     if (fr) pickRegion(fr.dataset.reg!);
@@ -393,7 +409,14 @@ function render(view: HTMLElement, d: TrendData) {
     const t = e.target as HTMLSelectElement;
     if (t.id === "r-sel") pickRegion(t.value);
     else if (t.id === "v-sel") setInd(t.value);
+    else if (t.id === "sty-sel") {
+      ui.style = t.value as Style; renderStyle();
+      rg?.show(ui.style === "crestas");
+      if (ui.style !== "crestas") { tip.hidden = true; t3?.setMode(ui.style); frame(false); }
+    }
   });
+
+  wx.querySelector(".wx-main")!.addEventListener("transitionend", (e) => { if ((e as TransitionEvent).propertyName === "grid-template-columns") t3?.map.resize(); });
 
   // ── Línea de tiempo ──
   const tl = timeline($("wx-bar"), (i) => { ui.year = i; renderMap(); renderSeries(); });
@@ -433,7 +456,7 @@ function render(view: HTMLElement, d: TrendData) {
     rg = ridges(wx.querySelector<HTMLElement>(".wx-mapcol")!, d.rel, d.R, {
       color: (k) => ridgeColor(k),
       dim: (k) => (sel.reg === "DO" ? null : cellProv[k] !== sel.reg),
-      pad: () => (layout === "phone" ? { top: 100, bottom: PEEK + 110, left: 10, right: 10 } : { ...fitPad(), top: 70 }),
+      pad: () => (layout === "phone" ? { top: 62, bottom: PEEK + 110, left: 10, right: 10 } : { ...fitPad(), top: 70 }),
       labels: { yuna: LL("Cuenca del Yuna", "Yuna basin"), hatillo: LL("Presa de Hatillo", "Hatillo dam"), scale: LL("1000 m (×11)", "1,000 m (×11)"), credit: LL("Relieve: Copernicus GLO-90 · color: celdas de 0,1° del mapa", "Relief: Copernicus GLO-90 · colour: the map's 0.1° cells") },
       onHover: (k, x, y) => { const iso = cellProv[k]; showTip(iso ? d.regName(iso) : LL("Celda de 11 km", "11 km cell"), lineFor(k, iso), x, y); },
       onLeave: () => { tip.hidden = true; },
