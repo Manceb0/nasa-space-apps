@@ -9,7 +9,7 @@ import { terrain3d } from "../terrain3d";
 import { esc, LL, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
 import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
 import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verdeAnswer, type Land, type LandQ } from "./tierra";
-import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart, WARN } from "./graficas";
+import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart } from "./graficas";
 import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
 import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
@@ -202,8 +202,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const S = d.s13;
     if (!S || !d.stepped(sel.ind)) return "";
     const rc = S.recuentos[sel.ind]?.[d.perFor(sel.ind, sel.per)];
-    return `<button class="adj ${d.fix ? "on" : ""}" id="s13-h" data-fix="${d.fix ? 0 : 1}" aria-pressed="${d.fix}" title="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}<span>${esc(LL("Ajustar IMERG", "Adjust IMERG"))}</span><i aria-hidden="true"></i></button>
-      ${d.fix ? `<p class="adj-on">${esc(LL("Sensibilidad, solo en el mapa", "Sensitivity, map only"))}${rc ? ` · ${esc(LL("celdas en disputa", "disputed cells"))}: <b class="num">${rc.en_disputa_publicado}</b> ${esc(LL("a", "to"))} <b class="num">${rc.en_disputa_sin_escalon}</b>` : ""} · <button class="s13-fig" data-fig13>${esc(LL("Testigos", "Witnesses"))}</button></p>` : ""}`;
+    return `<button class="adj ${d.fix ? "on" : ""}" id="s13-h" data-fix="${d.fix ? 0 : 1}" aria-pressed="${d.fix}" title="${esc(LL(DRIFT_ES, DRIFT_EN))}"><span>${esc(LL("¿Y si IMERG cuenta mal los días de lluvia?", "What if IMERG miscounts rain days?"))}</span><i aria-hidden="true"></i></button>
+      ${d.fix && rc ? `<div class="adj-res"><p><b class="num">${rc.en_disputa_publicado}</b><svg viewBox="0 0 28 12" aria-hidden="true"><path d="M2 6h20m-5-4 5 4-5 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><b class="num ok">${rc.en_disputa_sin_escalon}</b></p><span>${esc(LL("celdas en disputa en el mapa al ajustar IMERG hacia CHIRPS. Es una prueba de sensibilidad, no una corrección.", "disputed cells on the map when IMERG is adjusted towards CHIRPS. A sensitivity test, not a correction."))}</span><button class="s13-fig" data-fig13>${esc(LL("Ver los testigos", "See the witnesses"))}</button></div>` : ""}`;
   };
   const cyAnswer = (i: CyInfo) => {
     const box = $("ans"); if (!cyApi) return;
@@ -249,12 +249,13 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     }
     $("ans-h").textContent = LL("Qué dicen las dos fuentes", "What the two sources say");
     const v = vm(), ws = both(), cls = d.row(sel)?.clase ?? "";
-    const season = `<div class="seg seg-per" role="radiogroup" aria-label="${esc(LL("Época del año", "Season"))}">
-        ${Object.keys(d.V.periodos).map((k) => `<button data-per="${k}" role="radio" aria-checked="${k === sel.per}" class="${k === sel.per ? "on" : ""}" title="${esc(v.periodos.includes(k) ? d.lab(d.V.periodos[k]) : LL("El SPI solo existe para el año completo", "SPI exists for the whole year only"))}" ${v.periodos.includes(k) ? "" : "disabled"}>${esc(LL(...SEASON[k]))}</button>`).join("")}
+    const season = `<div class="per4" role="radiogroup" aria-label="${esc(LL("Época del año", "Season"))}">
+        ${Object.keys(d.V.periodos).map((k) => { const ok = v.periodos.includes(k), pv = ok ? verdict(d, { ...sel, per: k }, sel.ind) : null;
+          return `<button data-per="${k}" role="radio" aria-checked="${k === sel.per}" class="${k === sel.per ? "on" : ""}" title="${esc(ok ? d.lab(d.V.periodos[k]) : LL("El SPI solo existe para el año completo", "SPI exists for the whole year only"))}" ${ok ? "" : "disabled"}><b>${esc(LL(...SEASON[k]))}</b>${pv ? `<em class="${pv.strong ? "" : "weak"}" style="--c:${pv.color}">${esc(pv.short)}</em>` : ""}</button>`; }).join("")}
       </div>`;
-    const levers = `<div class="lev"><p class="lev-h">${esc(LL("Interroga la respuesta", "Question the answer"))}</p>${season}${adjLever()}</div>`;
+    const levers = `<div class="lev"><h3 class="lev-h">${esc(LL("Ponlo a prueba", "Put it to the test"))}</h3><p class="lev-q">${esc(LL("¿Cambia según la época del año?", "Does it change with the season?"))}</p>${season}${adjLever()}</div>`;
     const last = ui.trail.length - 1;
-    const trail = ui.trail.length > 1 ? `<ol class="trail" aria-label="${esc(LL("Cómo cambió el veredicto", "How the verdict changed"))}">${ui.trail.map((t, i) => `<li class="${i === last ? "on" : ""}" style="--c:${t.color}" title="${esc(`${t.label}: ${t.short}`)}"><i></i><span>${esc(t.label)}</span></li>`).join("")}</ol>` : "";
+    const trail = ui.trail.length > 1 ? `<h3 class="lev-h trail-h">${esc(LL("Lo que has probado", "What you have tried"))}</h3><ol class="trail" aria-label="${esc(LL("Cómo cambió el veredicto", "How the verdict changed"))}">${ui.trail.map((t, i) => `<li class="${i === last ? "on" : ""}" style="--c:${t.color}"><span>${esc(t.label)}</span><em>${esc(t.short)}</em></li>`).join("")}</ol>` : "";
     if (!ws.length) { box.innerHTML = `${levers}<p class="empty">${esc(LL("No hay datos para esta combinación.", "No data for this combination."))}</p>`; return; }
     const ti = d.tier(sel), vv = verdict(d, sel, sel.ind);
     const sigW = ws.filter((w) => d.isSig(w.t, sel.reg)), other = ws.filter((w) => !d.isSig(w.t, sel.reg));
@@ -276,9 +277,9 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       ${levers}
       ${trail}
       <ul class="claims">
-        <li class="yes"><b>${esc(LL("Podemos afirmar", "We can claim"))}</b>${esc(yes)}</li>
-        <li class="no"><b>${esc(LL("Aún no sabemos", "We do not know yet"))}</b>${esc(no)}</li>
-        <li class="why"><b>${esc(LL("Por qué importa", "Why it matters"))}</b>${esc(v.por_que_importa)}</li>
+        <li class="yes"><b>${esc(LL("Sabemos:", "We know:"))}</b> ${esc(yes)}</li>
+        <li class="no"><b>${esc(LL("Falta saber:", "Still unknown:"))}</b> ${esc(no)}</li>
+        <li class="why"><b>${esc(LL("Importa porque:", "It matters because:"))}</b> ${esc(v.por_que_importa)}</li>
       </ul>
       <details class="ans-more">
       <summary>${esc(LL("Estadística y notas", "Statistics and notes"))}${CHEV}</summary>
