@@ -20,8 +20,19 @@
   2009,
   2010,
   2011,
+  2012,
   2013,
-  2014
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024
  ],
  "nacional_sequia": [
   {
@@ -211,23 +222,23 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7614678899082569,
-     "disparos_imerg": 55,
-     "disparos_chirps": 54
+     "tasa_cambio_decision": 0.7570093457943925,
+     "disparos_imerg": 116,
+     "disparos_chirps": 98
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.7431192660550459,
-     "disparos_imerg": 55,
-     "disparos_chirps": 54
+     "tasa_cambio_decision": 0.7149532710280374,
+     "disparos_imerg": 116,
+     "disparos_chirps": 98
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.9,
-     "disparos_imerg": 19,
+     "tasa_cambio_decision": 0.9487179487179487,
+     "disparos_imerg": 38,
      "disparos_chirps": 1
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.85,
-     "disparos_imerg": 19,
+     "tasa_cambio_decision": 0.9230769230769231,
+     "disparos_imerg": 38,
      "disparos_chirps": 1
     }
    }
@@ -261,24 +272,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.8461538461538461,
-     "disparos_imerg": 26,
-     "disparos_chirps": 26
+     "tasa_cambio_decision": 0.7435897435897436,
+     "disparos_imerg": 57,
+     "disparos_chirps": 60
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.8461538461538461,
-     "disparos_imerg": 26,
-     "disparos_chirps": 26
+     "tasa_cambio_decision": 0.717948717948718,
+     "disparos_imerg": 57,
+     "disparos_chirps": 60
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.875,
-     "disparos_imerg": 14,
-     "disparos_chirps": 2
+     "tasa_cambio_decision": 0.8947368421052632,
+     "disparos_imerg": 34,
+     "disparos_chirps": 4
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.8125,
-     "disparos_imerg": 14,
-     "disparos_chirps": 2
+     "tasa_cambio_decision": 0.868421052631579,
+     "disparos_imerg": 34,
+     "disparos_chirps": 4
     }
    }
   },
@@ -311,24 +322,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.6556291390728477,
-     "disparos_imerg": 40,
-     "disparos_chirps": 111
+     "tasa_cambio_decision": 0.6245733788395904,
+     "disparos_imerg": 96,
+     "disparos_chirps": 197
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.576158940397351,
-     "disparos_imerg": 40,
-     "disparos_chirps": 111
+     "tasa_cambio_decision": 0.552901023890785,
+     "disparos_imerg": 96,
+     "disparos_chirps": 197
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6190476190476191,
-     "disparos_imerg": 25,
-     "disparos_chirps": 17
+     "tasa_cambio_decision": 0.65,
+     "disparos_imerg": 49,
+     "disparos_chirps": 31
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5714285714285714,
-     "disparos_imerg": 25,
-     "disparos_chirps": 17
+     "tasa_cambio_decision": 0.6125,
+     "disparos_imerg": 49,
+     "disparos_chirps": 31
     }
    }
   },
@@ -361,24 +372,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.8699186991869918,
-     "disparos_imerg": 46,
-     "disparos_chirps": 77
+     "tasa_cambio_decision": 0.8653846153846154,
+     "disparos_imerg": 82,
+     "disparos_chirps": 126
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.8048780487804879,
-     "disparos_imerg": 46,
-     "disparos_chirps": 77
+     "tasa_cambio_decision": 0.7980769230769231,
+     "disparos_imerg": 82,
+     "disparos_chirps": 126
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.9090909090909091,
-     "disparos_imerg": 4,
-     "disparos_chirps": 18
+     "tasa_cambio_decision": 0.9285714285714286,
+     "disparos_imerg": 5,
+     "disparos_chirps": 23
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.8636363636363636,
-     "disparos_imerg": 4,
-     "disparos_chirps": 18
+     "tasa_cambio_decision": 0.8928571428571429,
+     "disparos_imerg": 5,
+     "disparos_chirps": 23
     }
    }
   },
@@ -411,24 +422,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.6875,
-     "disparos_imerg": 36,
-     "disparos_chirps": 60
+     "tasa_cambio_decision": 0.7023809523809523,
+     "disparos_imerg": 83,
+     "disparos_chirps": 85
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6041666666666667,
-     "disparos_imerg": 36,
-     "disparos_chirps": 60
+     "tasa_cambio_decision": 0.6309523809523809,
+     "disparos_imerg": 83,
+     "disparos_chirps": 85
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6470588235294117,
-     "disparos_imerg": 30,
-     "disparos_chirps": 38
+     "tasa_cambio_decision": 0.71900826446281,
+     "disparos_imerg": 69,
+     "disparos_chirps": 52
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6323529411764706,
-     "disparos_imerg": 30,
-     "disparos_chirps": 38
+     "tasa_cambio_decision": 0.6859504132231404,
+     "disparos_imerg": 69,
+     "disparos_chirps": 52
     }
    }
   },
@@ -461,24 +472,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7471264367816092,
-     "disparos_imerg": 74,
-     "disparos_chirps": 187
+     "tasa_cambio_decision": 0.7510917030567685,
+     "disparos_imerg": 133,
+     "disparos_chirps": 325
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6475095785440613,
-     "disparos_imerg": 74,
-     "disparos_chirps": 187
+     "tasa_cambio_decision": 0.6659388646288209,
+     "disparos_imerg": 133,
+     "disparos_chirps": 325
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.7333333333333334,
-     "disparos_imerg": 16,
-     "disparos_chirps": 29
+     "tasa_cambio_decision": 0.7435897435897436,
+     "disparos_imerg": 29,
+     "disparos_chirps": 49
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6,
-     "disparos_imerg": 16,
-     "disparos_chirps": 29
+     "tasa_cambio_decision": 0.6666666666666667,
+     "disparos_imerg": 29,
+     "disparos_chirps": 49
     }
    }
   },
@@ -511,24 +522,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7293233082706767,
-     "disparos_imerg": 86,
-     "disparos_chirps": 180
+     "tasa_cambio_decision": 0.7136929460580913,
+     "disparos_imerg": 178,
+     "disparos_chirps": 304
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6203007518796992,
-     "disparos_imerg": 86,
-     "disparos_chirps": 180
+     "tasa_cambio_decision": 0.6120331950207469,
+     "disparos_imerg": 178,
+     "disparos_chirps": 304
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6727272727272727,
-     "disparos_imerg": 22,
-     "disparos_chirps": 33
+     "tasa_cambio_decision": 0.6701030927835052,
+     "disparos_imerg": 48,
+     "disparos_chirps": 49
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5818181818181818,
-     "disparos_imerg": 22,
-     "disparos_chirps": 33
+     "tasa_cambio_decision": 0.5979381443298969,
+     "disparos_imerg": 48,
+     "disparos_chirps": 49
     }
    }
   },
@@ -561,24 +572,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7110266159695817,
-     "disparos_imerg": 95,
-     "disparos_chirps": 168
+     "tasa_cambio_decision": 0.7232704402515724,
+     "disparos_imerg": 170,
+     "disparos_chirps": 307
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6159695817490494,
-     "disparos_imerg": 95,
-     "disparos_chirps": 168
+     "tasa_cambio_decision": 0.6163522012578616,
+     "disparos_imerg": 170,
+     "disparos_chirps": 307
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.7966101694915254,
-     "disparos_imerg": 20,
-     "disparos_chirps": 39
+     "tasa_cambio_decision": 0.8494623655913979,
+     "disparos_imerg": 29,
+     "disparos_chirps": 64
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.7457627118644068,
-     "disparos_imerg": 20,
-     "disparos_chirps": 39
+     "tasa_cambio_decision": 0.8064516129032258,
+     "disparos_imerg": 29,
+     "disparos_chirps": 64
     }
    }
   },
@@ -611,24 +622,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7297297297297297,
-     "disparos_imerg": 73,
-     "disparos_chirps": 186
+     "tasa_cambio_decision": 0.7276422764227642,
+     "disparos_imerg": 159,
+     "disparos_chirps": 333
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6370656370656371,
-     "disparos_imerg": 73,
-     "disparos_chirps": 186
+     "tasa_cambio_decision": 0.6056910569105691,
+     "disparos_imerg": 159,
+     "disparos_chirps": 333
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6721311475409837,
-     "disparos_imerg": 20,
-     "disparos_chirps": 41
+     "tasa_cambio_decision": 0.6831683168316831,
+     "disparos_imerg": 43,
+     "disparos_chirps": 58
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5737704918032787,
-     "disparos_imerg": 20,
-     "disparos_chirps": 41
+     "tasa_cambio_decision": 0.5742574257425743,
+     "disparos_imerg": 43,
+     "disparos_chirps": 58
     }
    }
   },
@@ -661,24 +672,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7567567567567568,
-     "disparos_imerg": 58,
-     "disparos_chirps": 90
+     "tasa_cambio_decision": 0.7870722433460076,
+     "disparos_imerg": 110,
+     "disparos_chirps": 153
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6959459459459459,
-     "disparos_imerg": 58,
-     "disparos_chirps": 90
+     "tasa_cambio_decision": 0.7300380228136882,
+     "disparos_imerg": 110,
+     "disparos_chirps": 153
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.813953488372093,
-     "disparos_imerg": 16,
-     "disparos_chirps": 27
+     "tasa_cambio_decision": 0.8484848484848485,
+     "disparos_imerg": 29,
+     "disparos_chirps": 37
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.7906976744186046,
-     "disparos_imerg": 16,
-     "disparos_chirps": 27
+     "tasa_cambio_decision": 0.8181818181818181,
+     "disparos_imerg": 29,
+     "disparos_chirps": 37
     }
    }
   },
@@ -711,24 +722,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7515527950310559,
-     "disparos_imerg": 31,
-     "disparos_chirps": 130
+     "tasa_cambio_decision": 0.7324414715719063,
+     "disparos_imerg": 67,
+     "disparos_chirps": 232
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.7080745341614907,
-     "disparos_imerg": 31,
-     "disparos_chirps": 130
+     "tasa_cambio_decision": 0.6722408026755853,
+     "disparos_imerg": 67,
+     "disparos_chirps": 232
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.7777777777777778,
-     "disparos_imerg": 13,
-     "disparos_chirps": 14
+     "tasa_cambio_decision": 0.6842105263157895,
+     "disparos_imerg": 31,
+     "disparos_chirps": 26
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.7407407407407407,
-     "disparos_imerg": 13,
-     "disparos_chirps": 14
+     "tasa_cambio_decision": 0.6491228070175439,
+     "disparos_imerg": 31,
+     "disparos_chirps": 26
     }
    }
   },
@@ -761,24 +772,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7424242424242424,
-     "disparos_imerg": 104,
-     "disparos_chirps": 160
+     "tasa_cambio_decision": 0.6717062634989202,
+     "disparos_imerg": 204,
+     "disparos_chirps": 259
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6515151515151515,
-     "disparos_imerg": 104,
-     "disparos_chirps": 160
+     "tasa_cambio_decision": 0.5701943844492441,
+     "disparos_imerg": 204,
+     "disparos_chirps": 259
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6862745098039216,
-     "disparos_imerg": 33,
-     "disparos_chirps": 18
+     "tasa_cambio_decision": 0.6666666666666667,
+     "disparos_imerg": 62,
+     "disparos_chirps": 28
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.607843137254902,
-     "disparos_imerg": 33,
-     "disparos_chirps": 18
+     "tasa_cambio_decision": 0.6,
+     "disparos_imerg": 62,
+     "disparos_chirps": 28
     }
    }
   },
@@ -811,24 +822,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.8240000000000001,
-     "disparos_imerg": 40,
-     "disparos_chirps": 85
+     "tasa_cambio_decision": 0.819672131147541,
+     "disparos_imerg": 93,
+     "disparos_chirps": 151
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.792,
-     "disparos_imerg": 40,
-     "disparos_chirps": 85
+     "tasa_cambio_decision": 0.790983606557377,
+     "disparos_imerg": 93,
+     "disparos_chirps": 151
     },
     "media_provincia_tol0": {
      "tasa_cambio_decision": 0.7777777777777778,
-     "disparos_imerg": 2,
-     "disparos_chirps": 7
+     "disparos_imerg": 7,
+     "disparos_chirps": 11
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6666666666666667,
-     "disparos_imerg": 2,
-     "disparos_chirps": 7
+     "tasa_cambio_decision": 0.7222222222222222,
+     "disparos_imerg": 7,
+     "disparos_chirps": 11
     }
    }
   },
@@ -861,24 +872,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.6581196581196581,
-     "disparos_imerg": 61,
-     "disparos_chirps": 56
+     "tasa_cambio_decision": 0.6548223350253808,
+     "disparos_imerg": 108,
+     "disparos_chirps": 89
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.5811965811965811,
-     "disparos_imerg": 61,
-     "disparos_chirps": 56
+     "tasa_cambio_decision": 0.5736040609137056,
+     "disparos_imerg": 108,
+     "disparos_chirps": 89
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6333333333333333,
-     "disparos_imerg": 38,
-     "disparos_chirps": 22
+     "tasa_cambio_decision": 0.6699029126213591,
+     "disparos_imerg": 70,
+     "disparos_chirps": 33
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5666666666666667,
-     "disparos_imerg": 38,
-     "disparos_chirps": 22
+     "tasa_cambio_decision": 0.6019417475728155,
+     "disparos_imerg": 70,
+     "disparos_chirps": 33
     }
    }
   },
@@ -911,24 +922,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.8697318007662835,
-     "disparos_imerg": 65,
-     "disparos_chirps": 196
+     "tasa_cambio_decision": 0.8471337579617835,
+     "disparos_imerg": 129,
+     "disparos_chirps": 342
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.8314176245210728,
-     "disparos_imerg": 65,
-     "disparos_chirps": 196
+     "tasa_cambio_decision": 0.7961783439490446,
+     "disparos_imerg": 129,
+     "disparos_chirps": 342
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.696969696969697,
-     "disparos_imerg": 12,
-     "disparos_chirps": 21
+     "tasa_cambio_decision": 0.7454545454545455,
+     "disparos_imerg": 23,
+     "disparos_chirps": 32
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6363636363636364,
-     "disparos_imerg": 12,
-     "disparos_chirps": 21
+     "tasa_cambio_decision": 0.7090909090909091,
+     "disparos_imerg": 23,
+     "disparos_chirps": 32
     }
    }
   },
@@ -961,24 +972,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.6802721088435374,
-     "disparos_imerg": 94,
-     "disparos_chirps": 200
+     "tasa_cambio_decision": 0.6914700544464609,
+     "disparos_imerg": 178,
+     "disparos_chirps": 373
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.5680272108843538,
-     "disparos_imerg": 94,
-     "disparos_chirps": 200
+     "tasa_cambio_decision": 0.5807622504537204,
+     "disparos_imerg": 178,
+     "disparos_chirps": 373
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.7674418604651163,
-     "disparos_imerg": 26,
-     "disparos_chirps": 60
+     "tasa_cambio_decision": 0.7647058823529411,
+     "disparos_imerg": 48,
+     "disparos_chirps": 105
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6744186046511628,
-     "disparos_imerg": 26,
-     "disparos_chirps": 60
+     "tasa_cambio_decision": 0.6928104575163399,
+     "disparos_imerg": 48,
+     "disparos_chirps": 105
     }
    }
   },
@@ -1011,24 +1022,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.8163265306122449,
-     "disparos_imerg": 44,
-     "disparos_chirps": 152
+     "tasa_cambio_decision": 0.8294573643410853,
+     "disparos_imerg": 81,
+     "disparos_chirps": 306
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.7551020408163265,
-     "disparos_imerg": 44,
-     "disparos_chirps": 152
+     "tasa_cambio_decision": 0.7803617571059431,
+     "disparos_imerg": 81,
+     "disparos_chirps": 306
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6981132075471699,
-     "disparos_imerg": 12,
-     "disparos_chirps": 41
+     "tasa_cambio_decision": 0.752808988764045,
+     "disparos_imerg": 23,
+     "disparos_chirps": 66
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6415094339622642,
-     "disparos_imerg": 12,
-     "disparos_chirps": 41
+     "tasa_cambio_decision": 0.7191011235955056,
+     "disparos_imerg": 23,
+     "disparos_chirps": 66
     }
    }
   },
@@ -1061,24 +1072,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.8144329896907216,
-     "disparos_imerg": 59,
-     "disparos_chirps": 38
+     "tasa_cambio_decision": 0.8260869565217391,
+     "disparos_imerg": 102,
+     "disparos_chirps": 59
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.7628865979381443,
-     "disparos_imerg": 59,
-     "disparos_chirps": 38
+     "tasa_cambio_decision": 0.7763975155279503,
+     "disparos_imerg": 102,
+     "disparos_chirps": 59
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6923076923076923,
-     "disparos_imerg": 10,
-     "disparos_chirps": 3
+     "tasa_cambio_decision": 0.7,
+     "disparos_imerg": 15,
+     "disparos_chirps": 5
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6153846153846154,
-     "disparos_imerg": 10,
-     "disparos_chirps": 3
+     "tasa_cambio_decision": 0.6,
+     "disparos_imerg": 15,
+     "disparos_chirps": 5
     }
    }
   },
@@ -1111,24 +1122,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7121771217712177,
-     "disparos_imerg": 85,
-     "disparos_chirps": 186
+     "tasa_cambio_decision": 0.7306930693069307,
+     "disparos_imerg": 164,
+     "disparos_chirps": 341
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6014760147601477,
-     "disparos_imerg": 85,
-     "disparos_chirps": 186
+     "tasa_cambio_decision": 0.6316831683168317,
+     "disparos_imerg": 164,
+     "disparos_chirps": 341
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.7083333333333333,
-     "disparos_imerg": 14,
-     "disparos_chirps": 34
+     "tasa_cambio_decision": 0.7215189873417722,
+     "disparos_imerg": 29,
+     "disparos_chirps": 50
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6875,
-     "disparos_imerg": 14,
-     "disparos_chirps": 34
+     "tasa_cambio_decision": 0.6582278481012658,
+     "disparos_imerg": 29,
+     "disparos_chirps": 50
     }
    }
   },
@@ -1161,24 +1172,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7227722772277227,
-     "disparos_imerg": 67,
-     "disparos_chirps": 34
+     "tasa_cambio_decision": 0.7,
+     "disparos_imerg": 119,
+     "disparos_chirps": 61
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6831683168316831,
-     "disparos_imerg": 67,
-     "disparos_chirps": 34
+     "tasa_cambio_decision": 0.6333333333333333,
+     "disparos_imerg": 119,
+     "disparos_chirps": 61
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.9090909090909091,
-     "disparos_imerg": 21,
-     "disparos_chirps": 1
+     "tasa_cambio_decision": 0.8775510204081632,
+     "disparos_imerg": 46,
+     "disparos_chirps": 3
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.8636363636363636,
-     "disparos_imerg": 21,
-     "disparos_chirps": 1
+     "tasa_cambio_decision": 0.8571428571428572,
+     "disparos_imerg": 46,
+     "disparos_chirps": 3
     }
    }
   },
@@ -1211,24 +1222,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.6428571428571428,
-     "disparos_imerg": 53,
-     "disparos_chirps": 31
+     "tasa_cambio_decision": 0.696969696969697,
+     "disparos_imerg": 113,
+     "disparos_chirps": 52
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.5714285714285714,
-     "disparos_imerg": 53,
-     "disparos_chirps": 31
+     "tasa_cambio_decision": 0.6363636363636364,
+     "disparos_imerg": 113,
+     "disparos_chirps": 52
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.8823529411764706,
-     "disparos_imerg": 31,
-     "disparos_chirps": 3
+     "tasa_cambio_decision": 0.8666666666666667,
+     "disparos_imerg": 68,
+     "disparos_chirps": 7
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.8235294117647058,
-     "disparos_imerg": 31,
-     "disparos_chirps": 3
+     "tasa_cambio_decision": 0.8266666666666667,
+     "disparos_imerg": 68,
+     "disparos_chirps": 7
     }
    }
   },
@@ -1261,24 +1272,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7375886524822695,
-     "disparos_imerg": 108,
-     "disparos_chirps": 174
+     "tasa_cambio_decision": 0.724007561436673,
+     "disparos_imerg": 194,
+     "disparos_chirps": 335
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6560283687943262,
-     "disparos_imerg": 108,
-     "disparos_chirps": 174
+     "tasa_cambio_decision": 0.6351606805293006,
+     "disparos_imerg": 194,
+     "disparos_chirps": 335
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.7192982456140351,
-     "disparos_imerg": 19,
-     "disparos_chirps": 38
+     "tasa_cambio_decision": 0.75,
+     "disparos_imerg": 30,
+     "disparos_chirps": 58
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.7017543859649122,
-     "disparos_imerg": 19,
-     "disparos_chirps": 38
+     "tasa_cambio_decision": 0.7272727272727273,
+     "disparos_imerg": 30,
+     "disparos_chirps": 58
     }
    }
   },
@@ -1311,24 +1322,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.6917562724014337,
-     "disparos_imerg": 86,
-     "disparos_chirps": 193
+     "tasa_cambio_decision": 0.7120622568093385,
+     "disparos_imerg": 158,
+     "disparos_chirps": 356
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.5985663082437276,
-     "disparos_imerg": 86,
-     "disparos_chirps": 193
+     "tasa_cambio_decision": 0.6147859922178989,
+     "disparos_imerg": 158,
+     "disparos_chirps": 356
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.8108108108108107,
-     "disparos_imerg": 21,
-     "disparos_chirps": 53
+     "tasa_cambio_decision": 0.7605633802816901,
+     "disparos_imerg": 46,
+     "disparos_chirps": 96
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.7567567567567568,
-     "disparos_imerg": 21,
-     "disparos_chirps": 53
+     "tasa_cambio_decision": 0.7183098591549295,
+     "disparos_imerg": 46,
+     "disparos_chirps": 96
     }
    }
   },
@@ -1361,24 +1372,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7416267942583732,
-     "disparos_imerg": 66,
-     "disparos_chirps": 143
+     "tasa_cambio_decision": 0.7230769230769231,
+     "disparos_imerg": 134,
+     "disparos_chirps": 256
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6698564593301435,
-     "disparos_imerg": 66,
-     "disparos_chirps": 143
+     "tasa_cambio_decision": 0.6487179487179487,
+     "disparos_imerg": 134,
+     "disparos_chirps": 256
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.5555555555555556,
-     "disparos_imerg": 25,
-     "disparos_chirps": 29
+     "tasa_cambio_decision": 0.5961538461538461,
+     "disparos_imerg": 54,
+     "disparos_chirps": 50
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5,
-     "disparos_imerg": 25,
-     "disparos_chirps": 29
+     "tasa_cambio_decision": 0.5576923076923077,
+     "disparos_imerg": 54,
+     "disparos_chirps": 50
     }
    }
   },
@@ -1411,24 +1422,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7263157894736842,
-     "disparos_imerg": 39,
-     "disparos_chirps": 56
+     "tasa_cambio_decision": 0.7405405405405405,
+     "disparos_imerg": 79,
+     "disparos_chirps": 106
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.6736842105263158,
-     "disparos_imerg": 39,
-     "disparos_chirps": 56
+     "tasa_cambio_decision": 0.6918918918918919,
+     "disparos_imerg": 79,
+     "disparos_chirps": 106
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.8333333333333334,
-     "disparos_imerg": 20,
-     "disparos_chirps": 4
+     "tasa_cambio_decision": 0.8367346938775511,
+     "disparos_imerg": 41,
+     "disparos_chirps": 8
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.75,
-     "disparos_imerg": 20,
-     "disparos_chirps": 4
+     "tasa_cambio_decision": 0.7755102040816326,
+     "disparos_imerg": 41,
+     "disparos_chirps": 8
     }
    }
   },
@@ -1461,24 +1472,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.8171428571428572,
-     "disparos_imerg": 59,
-     "disparos_chirps": 116
+     "tasa_cambio_decision": 0.825,
+     "disparos_imerg": 113,
+     "disparos_chirps": 207
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.7885714285714286,
-     "disparos_imerg": 59,
-     "disparos_chirps": 116
+     "tasa_cambio_decision": 0.8,
+     "disparos_imerg": 113,
+     "disparos_chirps": 207
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.625,
-     "disparos_imerg": 9,
-     "disparos_chirps": 7
+     "tasa_cambio_decision": 0.7777777777777778,
+     "disparos_imerg": 18,
+     "disparos_chirps": 9
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5625,
-     "disparos_imerg": 9,
-     "disparos_chirps": 7
+     "tasa_cambio_decision": 0.7407407407407407,
+     "disparos_imerg": 18,
+     "disparos_chirps": 9
     }
    }
   },
@@ -1511,24 +1522,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.625,
-     "disparos_imerg": 77,
-     "disparos_chirps": 83
+     "tasa_cambio_decision": 0.6537102473498233,
+     "disparos_imerg": 150,
+     "disparos_chirps": 133
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.50625,
-     "disparos_imerg": 77,
-     "disparos_chirps": 83
+     "tasa_cambio_decision": 0.5441696113074205,
+     "disparos_imerg": 150,
+     "disparos_chirps": 133
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.6170212765957447,
-     "disparos_imerg": 32,
-     "disparos_chirps": 15
+     "tasa_cambio_decision": 0.7105263157894737,
+     "disparos_imerg": 59,
+     "disparos_chirps": 17
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5319148936170213,
-     "disparos_imerg": 32,
-     "disparos_chirps": 15
+     "tasa_cambio_decision": 0.618421052631579,
+     "disparos_imerg": 59,
+     "disparos_chirps": 17
     }
    }
   },
@@ -1561,24 +1572,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.8070175438596492,
-     "disparos_imerg": 113,
-     "disparos_chirps": 229
+     "tasa_cambio_decision": 0.7954545454545454,
+     "disparos_imerg": 211,
+     "disparos_chirps": 405
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.739766081871345,
-     "disparos_imerg": 113,
-     "disparos_chirps": 229
+     "tasa_cambio_decision": 0.7126623376623377,
+     "disparos_imerg": 211,
+     "disparos_chirps": 405
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.7142857142857143,
-     "disparos_imerg": 8,
-     "disparos_chirps": 27
+     "tasa_cambio_decision": 0.8181818181818181,
+     "disparos_imerg": 11,
+     "disparos_chirps": 44
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.6857142857142857,
-     "disparos_imerg": 8,
-     "disparos_chirps": 27
+     "tasa_cambio_decision": 0.8,
+     "disparos_imerg": 11,
+     "disparos_chirps": 44
     }
    }
   },
@@ -1611,24 +1622,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.838150289017341,
-     "disparos_imerg": 49,
-     "disparos_chirps": 124
+     "tasa_cambio_decision": 0.863013698630137,
+     "disparos_imerg": 89,
+     "disparos_chirps": 203
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.7861271676300579,
-     "disparos_imerg": 49,
-     "disparos_chirps": 124
+     "tasa_cambio_decision": 0.8047945205479452,
+     "disparos_imerg": 89,
+     "disparos_chirps": 203
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.8620689655172413,
-     "disparos_imerg": 6,
-     "disparos_chirps": 23
+     "tasa_cambio_decision": 0.9024390243902439,
+     "disparos_imerg": 8,
+     "disparos_chirps": 33
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.8620689655172413,
-     "disparos_imerg": 6,
-     "disparos_chirps": 23
+     "tasa_cambio_decision": 0.9024390243902439,
+     "disparos_imerg": 8,
+     "disparos_chirps": 33
     }
    }
   },
@@ -1661,24 +1672,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.6276595744680851,
-     "disparos_imerg": 71,
-     "disparos_chirps": 117
+     "tasa_cambio_decision": 0.6497175141242938,
+     "disparos_imerg": 141,
+     "disparos_chirps": 213
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.5159574468085106,
-     "disparos_imerg": 71,
-     "disparos_chirps": 117
+     "tasa_cambio_decision": 0.5338983050847458,
+     "disparos_imerg": 141,
+     "disparos_chirps": 213
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.5652173913043479,
-     "disparos_imerg": 23,
-     "disparos_chirps": 23
+     "tasa_cambio_decision": 0.6428571428571428,
+     "disparos_imerg": 52,
+     "disparos_chirps": 32
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5652173913043479,
-     "disparos_imerg": 23,
-     "disparos_chirps": 23
+     "tasa_cambio_decision": 0.6190476190476191,
+     "disparos_imerg": 52,
+     "disparos_chirps": 32
     }
    }
   },
@@ -1711,24 +1722,24 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.786096256684492,
-     "disparos_imerg": 62,
-     "disparos_chirps": 125
+     "tasa_cambio_decision": 0.8105849582172702,
+     "disparos_imerg": 103,
+     "disparos_chirps": 256
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.7058823529411764,
-     "disparos_imerg": 62,
-     "disparos_chirps": 125
+     "tasa_cambio_decision": 0.7520891364902507,
+     "disparos_imerg": 103,
+     "disparos_chirps": 256
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.7777777777777778,
-     "disparos_imerg": 8,
-     "disparos_chirps": 28
+     "tasa_cambio_decision": 0.7971014492753623,
+     "disparos_imerg": 17,
+     "disparos_chirps": 52
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.75,
-     "disparos_imerg": 8,
-     "disparos_chirps": 28
+     "tasa_cambio_decision": 0.782608695652174,
+     "disparos_imerg": 17,
+     "disparos_chirps": 52
     }
    }
   },
@@ -1761,23 +1772,23 @@
    },
    "inundacion_48h_100mm": {
     "maximo_celda_tol0": {
-     "tasa_cambio_decision": 0.7954545454545454,
-     "disparos_imerg": 44,
-     "disparos_chirps": 44
+     "tasa_cambio_decision": 0.8451612903225807,
+     "disparos_imerg": 89,
+     "disparos_chirps": 66
     },
     "maximo_celda_tol1": {
-     "tasa_cambio_decision": 0.7159090909090908,
-     "disparos_imerg": 44,
-     "disparos_chirps": 44
+     "tasa_cambio_decision": 0.7741935483870968,
+     "disparos_imerg": 89,
+     "disparos_chirps": 66
     },
     "media_provincia_tol0": {
-     "tasa_cambio_decision": 0.5714285714285714,
-     "disparos_imerg": 10,
+     "tasa_cambio_decision": 0.625,
+     "disparos_imerg": 12,
      "disparos_chirps": 4
     },
     "media_provincia_tol1": {
-     "tasa_cambio_decision": 0.5714285714285714,
-     "disparos_imerg": 10,
+     "tasa_cambio_decision": 0.625,
+     "disparos_imerg": 12,
      "disparos_chirps": 4
     }
    }

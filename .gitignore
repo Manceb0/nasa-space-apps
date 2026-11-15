@@ -25,3 +25,4 @@ data/yuna/*
 !data/yuna/MANIFEST.json
 data/testigos/*
 !data/testigos/MANIFEST.json
+.playwright-cli/

@@ -11,7 +11,7 @@
 - **Ningún par de productos de lluvia es independiente.** IMERG Final, la lluvia que forzó a GLDAS-2.1 (GPCP) y SMAP L4 cuelgan de los pluviómetros de GPCC; CHIRPS mezcla las mismas estaciones dominicanas del GTS/GSOD (lista oficial mes a mes); MERRA-2 corregido cuelga de CPC Unified (también GTS). Que coincidan no es validación robusta.
 - **La decisión de sequía cambia según el producto.** Por provincia y mes, de los casos en que al menos un producto declara sequía (SPI-3 ≤ −1), los cuatro productos no son unánimes en el **91 %** (IC 95 % 85 %-96 %; 2836 de 3111 casos). Con SPI-3 ≤ −1.5: 98 % (IC 97 %-100 %). Solo IMERG frente a CHIRPS: 67 %. Parte es efecto de umbral (productos a ambos lados de −1), pero en el **39 %** de los casos con alarma (IC 28 %-51 %) otro producto dice lo contrario: SPI-3 ≥ 0 (normal o húmedo). Solo en 275 de 3111 provincia-meses con alarma los cuatro coinciden en «sequía».
 - **Provincias más sensibles al producto** (SPI-3 ≤ −1): Hato Mayor 97 % [94 %-100 %]; La Romana 96 % [92 %-100 %]; San Pedro de Macorís 96 % [92 %-99 %]; La Altagracia 96 % [91 %-100 %]; San Juan 95 % [91 %-99 %]. Los IC se solapan mucho: el orden entre provincias es frágil.
-- **Disparador de inundación (> 100 mm en 48 h)**, IMERG frente a CHIRPS diario (2001-2014, AÑOS INCOMPLETOS): con el máximo de celda de cada provincia y ±1 día de tolerancia, 67 % de los disparos no los confirma el otro producto (IC 60 %-77 %; IMERG 2066 disparos, CHIRPS 3811). Con la media de provincia: 67 % (IMERG 579, CHIRPS 720).
+- **Disparador de inundación (> 100 mm en 48 h)**, IMERG frente a CHIRPS diario (2001-2024): con el máximo de celda de cada provincia y ±1 día de tolerancia, 67 % de los disparos no los confirma el otro producto (IC 62 %-72 %; IMERG 4003 disparos, CHIRPS 6789). Con la media de provincia: 70 % (IMERG 1143, CHIRPS 1137).
 - **'50 de 96' se reproduce** (50 de 96). Tras escala (0.5°), tiempo (±1 día, ±1 mes de retorno) y umbral, quedan **28 sin explicar** de 50.
 - **Santo Domingo 18-nov-2023:** 431 mm (estación, NHC) frente a IMERG 140 mm en el día UTC; la mejor ventana de 24 h sube a 160 mm y la mejor celda vecina a 185 mm. Quedan 246 mm sin explicar por ventana ni escala; frente a la media de 11 pluviómetros de ONAMET publicados en prensa (336 mm) quedan 151 mm. Veredicto: **inconcluso** para repartir la brecha; **se sostiene** que un producto de 10 km no reproduce este extremo.
 
@@ -71,7 +71,7 @@ Medianas entre estaciones, escala diaria (`estaciones_validacion_diaria.csv`):
 | Producto | r diaria (desfase 0) | r diaria (mejor desfase) | KGE diaria | sesgo | POD ≥50 | FAR ≥50 | CSI ≥50 | POD ≥100 | CSI ≥100 | p99 obs / prod (mm) |
 |---|---|---|---|---|---|---|---|---|---|---|
 | IMERG V07 Final | 0.36 | 0.42 | 0.40 | 0 % | 0.25 | 0.74 | 0.14 | 0.21 | 0.11 | 106 / 91 |
-| CHIRPS v2.0 | 0.30 | 0.30 | 0.20 | -10 % | 0.13 | 0.81 | 0.09 | 0.03 | 0.01 | 100 / 98 |
+| CHIRPS v2.0 | 0.29 | 0.30 | 0.23 | -11 % | 0.13 | 0.80 | 0.09 | 0.10 | 0.05 | 106 / 96 |
 | MERRA-2 PRECTOTCORR (NASA POWER) | 0.25 | 0.34 | -0.06 | -51 % | 0.02 | 0.85 | 0.01 | 0.00 | 0.00 | 106 / 38 |
 
 Escala mensual (meses con ≥ 90 % de días; `estaciones_validacion_mensual.csv`):
@@ -195,22 +195,22 @@ Por pares (1 − Jaccard de los meses-provincia en sequía):
 | CHIRPS | MERRA2 | 77 % [66 %-88 %] |
 | GLDAS_forzamiento | MERRA2 | 75 % [66 %-86 %] |
 
-**Disparador de inundación > 100 mm en 48 h** (IMERG frente a CHIRPS diario, 2001-2014, 4747 días; años INCOMPLETOS: resultado parcial). El sEAP de la Cruz Roja Dominicana (MDRDO020) usa un boletín de INDOMET con > 100 mm en 2 días asociado a ciclón tropical (pronóstico, no satélite); aquí se usa solo el umbral como prueba de sensibilidad, no se reproduce el protocolo.
+**Disparador de inundación > 100 mm en 48 h** (IMERG frente a CHIRPS diario, 2001-2024, 8766 días). El sEAP de la Cruz Roja Dominicana (MDRDO020) usa un boletín de INDOMET con > 100 mm en 2 días asociado a ciclón tropical (pronóstico, no satélite); aquí se usa solo el umbral como prueba de sensibilidad, no se reproduce el protocolo.
 
 | escala | desplazamiento_imerg_dias | tolerancia_dias | n_A | n_B | A_confirmado_por_B | B_confirmado_por_A | tasa | IC 95 % |
 |---|---|---|---|---|---|---|---|---|
-| media_provincia | 0 | 0 | 579 | 720 | 181 | 181 | 72 % | 63 %-85 % |
-| media_provincia | 0 | 1 | 579 | 720 | 208 | 226 | 67 % | 55 %-82 % |
-| maximo_celda | 0 | 0 | 2066 | 3811 | 747 | 747 | 75 % | 69 %-83 % |
-| maximo_celda | 0 | 1 | 2066 | 3811 | 882 | 1067 | 67 % | 60 %-77 % |
-| media_provincia | -1 | 0 | 579 | 720 | 88 | 88 | 86 % | 82 %-93 % |
-| media_provincia | -1 | 1 | 579 | 720 | 196 | 211 | 69 % | 58 %-83 % |
-| maximo_celda | -1 | 0 | 2066 | 3811 | 476 | 476 | 84 % | 81 %-89 % |
-| maximo_celda | -1 | 1 | 2066 | 3811 | 846 | 960 | 69 % | 63 %-78 % |
-| media_provincia | 1 | 0 | 579 | 720 | 82 | 82 | 87 % | 81 %-95 % |
-| media_provincia | 1 | 1 | 579 | 720 | 193 | 203 | 70 % | 59 %-84 % |
-| maximo_celda | 1 | 0 | 2066 | 3809 | 498 | 498 | 83 % | 79 %-89 % |
-| maximo_celda | 1 | 1 | 2066 | 3809 | 836 | 984 | 69 % | 63 %-78 % |
+| media_provincia | 0 | 0 | 1143 | 1137 | 289 | 289 | 75 % | 68 %-81 % |
+| media_provincia | 0 | 1 | 1143 | 1137 | 337 | 351 | 70 % | 62 %-77 % |
+| maximo_celda | 0 | 0 | 4003 | 6789 | 1375 | 1375 | 75 % | 71 %-79 % |
+| maximo_celda | 0 | 1 | 4003 | 6789 | 1673 | 1937 | 67 % | 62 %-72 % |
+| media_provincia | -1 | 0 | 1143 | 1137 | 128 | 128 | 89 % | 85 %-92 % |
+| media_provincia | -1 | 1 | 1143 | 1137 | 309 | 325 | 72 % | 65 %-79 % |
+| maximo_celda | -1 | 0 | 4003 | 6789 | 886 | 886 | 84 % | 81 %-87 % |
+| maximo_celda | -1 | 1 | 4003 | 6789 | 1589 | 1764 | 69 % | 64 %-74 % |
+| media_provincia | 1 | 0 | 1143 | 1137 | 138 | 138 | 88 % | 84 %-92 % |
+| media_provincia | 1 | 1 | 1143 | 1137 | 317 | 323 | 72 % | 65 %-79 % |
+| maximo_celda | 1 | 0 | 4003 | 6787 | 915 | 915 | 83 % | 80 %-86 % |
+| maximo_celda | 1 | 1 | 4003 | 6787 | 1561 | 1773 | 69 % | 65 %-74 % |
 
 n_A = disparos IMERG, n_B = disparos CHIRPS (provincia-día). Recordatorio: el día de CHIRPS v2 es una redistribución con el CFSv2.
 
@@ -272,7 +272,6 @@ n_A = disparos IMERG, n_B = disparos CHIRPS (provincia-día). Recordatorio: el d
 - Datos de la red densa de ONAMET e INDRHI (no están en GHCN-D) para una validación no circular.
 - SMAP L3 (0-5 cm) como testigo del suelo en los 50 episodios (otro motor del equipo lo trabaja).
 - Si el disparador real del sEAP (boletín de INDOMET con pronóstico) diverge igual que los productos satelitales.
-- El disparador de 48 h con CHIRPS diario completo 2001-2024 (esta corrida usó 13 años).
 
 ## Limitaciones
 
