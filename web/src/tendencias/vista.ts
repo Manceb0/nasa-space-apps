@@ -159,6 +159,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
 
   const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
   const wx = $("wx"), tip = $("tr-tip");
+  // la capa de lugares se crea más abajo, pero el mapa puede pintarse antes (al redimensionar): se declara aquí
+  let sites: ReturnType<typeof sitesLayer> | null = null;
   const vm = () => d.vm(sel.ind);
   const years = () => d.years(sel);
   const regName = () => (sel.reg === "DO" ? LL("República Dominicana", "Dominican Republic") : d.regName(sel.reg));
@@ -752,7 +754,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   }
 
   // ── Los lugares de la vegetación (encima de las crestas) ──
-  const sites = land ? sitesLayer(wx.querySelector<HTMLElement>(".wx-mapcol")!, () => (t3 ? (lon, lat) => t3!.map.project([lon, lat]) : null)) : null;
+  sites = land ? sitesLayer(wx.querySelector<HTMLElement>(".wx-mapcol")!, () => (t3 ? (lon, lat) => t3!.map.project([lon, lat]) : null)) : null;
   if (sites) { const mineS = sites; cleanup.push(() => mineS.destroy()); }
   const frameSites = () => {
     if (!t3 || !land) return;
