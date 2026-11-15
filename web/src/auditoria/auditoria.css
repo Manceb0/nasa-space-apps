@@ -1,0 +1,66 @@
+/* Auditoría · usa el armazón y los tokens de tendencias.css (true-black-flat). Aquí solo lo propio de la pantalla:
+   el código de barras en el centro, la leyenda que filtra abajo, las cifras del panel y las figuras plegadas. */
+
+/* Centro: el código de barras ocupa la columna; la pregunta va en la fila de controles */
+.au-stage { overflow: hidden; }
+.au-cv { position: absolute; inset: 0; display: block; }
+.au-q { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; text-wrap: balance; pointer-events: none; }
+
+/* Abajo: la leyenda es un filtro */
+.au-bar { gap: 6px; flex-wrap: wrap; align-content: center; }
+.au-lg { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border: 0; border-radius: 999px; background: none; color: var(--dim); font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background .2s, color .2s; }
+.au-lg i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.au-lg b { color: var(--text); font-weight: 600; }
+.au-lg:hover { background: var(--raised); color: var(--text); }
+.au-lg.on { background: var(--text); color: #000; }
+.au-lg.on b { color: #000; }
+.au-lg:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* Panel: cifras */
+.au-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 16px 16px 0; border-radius: 14px; overflow: hidden; }
+.au-k { padding: 12px 14px; background: var(--raised); }
+.au-lead { grid-column: 1 / -1; }
+.au-kl { font-size: 13px; color: var(--muted); }
+.au-k b { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+.au-lead b { font-size: 32px; }
+.au-k span { font-size: 13px; color: var(--muted); margin-left: 4px; }
+.au-ks { font-size: 12px; color: var(--faint); }
+.wx .au-note { margin: 0; padding: 12px 20px 16px; font-size: 13px; color: var(--text); }
+
+/* Figuras de la galería dentro de las secciones plegables */
+.au .sec h2 { display: inline-flex; align-items: center; gap: 8px; }
+.au-proto { padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #e5a93b; background: #2b2414; }
+.au-p, .au-cap { font-size: 13px; line-height: 1.5; color: var(--muted); }
+.au-cap { margin-top: 8px; }
+.au-fig { display: block; width: 100%; margin-top: 10px; padding: 0; border: 0; border-radius: 8px; background: #0e1013; overflow: hidden; cursor: zoom-in; }
+.au-fig img, .au-gif { display: block; width: 100%; height: auto; }
+.au-fig:hover img { opacity: .9; }
+.au-fig:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.au-gif { margin-top: 10px; border-radius: 8px; background: #0e1013; aspect-ratio: 16 / 9; }
+.au-figs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; border-radius: 12px; overflow: hidden; }
+.au-figs div { padding: 10px; background: var(--raised); }
+.au-figs b { display: block; font-size: 20px; font-weight: 600; }
+.au-figs span { display: block; font-size: 12px; line-height: 1.35; color: var(--muted); }
+.au-figs div:last-child b { color: #ffd60a; }
+
+/* Ampliar una figura */
+.au-lb { width: min(96vw, 1600px); max-height: 94vh; padding: 0; border: 0; border-radius: 14px; background: #0e1013; color: #fff; overflow: auto; }
+.au-lb::backdrop { background: rgba(0, 0, 0, .8); }
+.au-lb img { display: block; width: 100%; height: auto; }
+.au-x { position: sticky; top: 8px; float: right; margin: 8px 8px -48px 0; z-index: 1; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--raised, #24272b); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+
+/* Tooltip del código de barras */
+.tr-tip .tt-s { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: 0; }
+.tr-tip .tt-vals { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 14px; margin-top: 6px; }
+.tr-tip .tt-p { display: inline-flex; align-items: center; gap: 6px; color: #b4b4b4; }
+.tr-tip .tt-p i { width: 7px; height: 7px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px #949494; }
+.tr-tip .tt-p.dry i { background: #ffd60a; box-shadow: none; }
+.tr-tip .tt-p b { margin-left: auto; color: #fff; font-weight: 600; }
+.tr-tip .tt-f { margin-top: 6px; color: #949494; }
+
+@media (max-width: 759px) {
+  .au-q { font-size: 13px; }
+  .au .map-top { left: 16px; right: 16px; }
+  .au-bar { gap: 2px; padding: 8px 10px; }
+  .au-lg { height: 30px; padding: 0 8px; font-size: 12px; }
+}

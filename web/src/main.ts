@@ -11,6 +11,7 @@ import { type Grid } from "./field";
 import { terrain3d } from "./terrain3d";
 import { provinceStats, type ProvStat } from "./provincias";
 import { destroyTrends, viewTrends } from "./tendencias/vista";
+import { destroyAudit, viewAudit } from "./auditoria/vista";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
@@ -83,7 +84,7 @@ function shell(): void {
         { key: "tendencias", href: "#tendencias", label: getLang() === "es" ? "Tendencias" : "Trends", short: getLang() === "es" ? "Tendencias" : "Trends" },
         { key: "investigar", href: "#investigar", label: esc(t.navInvestigate), short: esc(t.navInvestigate) },
         { key: "ribbon", href: "#ribbon", label: "Recovery Ribbon", short: "Ribbon" },
-        { key: "expedientes", href: "#expedientes", label: esc(t.navAudit), short: esc(t.navAudit) },
+        { key: "auditoria", href: "#auditoria", label: esc(t.navAudit), short: esc(t.navAudit) },
         { key: "metodo", href: "#metodo", label: esc(t.navMethod), short: getLang() === "es" ? "Método" : "Method" },
       ],
       extra: `<button class="pill-nav__lang pill-nav__surface" id="lang" aria-label="${esc(t.langSwitchLabel)}" title="${esc(t.langSwitchLabel)}" lang="${getLang() === "es" ? "en" : "es"}">${getLang() === "es" ? "EN" : "ES"}<span class="pill-nav__rim"></span></button>`,
@@ -1385,7 +1386,7 @@ function viewMethod() {
 /* ───────────── Router ───────────── */
 
 async function route(scrollTop = true) {
-  const r = (location.hash.replace("#", "") || "tendencias") as "tendencias" | "investigar" | "ribbon" | "expedientes" | "metodo";
+  const r = (location.hash.replace("#", "") || "tendencias") as "tendencias" | "investigar" | "ribbon" | "expedientes" | "auditoria" | "metodo";
   setNav(r);
   stopPlay();
   clearMaps();
@@ -1393,7 +1394,9 @@ async function route(scrollTop = true) {
     if (r !== "ribbon") { rbStage?.destroy(); rbStage = null; }
     if (r !== "investigar") { t3?.destroy(); t3 = null; }
     if (r !== "tendencias") destroyTrends();
+    if (r !== "auditoria") destroyAudit();
     if (r === "expedientes") await viewCases();
+    else if (r === "auditoria") await viewAudit(document.getElementById("view")!);
     else if (r === "ribbon") await viewRibbon();
     else if (r === "metodo") viewMethod();
     else if (r === "tendencias") await viewTrends(document.getElementById("view")!);
@@ -1408,7 +1411,7 @@ async function start() {
   shell();
   index = await load<Index>("index.json");
   window.addEventListener("hashchange", () => {
-    if (["#tendencias", "#investigar", "#ribbon", "#expedientes", "#metodo", ""].includes(location.hash)) route();
+    if (["#tendencias", "#investigar", "#ribbon", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
   });
   let timer: number | undefined;
   let lastW = window.innerWidth;

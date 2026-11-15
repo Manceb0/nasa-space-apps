@@ -1,0 +1,30 @@
+{
+ "01b_yuna_flood_atlas": {
+  "es": "Quince mapas pequeños de la cuenca del Yuna (5 × 3, en orden 2003-2025) sobre sombreado de relieve con las clases de inundación MODIS de 250 m del día de máxima extensión; inundación inusual en azul fuerte, lo tapado por nubes con trama y las montañas que el producto nunca mapea con velo gris. El mayor es el 04-11-2007 con 71 km² de inundación inusual, en la llanura del Bajo Yuna (Villa Riva, Arenoso). Un mapa hermano cuenta en cuántos eventos cada píxel fue inundación inusual.",
+  "en": "Fifteen small maps of the Yuna basin (5 by 3, in time order 2003-2025) over shaded relief, each showing MODIS 250 m flood classes on the day of largest extent; unusual flood in strong blue, cloud-hidden areas hatched, permanently unmapped mountains veiled grey. The largest is 04 Nov 2007 with 71 km² of unusual flood, concentrated in the lower Yuna plain near Villa Riva and Arenoso. A companion map counts, per pixel, how many events flagged unusual flood."
+ },
+ "01_barcode_of_doubt": {
+  "es": "Gráfico de franjas: 32 filas (provincias, ordenadas por la tasa de cambio de decisión) y 288 columnas (meses 2001-2024). La mayoría de celdas son oscuras (sin alarma); los meses con alarma son sobre todo bermellón (contradicción clara: 1201) y azules (acuerdo parcial); las verdes, donde los cuatro productos coinciden en sequía, son raras (275 de 3111) y se concentran en 2015 (93).",
+  "en": "Stripe chart with 32 rows (Dominican provinces, sorted by how often the drought decision flips with the product) and 288 thin columns (months 2001-2024). Most cells are dark (no alarm); alarm months are mostly vermillion (clear contradiction: 1201) and blue shades (partial agreement); green cells, where all four products agree on drought, are rare (275 of 3111) and cluster in 2015 (93)."
+ },
+ "02_spiral_of_disagreement": {
+  "es": "Espiral de Arquímedes de 288 segmentos mensuales (2001 en el centro, 2024 en el borde, enero arriba). El color indica en cuántas de las 32 provincias los cuatro productos de lluvia no fueron unánimes sobre la sequía. 180 de 286 meses tuvieron al menos una; máximo 32 provincias en 2001-09.",
+  "en": "An Archimedean spiral of 288 monthly segments, 2001 at the centre and 2024 at the rim, January at the top. Segment colour (cividis) shows how many of 32 provinces had a non-unanimous drought call among four rainfall products. Bright bands appear in drought years; 180 of 286 months had at least one province in disagreement; maximum 32 provinces in 2001-09."
+ },
+ "03_ridgeline_relief": {
+  "es": "Unos 80 perfiles de elevación este-oeste de La Española apilados de norte a sur. Color por celda 0.1°: bermellón donde IMERG y CHIRPS discrepan en la tendencia 2001-2024 de la intensidad diaria de la lluvia (160 de 442 celdas; IMERG sube y CHIRPS baja), blanco sin tendencia detectable, celeste consistente. Cuenca del Yuna en discontinua y presa de Hatillo marcada.",
+  "en": "About 80 stacked east-west elevation profiles of Hispaniola drawn as glowing-free thin lines on a dark ground, mountains rising as peaks (Cordillera Central up to Pico Duarte). Line colour per 0.1° cell: vermillion where IMERG and CHIRPS disagree on the 2001-2024 trend of daily rain intensity (160 of 442 cells, mostly IMERG up and CHIRPS down), white where no trend is detectable, sky blue where consistent. The Yuna basin is outlined dashed with the Hatillo dam marked."
+ },
+ "04_genealogy_of_the_data": {
+  "es": "Diagrama aluvial: 12 insumos a la izquierda (pluviómetros, sensores satelitales, modelos) se conectan con 12 productos a la derecha. Las curvas bermellón muestran que 7 insumos, empezando por los pluviómetros SYNOP del GTS, alimentan a dos o más de los cuatro productos de lluvia de la auditoría de sequía. Solo la gravimetría GRACE (verde) es independiente de los pluviómetros, con ~3° de resolución.",
+  "en": "An alluvial diagram: 12 inputs on the left (rain gauges, satellite sensors, models) connect through curved lines to 12 products on the right. Vermillion curves show that 7 inputs, led by the WMO GTS SYNOP rain gauges, each feed two or more of the four rainfall products used in the drought audit (IMERG, CHIRPS, GLDAS forcing, MERRA-2). Only GRACE gravimetry (green) is gauge-free, at about 3 degrees resolution."
+ },
+ "05_bivariate_where_to_measure": {
+  "es": "Mapa de la RD en 443 cuadros de 0.1° con paleta bivariada 3 × 3: un eje es cuánto cambia la decisión de sequía según el producto, el otro la distancia a la estación GHCN-Daily activa más cercana (triángulos). 68 celdas en la clase alta-alta, sobre todo en San Juan, La Estrelleta, Pedernales. Marcado PROTOTIPO.",
+  "en": "Map of the Dominican Republic in 443 squares of 0.1 degrees, coloured with a 3-by-3 bivariate palette: one axis is how often the drought decision flips with the rainfall product, the other the distance to the nearest active GHCN-Daily station (triangles). 68 cells fall in the high-high class, mostly in San Juan, La Estrelleta, Pedernales. Labelled PROTOTYPE."
+ },
+ "06_santo_domingo_storm": {
+  "es": "Mapa animado de la RD: lluvia IMERG de media hora acumulándose del 17 al 19 de noviembre de 2023, con reloj UTC y local. Un gráfico lateral muestra el acumulado en la celda de Santo Domingo hasta 188 mm en 72 h, por debajo de la línea de 431 mm del pluviómetro en 24 h. Seis fotogramas clave como imagen fija.",
+  "en": "Animated dark map of the Dominican Republic: NASA IMERG half-hourly rain accumulating from 17 to 19 November 2023, with a UTC and local clock. A side chart grows the accumulated rain at the Santo Domingo cell to 188 mm in 72 h, below the dashed 431 mm line reported by the gauge in 24 h. Six key frames are provided as a still."
+ }
+}
