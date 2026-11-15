@@ -55,6 +55,8 @@ manda esta tabla. Antes de ponerle una etiqueta a cada fila se comprobaron todas
 | 23 | Aceptar la alerta de cualquiera de los dos productos mejora la prevención | **No respaldado** | 8 de 8 eventos, pero 88 falsas alarmas (CSI 0,08), en la versión retrospectiva | JANE_PREVENCION |
 | 24 | Estas reglas de lluvia observada (> 100 mm en 48 h) avisan antes de la inundación | **No respaldado** | En 2016–2024, 0 primeras señales en fecha estrictamente anterior al inicio catalogado, tanto con IMERG como con testigo. Hay 2 y 1 primeras señales el mismo día del inicio, respectivamente: usar el día completo no demuestra anticipación. Faltan horas de inicio y disponibilidad real de productos | JANE_PREVENCION_CAUSAL, CIERRE_ALERTAS, results/tropical/cierre_alertas/eventos.csv |
 
+| 25 | En las inundaciones del Yuna causadas por ciclones, el pronóstico oficial del NHC da días de antelación que la lluvia observada no da | **Se sostiene con límites** | 6 de 14 inundaciones 2001-2024 con ciclón a < 500 km (Noel, Olga, Isaac, María, Isaías, Fiona). Primer aviso oficial (ATCF OFCL, tal como se emitió) con el centro a < 200 km: 106 h antes (María), 88 h (Fiona), 40 h (Isaac, Isaías), 4 h (Olga); Noel nunca. Coste: 33 tormentas pronosticadas a < 200 km en 24 años, solo 5 con inundación catalogada (cota superior: catálogo de prensa). Predicciones: C1 no (6 < 7), C2 no (2 de 6 con ≥ 48 h), C3 sí | results/tropical/ciclones |
+
 ## Correcciones al `deep-research-report (8).md` (recibido el 15-nov)
 
 Su enfoque general coincide con esta tabla: dar un grado de certeza a cada conclusión, no prometer predicciones y

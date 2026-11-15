@@ -1,0 +1,33 @@
+{
+  "inundaciones": 14,
+  "con_ciclon_500km": 6,
+  "antelacion_h_R200": {
+    "2007-10": NaN,
+    "2007-12": 4.0,
+    "2012-08": 40.0,
+    "2017-09": 106.0,
+    "2020-07": 40.0,
+    "2022-09": 88.0
+  },
+  "con_aviso_48h_o_mas": 2,
+  "con_aviso_cualquiera": 5,
+  "tormentas_por_radio": {
+    "100": {
+      "tormentas": 21,
+      "con_inundacion": 4
+    },
+    "200": {
+      "tormentas": 33,
+      "con_inundacion": 5
+    },
+    "300": {
+      "tormentas": 46,
+      "con_inundacion": 5
+    }
+  },
+  "veredicto": {
+    "C1": false,
+    "C2": false,
+    "C3": true
+  }
+}
