@@ -403,8 +403,7 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .qt.on .qt-v { color: color-mix(in srgb, var(--c), #000 35%); }
 .qt.on .qt-v i.no { box-shadow: inset 0 0 0 1.5px #666; }
 .qt:focus-visible, .ql:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-.mpick { display: flex; margin: 10px 8px 0; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--raised); }
-.mpick select { flex: 1; }
+.mpick { display: flex; margin: 10px 8px 0; background: var(--raised); }
 .blk-land { border-top: 1px solid var(--rule); padding: 16px 20px 18px; }
 .blk-land > h2 { padding: 0 0 10px; font-size: 13px; font-weight: 500; color: var(--muted); }
 .lqs { display: grid; gap: 2px; }
@@ -414,19 +413,53 @@ body.wx-on .pill-nav__surface { background: #15171a; box-shadow: none; -webkit-b
 .ql.on { background: var(--raised); color: var(--text); font-weight: 500; }
 .qs { grid-template-columns: minmax(0, 1fr); }
 .mpick { min-width: 0; }
-.mpick select { min-width: 0; width: 100%; }
+
 .adj:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 /* ── El lugar: un solo selector con el nombre como título ── */
-.place { position: relative; display: flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin: -6px -10px 0; padding: 6px 10px; border-radius: 12px; cursor: pointer; transition: background .2s; }
-.place:hover { background: var(--hover); }
-.place:focus-within { outline: 2px solid #fff; outline-offset: 0; }
+.place { max-width: 100%; margin: -6px -10px 0; }
+.place button { display: flex; align-items: center; gap: 8px; max-width: 100%; padding: 6px 10px; border: 0; border-radius: 12px; background: none; color: inherit; font: inherit; letter-spacing: inherit; cursor: pointer; transition: background .2s; }
+.place #wx-h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.place button:hover, .place button[aria-expanded="true"] { background: var(--hover); }
+.place button:focus-visible { outline: 2px solid #fff; outline-offset: 0; }
 .place .pin { width: 18px; height: 18px; flex: none; }
-.place h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .place .chev { width: 14px; height: 14px; color: var(--muted); }
-.place select { position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; opacity: 0; pointer-events: none; }
-.place select option { background: #24272b; color: #fff; }
 .place-hint { margin-top: 4px; font-size: 13px; color: var(--faint); }
 .place-back { padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
 .place-back:hover { text-decoration: underline; text-underline-offset: 3px; }
 .place-back:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* ── Botones que abren un menú ── */
+button.pick { border: 0; font: inherit; font-size: 13px; }
+.pick b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: var(--text); }
+.pick .chev, .place .chev { transition: transform .25s var(--ease); }
+.pick[aria-expanded="true"] .chev, .place button[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.pick:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.mpick { align-items: center; gap: 8px; height: 40px; text-align: left; cursor: pointer; }
+.mpick em { margin-right: auto; font-style: normal; font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+.mp-d { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: none; }
+.mp-d.no { background: none; box-shadow: inset 0 0 0 1.5px var(--faint); }
+.map-sty { gap: 6px; }
+.map-sty b { max-width: 110px; }
+
+/* ── El menú: flota sobre todo (la única sombra de la pantalla) y entra con movimiento ── */
+.menu { position: fixed; z-index: 60; display: flex; flex-direction: column; padding: 6px; border-radius: 16px; background: #1b1d21; box-shadow: 0 18px 50px rgba(0, 0, 0, .55); color: #fff; font-family: inherit; opacity: 0; transform: translateY(-6px) scale(.98); transform-origin: top left; transition: opacity .18s cubic-bezier(.22, 1, .36, 1), transform .24s cubic-bezier(.22, 1, .36, 1); }
+.menu[data-up] { transform-origin: bottom left; transform: translateY(6px) scale(.98); }
+.menu.in { opacity: 1; transform: none; }
+.menu.out { opacity: 0; transform: translateY(-4px) scale(.985); transition-duration: .14s; }
+.menu-h { margin: 0; padding: 8px 10px 6px; font-size: 12px; color: #949494; }
+.menu-q { flex: none; margin: 2px 4px 6px; height: 38px; padding: 0 12px; border: 0; border-radius: 10px; background: #24272b; color: #fff; font: inherit; font-size: 14px; outline: none; }
+.menu-q:focus-visible { box-shadow: inset 0 0 0 2px #fff; }
+.menu-l { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.mi { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 10px; border: 0; border-radius: 10px; background: none; color: #fff; text-align: left; font: inherit; cursor: pointer; opacity: 0; transform: translateY(-4px); transition: background .15s, opacity .22s cubic-bezier(.22, 1, .36, 1) calc(var(--i) * 18ms), transform .22s cubic-bezier(.22, 1, .36, 1) calc(var(--i) * 18ms); }
+.mi[hidden] { display: none; }
+.menu.in .mi { opacity: 1; transform: none; }
+.mi:hover, .mi:focus-visible { background: #2a2d32; outline: none; }
+.mi.on { background: #24272b; }
+.mi-d { width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
+.mi-d.no { background: none; box-shadow: inset 0 0 0 1.5px #949494; }
+.mi-t { flex: 1; display: grid; gap: 2px; min-width: 0; }
+.mi-t b { font-size: 14px; font-weight: 600; }
+.mi-t small { font-size: 12.5px; line-height: 1.35; color: #b4b4b4; }
+.mi-ok { width: 16px; height: 16px; flex: none; color: #fff; }
+@media (prefers-reduced-motion: reduce) { .menu, .mi { transition: none; opacity: 1; transform: none; } }

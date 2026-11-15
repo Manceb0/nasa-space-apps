@@ -12,7 +12,8 @@ import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verd
 import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart, WARN } from "./graficas";
 import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
-import { chip, QUESTIONS, questionOf, verdict } from "./preguntas";
+import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
+import { openMenu } from "./menu";
 import { timeline } from "./tiempo";
 
 type Style = "crestas" | "plano" | "oscuro";
@@ -92,13 +93,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       <aside class="wx-left" id="wx-left">
         ${layout === "phone" ? `<button class="wx-grab" id="wx-grab" aria-label="${esc(LL("Subir o bajar el panel", "Raise or lower the panel"))}"><i></i></button>` : ""}
         <section class="blk-reg" id="wx-peek">
-          <div class="place" title="${esc(LL("Elegir el lugar", "Choose the place"))}">
-            ${PIN}<h1 id="wx-h1"></h1>${CHEV}
-            <select id="r-sel" aria-label="${esc(LL("Lugar", "Place"))}">
-              <option value="DO">${esc(LL("Toda la República Dominicana", "Whole Dominican Republic"))}</option>
-              ${d.provs.map((r) => `<option value="${r.id}">${esc(r.nombre)}</option>`).join("")}
-            </select>
-          </div>
+          <h1 class="place"><button id="r-btn" aria-haspopup="listbox" aria-expanded="false" title="${esc(LL("Elegir el lugar", "Choose the place"))}">${PIN}<span id="wx-h1"></span>${CHEV}</button></h1>
           <p class="place-hint" id="finding"></p>
           ${layout === "phone" ? `<p class="peek-ans" id="peek-ans"></p>` : ""}
         </section>
@@ -124,7 +119,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
             ${d.prods.map((p) => `<button data-show="${p}" role="radio">${p}</button>`).join("")}
           </div>
           <span class="sp"></span>
-          <label class="pick map-sty"><span>${esc(LL("Vista", "View"))}</span><select id="sty-sel" aria-label="${esc(LL("Cómo se dibuja el mapa", "How the map is drawn"))}">${styles.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join("")}</select>${CHEV}</label>
+          <button class="pick map-sty" id="sty-btn" aria-haspopup="listbox" aria-expanded="false"><span>${esc(LL("Vista", "View"))}</span><b id="sty-l"></b>${CHEV}</button>
           <div class="seg map-cam" role="radiogroup" aria-label="${esc(LL("Cámara", "Camera"))}"><button data-cam="2d" role="radio">2D</button><button data-cam="3d" role="radio" title="${esc(LL("Inclinar: arrastra con el botón derecho o con dos dedos", "Tilt: drag with the right button or two fingers"))}">3D</button></div>
           ${fold("right")}
         </div>
@@ -158,7 +153,6 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const both = () => d.prods.map((p) => ({ p, t: d.tr(sel, p) })).filter((x): x is { p: string; t: Tr } => !!x.t);
   const renderHead = () => {
     $("wx-h1").textContent = regName();
-    ($("r-sel") as HTMLSelectElement).value = sel.reg;
     // la pista dice cómo cambiar de lugar; con una provincia elegida, cómo volver al país
     $("finding").innerHTML = sel.reg === "DO" ? esc(LL("o toca una provincia en el mapa", "or tap a province on the map")) : `<button class="place-back" data-reg-all>${esc(LL("Ver todo el país", "See the whole country"))}</button>`;
     if (layout === "phone" && ui.land && land) { $("peek-ans").innerHTML = landPeek(land, ui.land, ui.landVar); return; }
@@ -177,7 +171,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       return `<button class="qt ${on ? "on" : ""}" data-q="${q.id}" role="radio" aria-checked="${on}" title="${esc(`${LL(q.es, q.en)} ${v.text}`)}"><span class="qt-l">${esc(chip(q.id))}</span><span class="qt-v" style="--c:${v.color}"><i class="${v.strong ? "" : "no"}"></i>${esc(v.short)}</span></button>`;
     }).join("");
     // la medida: un solo selector (las alternativas se consultan, no compiten por la vista)
-    const measure = ui.land ? "" : `<label class="pick mpick"><span>${esc(LL("Medido como", "Measured as"))}</span><select id="v-sel" aria-label="${esc(LL("Medido como", "Measured as"))}">${q0.vars.map((id) => `<option value="${id}" ${id === sel.ind ? "selected" : ""}>${esc(chip(id))} · ${esc(verdict(d, sel, id).short)}</option>`).join("")}</select>${CHEV}</label>`;
+    const mv = verdict(d, sel, sel.ind);
+    const measure = ui.land ? "" : `<button class="pick mpick" id="m-btn" aria-haspopup="listbox" aria-expanded="false"><span>${esc(LL("Medido como", "Measured as"))}</span><b>${esc(chip(sel.ind))}</b><i class="mp-d ${mv.strong ? "" : "no"}" style="--c:${mv.color}"></i><em>${esc(mv.short)}</em>${CHEV}</button>`;
     $("qs").innerHTML = `<div class="qgrid">${tiles}</div>${measure}`;
     const lqs = document.getElementById("lqs");
     if (lqs && land) lqs.innerHTML = LAND_Q.map((q) => {
@@ -488,7 +483,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   };
   const renderStyle = () => {
     wx.dataset.sty = ui.style; wx.dataset.d3 = ui.d3 ? "on" : "off"; wx.dataset.left = ui.left ? "on" : "off"; wx.dataset.right = ui.right && !ui.land ? "on" : "off";
-    ($("sty-sel") as HTMLSelectElement).value = ui.style;
+    $("sty-l").textContent = styles.find(([k]) => k === ui.style)?.[1] ?? "";
     wx.querySelectorAll<HTMLButtonElement>("[data-cam]").forEach((b) => { const on = (b.dataset.cam === "3d") === ui.d3; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
     wx.querySelectorAll<HTMLButtonElement>("[data-fold]").forEach((b) => {
       const open = ui[b.dataset.fold as "left" | "right"], t = open ? LL("Ocultar panel", "Hide panel") : LL("Mostrar panel", "Show panel");
@@ -515,10 +510,28 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   wx.addEventListener("click", (e) => {
     const el = e.target as Element;
     if (el.closest("[data-reg-all]")) { pickRegion("DO"); return; }
-    // el nombre del lugar abre la lista de lugares (el selector está debajo, sin tapar el título)
-    if (el.closest(".place") && !(el instanceof HTMLSelectElement)) {
-      const rs = $<HTMLSelectElement>("r-sel");
-      try { rs.showPicker(); } catch { rs.focus(); }
+    // Menús: cada opción dice qué es y, cuando aplica, su veredicto para la medida elegida
+    const rb = el.closest<HTMLElement>("#r-btn");
+    if (rb) {
+      const opt = (id: string, label: string) => { const v = verdict(d, { ...sel, reg: id }, sel.ind); return { value: id, label, hint: v.short, color: v.color, hollow: !v.strong }; };
+      openMenu(rb, [opt("DO", LL("Toda la República Dominicana", "Whole Dominican Republic")), ...d.provs.map((r) => opt(r.id, r.nombre))], sel.reg, pickRegion,
+        ui.land ? LL("Elige un lugar", "Choose a place") : LL(`Elige un lugar · veredicto de «${chip(sel.ind)}»`, `Choose a place · verdict for "${chip(sel.ind)}"`));
+      return;
+    }
+    const mb = el.closest<HTMLElement>("#m-btn");
+    if (mb) {
+      openMenu(mb, questionOf(sel.ind).vars.map((id) => { const v = verdict(d, sel, id); return { value: id, label: shortName(id), hint: `${v.short} · ${d.vm(id).descripcion}`, color: v.color, hollow: !v.strong }; }),
+        sel.ind, setInd, LL("Cómo medirlo", "How to measure it"));
+      return;
+    }
+    const sb = el.closest<HTMLElement>("#sty-btn");
+    if (sb) {
+      const hint: Record<Style, string> = {
+        crestas: LL("Relieve en perfiles; el color es el dato", "Relief in profiles; the colour is the data"),
+        oscuro: LL("Mapa oscuro con las celdas de color", "Dark map with coloured cells"),
+        plano: LL("Imagen de satélite con las celdas de color", "Satellite image with coloured cells"),
+      };
+      openMenu(sb, styles.map(([k, l]) => ({ value: k, label: l, hint: hint[k] })), ui.style, (v) => { ui.style = v as Style; renderStyle(); applyView(false); }, LL("Cómo se dibuja el mapa", "How the map is drawn"));
       return;
     }
     const lq = el.closest<HTMLElement>("[data-landq]");
@@ -572,14 +585,6 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   wx.addEventListener("keydown", (e) => {
     const fr = (e.target as Element).closest<SVGGElement>(".fr");
     if (fr && e.key === "Enter") pickRegion(fr.dataset.reg!);
-  });
-  wx.addEventListener("change", (e) => {
-    const t = e.target as HTMLSelectElement;
-    if (t.id === "r-sel") pickRegion(t.value);
-    else if (t.id === "v-sel") setInd(t.value);
-    else if (t.id === "sty-sel") {
-      ui.style = t.value as Style; renderStyle(); applyView(false);
-    }
   });
 
   wx.querySelector(".wx-main")!.addEventListener("transitionend", (e) => { if ((e as TransitionEvent).propertyName === "grid-template-columns") { t3?.map.resize(); t3?.setFitPadding(fitPad()); } });
