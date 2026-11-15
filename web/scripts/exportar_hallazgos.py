@@ -30,10 +30,33 @@ def main():
         "pr": {"estaciones": pr, "resumen": json.loads((R / "puerto_rico" / "resumen.json").read_text(encoding="utf-8"))},
         "ciclones_sequia": json.loads((R / "ciclones_sequia" / "resumen.json").read_text(encoding="utf-8")),
     }
+    # predicciones escritas antes de calcular, con su veredicto cuando el resumen lo trae
+    preds = []
+    for f in sorted(R.rglob("predicciones_registradas.json")):
+        d = json.loads(f.read_text(encoding="utf-8"))
+        src = d.get("predicciones", d)
+        res = f.parent / "resumen.json"
+        ver = json.loads(res.read_text(encoding="utf-8")).get("veredicto", {}) if res.exists() else {}
+        for k, v in src.items():
+            if not isinstance(v, str) or len(v) < 40 or k in ("refutacion", "nota", "registradas_utc", "fecha"):
+                continue
+            preds.append({"id": k, "texto": v, "estudio": f.parent.name if f.parent != R else "tropical", "cumplida": ver.get(k) if isinstance(ver.get(k), bool) else None})
+    out["predicciones"] = preds
+    # grados de certeza: la tabla de ESTADO_CONCLUSIONES.md
+    import re
+    conc, sec = [], ""
+    for line in (ROOT / "reports_nacional" / "ESTADO_CONCLUSIONES.md").read_text(encoding="utf-8").splitlines():
+        if line.startswith("## "):
+            sec = line[3:].strip()
+        m = re.match(r"^\| *([0-9]+[a-z]?) *\| *(.+?) *\| *(.+?) *\|", line)
+        if m and sec and not sec.lower().startswith("correcciones"):
+            grado = re.sub(r"\*\*", "", m.group(3)).strip()
+            conc.append({"id": m.group(1), "texto": re.sub(r"\*\*", "", m.group(2)).strip(), "grado": grado, "seccion": sec})
+    out["conclusiones"] = conc
     assert len(out["merra2"]) == 15 and all({"IMERG", "CHIRPS", "MERRA2"} <= set(c) for c in out["merra2"]), "faltan recuadros"
     assert len(pr) == out["pr"]["resumen"]["estaciones"]
     OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(len(out["merra2"]), "recuadros;", len(pr), "estaciones de PR")
+    print(len(out["merra2"]), "recuadros;", len(pr), "estaciones de PR;", len(preds), "predicciones;", len(conc), "conclusiones")
 
 
 if __name__ == "__main__":

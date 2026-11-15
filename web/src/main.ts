@@ -14,6 +14,7 @@ import { destroyTrends, openLand, viewTrends } from "./tendencias/vista";
 import { destroyAudit, viewAudit } from "./auditoria/vista";
 import { destroyPreparation, viewPreparation } from "./preparacion/vista";
 import { viewMethodV2 } from "./metodo/vista";
+import { viewAnswer } from "./respuesta/vista";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
@@ -84,6 +85,7 @@ function shell(): void {
       logoAlt: `Stellar Horizons · ${esc(t.brand)}`, logoHref: "#tendencias", ariaLabel: esc(t.brand),
       items: [
         { key: "tendencias", href: "#tendencias", label: getLang() === "es" ? "Tendencias" : "Trends", short: getLang() === "es" ? "Tendencias" : "Trends" },
+        { key: "respuesta", href: "#respuesta", label: getLang() === "es" ? "La respuesta" : "The answer", short: getLang() === "es" ? "Respuesta" : "Answer" },
         { key: "auditoria", href: "#auditoria", label: esc(t.navAudit), short: esc(t.navAudit) },
         { key: "metodo", href: "#metodo", label: esc(t.navMethod), short: getLang() === "es" ? "Método" : "Method" },
       ],
@@ -1372,7 +1374,7 @@ async function route(scrollTop = true) {
   // anteriores quedan en #investigar-v1 y #ribbon-v1, fuera del menú
   const raw = location.hash.replace("#", "") || "tendencias";
   if (raw === "investigar" || raw === "ribbon") { openLand(raw === "investigar" ? "verde" : "recupera"); history.replaceState(null, "", "#tendencias"); }
-  const r = (raw === "investigar" || raw === "ribbon" ? "tendencias" : raw === "investigar-v1" ? "investigar" : raw === "ribbon-v1" ? "ribbon" : raw) as "preparar" | "tendencias" | "investigar" | "ribbon" | "expedientes" | "auditoria" | "metodo";
+  const r = (raw === "investigar" || raw === "ribbon" ? "tendencias" : raw === "investigar-v1" ? "investigar" : raw === "ribbon-v1" ? "ribbon" : raw) as "respuesta" | "preparar" | "tendencias" | "investigar" | "ribbon" | "expedientes" | "auditoria" | "metodo";
   setNav(r);
   stopPlay();
   clearMaps();
@@ -1386,6 +1388,7 @@ async function route(scrollTop = true) {
     else if (r === "expedientes") await viewCases();
     else if (r === "auditoria") await viewAudit(document.getElementById("view")!);
     else if (r === "ribbon") await viewRibbon();
+    else if (r === "respuesta") await viewAnswer(document.getElementById("view")!);
     else if (r === "metodo") { const t = T(); await viewMethodV2(document.getElementById("view")!, t.glossary, t.limitsH, t.limits); }
     else if (r === "tendencias") await viewTrends(document.getElementById("view")!);
     else await viewInvestigate();
@@ -1399,7 +1402,7 @@ async function start() {
   shell();
   index = await load<Index>("index.json");
   window.addEventListener("hashchange", () => {
-    if (["#preparar", "#tendencias", "#investigar", "#ribbon", "#investigar-v1", "#ribbon-v1", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
+    if (["#respuesta", "#preparar", "#tendencias", "#investigar", "#ribbon", "#investigar-v1", "#ribbon-v1", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
   });
   let timer: number | undefined;
   let lastW = window.innerWidth;

@@ -150,8 +150,9 @@ function board(){
 // (a-deck OFCL tal como se emitió) hasta el inicio catalogado, y el día en que IMERG superó 100 mm/48 h.
 // Fuente: results/tropical/ciclones/inundaciones_y_ciclones.csv y results/tropical/alerta_causal/momento_por_evento.csv
 const CY:{n:string;y:number;lead:number|null;sat:number}[]=[
-  {n:"María",y:2017,lead:106,sat:0},{n:"Fiona",y:2022,lead:88,sat:1},{n:"Isaac",y:2012,lead:40,sat:-1},
-  {n:"Isaías",y:2020,lead:40,sat:0},{n:"Olga",y:2007,lead:4,sat:0},{n:"Noel",y:2007,lead:null,sat:1}];
+  // horas desde la publicación del boletín (hora base del a-deck menos unas 3 h de publicación)
+  {n:"María",y:2017,lead:103,sat:0},{n:"Fiona",y:2022,lead:85,sat:1},{n:"Isaac",y:2012,lead:37,sat:-1},
+  {n:"Isaías",y:2020,lead:37,sat:0},{n:"Olga",y:2007,lead:1,sat:0},{n:"Noel",y:2007,lead:null,sat:1}];
 function leadChart(){
   const W=560,L=96,R=12,T=30,rh=30,H=T+CY.length*rh+26,x0=-120,x1=48;
   const x=(h:number)=>L+(h-x0)/(x1-x0)*(W-L-R);
@@ -162,7 +163,7 @@ function leadChart(){
     const sat=`<rect x="${(x(c.sat*24)+1).toFixed(1)}" y="${y-7}" width="${(x(24)-x(0)-2).toFixed(1)}" height="14" rx="4" fill="#ffffff" fill-opacity=".85"/>`;
     return `<text x="${L-12}" y="${y+4}" fill="#fff" font-size="13" font-weight="600" text-anchor="end">${esc(c.n)} <tspan fill="#949494" font-weight="400">${c.y}</tspan></text>${c.lead!==null&&c.lead>=20?"":""}${nhc}${sat}`;}).join("");
   return `<svg class="pb-lead-c" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(LL("Horas de antelación del aviso del NHC y día de la señal del satélite en las seis inundaciones de ciclón del Yuna","Lead time of the NHC advisory and day of the satellite signal in the six cyclone floods of the Yuna"))}">
-    <text x="${L}" y="14" fill="#64d2ff" font-size="12" font-weight="600">${esc(LL("Aviso del NHC","NHC advisory"))}</text>
+    <text x="${L}" y="14" fill="#64d2ff" font-size="12" font-weight="600">${esc(LL("Boletín del NHC publicado","NHC advisory published"))}</text>
     <text x="${L+110}" y="14" fill="#fff" font-size="12" font-weight="600">${esc(LL("Día de la señal del satélite (IMERG)","Satellite signal day (IMERG)"))}</text>
     ${ticks.map(t=>`<line x1="${x(t)}" x2="${x(t)}" y1="${T-4}" y2="${H-22}" stroke="${t===0?"#ff9f0a":"#23262a"}" stroke-width="${t===0?2:1}" ${t===0?'stroke-dasharray="4 4" stroke-linecap="round"':""}/>
       <text x="${x(t)}" y="${H-6}" fill="${t===0?"#ff9f0a":"#949494"}" font-size="11" text-anchor="middle" font-weight="${t===0?600:400}">${t===0?esc(LL("inicio","onset")):`${t>0?"+":"−"}${Math.abs(t/24)} d`}</text>`).join("")}

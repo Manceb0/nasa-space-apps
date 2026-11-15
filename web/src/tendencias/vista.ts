@@ -221,7 +221,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     box.innerHTML = `
       <p class="vd" style="--c:#64d2ff"><b>${esc(i.yuna ? LL(`${i.n} inundaciones`, `${i.n} floods`) : LL(`${i.n} tormentas`, `${i.n} storms`))}</b><span>${esc(i.yuna ? LL("del río Yuna llegaron con un ciclón, 2001–2024", "of the Yuna river came with a cyclone, 2001–2024") : (i.place === "DO" ? LL("pasaron a menos de 200 km de alguna provincia, 2001–2024", "passed within 200 km of some province, 2001–2024") : LL(`pasaron a menos de 200 km de ${i.label}, 2001–2024`, `passed within 200 km of ${i.label}, 2001–2024`)))}</span></p>
       <div class="cy-k">
-        <p><b>${i.med === null ? "—" : `${i.med} h`}</b><span>${esc(LL("de aviso mediano del NHC antes de que llegaran", "median NHC warning before arrival"))}</span></p>
+        <p><b>${i.med === null ? "—" : `${i.med} h`}</b><span>${esc(LL("de aviso mediano: desde que el NHC publicó el boletín hasta que llegaron", "median warning: from the NHC advisory's publication to arrival"))}</span></p>
         <p><b class="w">${i.late + i.none}</b><span>${esc(LL("llegaron sin aviso o con el aviso tarde", "arrived with no or late warning"))}</span></p>
       </div>
       <h3 class="cy-h">${esc(LL("Cómo leer el mapa", "How to read the map"))}</h3>

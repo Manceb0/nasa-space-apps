@@ -23,6 +23,10 @@ interface Rd { r_km: number; provinces: { id: string; name: string; lat: number;
 interface Case { key: string; name: string; year: number; track: Pt[]; forecast: { issued: string; pts: FcPt[] } | null; wind: Wind | null; lead_h: number | null; target: { lat: number; lon: number; label: string }; goal: number; flood: boolean; t0: number; t1: number }
 
 const HOUR = 3600000;
+// La antelación se cuenta desde la PUBLICACIÓN del boletín del NHC, unas 3 h después de su hora base (la que trae el
+// a-deck). Los datos guardan la hora base; aquí se resta para mostrar lo que un técnico habría tenido en la mano.
+const PUB = 3;
+const pubLead = (h: number | null) => (h === null ? null : h - PUB);
 const STOPS: [number, [number, number, number]][] = [[0, [24, 40, 92]], [6, [32, 104, 160]], [12, [44, 168, 148]], [17, [226, 206, 74]], [25, [244, 140, 52]], [33, [226, 58, 54]], [45, [176, 34, 140]]];
 const ramp = (s: number) => {
   for (let i = 1; i < STOPS.length; i++) if (s <= STOPS[i][0]) {
@@ -166,7 +170,7 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
       const at = Date.parse(fc.issued) + p.tau * HOUR;
       const el = document.createElement("div"); el.className = "hx-lab fc";
       el.innerHTML = `<b>${esc(LL(`Pronóstico · ${dayFmt(at)}`, `Forecast · ${dayFmt(at)}`))}</b><span>${esc(metr(p.kt, p.hpa))}</span>`;
-      labs.push({ m: new maplibregl.Marker({ element: el, anchor: "top-right", offset: [-8, 6] }).setLngLat([p.lon, p.lat]).addTo(map), at: Date.parse(fc.issued), kind: "fc" });
+      labs.push({ m: new maplibregl.Marker({ element: el, anchor: "top-right", offset: [-8, 6] }).setLngLat([p.lon, p.lat]).addTo(map), at: Date.parse(fc.issued) + PUB * HOUR, kind: "fc" });
     }
   };
 
@@ -184,7 +188,7 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
     const day = new Date(t).toISOString().slice(0, 10);
     if (layer !== "wind" && day !== satDay) { satDay = day; (map.getSource("sat") as maplibregl.RasterTileSource).setTiles([layer === "rain" ? IMERG(day) : GIBS(day)]); }
     (map.getSource("eye") as maplibregl.GeoJSONSource).setData({ type: "FeatureCollection", features: pos ? [{ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: [pos.lon, pos.lat] } }] : [] });
-    const fc = cs.forecast, shown = !!fc && t >= Date.parse(fc.issued);
+    const fc = cs.forecast, shown = !!fc && t >= Date.parse(fc.issued) + PUB * HOUR;
     $("hx-marks").querySelector(".nhc")?.classList.toggle("on", shown);
     map.setLayoutProperty("fc", "visibility", shown ? "visible" : "none");
     map.setLayoutProperty("fc-pts", "visibility", shown ? "visible" : "none");
@@ -274,8 +278,8 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
     $("hx-days").innerHTML = `<em>${esc(my)}</em>${days.join("")}`;
     const marks: string[] = [];
     if (c.forecast) {
-      const at = Date.parse(c.forecast.issued);
-      const txt = c.lead_h !== null && c.lead_h < 0 ? LL(`Aviso NHC · ${-c.lead_h} h tarde`, `NHC advisory · ${-c.lead_h} h late`) : LL(`Aviso NHC · ${c.lead_h} h antes`, `NHC advisory · ${c.lead_h} h ahead`);
+      const at = Date.parse(c.forecast.issued) + PUB * HOUR;
+      const txt = c.lead_h !== null && c.lead_h < 0 ? LL(`Boletín NHC · ${-c.lead_h} h tarde`, `NHC advisory · ${-c.lead_h} h late`) : LL(`Boletín NHC publicado · ${c.lead_h} h antes`, `NHC advisory published · ${c.lead_h} h ahead`);
       // la etiqueta del aviso se abre hacia el lado contrario a la llegada, para no pisarse
       const side = (at <= c.goal ? pos(at) > 22 : pos(at) > 78) ? "l" : "r";
       if (at >= c.t0 && at <= c.t1) marks.push(`<i class="mk nhc ${side}" style="left:${pos(at)}%"><span>${esc(txt)}</span></i>`);
@@ -288,7 +292,7 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
   const floodCase = async (id: string): Promise<Case> => {
     const f = floods[id] ??= await load<Flood>(`huracanes/${id}.json`);
     const F = f.wind.frames;
-    return { key: id, name: f.name, year: f.year, track: f.track, forecast: f.forecast, wind: f.wind, lead_h: f.lead_h,
+    return { key: id, name: f.name, year: f.year, track: f.track, forecast: f.forecast, wind: f.wind, lead_h: pubLead(f.lead_h),
       target: { lat: fi!.yuna.lat, lon: fi!.yuna.lon, label: LL("Cuenca del Yuna", "Yuna basin") }, goal: Date.parse(`${f.onset}T04:00:00Z`), flood: true,
       t0: Date.parse(F[0].t), t1: Date.parse(F[F.length - 1].t) };
   };
@@ -302,7 +306,7 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
     const arrive = Date.parse(hit.arrive), issued = hit.issued ? Date.parse(hit.issued) : null;
     let t0 = Math.min(arrive - 96 * HOUR, issued ? issued - 6 * HOUR : Infinity), t1 = arrive + 30 * HOUR;
     if (wind) { t0 = Math.max(t0, Date.parse(wind.frames[0].t)); t1 = Math.min(Math.max(t1, t0 + 48 * HOUR), Date.parse(wind.frames[wind.frames.length - 1].t)); }
-    return { key: `${p}:${h.sid}`, name: s.name, year: s.year, track: s.track.map(toPt), wind, lead_h: hit.lead_h,
+    return { key: `${p}:${h.sid}`, name: s.name, year: s.year, track: s.track.map(toPt), wind, lead_h: pubLead(hit.lead_h),
       forecast: hit.fc && hit.issued ? { issued: hit.issued, pts: hit.fc.map(([tau, lat, lon, kt]) => ({ tau, lat, lon, kt })) } : null,
       target: { lat: pr.lat, lon: pr.lon, label: pr.name }, goal: arrive, flood: false, t0, t1 };
   };
@@ -312,13 +316,13 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
     place = p; $("hx-place-l").textContent = placeName(p);
     let chips: { key: string; html: string }[] = [], tracks: RdStorm[] = [];
     if (p === "yuna") {
-      const order = [...fi!.storms].sort((a, b) => (b.lead_h ?? -1) - (a.lead_h ?? -1));
-      chips = order.map((s) => ({ key: s.id, html: `<b>${esc(s.name)}</b><span>${s.year} · ${s.lead_h === null ? esc(LL("sin aviso", "no advisory")) : `${s.lead_h} h`}</span>` }));
+      const order = [...fi!.storms].sort((a, b) => (b.lead_h ?? -99) - (a.lead_h ?? -99));
+      chips = order.map((s) => ({ key: s.id, html: `<b>${esc(s.name)}</b><span>${s.year} · ${s.lead_h === null ? esc(LL("sin aviso", "no advisory")) : `${pubLead(s.lead_h)} h`}</span>` }));
       tracks = rd!.storms.filter((s) => order.some((o) => o.name.toUpperCase() === s.name.toUpperCase() && o.year === s.year));
     } else {
       const hs = rd!.hits[p] ?? [];
       chips = hs.map((h) => { const s = rd!.storms.find((x) => x.sid === h.sid)!;
-        const lead = h.lead_h === null ? LL("sin aviso", "no advisory") : h.lead_h < 0 ? LL("aviso tarde", "late advisory") : `${h.lead_h} h`;
+        const ld = pubLead(h.lead_h), lead = ld === null ? LL("sin aviso", "no advisory") : ld < 0 ? LL("aviso tarde", "late advisory") : `${ld} h`;
         return { key: h.sid, html: `<b style="--k:${CAT(s.peak_kt)}">${esc(s.name)}</b><span>${s.year} · ${esc(lead)}</span>` }; });
       tracks = hs.map((h) => rd!.storms.find((x) => x.sid === h.sid)!);
     }
@@ -326,7 +330,7 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
       : `<p class="hx-empty">${esc(LL("Ninguna tormenta pasó a menos de 200 km entre 2001 y 2024.", "No storm passed within 200 km between 2001 and 2024."))}</p>`;
     (map!.getSource("all") as maplibregl.GeoJSONSource).setData({ type: "FeatureCollection", features: tracks.map((s) => ({ type: "Feature" as const, properties: { c: CAT(s.peak_kt) }, geometry: { type: "LineString" as const, coordinates: s.track.map((r) => [r[2], r[1]]) } })) });
     if (opts.onInfo) {
-      const leads = p === "yuna" ? fi!.storms.map((s) => s.lead_h) : (rd!.hits[p] ?? []).map((h) => h.lead_h);
+      const leads = (p === "yuna" ? fi!.storms.map((s) => s.lead_h) : (rd!.hits[p] ?? []).map((h) => h.lead_h)).map(pubLead);
       const ok = leads.filter((x): x is number => x !== null && x >= 0).sort((a, b) => a - b);
       opts.onInfo({ place: p, label: placeName(p), n: leads.length, med: ok.length ? ok[ok.length >> 1] : null, late: leads.filter((x) => x !== null && x < 0).length, none: leads.filter((x) => x === null).length, yuna: p === "yuna" });
     }
@@ -392,7 +396,7 @@ export function hurricanes(host: HTMLElement, opts: { place?: string; hidePlace?
     const pb = el.closest<HTMLButtonElement>("#hx-place");
     if (pb && rd && fi) {
       const n = (p: string) => (rd!.hits[p] ?? []).length;
-      const med = (p: string) => { const l = (rd!.hits[p] ?? []).map((h) => h.lead_h).filter((x): x is number => x !== null && x >= 0).sort((a, b) => a - b); return l.length ? l[l.length >> 1] : null; };
+      const med = (p: string) => { const l = (rd!.hits[p] ?? []).map((h) => pubLead(h.lead_h)).filter((x): x is number => x !== null && x >= 0).sort((a, b) => a - b); return l.length ? l[l.length >> 1] : null; };
       const hint = (p: string) => { const m = med(p); return LL(`${n(p)} tormentas a menos de 200 km${m !== null ? ` · aviso mediano ${m} h antes` : ""}`, `${n(p)} storms within 200 km${m !== null ? ` · median advisory ${m} h ahead` : ""}`); };
       openMenu(pb, [
         { value: "yuna", label: LL("Cuenca del Yuna · inundaciones", "Yuna basin · floods"), hint: LL(`${fi.storms.length} inundaciones que llegaron con un ciclón`, `${fi.storms.length} floods that came with a cyclone`) },
