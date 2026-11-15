@@ -1,0 +1,109 @@
+// El campo de tendencia como imagen suave, al estilo de los mapas meteorológicos:
+// interpolación bilineal entre los centros de las celdas de 0,1° del contrato (sin inventar valores fuera de ellas)
+// y recortado a la costa con los límites oficiales, para que el borde sea la isla y no un cuadro.
+import type { CellLayer, FC, Rej } from "./datos";
+
+export type RGB = [number, number, number];
+const GREY: RGB = [150, 150, 160];
+// Escalas divergentes: hacia lo seco (cálida) y hacia lo húmedo (fría), con gris en el cero
+const WARM: [number, RGB][] = [[0, GREY], [0.25, [255, 214, 10]], [0.55, [255, 159, 10]], [0.8, [255, 69, 58]], [1, [200, 30, 70]]];
+const COOL: [number, RGB][] = [[0, GREY], [0.25, [100, 210, 255]], [0.55, [10, 132, 255]], [0.8, [94, 92, 230]], [1, [140, 70, 230]]];
+const ramp = (stops: [number, RGB][], t: number): RGB => {
+  for (let k = 1; k < stops.length; k++) if (t <= stops[k][0]) {
+    const [a, ca] = stops[k - 1], [b, cb] = stops[k], u = (t - a) / (b - a);
+    return ca.map((v, i) => Math.round(v + (cb[i] - v) * u)) as RGB;
+  }
+  return stops[stops.length - 1][1];
+};
+/** Color de un valor con signo: m = |v| / máximo, hacia lo seco o lo húmedo. */
+export const colorOf = (m: number, towardDry: boolean): RGB => ramp(towardDry ? WARM : COOL, Math.min(1, Math.max(0, m)));
+/** La rampa en CSS, para la leyenda (de lo húmedo a lo seco, pasando por el cero). */
+export const rampCss = (dryRight: boolean) => {
+  const side = (s: [number, RGB][]) => s.map(([, c]) => `rgb(${c.join(",")})`);
+  const w = side(WARM), c = side(COOL);
+  const left = dryRight ? c.slice().reverse() : w.slice().reverse();
+  const right = dryRight ? w.slice(1) : c.slice(1);
+  return `linear-gradient(90deg, ${[...left, ...right].join(", ")})`; // taste-skill-ignore: escala de color de los datos
+};
+
+/** Máximo para la escala: percentil 95 de |pendiente| (un valor extremo no apaga el resto). */
+export const scaleMax = (vals: (number | null)[]) => {
+  const a = vals.filter((x): x is number => x !== null).map(Math.abs).sort((x, y) => x - y);
+  return a[Math.floor(a.length * 0.95)] || a[a.length - 1] || 1;
+};
+
+export function trendField(R: Rej, lay: CellLayer, qMax: number, max: number, towardDry: (v: number) => boolean, land: FC | null, S = 12) {
+  const W = R.nx * S, H = R.ny * S;
+  const lon0 = R.lon_bordes[0], lon1 = R.lon_bordes[R.nx], lat0 = R.lat_bordes[0], lat1 = R.lat_bordes[R.ny];
+  const val = (i: number, j: number) => {
+    if (i < 0 || j < 0 || i >= R.ny || j >= R.nx) return null;
+    const k = i * R.nx + j;
+    return R.incluida[k] ? lay.pendiente_decada[k] : null;
+  };
+  const sig = (i: number, j: number) => (lay.q[i * R.nx + j] ?? 1) <= qMax ? 1 : 0;
+  const px = new Uint8ClampedArray(W * H * 4);
+  const res = R.lon[1] - R.lon[0];
+  for (let y = 0; y < H; y++) {
+    const lat = lat1 - ((y + 0.5) / H) * (lat1 - lat0);
+    const fi = (lat - R.lat[0]) / res;
+    for (let x = 0; x < W; x++) {
+      const lon = lon0 + ((x + 0.5) / W) * (lon1 - lon0);
+      const fj = (lon - R.lon[0]) / res;
+      const i0 = Math.floor(fi), j0 = Math.floor(fj), ty = fi - i0, tx = fj - j0;
+      let sw = 0, sv = 0, ss = 0;
+      for (const [di, dj, w] of [[0, 0, (1 - ty) * (1 - tx)], [0, 1, (1 - ty) * tx], [1, 0, ty * (1 - tx)], [1, 1, ty * tx]] as const) {
+        const v = val(i0 + di, j0 + dj);
+        if (v === null || w === 0) continue;
+        sw += w; sv += w * v; ss += w * sig(i0 + di, j0 + dj);
+      }
+      if (sw === 0) {
+        // Borde de la costa: la celda incluida más cercana (no se inventa nada fuera del alcance de una celda)
+        const ni = Math.round(fi), nj = Math.round(fj), v = val(ni, nj);
+        if (v === null) continue;
+        sw = 1; sv = v; ss = sig(ni, nj);
+      }
+      const v = sv / sw, s = ss / sw, m = Math.min(1, Math.abs(v) / max);
+      const c = colorOf(m, towardDry(v));
+      const o = 4 * (y * W + x);
+      px[o] = c[0]; px[o + 1] = c[1]; px[o + 2] = c[2];
+      px[o + 3] = Math.round(255 * ((0.2 + 0.3 * m) * (1 - s) + (0.6 + 0.32 * m) * s));
+    }
+  }
+  if (land) clipToLand(px, W, H, land, (lon) => ((lon - lon0) / (lon1 - lon0)) * W, (lat) => ((lat1 - lat) / (lat1 - lat0)) * H);
+  return { px, w: W, h: H, bounds: [lon0, lat0, lon1, lat1] as [number, number, number, number] };
+}
+
+function clipToLand(px: Uint8ClampedArray, W: number, H: number, land: FC, X: (lon: number) => number, Y: (lat: number) => number) {
+  const c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const ctx = c.getContext("2d")!;
+  const img = ctx.createImageData(W, H);
+  img.data.set(px);
+  ctx.putImageData(img, 0, 0);
+  ctx.globalCompositeOperation = "destination-in";
+  ctx.beginPath();
+  for (const f of land.features) {
+    const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    for (const p of polys) for (const ring of p) ring.forEach(([lon, lat]: number[], k: number) => (k ? ctx.lineTo(X(lon), Y(lat)) : ctx.moveTo(X(lon), Y(lat))));
+  }
+  ctx.fill("evenodd");
+  px.set(ctx.getImageData(0, 0, W, H).data);
+}
+
+/** Centros de las celdas significativas: el punteado clásico de los mapas de tendencia (Wilks 2016). */
+export function stipple(R: Rej, lay: CellLayer, qMax: number) {
+  const features = [];
+  for (let i = 0; i < R.ny; i++) for (let j = 0; j < R.nx; j++) {
+    const k = i * R.nx + j;
+    if (R.incluida[k] && lay.pendiente_decada[k] !== null && (lay.q[k] ?? 1) <= qMax)
+      features.push({ type: "Feature" as const, properties: {}, geometry: { type: "Point" as const, coordinates: [R.lon[j], R.lat[i]] } });
+  }
+  return { type: "FeatureCollection" as const, features };
+}
+
+/** La celda bajo un punto del mapa (o -1). */
+export const cellAt = (R: Rej, lon: number, lat: number) => {
+  const j = R.lon_bordes.findIndex((b, k) => k < R.nx && lon >= b && lon < R.lon_bordes[k + 1]);
+  const i = R.lat_bordes.findIndex((b, k) => k < R.ny && lat >= b && lat < R.lat_bordes[k + 1]);
+  return i < 0 || j < 0 ? -1 : i * R.nx + j;
+};

@@ -201,7 +201,7 @@ export function terrain3d(el: HTMLElement, opts: {
     map.setLayoutProperty("sat", "visibility", mode === "oscuro" ? "none" : "visible");
     map.setLayoutProperty("dark", "visibility", mode === "oscuro" ? "visible" : "none");
     map.setPaintProperty("shade", "hillshade-exaggeration", mode === "oscuro" ? 0.25 : 0.55);
-    if (flat) map.fitBounds([[-72.05, 17.45], [-68.3, 19.98]], { padding: { top: 230, bottom: 360, left: 260, right: 460 }, pitch: 0, bearing: 0, duration: 1400 });
+    if (flat) map.fitBounds([[-72.05, 17.45], [-68.3, 19.98]], { padding: fitPad, pitch: 0, bearing: 0, duration: 1400 });
     else map.easeTo({ pitch: 52, bearing: -14, duration: 1400 });
   };
   let selProv: string | null = null;
@@ -218,6 +218,8 @@ export function terrain3d(el: HTMLElement, opts: {
   };
   // Capa genérica de celdas: una imagen RGBA (fila 0 = norte) estirada sobre su caja [oeste, sur, este, norte]
   const cvsCells = document.createElement("canvas");
+  let cellsTimer = 0;
+  let cellsNext: { url: string; coordinates: [[number, number], [number, number], [number, number], [number, number]] } | null = null;
   const setCells = (px: Uint8ClampedArray, w: number, h: number, b: [number, number, number, number]) => {
     cvsCells.width = w; cvsCells.height = h;
     const ctx = cvsCells.getContext("2d")!;
@@ -227,7 +229,17 @@ export function terrain3d(el: HTMLElement, opts: {
     const url = cvsCells.toDataURL();
     const coords: [[number, number], [number, number], [number, number], [number, number]] = [[b[0], b[3]], [b[2], b[3]], [b[2], b[1]], [b[0], b[1]]];
     const src = map.getSource("cells") as maplibregl.ImageSource | undefined;
-    if (src) { src.updateImage({ url, coordinates: coords }); return; }
+    // Cambios seguidos abortan la carga anterior (AbortError): se agrupan y solo va la última imagen
+    if (src) {
+      cellsNext = { url, coordinates: coords };
+      if (!cellsTimer) cellsTimer = window.setTimeout(() => {
+        cellsTimer = 0;
+        const s = map.getSource("cells") as maplibregl.ImageSource | undefined;
+        if (s && cellsNext) s.updateImage(cellsNext);
+        cellsNext = null;
+      }, 120);
+      return;
+    }
     map.addSource("cells", { type: "image", url, coordinates: coords });
     map.addLayer({ id: "cells", type: "raster", source: "cells", layout: { visibility: "none" }, paint: {
       "raster-resampling": "linear", "raster-fade-duration": 400,

@@ -10,7 +10,7 @@ import { pillNav, wirePillNav } from "./pillnav";
 import { type Grid } from "./field";
 import { terrain3d } from "./terrain3d";
 import { provinceStats, type ProvStat } from "./provincias";
-import { destroyTrends, viewTrends } from "./tendencias";
+import { destroyTrends, viewTrends } from "./tendencias/vista";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
