@@ -1,7 +1,7 @@
 /* Recorrido: barras de escena arriba, subtítulo grande abajo, controles discretos. La interfaz se acerca con escala. */
 .tour { position: fixed; inset: 0; z-index: 80; pointer-events: none; }
 .tour > * { pointer-events: auto; }
-.tour-bars { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: min(560px, calc(100% - 32px)); display: flex; gap: 4px; }
+.tour-bars { position: absolute; bottom: 84px; left: 50%; transform: translateX(-50%); width: min(260px, calc(100% - 32px)); display: flex; gap: 4px; }
 .tour-bars i { flex: 1; height: 4px; border-radius: 999px; background: rgba(255, 255, 255, .25); overflow: hidden; }
 .tour-bars b { display: block; height: 100%; background: #fff; transform-origin: left; transform: scaleX(0); }
 .tour-cap { position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%); width: min(880px, calc(100% - 32px)); margin: 0; padding: 18px 26px; border-radius: 22px; background: rgba(8, 9, 11, .9); color: #fff; font-size: clamp(19px, 2vw, 28px); line-height: 1.3; font-weight: 600; letter-spacing: -.01em; text-align: center; text-wrap: balance; }
@@ -49,3 +49,9 @@ body.touring .wx-time, body.touring .pill-nav { opacity: .35; transition: opacit
 #au { transition: transform 1.4s cubic-bezier(.65, 0, .25, 1); }
 .tour-lens { z-index: 1; }
 .tour-bars, .tour-cap, .tour-ctl { z-index: 2; }
+/* rótulos del recorrido sobre el mapa: ríos, pueblo y presa */
+.tour-pin { padding: 5px 11px; border-radius: 999px; background: #fff; color: #000; font-size: 13px; font-weight: 700; white-space: nowrap; box-shadow: 0 6px 18px rgba(0, 0, 0, .45); animation: tour-pin .5s cubic-bezier(.22, 1, .36, 1) both; pointer-events: none; }
+.tour-pin.rio { background: #9fe4ff; }
+.tour-pin.presa { background: #ffb347; }
+@keyframes tour-pin { from { opacity: 0; transform: translateY(8px) scale(.9); } }
+.tour-cap { bottom: 100px; font-size: clamp(22px, 2.4vw, 32px); padding: 16px 28px; width: max-content; max-width: min(880px, calc(100% - 32px)); }

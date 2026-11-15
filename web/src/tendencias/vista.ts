@@ -1,10 +1,10 @@
+import maplibregl from "maplibre-gl";
 // P0 · Tendencias. Pantalla de trabajo (taste-skill, app · true-black-flat, semilla 280888739).
 // Pregunta de la pantalla: «¿Están cambiando la sequía y la lluvia extrema en mi provincia, y qué tan seguros estamos?»
 // Marco fijo en tres columnas que comparten bordes: preguntas y respuesta | mapa con su línea de tiempo | año a año y
 // dónde poner atención. En tableta la tercera columna baja a la primera; en el teléfono la primera es una hoja inferior.
 // Cara de la pantalla: el campo de tendencia sobre la isla con su punteado de significancia; y la escalera de evidencia.
 import "./tendencias.css";
-import type maplibregl from "maplibre-gl";
 import { terrain3d } from "../terrain3d";
 import { esc, LL, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
 import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
@@ -753,7 +753,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     });
     const mineRg = rg;
     cleanup.push(() => mineRg.destroy());
-    rg.show(ui.style === "crestas");
+    rg.show(ui.style === "crestas" && !ui.d3);
   }
 
   // ── Los lugares de la vegetación (encima de las crestas) ──
@@ -778,7 +778,31 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const tour = () => {
     const ys = d.rel?.yuna ?? [];
     const yb: [[number, number], [number, number]] | null = ys.length ? [[Math.min(...ys.map((p) => p[0])), Math.min(...ys.map((p) => p[1]))], [Math.max(...ys.map((p) => p[0])), Math.max(...ys.map((p) => p[1]))]] : null;
-    startTour({ map: () => (t3 ? t3.map as never : null), yuna: yb, reset: () => { if (sel.reg !== "DO") pickRegion("DO"); } });
+    let pins: maplibregl.Marker[] = [];
+    const rivers = (names: string[] | null) => {
+      const m = t3?.map; if (!m) return;
+      pins.forEach((p) => p.remove()); pins = [];
+      const fc = { type: "FeatureCollection" as const, features: (names ? (rios ?? []).filter((r) => names.includes(r.name)) : []).map((r) => ({ type: "Feature" as const, properties: {}, geometry: { type: "MultiLineString" as const, coordinates: r.parts } })) };
+      const src = m.getSource("tour-rios") as maplibregl.GeoJSONSource | undefined;
+      if (src) src.setData(fc);
+      else { m.addSource("tour-rios", { type: "geojson", data: fc }); m.addLayer({ id: "tour-rios-halo", type: "line", source: "tour-rios", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#64d2ff", "line-width": 14, "line-opacity": 0.28 } }); m.addLayer({ id: "tour-rios", type: "line", source: "tour-rios", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#9fe4ff", "line-width": 4 } }); }
+      if (!names) return;
+      const pin = (txt: string, lon: number, lat: number, kind = "") => { const el = document.createElement("div"); el.className = `tour-pin ${kind}`; el.textContent = txt; pins.push(new maplibregl.Marker({ element: el, anchor: kind === "pueblo" ? "top" : "bottom", offset: [0, kind === "pueblo" ? 6 : -6] }).setLngLat([lon, lat]).addTo(m)); };
+      // Cada río se rotula en el tramo más alejado de los otros rótulos, para que ninguno tape a otro
+      const used: [number, number][] = [[-69.908, 19.176]];
+      if (d.rel?.hatillo) used.push([d.rel.hatillo.lon, d.rel.hatillo.lat]);
+      for (const r of (rios ?? []).filter((x) => names.includes(x.name))) {
+        const part = r.parts.reduce((a, b) => (b.length > a.length ? b : a), r.parts[0]);
+        const cand = [0.2, 0.35, 0.5, 0.65, 0.8].map((f) => part[Math.floor(part.length * f)]);
+        const far = (q: number[]) => Math.min(...used.map((u) => Math.hypot(q[0] - u[0], q[1] - u[1])));
+        const [lo, la] = cand.reduce((a, b) => (far(b) > far(a) ? b : a));
+        used.push([lo, la]); pin(r.name, lo, la, "rio");
+      }
+      pin("Villa Riva", -69.908, 19.176, "pueblo");
+      if (d.rel?.hatillo) pin(LL("Presa de Hatillo", "Hatillo dam"), d.rel.hatillo.lon, d.rel.hatillo.lat, "presa");
+    };
+    const pad = () => { const L = document.getElementById("wx-left")?.getBoundingClientRect(), R = document.getElementById("wx-right")?.getBoundingClientRect(); return { left: (L && L.width ? L.right : 0) + 40, right: (R && R.width ? innerWidth - R.left : 0) + 40, top: 90, bottom: 230 }; };
+    startTour({ map: () => (t3 ? t3.map as never : null), yuna: yb, pad, rivers, reset: () => { if (sel.reg !== "DO") pickRegion("DO"); } });
   };
   $("tour-go").addEventListener("click", tour);
   mine.ready.then(() => {

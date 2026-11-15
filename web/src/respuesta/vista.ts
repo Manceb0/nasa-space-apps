@@ -38,7 +38,7 @@ export async function viewAnswer(view: HTMLElement) {
     </header>
 
     <section class="rs-act" aria-labelledby="rs-a1">
-      <h2 id="rs-a1"><span>${esc(LL(": ", ": "))}</span>${esc(LL("Llueve más intenso", "Rain is getting heavier"))}</h2>
+      <h2 id="rs-a1"><span>${esc(LL("Lo que parece: ", "What it looks like: "))}</span>${esc(LL("Llueve más intenso", "Rain is getting heavier"))}</h2>
       <div class="rs-two">
         <p class="rs-num"><b>${pct(tI.pendiente_pct_decada)}</b><span>${esc(LL(`por década: así de más intensa es la lluvia de un día lluvioso según NASA IMERG, en todo el país (${pv(tI.p)}).`, `per decade: that is how much heavier a rainy day gets according to NASA IMERG, across the country (${pv(tI.p)}).`))}</span></p>
         <p class="rs-num dn"><b>${pct(tC.pendiente_pct_decada)}</b><span>${esc(LL(`dice CHIRPS, que usa pluviómetros (${pv(tC.p)}). Dos fuentes serias, direcciones opuestas.`, `says CHIRPS, which uses rain gauges (${pv(tC.p)}). Two serious sources, opposite directions.`))}</span></p>
@@ -46,7 +46,7 @@ export async function viewAnswer(view: HTMLElement) {
     </section>
 
     <section class="rs-act" aria-labelledby="rs-a2">
-      <h2 id="rs-a2"><span>${esc(LL(": ", ": "))}</span>${esc(LL("IMERG cuenta menos días de lluvia", "IMERG counts fewer rain days"))}</h2>
+      <h2 id="rs-a2"><span>${esc(LL("Lo que encontramos: ", "What we found: "))}</span>${esc(LL("IMERG cuenta menos días de lluvia", "IMERG counts fewer rain days"))}</h2>
       <div class="rs-four">
         <p><span>${esc(LL("Qué cambia", "What changes"))}</span><b>${esc(LL("Los días de lluvia que cuenta IMERG, sobre todo la llovizna", "The rain days IMERG counts, above all drizzle"))}</b></p>
         <p><span>${esc(LL("Dónde", "Where"))}</span><b>${esc(LL("En todo el país: IMERG cae más que CHIRPS en el 99 % de las celdas", "Across the country: IMERG drops more than CHIRPS in 99 % of cells"))}</b></p>
@@ -57,7 +57,7 @@ export async function viewAnswer(view: HTMLElement) {
     </section>
 
     <section class="rs-act" aria-labelledby="rs-a3">
-      <h2 id="rs-a3"><span>${esc(LL(": ", ": "))}</span>${esc(LL("Dos lluvias, dos alertas", "Two kinds of rain, two alerts"))}</h2>
+      <h2 id="rs-a3"><span>${esc(LL("Lo que proponemos: ", "What we propose: "))}</span>${esc(LL("Dos lluvias, dos alertas", "Two kinds of rain, two alerts"))}</h2>
       <div class="rs-two">
         <div class="rs-card">
           <p class="rs-big"><b>${esc(LL("6 de 14", "6 of 14"))}</b> ${esc(LL("inundaciones del Yuna llegaron con un ciclón", "Yuna floods came with a cyclone"))}</p>
@@ -80,7 +80,7 @@ export async function viewAnswer(view: HTMLElement) {
     </section>
 
     <section class="rs-act" aria-labelledby="rs-a4">
-      <h2 id="rs-a4"><span>${esc(LL(": ", ": "))}</span>${esc(LL(`${h.predicciones.length} predicciones escritas antes de calcular`, `${h.predicciones.length} predictions written before computing`))}</h2>
+      <h2 id="rs-a4"><span>${esc(LL("Cómo lo sabemos: ", "How we know: "))}</span>${esc(LL(`${h.predicciones.length} predicciones escritas antes de calcular`, `${h.predicciones.length} predictions written before computing`))}</h2>
       <p class="rs-sub"><b class="ok">${ok} ${esc(LL("se cumplieron", "held"))}</b> · <b class="ko">${ko} ${esc(LL("fallaron", "failed"))}</b> · ${na} ${esc(LL("con el veredicto en el informe", "with the verdict in the report"))}. ${esc(LL("Las fallidas se publican igual. Pasa el cursor o toca cada cuadro para leerla.", "Failed ones are published too. Hover or tap each square to read it."))}</p>
       <div class="rs-preds">${h.predicciones.map((p) => `<button class="rs-p ${p.cumplida === true ? "ok" : p.cumplida === false ? "ko" : "na"}" title="${esc(`${p.id} · ${p.cumplida === true ? LL("se cumplió", "held") : p.cumplida === false ? LL("falló", "failed") : LL("ver informe", "see report")} · ${p.texto}`)}" data-pred="${esc(p.id)}"><b>${esc(p.id.split("_")[0])}</b></button>`).join("")}</div>
       <p class="rs-pred-t" id="rs-pred-t" aria-live="polite"></p>
