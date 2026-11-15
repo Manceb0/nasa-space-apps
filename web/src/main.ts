@@ -12,6 +12,8 @@ import { terrain3d } from "./terrain3d";
 import { provinceStats, type ProvStat } from "./provincias";
 import { destroyTrends, openLand, viewTrends } from "./tendencias/vista";
 import { destroyAudit, viewAudit } from "./auditoria/vista";
+import { destroyPreparation, viewPreparation } from "./preparacion/vista";
+import { viewMethodV2 } from "./metodo/vista";
 import { buildLanes, FUNC, fnName, GREEN, ribbon2D, ribbonStage, verdictColor, type Fn, type Stage } from "./ribbon";
 import {
   digitsFor, fmt, fmtP, fmtSigned, multipleTestingNote, predictionFeedback, seasonLesson,
@@ -82,6 +84,7 @@ function shell(): void {
       logoAlt: `Stellar Horizons · ${esc(t.brand)}`, logoHref: "#tendencias", ariaLabel: esc(t.brand),
       items: [
         { key: "tendencias", href: "#tendencias", label: getLang() === "es" ? "Tendencias" : "Trends", short: getLang() === "es" ? "Tendencias" : "Trends" },
+        { key: "preparar", href: "#preparar", label: getLang() === "es" ? "Preparar" : "Prepare", short: getLang() === "es" ? "Preparar" : "Prepare" },
         { key: "auditoria", href: "#auditoria", label: esc(t.navAudit), short: esc(t.navAudit) },
         { key: "metodo", href: "#metodo", label: esc(t.navMethod), short: getLang() === "es" ? "Método" : "Method" },
       ],
@@ -1363,24 +1366,6 @@ function drawPointMap(pts: Puntos) {
 
 /* ───────────── Cómo funciona ───────────── */
 
-function viewMethod() {
-  const t = T();
-  const view = document.getElementById("view")!;
-  view.innerHTML = `
-    <div class="title-row">
-      <h1>${esc(t.methodH1)}</h1>
-      <p>${esc(t.methodLede)}</p>
-    </div>
-    <div class="grid">
-      <section class="card s6 glossary"><dl>${t.glossary.map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl></section>
-      <section class="card s6">
-        <h2>${esc(t.limitsH)}</h2>
-        <p class="explain">${esc(t.limits)}</p>
-        <p class="small foot-note">${esc(t.updated(index.generado))}</p>
-      </section>
-    </div>`;
-}
-
 /* ───────────── Router ───────────── */
 
 async function route(scrollTop = true) {
@@ -1388,7 +1373,7 @@ async function route(scrollTop = true) {
   // anteriores quedan en #investigar-v1 y #ribbon-v1, fuera del menú
   const raw = location.hash.replace("#", "") || "tendencias";
   if (raw === "investigar" || raw === "ribbon") { openLand(raw === "investigar" ? "verde" : "recupera"); history.replaceState(null, "", "#tendencias"); }
-  const r = (raw === "investigar" || raw === "ribbon" ? "tendencias" : raw === "investigar-v1" ? "investigar" : raw === "ribbon-v1" ? "ribbon" : raw) as "tendencias" | "investigar" | "ribbon" | "expedientes" | "auditoria" | "metodo";
+  const r = (raw === "investigar" || raw === "ribbon" ? "tendencias" : raw === "investigar-v1" ? "investigar" : raw === "ribbon-v1" ? "ribbon" : raw) as "preparar" | "tendencias" | "investigar" | "ribbon" | "expedientes" | "auditoria" | "metodo";
   setNav(r);
   stopPlay();
   clearMaps();
@@ -1397,10 +1382,12 @@ async function route(scrollTop = true) {
     if (r !== "investigar") { t3?.destroy(); t3 = null; }
     if (r !== "tendencias") destroyTrends();
     if (r !== "auditoria") destroyAudit();
-    if (r === "expedientes") await viewCases();
+    if (r !== "preparar") destroyPreparation();
+    if (r === "preparar") await viewPreparation(document.getElementById("view")!);
+    else if (r === "expedientes") await viewCases();
     else if (r === "auditoria") await viewAudit(document.getElementById("view")!);
     else if (r === "ribbon") await viewRibbon();
-    else if (r === "metodo") viewMethod();
+    else if (r === "metodo") { const t = T(); await viewMethodV2(document.getElementById("view")!, t.glossary, t.limitsH, t.limits); }
     else if (r === "tendencias") await viewTrends(document.getElementById("view")!);
     else await viewInvestigate();
   } catch (e) {
@@ -1413,7 +1400,7 @@ async function start() {
   shell();
   index = await load<Index>("index.json");
   window.addEventListener("hashchange", () => {
-    if (["#tendencias", "#investigar", "#ribbon", "#investigar-v1", "#ribbon-v1", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
+    if (["#preparar", "#tendencias", "#investigar", "#ribbon", "#investigar-v1", "#ribbon-v1", "#expedientes", "#auditoria", "#metodo", ""].includes(location.hash)) route();
   });
   let timer: number | undefined;
   let lastW = window.innerWidth;

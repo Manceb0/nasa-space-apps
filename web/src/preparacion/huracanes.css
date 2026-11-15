@@ -1,0 +1,133 @@
+/* El mapa de los ciclones. El mapa ocupa todo; encima, solo tres cosas en sitios fijos:
+   arriba a la izquierda la tormenta y su cuenta atrás, a la derecha las capas (solo icono) y abajo una barra con
+   el lugar, las tormentas, la línea de tiempo (días, aviso del NHC, llegada) y la escala. Sin sombras de texto. */
+.hx { position: relative; height: clamp(480px, 70vh, 680px); border-radius: 24px; overflow: hidden; background: #07080a; --hx-top: 16px; }
+.hx-map { position: absolute; inset: 0; }
+.hx-wind { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; }
+.hx .maplibregl-ctrl-attrib { font-size: 10px; }
+.hx .maplibregl-ctrl-bottom-right { bottom: 168px; }
+.hx :focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* ── Arriba a la izquierda: un solo bloque ── */
+.hx-top { position: absolute; left: 16px; top: var(--hx-top); z-index: 2; display: grid; gap: 2px; max-width: min(520px, calc(100% - 96px)); padding: 12px 16px 12px; border-radius: 18px; background: rgba(12, 13, 15, .86); pointer-events: none; }
+.hx-top p { margin: 0; }
+.hx-name { font-size: 14px; color: #b4b4b4; }
+.hx-name b { font-size: 18px; font-weight: 700; color: #fff; }
+.hx-name em { font-style: normal; color: #949494; }
+.hx-count { font-size: clamp(20px, 2vw, 26px); line-height: 1.15; font-weight: 700; letter-spacing: -.01em; color: #fff; font-variant-numeric: tabular-nums; }
+.hx-count.on { color: #ff9f0a; }
+.hx-now { font-size: 13.5px; color: #d6d6d6; font-variant-numeric: tabular-nums; }
+.hx-now:empty { display: none; }
+.hx-now b { font-weight: 700; margin-right: 4px; }
+
+/* ── A la derecha: capas, solo icono; el nombre aparece al pasar o en la elegida ── */
+.hx-layers { position: absolute; right: 14px; top: var(--hx-top); z-index: 2; display: grid; gap: 10px; justify-items: end; }
+.hx-layers button { position: relative; display: flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; color: #fff; font: inherit; cursor: pointer; }
+.hx-layers span { position: absolute; right: 50px; padding: 5px 10px; border-radius: 999px; background: rgba(12, 13, 15, .9); font-size: 13px; font-weight: 600; white-space: nowrap; opacity: 0; transform: translateX(6px); transition: opacity .2s, transform .2s cubic-bezier(.22, 1, .36, 1); pointer-events: none; }
+.hx-layers button:hover span, .hx-layers button:focus-visible span { opacity: 1; transform: none; }
+.hx-th { width: 42px; height: 42px; border-radius: 50%; background-size: cover; background-position: center; box-shadow: 0 0 0 2px rgba(12, 13, 15, .9); transition: box-shadow .2s, transform .2s cubic-bezier(.22, 1, .36, 1); }
+.hx-layers button:hover .hx-th { transform: scale(1.06); }
+.hx-layers button[aria-checked="true"] .hx-th { box-shadow: 0 0 0 3px #fff; }
+.hx-layers button:disabled { opacity: .35; cursor: not-allowed; }
+.th-wind { background: conic-gradient(from 200deg, rgb(32,104,160), rgb(44,168,148), rgb(226,206,74), rgb(244,140,52), rgb(226,58,54), rgb(32,104,160)); }
+.th-rain { background: radial-gradient(circle at 40% 45%, rgb(210,40,130) 0 10%, rgb(245,120,40) 18%, rgb(230,210,70) 30%, rgb(40,190,120) 45%, rgb(40,150,220) 62%, #1b2b44 80%); }
+.th-sat { background-color: #1b2b44; }
+
+/* ── Abajo: una barra; el lugar y las tormentas, la línea de tiempo y la escala ── */
+.hx-bottom { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: grid; gap: 12px; padding: 14px 16px 12px; background: rgba(10, 11, 13, .92); }
+.hx-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.hx-place { flex: none; display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px; border: 0; border-radius: 14px; background: #fff; color: #000; font: inherit; font-size: 14px; cursor: pointer; transition: transform .15s cubic-bezier(.22, 1, .36, 1); }
+.hx-place:active { transform: scale(.97); }
+.hx-place span { color: #555; font-size: 12.5px; }
+.hx-place b { font-weight: 700; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hx-place svg { width: 12px; height: 12px; transition: transform .25s; }
+.hx-place[aria-expanded="true"] svg { transform: rotate(180deg); }
+.hx-pick { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+.hx-pick::-webkit-scrollbar { display: none; }
+.hx-pick button { flex: none; display: grid; gap: 1px; padding: 6px 12px; border: 0; border-radius: 12px; background: #1d2024; color: #fff; text-align: left; font: inherit; cursor: pointer; scroll-snap-align: start; transition: background .2s, transform .15s cubic-bezier(.22, 1, .36, 1); }
+.hx-pick button:hover { background: #2a2d31; }
+.hx-pick button:active { transform: scale(.97); }
+.hx-pick button[aria-checked="true"] { background: #fff; color: #000; }
+.hx-pick b { font-size: 14px; font-weight: 700; }
+.hx-pick b[style] { color: var(--k); }
+.hx-pick button[aria-checked="true"] b[style] { color: #000; }
+.hx-pick span { font-size: 12px; opacity: .72; font-variant-numeric: tabular-nums; }
+.hx-empty { margin: 0; font-size: 13px; color: #b4b4b4; }
+
+.hx-time { display: flex; align-items: flex-start; gap: 14px; }
+.hx-play { flex: none; width: 40px; height: 40px; margin-top: 18px; display: grid; place-items: center; border: 0; border-radius: 50%; background: #fff; color: #000; cursor: pointer; transition: transform .15s cubic-bezier(.22, 1, .36, 1); }
+.hx-play:active { transform: scale(.94); }
+.hx-play svg { width: 16px; height: 16px; }
+.hx-tl { position: relative; flex: 1; min-width: 0; padding-top: 22px; }
+.hx-marks { position: absolute; left: 0; right: 0; top: 0; height: 22px; }
+.mk { position: absolute; top: 0; bottom: -14px; width: 2px; margin-left: -1px; border-radius: 2px; font-style: normal; }
+.mk span { position: absolute; bottom: 100%; margin-bottom: 2px; white-space: nowrap; font-size: 12px; font-weight: 600; transform: translateX(-50%); }
+.mk.nhc { background: #64d2ff; }
+.mk.nhc span { color: #64d2ff; }
+.mk.nhc:not(.on) { opacity: .55; }
+.mk.goal { background: #ff9f0a; }
+.mk.goal span { color: #ff9f0a; }
+.hx-track { position: relative; height: 10px; border-radius: 999px; background: #2a2d31; cursor: pointer; }
+.hx-fill { position: absolute; inset: 0; border-radius: 999px; background: #fff; transform-origin: left; transform: scaleX(0); }
+.hx-bub { position: absolute; top: 50%; padding: 3px 9px; border-radius: 999px; background: #ff9f0a; color: #000; font-size: 12px; font-weight: 700; white-space: nowrap; transform: translate(-50%, -50%); pointer-events: none; font-variant-numeric: tabular-nums; }
+.hx-days { position: relative; height: 22px; margin-top: 4px; }
+.hx-days em { position: absolute; left: 0; top: 18px; font-style: normal; font-size: 11.5px; color: #949494; }
+.hx-days span { position: absolute; top: 0; height: 16px; display: grid; place-items: center; font-size: 12px; color: #d6d6d6; box-shadow: inset 1px 0 0 #3a3e44; }
+.hx-days span:first-of-type { box-shadow: none; }
+
+.hx-key { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12px; color: #b4b4b4; margin-top: 8px; }
+.hx-ramp { width: 160px; height: 8px; border-radius: 999px; }
+.r-wind { background: linear-gradient(90deg, rgb(24,40,92) 0%, rgb(32,104,160) 13%, rgb(44,168,148) 27%, rgb(226,206,74) 38%, rgb(244,140,52) 56%, rgb(226,58,54) 73%, rgb(176,34,140) 100%); }
+.r-rain { background: linear-gradient(90deg, rgb(70,130,210) 0%, rgb(40,150,220) 10%, rgb(40,190,120) 25%, rgb(230,210,70) 45%, rgb(245,120,40) 70%, rgb(210,40,130) 100%); }
+.hx-ticks { display: flex; gap: 12px; }
+.hx-ticks em { font-style: normal; }
+.hx-cats { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-left: auto; }
+.hx-cats em { display: inline-flex; align-items: center; gap: 5px; font-style: normal; }
+.hx-cats em::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--k); }
+
+/* Rótulos sobre el mapa */
+.hx-yuna { padding: 4px 10px; border-radius: 999px; background: rgba(12, 13, 15, .86); color: #ff9f0a; font-size: 12px; font-weight: 600; white-space: nowrap; pointer-events: none; }
+.hx-lab { display: grid; gap: 1px; padding: 5px 9px; border-radius: 10px; background: rgba(255, 255, 255, .9); color: #111; font-size: 11.5px; line-height: 1.25; white-space: nowrap; box-shadow: inset 3px 0 0 var(--k, #8a9099); pointer-events: none; }
+.hx-lab b { font-weight: 600; }
+.hx-lab span { color: #333; font-variant-numeric: tabular-nums; }
+.hx-lab span:empty { display: none; }
+.hx-lab.fc { background: rgba(255, 255, 255, .78); box-shadow: inset 3px 0 0 #ff3b30; }
+
+@media (max-width: 759px) {
+  .hx { height: 620px; border-radius: 20px; }
+  .hx-top { left: 10px; max-width: calc(100% - 72px); padding: 10px 12px; }
+  .hx-layers { right: 10px; }
+  .hx-th { width: 38px; height: 38px; }
+  .hx-row { flex-wrap: wrap; }
+  .hx-place { height: 40px; }
+  .hx-cats { display: none; }
+  .hx-ramp { width: 110px; }
+  .hx-lab { font-size: 10.5px; padding: 4px 7px; }
+}
+@media (prefers-reduced-motion: reduce) { .hx-layers span, .hx-th { transition: none; } }
+.hx.no-place .hx-place { display: none; }
+.hx-top { max-width: min(640px, calc(100% - 96px)); }
+.hx-count { font-size: clamp(18px, 1.7vw, 24px); }
+.hx-bottom { gap: 14px; }
+.hx-time { margin-top: 4px; }
+.hx-days span { white-space: nowrap; overflow: hidden; }
+.hx-days em { top: 20px; }
+.hx-days { height: 36px; }
+.mk.l span { transform: translateX(calc(-100% + 1px)); }
+.mk.r span { transform: translateX(-1px); }
+/* Cuando el mapa está detrás de paneles, su interfaz se aparta de ellos */
+.hx-top { left: var(--pl, 16px); }
+.hx-layers { right: var(--pr, 14px); }
+.hx .hx-bottom { left: var(--pl, 0px); right: var(--pr, 0px); }
+.cy-over .hx-bottom { bottom: 12px; border-radius: 20px; }
+.hx-tl { padding-top: 38px; }
+.hx-marks { height: 38px; }
+.mk { top: 0; bottom: -14px; width: 2px; background: none !important; }
+.mk::before { content: ""; position: absolute; left: 0; width: 2px; bottom: 0; border-radius: 2px; background: currentColor; }
+.mk.nhc { color: #64d2ff; } .mk.nhc::before { top: 16px; }
+.mk.goal { color: #ff9f0a; } .mk.goal::before { top: 34px; }
+.mk span { bottom: auto; margin: 0; line-height: 15px; color: inherit; }
+.mk.nhc span { top: 0; }
+.mk.goal span { top: 18px; }
+.hx-play { margin-top: 34px; }
+.hx-count { font-size: clamp(18px, 1.5vw, 22px); }

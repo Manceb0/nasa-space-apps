@@ -9,7 +9,7 @@
 /* Abajo: la leyenda es un filtro */
 .au-bar { gap: 6px; flex-wrap: wrap; align-content: center; }
 .au-lg { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border: 0; border-radius: 999px; background: none; color: var(--dim); font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background .2s, color .2s; }
-.au-lg i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.au-lg i { width: 12px; height: 12px; border-radius: 3px; flex: none; }
 .au-lg b { color: var(--text); font-weight: 600; }
 .au-lg:hover { background: var(--raised); color: var(--text); }
 .au-lg.on { background: var(--text); color: #000; }
@@ -17,12 +17,12 @@
 .au-lg:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 /* Panel: cifras */
-.au-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 16px 16px 0; border-radius: 14px; overflow: hidden; }
-.au-k { padding: 12px 14px; background: var(--raised); }
+.au-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; margin: 20px 20px 0; }
+.au-k { padding: 0; background: none; }
 .au-lead { grid-column: 1 / -1; }
 .au-kl { font-size: 13px; color: var(--muted); }
 .au-k b { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
-.au-lead b { font-size: 32px; }
+.au-lead b { font-size: 44px; }
 .au-k span { font-size: 13px; color: var(--muted); margin-left: 4px; }
 .au-ks { font-size: 12px; color: var(--faint); }
 .wx .au-note { margin: 0; padding: 12px 20px 16px; font-size: 13px; color: var(--text); }

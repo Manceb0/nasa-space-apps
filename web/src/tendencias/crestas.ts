@@ -114,7 +114,8 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
 
   const paint = (now: number) => {
     const ground = getComputedStyle(host).getPropertyValue("--ground").trim() || "#0c0d0f";
-    g.fillStyle = ground; g.fillRect(0, 0, W, H);
+    // fondo transparente: debajo se ve el mapa (con la zona fuera del país oscurecida y su contorno)
+    g.clearRect(0, 0, W, H);
     const lw = W < 600 ? 0.8 : 1.1, n = rel.filas.length;
     let busy = false;
     g.lineJoin = "round"; g.lineCap = "round"; g.lineWidth = lw;

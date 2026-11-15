@@ -25,11 +25,11 @@ type Alt = Record<string, { es?: string; en?: string }>;
 
 // Estados (mismos códigos y colores Okabe-Ito que la pieza 01 de la galería)
 const ST: Record<number, { c: string; es: string; en: string }> = {
-  3: { c: "#009E73", es: "Los 4 dicen sequía", en: "All 4 say drought" },
-  2: { c: "#56B4E9", es: "3 de 4", en: "3 of 4" },
-  1: { c: "#0072B2", es: "1 o 2 de 4", en: "1 or 2 of 4" },
-  4: { c: "#D55E00", es: "Contradicción clara", en: "Clear contradiction" },
-  0: { c: "#1d2229", es: "Sin alarma", en: "No alarm" },
+  3: { c: "#30d158", es: "Los 4 dicen sequía", en: "All 4 say drought" },
+  2: { c: "#8a9099", es: "3 de 4", en: "3 of 4" },
+  1: { c: "#4b5058", es: "1 o 2 de 4", en: "1 or 2 of 4" },
+  4: { c: "#ff6b35", es: "Contradicción clara", en: "Clear contradiction" },
+  0: { c: "#17191c", es: "Sin alarma", en: "No alarm" },
 };
 const ORDER = [3, 2, 1, 4, 0];
 const KEY: Record<number, string> = { 3: "unanimous", 2: "majority", 1: "split", 4: "contradiction", 0: "no_alarm" };
@@ -44,6 +44,9 @@ const int = (x: number) => Math.round(x).toLocaleString(LL("es-DO", "en-US"));
 
 const ui = { reg: "DO", filter: null as number | null, left: true };
 let cleanup: (() => void)[] = [];
+
+/** Abre la Auditoría ya situada en un lugar (desde el veredicto de Tendencias). */
+export function openAuditAt(reg: string) { ui.reg = reg; }
 
 export function destroyAudit() {
   cleanup.forEach((f) => f()); cleanup = [];
@@ -160,7 +163,7 @@ function render(view: HTMLElement, cb: CB, proc: { veredicto: string[] }, nums: 
   const layout = () => {
     const r = cv.parentElement!.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
     const bar = document.getElementById("au-bar")?.offsetHeight ?? 76;
-    const top = phone ? 64 : 104, bottom = bar + (phone ? 172 + 26 : 34);
+    const top = phone ? 112 : 172, bottom = bar + (phone ? 172 + 26 : 34);
     geo.W = r.width; geo.H = r.height;
     cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
     cv.style.width = `${r.width}px`; cv.style.height = `${r.height}px`;
@@ -194,6 +197,19 @@ function render(view: HTMLElement, cb: CB, proc: { veredicto: string[] }, nums: 
       g.textAlign = "left";
       g.fillText(pct(f.tasa_condicional), x0 + N * cw + 8, y + rh / 2);
     });
+    // franja nacional: por mes, provincias en contradicción (hacia arriba) y unánimes (hacia abajo)
+    const hh = phone ? 26 : 34, ym = y0 - (phone ? 40 : 52), nR = rows.length;
+    for (let c = 0; c < N; c++) {
+      let k4 = 0, k3 = 0;
+      rows.forEach((f) => { const s = f.estados[c]; if (s === 4) k4++; else if (s === 3) k3++; });
+      if (k4) { g.fillStyle = ST[4].c; const h = (k4 / nR) * hh; g.fillRect(x0 + c * cw, ym - h, Math.ceil(cw), h); }
+      if (k3) { g.fillStyle = ST[3].c; const h = (k3 / nR) * hh; g.fillRect(x0 + c * cw, ym + 1, Math.ceil(cw), h); }
+    }
+    g.fillStyle = "#2a2d31"; g.fillRect(x0, ym, N * cw, 1);
+    g.font = `500 11px Inter, system-ui, sans-serif`; g.textAlign = "right"; g.textBaseline = "middle";
+    g.fillStyle = ST[4].c; g.fillText(LL("se contradicen", "contradict"), x0 - 8, ym - hh / 2);
+    g.fillStyle = ST[3].c; g.fillText(LL("los 4 coinciden", "all 4 agree"), x0 - 8, ym + hh / 2);
+    g.textAlign = "left";
     // años
     const yb = y0 + rows.length * rh + 6;
     g.font = `500 11px Inter, system-ui, sans-serif`; g.textBaseline = "top"; g.fillStyle = "#949494"; g.textAlign = "center";
@@ -210,9 +226,9 @@ function render(view: HTMLElement, cb: CB, proc: { veredicto: string[] }, nums: 
     const cBest = cb.meses.findIndex((m) => m.startsWith(`${ybest}-`));
     if (cBest >= 0 && !phone) {
       const xm = x0 + (cBest + 6) * cw;
-      g.fillStyle = ST[3].c; g.fillRect(xm, y0 - 18, 1, 12);
+      g.fillStyle = ST[3].c; g.fillRect(xm, ym + hh + 2, 1, y0 - ym - hh - 4);
       g.font = `600 12px Inter, system-ui, sans-serif`; g.textAlign = "center";
-      g.fillText(LL(`${ybest}: ${nbest} de los ${cb.recuentos.unanimous} meses unánimes`, `${ybest}: ${nbest} of the ${cb.recuentos.unanimous} unanimous months`), xm, y0 - 24);
+      g.fillText(LL(`${ybest}: ${nbest} de los ${cb.recuentos.unanimous} meses unánimes`, `${ybest}: ${nbest} of the ${cb.recuentos.unanimous} unanimous months`), xm, ym - hh - 12);
       g.textAlign = "left";
     }
     if (hov) {

@@ -65,6 +65,7 @@ export function wirePillNav(root: HTMLElement): { setActive: (key: string) => vo
   new ResizeObserver(() => { measure(); place(); }).observe(track);
   document.fonts?.ready?.then(() => { measure(); place(); }).catch(() => {});
   measure();
+  setTimeout(() => nav.classList.add("pn-ready"), 1400);
   return {
     setActive(key: string) {
       active = key;

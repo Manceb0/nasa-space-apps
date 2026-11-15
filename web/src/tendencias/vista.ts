@@ -14,6 +14,9 @@ import { cellProvinces, ridges, type RGBA } from "./crestas";
 import { bottomSheet, PEEK } from "./hoja";
 import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
+import { openPop } from "./pop";
+import { openAuditAt } from "../auditoria/vista";
+import { hurricanes, type CyInfo } from "../preparacion/huracanes";
 import { timeline } from "./tiempo";
 
 type Style = "crestas" | "plano" | "oscuro";
@@ -26,13 +29,14 @@ let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
 const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const TIERS = [["sabemos", "Lo que sabemos", "What we know"], ["creemos", "Lo que creemos saber", "What we think we know"], ["comprobar", "Lo que hay que comprobar", "What still needs checking"]] as const;
-const PIN = '<svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#f2b33d" fill-opacity=".22"/><circle cx="8" cy="8" r="3.6" fill="#f2b33d"/></svg>';
 const CHEV = '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const MARK = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l2.3 8.2 8.2 2.3-8.2 2.3L16 23.5l-2.3-8.2-8.2-2.3 8.2-2.3z" fill="#f2b33d"/><path d="M2.5 28.5c7.5-4.6 19.5-4.6 27 0" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
 const PANEL_L = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 3v10" stroke="currentColor" stroke-width="1.5"/></svg>';
 const PANEL_R = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3v10" stroke="currentColor" stroke-width="1.5"/></svg>';
 const SEASON: Record<string, [string, string]> = { anual: ["Año", "Year"], seca: ["Seca", "Dry"], humeda_temprana: ["May–jul", "May–Jul"], humeda_tardia: ["Ago–nov", "Aug–Nov"] };
 
+let cyOff: (() => void) | null = null;
+let cyApi: { setPlace: (p: string) => void } | null = null;
 export function destroyTrends() {
   cleanup.forEach((f) => f()); cleanup = [];
   t3?.destroy(); t3 = null;
@@ -87,13 +91,13 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   <div class="wx" id="wx" data-layout="${layout}" data-mode="trend" data-land="${ui.land ? "on" : "off"}" data-sty="${ui.style}" data-d3="${ui.d3 ? "on" : "off"}" data-left="${ui.left ? "on" : "off"}" data-right="${ui.right ? "on" : "off"}">
     <header class="wx-top">
       <a class="wx-brand" href="#tendencias">${MARK}<b>Stellar Horizons</b><span>${esc(LL("Detective de tendencias", "Trend detective"))}</span></a>
-      ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}"><i></i>${esc(LL("Preliminar: solo IMERG", "Preliminary: IMERG only"))}</p>`}
+      ${d.both ? "" : `<p class="wx-stamp" title="${esc(LL(`Corrida del ${updated}`, `Run of ${updated}`))}">${esc(LL("Preliminar: solo IMERG", "Preliminary: IMERG only"))}</p>`}
     </header>
     <div class="wx-main">
       <aside class="wx-left" id="wx-left">
         ${layout === "phone" ? `<button class="wx-grab" id="wx-grab" aria-label="${esc(LL("Subir o bajar el panel", "Raise or lower the panel"))}"><i></i></button>` : ""}
         <section class="blk-reg" id="wx-peek">
-          <h1 class="place"><button id="r-btn" aria-haspopup="listbox" aria-expanded="false" title="${esc(LL("Elegir el lugar", "Choose the place"))}">${PIN}<span id="wx-h1"></span>${CHEV}</button></h1>
+          <h1 class="place"><button id="r-btn" aria-haspopup="listbox" aria-expanded="false" title="${esc(LL("Elegir el lugar", "Choose the place"))}"><span id="wx-h1"></span>${CHEV}</button></h1>
           <p class="place-hint" id="finding"></p>
           ${layout === "phone" ? `<p class="peek-ans" id="peek-ans"></p>` : ""}
         </section>
@@ -106,6 +110,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
             <h2 id="ans-h" class="sr">${esc(LL("Qué dicen las dos fuentes", "What the two sources say"))}</h2>
             <div id="ans" aria-live="polite"></div>
           </section>
+          <section class="blk-land blk-cy" aria-labelledby="cq-h"><h2 id="cq-h">${esc(LL("¿Y los ciclones?", "And the cyclones?"))}</h2><div class="lqs"><button class="ql" data-cyq aria-pressed="false"><i></i>${esc(LL("¿Con cuánto aviso llegan aquí?", "How much warning before they arrive here?"))}</button></div></section>
           ${land ? `<section class="blk-land" aria-labelledby="lq-h"><h2 id="lq-h">${esc(LL("¿Y la vegetación?", "And the vegetation?"))}</h2><div class="lqs" id="lqs"></div></section>` : ""}
           ${layout === "wide" ? "" : extra}
         </div>
@@ -172,7 +177,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     }).join("");
     // la medida: un solo selector (las alternativas se consultan, no compiten por la vista)
     const mv = verdict(d, sel, sel.ind);
-    const measure = ui.land ? "" : `<button class="pick mpick" id="m-btn" aria-haspopup="listbox" aria-expanded="false"><span>${esc(LL("Medido como", "Measured as"))}</span><b>${esc(chip(sel.ind))}</b><i class="mp-d ${mv.strong ? "" : "no"}" style="--c:${mv.color}"></i><em>${esc(mv.short)}</em>${CHEV}</button>`;
+    const measure = ui.land ? "" : `<button class="pick mpick" id="m-btn" aria-haspopup="listbox" aria-expanded="false"><span>${esc(LL("Medido como", "Measured as"))}</span><b>${esc(chip(sel.ind))}</b><i class="mp-d ${mv.strong ? "" : "no"}" style="--c:${mv.color}"></i><em style="--vc:${mv.strong ? mv.color : "var(--muted)"}">${esc(mv.short)}</em>${CHEV}</button>`;
     $("qs").innerHTML = `<div class="qgrid">${tiles}</div>${measure}`;
     const lqs = document.getElementById("lqs");
     if (lqs && land) lqs.innerHTML = LAND_Q.map((q) => {
@@ -200,8 +205,42 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     return `<button class="adj ${d.fix ? "on" : ""}" id="s13-h" data-fix="${d.fix ? 0 : 1}" aria-pressed="${d.fix}" title="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}<span>${esc(LL("Ajustar IMERG", "Adjust IMERG"))}</span><i aria-hidden="true"></i></button>
       ${d.fix ? `<p class="adj-on">${esc(LL("Sensibilidad, solo en el mapa", "Sensitivity, map only"))}${rc ? ` · ${esc(LL("celdas en disputa", "disputed cells"))}: <b class="num">${rc.en_disputa_publicado}</b> ${esc(LL("a", "to"))} <b class="num">${rc.en_disputa_sin_escalon}</b>` : ""} · <button class="s13-fig" data-fig13>${esc(LL("Testigos", "Witnesses"))}</button></p>` : ""}`;
   };
+  const cyAnswer = (i: CyInfo) => {
+    const box = $("ans"); if (!cyApi) return;
+    $("ans-h").textContent = LL("Ciclones", "Cyclones");
+    const G = (svg: string) => `<svg viewBox="0 0 40 16" aria-hidden="true">${svg}</svg>`;
+    box.innerHTML = `
+      <p class="vd" style="--c:#64d2ff"><b>${esc(i.yuna ? LL(`${i.n} inundaciones`, `${i.n} floods`) : LL(`${i.n} tormentas`, `${i.n} storms`))}</b><span>${esc(i.yuna ? LL("del río Yuna llegaron con un ciclón, 2001–2024", "of the Yuna river came with a cyclone, 2001–2024") : (i.place === "DO" ? LL("pasaron a menos de 200 km de alguna provincia, 2001–2024", "passed within 200 km of some province, 2001–2024") : LL(`pasaron a menos de 200 km de ${i.label}, 2001–2024`, `passed within 200 km of ${i.label}, 2001–2024`)))}</span></p>
+      <div class="cy-k">
+        <p><b>${i.med === null ? "—" : `${i.med} h`}</b><span>${esc(LL("de aviso mediano del NHC antes de que llegaran", "median NHC warning before arrival"))}</span></p>
+        <p><b class="w">${i.late + i.none}</b><span>${esc(LL("llegaron sin aviso o con el aviso tarde", "arrived with no or late warning"))}</span></p>
+      </div>
+      <h3 class="cy-h">${esc(LL("Cómo leer el mapa", "How to read the map"))}</h3>
+      <ul class="cy-read">
+        <li>${G('<path d="M2 8h36" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="8" r="4" fill="#ffe066"/><circle cx="28" cy="8" r="4" fill="#ff3b5c"/>')}<span>${esc(LL("Por dónde pasó la tormenta. El color de cada punto es su fuerza en ese momento.", "Where the storm went. Each dot's colour is its strength at that moment."))}</span></li>
+        <li>${G('<path d="M2 8h36" stroke="#fff" stroke-width="3" stroke-dasharray="5 5" stroke-linecap="round"/><circle cx="20" cy="8" r="4" fill="#fff" stroke="#ff3b30" stroke-width="2"/>')}<span>${esc(LL("El primer pronóstico oficial del NHC que la ponía a menos de 200 km, tal como se emitió.", "The first official NHC forecast putting it within 200 km, as issued."))}</span></li>
+        <li>${G('<circle cx="20" cy="8" r="6.5" fill="none" stroke="#ff9f0a" stroke-width="2" stroke-dasharray="3 3"/>')}<span>${esc(i.place === "DO" ? LL("200 km alrededor de la provincia por la que pasó más cerca.", "200 km around the province it passed closest to.") : LL(`200 km alrededor de ${i.label}.`, `200 km around ${i.label}.`))}</span></li>
+        <li>${G('<rect x="2" y="6" width="36" height="5" rx="2.5" fill="#2a2d31"/><rect x="11" y="2" width="2" height="13" rx="1" fill="#64d2ff"/><rect x="27" y="2" width="2" height="13" rx="1" fill="#ff9f0a"/>')}<span>${esc(LL("Abajo, el tiempo: azul cuando avisó el NHC, naranja cuando llegó.", "Below, time: blue when NHC warned, orange when it arrived."))}</span></li>
+        <li>${G('<circle cx="10" cy="8" r="6" fill="#64d2ff"/><circle cx="20" cy="8" r="6" fill="#30d158"/><circle cx="30" cy="8" r="6" fill="#8a9099"/>')}<span>${esc(LL("A la derecha, la capa: viento (solo en las inundaciones del Yuna), lluvia NASA IMERG o la foto del satélite NASA MODIS de ese día.", "On the right, the layer: wind (Yuna floods only), NASA IMERG rain or that day's NASA MODIS satellite photo."))}</span></li>
+      </ul>
+      <button class="pop-go alt" data-cy-yuna="${i.yuna ? sel.reg : "yuna"}"><span>${esc(i.yuna ? LL(`Volver a ${sel.reg === "DO" ? LL("todo el país", "the whole country") : d.regName(sel.reg)}`, `Back to ${sel.reg === "DO" ? "the whole country" : d.regName(sel.reg)}`) : LL("Ver las inundaciones del Yuna, con su viento", "See the Yuna floods, with their wind"))}</span>${CHEV}</button>
+      <p class="cy-src">${esc(LL("Trayectorias IBTrACS (NOAA) · pronósticos NHC tal como se emitieron · lluvia y satélite NASA (IMERG, MODIS). Apoyo para preparar; no es una orden de evacuación.", "Tracks IBTrACS (NOAA) · NHC forecasts as issued · NASA rain and satellite (IMERG, MODIS). Support for preparedness, not an evacuation order."))}</p>`;
+  };
+  const cyStart = () => {
+    const col = wx.querySelector<HTMLElement>(".wx-mapcol")!;
+    const over = document.createElement("div"); over.className = "cy-over"; col.appendChild(over);
+    const h = hurricanes(over, { place: sel.reg, hidePlace: true, onInfo: cyAnswer });
+    cyApi = h; wx.dataset.cy = "on";
+    wx.querySelector("[data-cyq]")?.setAttribute("aria-pressed", "true");
+    wx.querySelector("[data-cyq]")?.classList.add("on");
+    cyOff = () => { h.destroy(); over.remove(); cyOff = null; cyApi = null; wx.dataset.cy = "off"; wx.querySelector("[data-cyq]")?.setAttribute("aria-pressed", "false"); wx.querySelector("[data-cyq]")?.classList.remove("on"); };
+    cleanup.push(() => cyOff?.());
+    $("ans").innerHTML = `<p class="cy-src">${esc(LL("Cargando las tormentas…", "Loading the storms…"))}</p>`;
+    $("ans").scrollIntoView({ block: "start", behavior: RM() ? "auto" : "smooth" });
+  };
   const renderAnswer = () => {
     const box = $("ans");
+    if (cyApi) { cyApi.setPlace(sel.reg); return; }
     if (ui.land && land) {
       renderHead();
       $("ans-h").textContent = ui.land === "verde" ? LL("Qué dice MODIS", "What MODIS says") : LL("Qué dice la auditoría", "What the audit says");
@@ -232,7 +271,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const tierIdx = TIERS.findIndex(([k]) => k === ti.tier);
     const pFmt = (t: Tr) => (t.p < 0.001 ? `&lt;&#8239;${num(0.001, 3)}` : num(t.p, 3));
     box.innerHTML = `
-      <p class="vd" style="--c:${vv.color}"><b>${esc(vv.short)}</b>${tierIdx >= 0 ? `<span>${esc(LL(TIERS[tierIdx][1], TIERS[tierIdx][2]))}</span>` : ""}</p>
+      <button class="vd" data-vd style="--c:${vv.color}" aria-haspopup="dialog" aria-expanded="false" title="${esc(LL("Ver por qué y compararlo en la Auditoría", "See why and compare it in the Audit"))}"><b>${esc(vv.short)}</b>${tierIdx >= 0 ? `<span>${esc(LL(TIERS[tierIdx][1], TIERS[tierIdx][2]))}</span>` : ""}<em>${esc(LL("Por qué", "Why"))}${CHEV}</em></button>
       ${capsule(d, sel)}
       ${levers}
       ${trail}
@@ -448,7 +487,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     for (const id of ["ridge3d", "yuna3d"]) if (m.getLayer(id)) m.setLayoutProperty(id, "visibility", on ? "visible" : "none");
     t3.refresh3d();
   };
-  const base = (): "none" | "dark" | "sat" => (ui.style === "plano" ? "sat" : ui.style === "oscuro" ? "dark" : "none");
+  const base = (): "none" | "dark" | "sat" => (ui.style === "plano" ? "sat" : "dark");
   // Fondo y cámara: crestas en 2D se dibujan en su lienzo; todo lo demás lo dibuja el mapa
   const applyView = (fly: boolean) => {
     const flatRidges = ui.style === "crestas" && !ui.d3;
@@ -463,7 +502,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   const describeRidge = () => rg?.describe(`${LL("Perfiles de relieve de La Española apilados de norte a sur; cada tramo lleva el color de su celda en el mapa.", "Relief profiles of Hispaniola stacked north to south; each stretch takes its cell's map colour.")} ${$("wx-legend").textContent?.replace(/\s+/g, " ").trim() ?? ""}`);
   // El margen inferior sale de la altura real de la línea de tiempo (cambia cuando la leyenda baja a otra fila)
   const barH = () => document.getElementById("wx-bar")?.offsetHeight ?? 76;
-  const fitPad = () => (layout === "phone" ? { top: 70, bottom: PEEK + 120, left: 16, right: 16 } : { top: 64, bottom: barH() + 34, left: 32, right: 32 });
+  const sideL = () => (layout === "wide" && ui.left ? 372 : 0), sideR = () => (layout === "wide" && ui.right && !ui.land ? 352 : 0);
+  const fitPad = () => (layout === "phone" ? { top: 70, bottom: PEEK + 120, left: 16, right: 16 } : { top: 64, bottom: barH() + (layout === "wide" ? 52 : 34), left: 32 + sideL(), right: 32 + sideR() });
   const frame = (fly = true) => {
     if (!t3) return;
     t3.setFitPadding(fitPad());
@@ -510,6 +550,26 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   wx.addEventListener("click", (e) => {
     const el = e.target as Element;
     if (el.closest("[data-reg-all]")) { pickRegion("DO"); return; }
+    // Ciclones: una pregunta del panel; el mapa de tormentas cubre el de tendencias y el panel explica cómo leerlo
+    if (el.closest("[data-cyq]")) { if (cyApi) { cyOff?.(); renderAnswer(); } else cyStart(); return; }
+    const cyy = el.closest<HTMLElement>("[data-cy-yuna]");
+    if (cyy && cyApi) { cyApi.setPlace(cyy.dataset.cyYuna!); return; }
+    // El veredicto: una ventana con el porqué, las dos fuentes y el salto a la Auditoría del mismo lugar
+    const vdb = el.closest<HTMLElement>("[data-vd]");
+    if (vdb) {
+      const vv = verdict(d, sel, sel.ind), cls = d.row(sel)?.clase ?? "", desc = d.V.clases[cls]?.descripcion ?? "";
+      const rowsP = d.prods.map((p) => { const t = d.tr(sel, p); if (!t) return ""; const sig = d.isSig(t, sel.reg);
+        return `<li><b style="color:${p === "IMERG" ? "#ffffff" : "#8fd3ff"}">${p}</b><span>${esc(`${t.pendiente_pct_decada > 0 ? "+" : ""}${num(t.pendiente_pct_decada, 0)} % ${LL("por década", "per decade")}`)}</span><em class="${sig ? "s" : ""}">${esc(sig ? LL("claro", "clear") : LL("incierto", "uncertain"))} · p ${t.p < 0.001 ? "&lt; 0,001" : esc(num(t.p, 3))}</em></li>`; }).join("");
+      const place = regName();
+      openPop(vdb, `<p class="pop-k">${esc(`${chip(sel.ind)} · ${place}`)}</p>
+        <h3 class="pop-h" style="color:${vv.color}">${esc(vv.short)}</h3>
+        ${desc ? `<p class="pop-s">${esc(desc)}</p>` : ""}
+        <ul class="pop-l">${rowsP}</ul>
+        <button class="pop-go" data-act="audit"><span>${esc(LL(`¿Y en la sequía? Auditoría de ${place}`, `And in drought? ${place} audit`))}</span>${CHEV}</button>
+        <button class="pop-go alt" data-act="method"><span>${esc(LL("Cómo se decide el veredicto", "How the verdict is decided"))}</span>${CHEV}</button>`,
+        (act) => { if (act === "audit") { openAuditAt(sel.reg); location.hash = "#auditoria"; } else if (act === "method") location.hash = "#metodo"; }, vv.short);
+      return;
+    }
     // Menús: cada opción dice qué es y, cuando aplica, su veredicto para la medida elegida
     const rb = el.closest<HTMLElement>("#r-btn");
     if (rb) {
@@ -536,6 +596,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     }
     const lq = el.closest<HTMLElement>("[data-landq]");
     if (lq) {
+      if (cyApi) cyOff?.();
       if (ui.land !== lq.dataset.landq) { ui.land = lq.dataset.landq as LandQ; ui.year = null; ui.landSite = ""; renderStyle(); renderPanels(); renderMap(); frameSites(); $("ans").scrollIntoView({ block: "start", behavior: RM() ? "auto" : "smooth" }); }
       return;
     }
@@ -545,6 +606,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     if (st) { ui.landSite = ui.landSite === st.dataset.site ? "" : st.dataset.site!; renderAnswer(); renderMap(); return; }
     const q = el.closest<HTMLElement>("[data-q]");
     if (q) {
+      if (cyApi) { cyOff?.(); if (questionOf(sel.ind).id === q.dataset.q && !ui.land) { renderAnswer(); return; } }
       const back = !!ui.land;
       if (back) { ui.land = ""; renderStyle(); }
       if (questionOf(sel.ind).id !== q.dataset.q) setInd(pick[q.dataset.q!]);
@@ -663,6 +725,14 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     if (sel.reg !== "DO") mine.selectProvince(d.isoToShape[sel.reg] ?? null);
     if (ui.land) frameSites(); else frame(true);
     const map = mine.map;
+    if (d.fc && !map.getSource("medido")) {
+      const holes: number[][][] = [];
+      for (const f of d.fc.features) { const g = f.geometry; const polys = g.type === "Polygon" ? [g.coordinates] : g.coordinates; for (const pl of polys) holes.push(pl[0]); }
+      map.addSource("medido", { type: "geojson", data: { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [[[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]], ...holes] } } });
+      map.addLayer({ id: "fuera", type: "fill", source: "medido", paint: { "fill-color": "#050607", "fill-opacity": 0.66 } });
+      map.addSource("borde", { type: "geojson", data: { type: "FeatureCollection", features: holes.map((r) => ({ type: "Feature" as const, properties: {}, geometry: { type: "LineString" as const, coordinates: r } })) } });
+      map.addLayer({ id: "borde", type: "line", source: "borde", paint: { "line-color": "#ffffff", "line-opacity": 0.5, "line-width": 1.3 } });
+    }
     lockCam();
     map.on("move", () => { rg?.reframe(); sites?.place(); });
     rg?.reframe();

@@ -19,7 +19,7 @@ export function openMenu(anchor: HTMLElement, opts: Opt[], current: string, onPi
   m.innerHTML = `${title ? `<p class="menu-h">${esc(title)}</p>` : ""}
     ${search ? `<input class="menu-q" type="search" placeholder="${esc(LL("Buscar…", "Search…"))}" aria-label="${esc(LL("Buscar", "Search"))}" autocomplete="off">` : ""}
     <div class="menu-l" role="listbox">${opts.map((o, i) => `
-      <button class="mi ${o.value === current ? "on" : ""}" role="option" aria-selected="${o.value === current}" data-v="${esc(o.value)}" data-k="${esc(norm(o.label))}" style="--i:${Math.min(i, 12)}">
+      <button class="mi ${o.value === current ? "on" : ""}" role="option" aria-selected="${o.value === current}" data-v="${esc(o.value)}" data-k="${esc(norm(o.label))}" style="--mc:${o.color && !o.hollow ? o.color : "#b4b4b4"};--i:${Math.min(i, 12)}">
         ${o.color ? `<i class="mi-d ${o.hollow ? "no" : ""}" style="--c:${o.color}"></i>` : ""}
         <span class="mi-t"><b>${esc(o.label)}</b>${o.hint ? `<small>${esc(o.hint)}</small>` : ""}</span>
         ${o.value === current ? '<svg class="mi-ok" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ""}

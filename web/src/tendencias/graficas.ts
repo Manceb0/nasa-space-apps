@@ -49,7 +49,7 @@ export function capsule(d: TrendData, s: Sel) {
   const read = rows.map((r, i) => ({ ...r, i })).sort((a, b) => a.t.pendiente_decada - b.t.pendiente_decada).map(({ p, t, i }) => {
     const up = t.pendiente_decada > 0, side = up ? right : left, sc = up ? cR : cL;
     return `<div class="cr">
-      <p class="cr-p"><i style="background:${pc(p)}"></i>${p}${p === "IMERG" && d.stepped(s.ind) ? `<button class="cr-warn" data-go13 title="${esc(LL(DRIFT_ES, DRIFT_EN))}" aria-label="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}</button>` : ""}</p>
+      <p class="cr-p" style="color:${pc(p)}">${p}${p === "IMERG" && d.stepped(s.ind) ? `<button class="cr-warn" data-go13 title="${esc(LL(DRIFT_ES, DRIFT_EN))}" aria-label="${esc(LL(DRIFT_ES, DRIFT_EN))}">${WARN}</button>` : ""}</p>
       <p class="cr-v num">${sgn(t.pendiente_decada)}<small>${sgn(t.pendiente_pct_decada, 0)} %</small></p>
       <p class="cr-s"><b style="color:${sc}">${esc(side)}</b> · ${esc(sig[i] ? LL("claro", "clear") : LL("incierto", "uncertain"))}</p>
       <p class="cr-pv num">p ${t.p < 0.001 ? `&lt; ${num(0.001, 3)}` : num(t.p, 3)}</p>

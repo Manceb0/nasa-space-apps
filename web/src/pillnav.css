@@ -65,3 +65,6 @@
   .pill-nav__face, .pill-nav__face-alt, .pill-nav__fill, .pill-nav__item, .pill-nav__dot { transition: none; }
   .pill-nav__logo, .pill-nav__bar, .pill-nav__slot, .pill-nav__lang { animation: none; }
 }
+
+/* Tras la entrada, ninguna animación vuelve a dispararse aunque una pieza se oculte y reaparezca */
+.pill-nav.pn-ready, .pill-nav.pn-ready * { animation: none !important; }

@@ -1,0 +1,44 @@
+/* Cómo funciona: cuatro pasos sobre la misma serie, la regla del veredicto como matriz y lo demás plegado. */
+main:has(> .mt) { max-width: none; padding: 0; }
+.mt { max-width: 1240px; margin: auto; padding: 104px 28px 120px; }
+.mt-head { max-width: 760px; }
+.mt-head h1 { margin: 0; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; font-weight: 700; letter-spacing: -.02em; }
+.mt-head p { margin: 14px 0 0; font-size: clamp(17px, 1.6vw, 21px); line-height: 1.35; font-weight: 500; }
+.mt-steps { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mt-step { padding: 24px 24px 22px; border-radius: 24px; background: var(--surface, #15171a); animation: mt-in .6s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(var(--i) * 90ms); }
+@keyframes mt-in { from { opacity: 0; transform: translateY(14px); } }
+.mt-step h2 { margin: 0; font-size: 15px; font-weight: 600; color: var(--muted, #b4b4b4); }
+.mt-big { margin: 6px 0 10px; font-size: clamp(28px, 3vw, 38px); line-height: 1.1; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.mt-big.mt-warn { color: #ff6b35; border: 0; padding: 0; }
+.mt-chart { display: block; width: 100%; height: auto; }
+.mt-s { margin: 10px 0 0; font-size: 14.5px; line-height: 1.45; color: var(--muted, #b4b4b4); max-width: 56ch; }
+.mt-rule { margin-top: 96px; display: grid; grid-template-columns: minmax(240px, .8fr) minmax(0, 1.2fr); gap: 12px 48px; align-items: start; }
+.mt-rule h2 { margin: 0; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; font-weight: 700; letter-spacing: -.02em; }
+.mt-rule-s { margin: 0; grid-column: 1; font-size: 15px; line-height: 1.45; color: var(--muted, #b4b4b4); }
+.mt-matrix { grid-column: 2; grid-row: 1 / span 3; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mt-cell { display: grid; gap: 6px; align-content: start; min-height: 130px; padding: 18px 20px; border-radius: 20px; background: color-mix(in srgb, var(--c) 16%, #15171a); }
+.mt-cell b { font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--c) 55%, #fff); }
+.mt-cell span { font-size: 14px; line-height: 1.4; color: #d6d6d6; }
+.mt-more { margin-top: 12px; border-radius: 20px; background: var(--surface, #15171a); padding: 0 24px; }
+.mt-rule + .mt-more { margin-top: 96px; }
+.mt-more summary { padding: 18px 0; font-size: 17px; font-weight: 600; cursor: pointer; list-style: none; }
+.mt-more summary::-webkit-details-marker { display: none; }
+.mt-more summary::after { content: ""; display: inline-block; width: 8px; height: 8px; margin-left: 12px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; border-radius: 1px; transform: translateY(-3px) rotate(45deg); transition: transform .25s; }
+.mt-more[open] summary::after { transform: translateY(0) rotate(225deg); }
+.mt-more dl { display: grid; grid-template-columns: minmax(160px, 220px) 1fr; gap: 10px 24px; margin: 0 0 22px; font-size: 15px; line-height: 1.5; }
+.mt-more dt { font-weight: 600; }
+.mt-more dd { margin: 0; color: var(--muted, #b4b4b4); }
+.mt-more p { margin: 0 0 22px; color: var(--muted, #b4b4b4); font-size: 15px; line-height: 1.5; max-width: 80ch; }
+@media (max-width: 900px) {
+  .mt-steps { grid-template-columns: 1fr; }
+  .mt-rule { grid-template-columns: 1fr; }
+  .mt-matrix { grid-column: 1; grid-row: auto; }
+}
+@media (max-width: 759px) {
+  .mt { padding: 28px 16px 120px; }
+  .mt-step { padding: 20px 18px; }
+  .mt-matrix { grid-template-columns: 1fr; }
+  .mt-more dl { grid-template-columns: 1fr; gap: 4px; }
+  .mt-more dd { margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .mt-step { animation: none; } }

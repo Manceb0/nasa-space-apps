@@ -1,0 +1,71 @@
+{
+ "yuna": {
+  "lat": 19.1,
+  "lon": -70.1
+ },
+ "r_km": 200.0,
+ "storms": [
+  {
+   "id": "2007-10",
+   "name": "Noel",
+   "year": 2007,
+   "onset": "2007-10-28",
+   "lead_h": null,
+   "dmin_km": 277.0,
+   "peak_kt": 70
+  },
+  {
+   "id": "2007-12",
+   "name": "Olga",
+   "year": 2007,
+   "onset": "2007-12-11",
+   "lead_h": 4.0,
+   "dmin_km": 15.0,
+   "peak_kt": 50
+  },
+  {
+   "id": "2012-08",
+   "name": "Isaac",
+   "year": 2012,
+   "onset": "2012-08-24",
+   "lead_h": 40.0,
+   "dmin_km": 264.0,
+   "peak_kt": 60
+  },
+  {
+   "id": "2017-09",
+   "name": "Maria",
+   "year": 2017,
+   "onset": "2017-09-21",
+   "lead_h": 106.0,
+   "dmin_km": 154.0,
+   "peak_kt": 150
+  },
+  {
+   "id": "2020-07",
+   "name": "Isaias",
+   "year": 2020,
+   "onset": "2020-07-30",
+   "lead_h": 40.0,
+   "dmin_km": 39.0,
+   "peak_kt": 75
+  },
+  {
+   "id": "2022-09",
+   "name": "Fiona",
+   "year": 2022,
+   "onset": "2022-09-18",
+   "lead_h": 88.0,
+   "dmin_km": 238.0,
+   "peak_kt": 120
+  }
+ ],
+ "sources": {
+  "track": "IBTrACS v04r01 (NOAA NCEI), North Atlantic",
+  "forecast": "NHC ATCF a-deck, OFCL, as issued (ftp.nhc.noaa.gov/atcf/archive)",
+  "wind": "ERA5 10 m wind via Open-Meteo historical archive, 6-hourly, 0.5° grid",
+  "rain": "NASA GPM IMERG precipitation rate via NASA GIBS (served live in the web)",
+  "satellite": "NASA GIBS MODIS Terra corrected reflectance, true colour, daily",
+  "floods": "results/tropical/ciclones/inundaciones_y_ciclones.csv"
+ }
+}
