@@ -1,0 +1,331 @@
+{
+  "generated_at": "2026-11-15T17:19:10.515719Z",
+  "sources": [
+    {
+      "id": "bonao:ECMWF:2026-11-15T16:34:09.362199Z",
+      "source_id": "ECMWF",
+      "first_seen_at": "2026-11-15T16:34:09.362199Z",
+      "requested": [
+        18.937,
+        -70.409
+      ],
+      "returned": [
+        19.0,
+        -70.5
+      ],
+      "provenance": "https://api.open-meteo.com/v1/forecast?latitude=18.937&longitude=-70.409&hourly=precipitation&models=ecmwf_ifs025&forecast_days=7&timezone=GMT",
+      "sha256": "8f8979c4728a75390f29d9f414e7ea1ff70e9a5dda8a9816f4e6e39f4af762b0",
+      "delivery": "cache"
+    },
+    {
+      "id": "bonao:GFS:2026-11-15T16:34:09.698930Z",
+      "source_id": "GFS",
+      "first_seen_at": "2026-11-15T16:34:09.698930Z",
+      "requested": [
+        18.937,
+        -70.409
+      ],
+      "returned": [
+        18.919624,
+        -70.42969
+      ],
+      "provenance": "https://api.open-meteo.com/v1/forecast?latitude=18.937&longitude=-70.409&hourly=precipitation&models=gfs_global&forecast_days=7&timezone=GMT",
+      "sha256": "073cc7a95bb1c77a9d78f88e7ec304f584e6a11b2876746c358b17b4e3fe13a0",
+      "delivery": "cache"
+    },
+    {
+      "id": "bonao:ERA5:2026-11-15T16:34:11.353053Z",
+      "source_id": "ERA5",
+      "first_seen_at": "2026-11-15T16:34:11.353053Z",
+      "requested": [
+        18.937,
+        -70.409
+      ],
+      "returned": [
+        19.0,
+        -70.5
+      ],
+      "provenance": "https://archive-api.open-meteo.com/v1/archive?latitude=18.937&longitude=-70.409&daily=precipitation_sum&models=era5&start_date=2000-10-01&end_date=2026-11-10&timezone=GMT&cell_selection=nearest",
+      "sha256": "b820fb8aa637577a970d00c426776734c75fd55c8c6933bea1998ba2c2789122",
+      "delivery": "cache"
+    },
+    {
+      "id": "bonao:IMERG:history",
+      "source_id": "IMERG",
+      "first_seen_at": "2026-11-15T17:19:10.513721Z",
+      "requested": [
+        18.937,
+        -70.409
+      ],
+      "returned": [
+        18.937,
+        -70.409
+      ],
+      "provenance": "data/tendencias/provincias.json",
+      "sha256": "5715da9904ab12af824fba692c038b403dfa36bd68978e639e017d1e34b81da0",
+      "delivery": "local_archive"
+    },
+    {
+      "id": "bonao:CHIRPS:history",
+      "source_id": "CHIRPS",
+      "first_seen_at": "2026-11-15T17:19:10.513721Z",
+      "requested": [
+        18.937,
+        -70.409
+      ],
+      "returned": [
+        18.937,
+        -70.409
+      ],
+      "provenance": "data/tendencias/provincias.json",
+      "sha256": "5715da9904ab12af824fba692c038b403dfa36bd68978e639e017d1e34b81da0",
+      "delivery": "local_archive"
+    },
+    {
+      "id": "cotui:ECMWF:2026-11-15T16:34:09.371125Z",
+      "source_id": "ECMWF",
+      "first_seen_at": "2026-11-15T16:34:09.371125Z",
+      "requested": [
+        19.053,
+        -70.149
+      ],
+      "returned": [
+        19.0,
+        -70.25
+      ],
+      "provenance": "https://api.open-meteo.com/v1/forecast?latitude=19.053&longitude=-70.149&hourly=precipitation&models=ecmwf_ifs025&forecast_days=7&timezone=GMT",
+      "sha256": "03515fd9d90582b79b5f5a393a054e6c1dfa454fdf60e28b3d487e2a9d2b62a0",
+      "delivery": "cache"
+    },
+    {
+      "id": "cotui:GFS:2026-11-15T16:34:09.689396Z",
+      "source_id": "GFS",
+      "first_seen_at": "2026-11-15T16:34:09.689396Z",
+      "requested": [
+        19.053,
+        -70.149
+      ],
+      "returned": [
+        19.036774,
+        -70.19531
+      ],
+      "provenance": "https://api.open-meteo.com/v1/forecast?latitude=19.053&longitude=-70.149&hourly=precipitation&models=gfs_global&forecast_days=7&timezone=GMT",
+      "sha256": "39091bab654f19dc519f79a56a1a08583c383552e87baa31c7c857bdbca07182",
+      "delivery": "cache"
+    },
+    {
+      "id": "cotui:ERA5:2026-11-15T16:34:11.472989Z",
+      "source_id": "ERA5",
+      "first_seen_at": "2026-11-15T16:34:11.472989Z",
+      "requested": [
+        19.053,
+        -70.149
+      ],
+      "returned": [
+        19.0,
+        -70.25
+      ],
+      "provenance": "https://archive-api.open-meteo.com/v1/archive?latitude=19.053&longitude=-70.149&daily=precipitation_sum&models=era5&start_date=2000-10-01&end_date=2026-11-10&timezone=GMT&cell_selection=nearest",
+      "sha256": "0a95e99a70dd8d051118d48aef21354376a724c6fa1503d67fbf3b07dea61dd8",
+      "delivery": "cache"
+    },
+    {
+      "id": "cotui:IMERG:history",
+      "source_id": "IMERG",
+      "first_seen_at": "2026-11-15T17:19:10.513721Z",
+      "requested": [
+        19.053,
+        -70.149
+      ],
+      "returned": [
+        19.053,
+        -70.149
+      ],
+      "provenance": "data/tendencias/provincias.json",
+      "sha256": "21b25b865560373a9926b79b1fc983524e101ea5a29c1da4df9ee0baa21b91bc",
+      "delivery": "local_archive"
+    },
+    {
+      "id": "cotui:CHIRPS:history",
+      "source_id": "CHIRPS",
+      "first_seen_at": "2026-11-15T17:19:10.513721Z",
+      "requested": [
+        19.053,
+        -70.149
+      ],
+      "returned": [
+        19.053,
+        -70.149
+      ],
+      "provenance": "data/tendencias/provincias.json",
+      "sha256": "21b25b865560373a9926b79b1fc983524e101ea5a29c1da4df9ee0baa21b91bc",
+      "delivery": "local_archive"
+    },
+    {
+      "id": "villa-riva:ECMWF:2026-11-15T16:34:11.628862Z",
+      "source_id": "ECMWF",
+      "first_seen_at": "2026-11-15T16:34:11.628862Z",
+      "requested": [
+        19.176,
+        -69.908
+      ],
+      "returned": [
+        19.25,
+        -70.0
+      ],
+      "provenance": "https://api.open-meteo.com/v1/forecast?latitude=19.176&longitude=-69.908&hourly=precipitation&models=ecmwf_ifs025&forecast_days=7&timezone=GMT",
+      "sha256": "9b7d75bcdc9f0fe669616120776dd375da24aa20ebacc546b91d8309a4e0a025",
+      "delivery": "cache"
+    },
+    {
+      "id": "villa-riva:GFS:2026-11-15T16:34:11.877457Z",
+      "source_id": "GFS",
+      "first_seen_at": "2026-11-15T16:34:11.877457Z",
+      "requested": [
+        19.176,
+        -69.908
+      ],
+      "returned": [
+        19.153923,
+        -69.96094
+      ],
+      "provenance": "https://api.open-meteo.com/v1/forecast?latitude=19.176&longitude=-69.908&hourly=precipitation&models=gfs_global&forecast_days=7&timezone=GMT",
+      "sha256": "4e1dd97a07fed3275cbf97c542ca2f05ae2d5f4b3318fbd77bc740dfac8548fc",
+      "delivery": "cache"
+    },
+    {
+      "id": "villa-riva:ERA5:2026-11-15T16:34:13.243960Z",
+      "source_id": "ERA5",
+      "first_seen_at": "2026-11-15T16:34:13.243960Z",
+      "requested": [
+        19.176,
+        -69.908
+      ],
+      "returned": [
+        19.25,
+        -70.0
+      ],
+      "provenance": "https://archive-api.open-meteo.com/v1/archive?latitude=19.176&longitude=-69.908&daily=precipitation_sum&models=era5&start_date=2000-10-01&end_date=2026-11-10&timezone=GMT&cell_selection=nearest",
+      "sha256": "8ef56131069324ebc92562e1dc9985a03807a6dde3e220ae25a013271c370735",
+      "delivery": "cache"
+    },
+    {
+      "id": "villa-riva:IMERG:history",
+      "source_id": "IMERG",
+      "first_seen_at": "2026-11-15T17:19:10.513721Z",
+      "requested": [
+        19.176,
+        -69.908
+      ],
+      "returned": [
+        19.176,
+        -69.908
+      ],
+      "provenance": "data/tendencias/provincias.json",
+      "sha256": "98d2d48316b56a0a982d9019bdcb388bbf27cfb06f6efa4bbb3b9c4773268c7b",
+      "delivery": "local_archive"
+    },
+    {
+      "id": "villa-riva:CHIRPS:history",
+      "source_id": "CHIRPS",
+      "first_seen_at": "2026-11-15T17:19:10.513721Z",
+      "requested": [
+        19.176,
+        -69.908
+      ],
+      "returned": [
+        19.176,
+        -69.908
+      ],
+      "provenance": "data/tendencias/provincias.json",
+      "sha256": "98d2d48316b56a0a982d9019bdcb388bbf27cfb06f6efa4bbb3b9c4773268c7b",
+      "delivery": "local_archive"
+    },
+    {
+      "id": "monte-cristi:ECMWF:2026-11-15T16:34:11.744543Z",
+      "source_id": "ECMWF",
+      "first_seen_at": "2026-11-15T16:34:11.744543Z",
+      "requested": [
+        19.85,
+        -71.65
+      ],
+      "returned": [
+        19.75,
+        -71.5
+      ],
+      "provenance": "https://api.open-meteo.com/v1/forecast?latitude=19.85&longitude=-71.65&hourly=precipitation&models=ecmwf_ifs025&forecast_days=7&timezone=GMT",
+      "sha256": "adcdedcd14b1b71594e03eb643909d941079c9e3cfe6712d84ae40cd7a465d67",
+      "delivery": "cache"
+    },
+    {
+      "id": "monte-cristi:GFS:2026-11-15T16:34:11.995478Z",
+      "source_id": "GFS",
+      "first_seen_at": "2026-11-15T16:34:11.995478Z",
+      "requested": [
+        19.85,
+        -71.65
+      ],
+      "returned": [
+        19.73967,
+        -71.60156
+      ],
+      "provenance": "https://api.open-meteo.com/v1/forecast?latitude=19.85&longitude=-71.65&hourly=precipitation&models=gfs_global&forecast_days=7&timezone=GMT",
+      "sha256": "3611923519e0e90cc26197543900ca2b26bdb758f53f966fa5f85ff52dd4b74c",
+      "delivery": "cache"
+    },
+    {
+      "id": "monte-cristi:ERA5:2026-11-15T16:34:13.380898Z",
+      "source_id": "ERA5",
+      "first_seen_at": "2026-11-15T16:34:13.380898Z",
+      "requested": [
+        19.85,
+        -71.65
+      ],
+      "returned": [
+        19.75,
+        -71.75
+      ],
+      "provenance": "https://archive-api.open-meteo.com/v1/archive?latitude=19.85&longitude=-71.65&daily=precipitation_sum&models=era5&start_date=2000-10-01&end_date=2026-11-10&timezone=GMT&cell_selection=nearest",
+      "sha256": "2f27a6b1f04de7a8263aa3d1f9ea9c0775d2c3e6d08c695f87d1d349d577fbed",
+      "delivery": "cache"
+    },
+    {
+      "id": "monte-cristi:IMERG:history",
+      "source_id": "IMERG",
+      "first_seen_at": "2026-11-15T17:19:10.513721Z",
+      "requested": [
+        19.85,
+        -71.65
+      ],
+      "returned": [
+        19.85,
+        -71.65
+      ],
+      "provenance": "data/tendencias/provincias.json",
+      "sha256": "45c37788360b5576e3b7823dde0c50e0c5a8bef1ef6dbb829f6c5ecc5f1dfb7a",
+      "delivery": "local_archive"
+    },
+    {
+      "id": "monte-cristi:CHIRPS:history",
+      "source_id": "CHIRPS",
+      "first_seen_at": "2026-11-15T17:19:10.513721Z",
+      "requested": [
+        19.85,
+        -71.65
+      ],
+      "returned": [
+        19.85,
+        -71.65
+      ],
+      "provenance": "data/tendencias/provincias.json",
+      "sha256": "45c37788360b5576e3b7823dde0c50e0c5a8bef1ef6dbb829f6c5ecc5f1dfb7a",
+      "delivery": "local_archive"
+    }
+  ],
+  "errors": {
+    "bonao": [],
+    "cotui": [],
+    "villa-riva": [],
+    "monte-cristi": []
+  }
+}

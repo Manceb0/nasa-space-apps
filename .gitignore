@@ -26,5 +26,7 @@ data/yuna/*
 data/testigos/*
 !data/testigos/MANIFEST.json
 .playwright-cli/
+data/preparacion/
+.build-preparacion/
 data/tropical/*
 !data/tropical/MANIFEST.json

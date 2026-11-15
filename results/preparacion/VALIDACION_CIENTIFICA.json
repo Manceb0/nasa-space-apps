@@ -1,0 +1,5804 @@
+{
+  "validated_at": "2026-11-15T17:19:11.359Z",
+  "package_sha256": "90b9b43d1e9c7141d23d281068b4580f7da54859bad2bce019b92bfb647c8dad",
+  "engine_sha256": "bd1b1c5a4fc5b8062458c3cfe425df76583524f1706dce8bb297251d642dfb1f",
+  "external_network_used": false,
+  "checks": [
+    {
+      "check": "four_pilots",
+      "passed": true
+    },
+    {
+      "check": "no_ingestion_errors",
+      "passed": true
+    },
+    {
+      "check": "two_separate_forecasts_each_pilot",
+      "passed": true
+    },
+    {
+      "check": "all_30_90_day_calendar_references_verified",
+      "passed": true
+    },
+    {
+      "check": "producer_percentiles_match_engine",
+      "passed": true
+    },
+    {
+      "check": "withdrawing_gfs_marks_missing",
+      "passed": true
+    },
+    {
+      "check": "withdrawing_gfs_preserves_ecmwf_numbers",
+      "passed": true
+    },
+    {
+      "check": "withdrawing_era5_suppresses_deficit_claim",
+      "passed": true
+    },
+    {
+      "check": "earlier_than_first_capture_has_no_weather_or_historical_support",
+      "passed": true
+    },
+    {
+      "check": "shared_forecast_input_family_reported",
+      "passed": true
+    },
+    {
+      "check": "no_independence_probability_invented",
+      "passed": true
+    },
+    {
+      "check": "http_package_hash_matches_disk",
+      "passed": true
+    },
+    {
+      "check": "http_and_pure_engine_identical",
+      "passed": true
+    },
+    {
+      "check": "http_engine_hash_identifies_loaded_engine",
+      "passed": true
+    }
+  ],
+  "scenarios": {
+    "baseline": {
+      "decision_at": "2026-11-15T17:19:11.359Z",
+      "disabled_sources": [],
+      "cases": [
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "bonao",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "bonao:ECMWF:2026-11-15T16:34:09.362199Z",
+                "coordinates": [
+                  19.0,
+                  -70.5
+                ],
+                "requested_coordinates": [
+                  18.937,
+                  -70.409
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 16.5
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 18.6
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 18.6
+              },
+              {
+                "source": "GFS",
+                "record_id": "bonao:GFS:2026-11-15T16:34:09.698930Z",
+                "coordinates": [
+                  18.919624,
+                  -70.42969
+                ],
+                "requested_coordinates": [
+                  18.937,
+                  -70.409
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 11.4
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 11.6
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 11.6
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-15T18:00:00.000Z",
+              "end": "2026-11-17T18:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "not_below_p20",
+            "metrics": [
+              {
+                "days": 30,
+                "total_mm": 150.1,
+                "percentile": 79.16666666666667,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  80.6,
+                  44.0,
+                  229.1,
+                  137.4,
+                  113.0,
+                  91.0,
+                  245.9,
+                  83.6,
+                  42.1,
+                  90.7,
+                  97.9,
+                  181.4,
+                  130.0,
+                  203.9,
+                  110.4,
+                  315.6,
+                  149.6,
+                  73.5,
+                  21.3,
+                  113.5,
+                  133.0,
+                  135.7,
+                  98.3,
+                  142.9
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-10-11",
+                    "end": "2001-11-09",
+                    "total_mm": 80.6
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-10-11",
+                    "end": "2002-11-09",
+                    "total_mm": 44.0
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-10-11",
+                    "end": "2003-11-09",
+                    "total_mm": 229.1
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-10-11",
+                    "end": "2004-11-09",
+                    "total_mm": 137.4
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-10-11",
+                    "end": "2005-11-09",
+                    "total_mm": 113.0
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-10-11",
+                    "end": "2006-11-09",
+                    "total_mm": 91.0
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-10-11",
+                    "end": "2007-11-09",
+                    "total_mm": 245.9
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-10-11",
+                    "end": "2008-11-09",
+                    "total_mm": 83.6
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-10-11",
+                    "end": "2009-11-09",
+                    "total_mm": 42.1
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-10-11",
+                    "end": "2010-11-09",
+                    "total_mm": 90.7
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-10-11",
+                    "end": "2011-11-09",
+                    "total_mm": 97.9
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-10-11",
+                    "end": "2012-11-09",
+                    "total_mm": 181.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-10-11",
+                    "end": "2013-11-09",
+                    "total_mm": 130.0
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-10-11",
+                    "end": "2014-11-09",
+                    "total_mm": 203.9
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-10-11",
+                    "end": "2015-11-09",
+                    "total_mm": 110.4
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-10-11",
+                    "end": "2016-11-09",
+                    "total_mm": 315.6
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-10-11",
+                    "end": "2017-11-09",
+                    "total_mm": 149.6
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-10-11",
+                    "end": "2018-11-09",
+                    "total_mm": 73.5
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-10-11",
+                    "end": "2019-11-09",
+                    "total_mm": 21.3
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-10-11",
+                    "end": "2020-11-09",
+                    "total_mm": 113.5
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-10-11",
+                    "end": "2021-11-09",
+                    "total_mm": 133.0
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-10-11",
+                    "end": "2022-11-09",
+                    "total_mm": 135.7
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-10-11",
+                    "end": "2023-11-09",
+                    "total_mm": 98.3
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-10-11",
+                    "end": "2024-11-09",
+                    "total_mm": 142.9
+                  }
+                ],
+                "start": "2026-10-11",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  78.26086956521739,
+                  82.6086956521739
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              },
+              {
+                "days": 90,
+                "total_mm": 358.6,
+                "percentile": 25.0,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  263.8,
+                  302.0,
+                  478.3,
+                  398.9,
+                  537.4,
+                  322.2,
+                  552.8,
+                  419.3,
+                  274.2,
+                  481.3,
+                  451.5,
+                  551.3,
+                  388.3,
+                  399.1,
+                  351.3,
+                  550.0,
+                  481.9,
+                  418.0,
+                  318.7,
+                  433.6,
+                  373.7,
+                  412.1,
+                  450.1,
+                  366.4
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-08-12",
+                    "end": "2001-11-09",
+                    "total_mm": 263.8
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-08-12",
+                    "end": "2002-11-09",
+                    "total_mm": 302.0
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-08-12",
+                    "end": "2003-11-09",
+                    "total_mm": 478.3
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-08-12",
+                    "end": "2004-11-09",
+                    "total_mm": 398.9
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-08-12",
+                    "end": "2005-11-09",
+                    "total_mm": 537.4
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-08-12",
+                    "end": "2006-11-09",
+                    "total_mm": 322.2
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-08-12",
+                    "end": "2007-11-09",
+                    "total_mm": 552.8
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-08-12",
+                    "end": "2008-11-09",
+                    "total_mm": 419.3
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-08-12",
+                    "end": "2009-11-09",
+                    "total_mm": 274.2
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-08-12",
+                    "end": "2010-11-09",
+                    "total_mm": 481.3
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-08-12",
+                    "end": "2011-11-09",
+                    "total_mm": 451.5
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-08-12",
+                    "end": "2012-11-09",
+                    "total_mm": 551.3
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-08-12",
+                    "end": "2013-11-09",
+                    "total_mm": 388.3
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-08-12",
+                    "end": "2014-11-09",
+                    "total_mm": 399.1
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-08-12",
+                    "end": "2015-11-09",
+                    "total_mm": 351.3
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-08-12",
+                    "end": "2016-11-09",
+                    "total_mm": 550.0
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-08-12",
+                    "end": "2017-11-09",
+                    "total_mm": 481.9
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-08-12",
+                    "end": "2018-11-09",
+                    "total_mm": 418.0
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-08-12",
+                    "end": "2019-11-09",
+                    "total_mm": 318.7
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-08-12",
+                    "end": "2020-11-09",
+                    "total_mm": 433.6
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-08-12",
+                    "end": "2021-11-09",
+                    "total_mm": 373.7
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-08-12",
+                    "end": "2022-11-09",
+                    "total_mm": 412.1
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-08-12",
+                    "end": "2023-11-09",
+                    "total_mm": 450.1
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-08-12",
+                    "end": "2024-11-09",
+                    "total_mm": 366.4
+                  }
+                ],
+                "start": "2026-08-12",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  21.73913043478261,
+                  26.08695652173913
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              }
+            ],
+            "record_id": "bonao:ERA5:2026-11-15T16:34:11.353053Z",
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ERA5"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "GFS"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "ERA5"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": true,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "GFS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "cotui",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "cotui:ECMWF:2026-11-15T16:34:09.371125Z",
+                "coordinates": [
+                  19.0,
+                  -70.25
+                ],
+                "requested_coordinates": [
+                  19.053,
+                  -70.149
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 15.0
+                },
+                "max48": {
+                  "start": "2026-11-17T06:00:00.000Z",
+                  "end": "2026-11-19T06:00:00.000Z",
+                  "mm": 19.2
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 19.2
+              },
+              {
+                "source": "GFS",
+                "record_id": "cotui:GFS:2026-11-15T16:34:09.689396Z",
+                "coordinates": [
+                  19.036774,
+                  -70.19531
+                ],
+                "requested_coordinates": [
+                  19.053,
+                  -70.149
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-17T05:00:00.000Z",
+                  "end": "2026-11-18T05:00:00.000Z",
+                  "mm": 4.0
+                },
+                "max48": {
+                  "start": "2026-11-16T23:00:00.000Z",
+                  "end": "2026-11-18T23:00:00.000Z",
+                  "mm": 4.1
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 4.1
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-17T06:00:00.000Z",
+              "end": "2026-11-19T06:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "not_below_p20",
+            "metrics": [
+              {
+                "days": 30,
+                "total_mm": 104.1,
+                "percentile": 62.5,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  90.5,
+                  25.099999999999998,
+                  152.6,
+                  139.7,
+                  109.5,
+                  48.0,
+                  215.9,
+                  63.6,
+                  28.8,
+                  69.9,
+                  82.7,
+                  176.5,
+                  54.9,
+                  113.2,
+                  62.5,
+                  222.1,
+                  84.6,
+                  55.5,
+                  26.0,
+                  75.3,
+                  101.0,
+                  111.6,
+                  40.1,
+                  115.9
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-10-11",
+                    "end": "2001-11-09",
+                    "total_mm": 90.5
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-10-11",
+                    "end": "2002-11-09",
+                    "total_mm": 25.099999999999998
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-10-11",
+                    "end": "2003-11-09",
+                    "total_mm": 152.6
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-10-11",
+                    "end": "2004-11-09",
+                    "total_mm": 139.7
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-10-11",
+                    "end": "2005-11-09",
+                    "total_mm": 109.5
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-10-11",
+                    "end": "2006-11-09",
+                    "total_mm": 48.0
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-10-11",
+                    "end": "2007-11-09",
+                    "total_mm": 215.9
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-10-11",
+                    "end": "2008-11-09",
+                    "total_mm": 63.6
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-10-11",
+                    "end": "2009-11-09",
+                    "total_mm": 28.8
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-10-11",
+                    "end": "2010-11-09",
+                    "total_mm": 69.9
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-10-11",
+                    "end": "2011-11-09",
+                    "total_mm": 82.7
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-10-11",
+                    "end": "2012-11-09",
+                    "total_mm": 176.5
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-10-11",
+                    "end": "2013-11-09",
+                    "total_mm": 54.9
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-10-11",
+                    "end": "2014-11-09",
+                    "total_mm": 113.2
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-10-11",
+                    "end": "2015-11-09",
+                    "total_mm": 62.5
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-10-11",
+                    "end": "2016-11-09",
+                    "total_mm": 222.1
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-10-11",
+                    "end": "2017-11-09",
+                    "total_mm": 84.6
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-10-11",
+                    "end": "2018-11-09",
+                    "total_mm": 55.5
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-10-11",
+                    "end": "2019-11-09",
+                    "total_mm": 26.0
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-10-11",
+                    "end": "2020-11-09",
+                    "total_mm": 75.3
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-10-11",
+                    "end": "2021-11-09",
+                    "total_mm": 101.0
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-10-11",
+                    "end": "2022-11-09",
+                    "total_mm": 111.6
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-10-11",
+                    "end": "2023-11-09",
+                    "total_mm": 40.1
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-10-11",
+                    "end": "2024-11-09",
+                    "total_mm": 115.9
+                  }
+                ],
+                "start": "2026-10-11",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  60.869565217391305,
+                  65.21739130434783
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              },
+              {
+                "days": 90,
+                "total_mm": 208.2,
+                "percentile": 25.0,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  216.7,
+                  200.0,
+                  316.4,
+                  397.4,
+                  373.2,
+                  154.8,
+                  452.3,
+                  342.2,
+                  175.3,
+                  339.3,
+                  267.9,
+                  405.4,
+                  196.3,
+                  235.7,
+                  188.5,
+                  386.1,
+                  278.9,
+                  265.0,
+                  185.4,
+                  310.9,
+                  269.6,
+                  315.1,
+                  306.5,
+                  262.5
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-08-12",
+                    "end": "2001-11-09",
+                    "total_mm": 216.7
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-08-12",
+                    "end": "2002-11-09",
+                    "total_mm": 200.0
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-08-12",
+                    "end": "2003-11-09",
+                    "total_mm": 316.4
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-08-12",
+                    "end": "2004-11-09",
+                    "total_mm": 397.4
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-08-12",
+                    "end": "2005-11-09",
+                    "total_mm": 373.2
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-08-12",
+                    "end": "2006-11-09",
+                    "total_mm": 154.8
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-08-12",
+                    "end": "2007-11-09",
+                    "total_mm": 452.3
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-08-12",
+                    "end": "2008-11-09",
+                    "total_mm": 342.2
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-08-12",
+                    "end": "2009-11-09",
+                    "total_mm": 175.3
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-08-12",
+                    "end": "2010-11-09",
+                    "total_mm": 339.3
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-08-12",
+                    "end": "2011-11-09",
+                    "total_mm": 267.9
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-08-12",
+                    "end": "2012-11-09",
+                    "total_mm": 405.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-08-12",
+                    "end": "2013-11-09",
+                    "total_mm": 196.3
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-08-12",
+                    "end": "2014-11-09",
+                    "total_mm": 235.7
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-08-12",
+                    "end": "2015-11-09",
+                    "total_mm": 188.5
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-08-12",
+                    "end": "2016-11-09",
+                    "total_mm": 386.1
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-08-12",
+                    "end": "2017-11-09",
+                    "total_mm": 278.9
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-08-12",
+                    "end": "2018-11-09",
+                    "total_mm": 265.0
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-08-12",
+                    "end": "2019-11-09",
+                    "total_mm": 185.4
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-08-12",
+                    "end": "2020-11-09",
+                    "total_mm": 310.9
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-08-12",
+                    "end": "2021-11-09",
+                    "total_mm": 269.6
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-08-12",
+                    "end": "2022-11-09",
+                    "total_mm": 315.1
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-08-12",
+                    "end": "2023-11-09",
+                    "total_mm": 306.5
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-08-12",
+                    "end": "2024-11-09",
+                    "total_mm": 262.5
+                  }
+                ],
+                "start": "2026-08-12",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  21.73913043478261,
+                  26.08695652173913
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              }
+            ],
+            "record_id": "cotui:ERA5:2026-11-15T16:34:11.472989Z",
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ERA5"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "GFS"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "ERA5"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": true,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "GFS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "villa-riva",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "villa-riva:ECMWF:2026-11-15T16:34:11.628862Z",
+                "coordinates": [
+                  19.25,
+                  -70.0
+                ],
+                "requested_coordinates": [
+                  19.176,
+                  -69.908
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 15.0
+                },
+                "max48": {
+                  "start": "2026-11-17T09:00:00.000Z",
+                  "end": "2026-11-19T09:00:00.000Z",
+                  "mm": 19.2
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 19.2
+              },
+              {
+                "source": "GFS",
+                "record_id": "villa-riva:GFS:2026-11-15T16:34:11.877457Z",
+                "coordinates": [
+                  19.153923,
+                  -69.96094
+                ],
+                "requested_coordinates": [
+                  19.176,
+                  -69.908
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-17T07:00:00.000Z",
+                  "end": "2026-11-18T07:00:00.000Z",
+                  "mm": 6.5
+                },
+                "max48": {
+                  "start": "2026-11-16T22:00:00.000Z",
+                  "end": "2026-11-18T22:00:00.000Z",
+                  "mm": 6.9
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 6.9
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-17T09:00:00.000Z",
+              "end": "2026-11-19T09:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "deficit",
+            "metrics": [
+              {
+                "days": 30,
+                "total_mm": 87.3,
+                "percentile": 25.0,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  133.8,
+                  73.3,
+                  143.6,
+                  79.9,
+                  113.4,
+                  103.9,
+                  162.2,
+                  112.7,
+                  58.7,
+                  101.7,
+                  83.8,
+                  183.8,
+                  89.4,
+                  150.8,
+                  125.6,
+                  183.6,
+                  114.4,
+                  97.2,
+                  54.5,
+                  150.4,
+                  103.7,
+                  141.6,
+                  77.1,
+                  161.6
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-10-11",
+                    "end": "2001-11-09",
+                    "total_mm": 133.8
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-10-11",
+                    "end": "2002-11-09",
+                    "total_mm": 73.3
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-10-11",
+                    "end": "2003-11-09",
+                    "total_mm": 143.6
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-10-11",
+                    "end": "2004-11-09",
+                    "total_mm": 79.9
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-10-11",
+                    "end": "2005-11-09",
+                    "total_mm": 113.4
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-10-11",
+                    "end": "2006-11-09",
+                    "total_mm": 103.9
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-10-11",
+                    "end": "2007-11-09",
+                    "total_mm": 162.2
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-10-11",
+                    "end": "2008-11-09",
+                    "total_mm": 112.7
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-10-11",
+                    "end": "2009-11-09",
+                    "total_mm": 58.7
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-10-11",
+                    "end": "2010-11-09",
+                    "total_mm": 101.7
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-10-11",
+                    "end": "2011-11-09",
+                    "total_mm": 83.8
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-10-11",
+                    "end": "2012-11-09",
+                    "total_mm": 183.8
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-10-11",
+                    "end": "2013-11-09",
+                    "total_mm": 89.4
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-10-11",
+                    "end": "2014-11-09",
+                    "total_mm": 150.8
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-10-11",
+                    "end": "2015-11-09",
+                    "total_mm": 125.6
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-10-11",
+                    "end": "2016-11-09",
+                    "total_mm": 183.6
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-10-11",
+                    "end": "2017-11-09",
+                    "total_mm": 114.4
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-10-11",
+                    "end": "2018-11-09",
+                    "total_mm": 97.2
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-10-11",
+                    "end": "2019-11-09",
+                    "total_mm": 54.5
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-10-11",
+                    "end": "2020-11-09",
+                    "total_mm": 150.4
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-10-11",
+                    "end": "2021-11-09",
+                    "total_mm": 103.7
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-10-11",
+                    "end": "2022-11-09",
+                    "total_mm": 141.6
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-10-11",
+                    "end": "2023-11-09",
+                    "total_mm": 77.1
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-10-11",
+                    "end": "2024-11-09",
+                    "total_mm": 161.6
+                  }
+                ],
+                "start": "2026-10-11",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  21.73913043478261,
+                  26.08695652173913
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              },
+              {
+                "days": 90,
+                "total_mm": 300.6,
+                "percentile": 4.166666666666667,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  396.5,
+                  366.8,
+                  406.7,
+                  468.7,
+                  452.0,
+                  368.1,
+                  406.0,
+                  449.6,
+                  306.5,
+                  413.0,
+                  366.8,
+                  460.4,
+                  386.4,
+                  395.8,
+                  324.2,
+                  421.7,
+                  510.2,
+                  462.1,
+                  249.1,
+                  443.3,
+                  354.90000000000003,
+                  413.5,
+                  354.8,
+                  369.3
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-08-12",
+                    "end": "2001-11-09",
+                    "total_mm": 396.5
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-08-12",
+                    "end": "2002-11-09",
+                    "total_mm": 366.8
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-08-12",
+                    "end": "2003-11-09",
+                    "total_mm": 406.7
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-08-12",
+                    "end": "2004-11-09",
+                    "total_mm": 468.7
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-08-12",
+                    "end": "2005-11-09",
+                    "total_mm": 452.0
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-08-12",
+                    "end": "2006-11-09",
+                    "total_mm": 368.1
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-08-12",
+                    "end": "2007-11-09",
+                    "total_mm": 406.0
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-08-12",
+                    "end": "2008-11-09",
+                    "total_mm": 449.6
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-08-12",
+                    "end": "2009-11-09",
+                    "total_mm": 306.5
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-08-12",
+                    "end": "2010-11-09",
+                    "total_mm": 413.0
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-08-12",
+                    "end": "2011-11-09",
+                    "total_mm": 366.8
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-08-12",
+                    "end": "2012-11-09",
+                    "total_mm": 460.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-08-12",
+                    "end": "2013-11-09",
+                    "total_mm": 386.4
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-08-12",
+                    "end": "2014-11-09",
+                    "total_mm": 395.8
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-08-12",
+                    "end": "2015-11-09",
+                    "total_mm": 324.2
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-08-12",
+                    "end": "2016-11-09",
+                    "total_mm": 421.7
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-08-12",
+                    "end": "2017-11-09",
+                    "total_mm": 510.2
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-08-12",
+                    "end": "2018-11-09",
+                    "total_mm": 462.1
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-08-12",
+                    "end": "2019-11-09",
+                    "total_mm": 249.1
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-08-12",
+                    "end": "2020-11-09",
+                    "total_mm": 443.3
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-08-12",
+                    "end": "2021-11-09",
+                    "total_mm": 354.90000000000003
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-08-12",
+                    "end": "2022-11-09",
+                    "total_mm": 413.5
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-08-12",
+                    "end": "2023-11-09",
+                    "total_mm": 354.8
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-08-12",
+                    "end": "2024-11-09",
+                    "total_mm": 369.3
+                  }
+                ],
+                "start": "2026-08-12",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  0.0,
+                  4.3478260869565215
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              }
+            ],
+            "record_id": "villa-riva:ERA5:2026-11-15T16:34:13.243960Z",
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ERA5"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "GFS"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "ERA5"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": true,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "GFS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "water_availability",
+              "reason": "rainfall_deficit_is_not_measured_impact"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "monte-cristi",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "monte-cristi:ECMWF:2026-11-15T16:34:11.744543Z",
+                "coordinates": [
+                  19.75,
+                  -71.5
+                ],
+                "requested_coordinates": [
+                  19.85,
+                  -71.65
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-16T00:00:00.000Z",
+                  "end": "2026-11-17T00:00:00.000Z",
+                  "mm": 22.8
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 33.0
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 33.0
+              },
+              {
+                "source": "GFS",
+                "record_id": "monte-cristi:GFS:2026-11-15T16:34:11.995478Z",
+                "coordinates": [
+                  19.73967,
+                  -71.60156
+                ],
+                "requested_coordinates": [
+                  19.85,
+                  -71.65
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-16T00:00:00.000Z",
+                  "end": "2026-11-17T00:00:00.000Z",
+                  "mm": 6.6000000000000005
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 10.3
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 10.3
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-15T18:00:00.000Z",
+              "end": "2026-11-17T18:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "not_below_p20",
+            "metrics": [
+              {
+                "days": 30,
+                "total_mm": 118.1,
+                "percentile": 87.5,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  70.1,
+                  11.2,
+                  91.2,
+                  43.199999999999996,
+                  70.3,
+                  71.9,
+                  81.89999999999999,
+                  43.199999999999996,
+                  44.7,
+                  66.0,
+                  36.0,
+                  131.4,
+                  57.4,
+                  156.7,
+                  46.6,
+                  203.0,
+                  40.0,
+                  30.900000000000002,
+                  10.8,
+                  58.1,
+                  48.1,
+                  86.7,
+                  53.8,
+                  106.8
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-10-11",
+                    "end": "2001-11-09",
+                    "total_mm": 70.1
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-10-11",
+                    "end": "2002-11-09",
+                    "total_mm": 11.2
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-10-11",
+                    "end": "2003-11-09",
+                    "total_mm": 91.2
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-10-11",
+                    "end": "2004-11-09",
+                    "total_mm": 43.199999999999996
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-10-11",
+                    "end": "2005-11-09",
+                    "total_mm": 70.3
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-10-11",
+                    "end": "2006-11-09",
+                    "total_mm": 71.9
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-10-11",
+                    "end": "2007-11-09",
+                    "total_mm": 81.89999999999999
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-10-11",
+                    "end": "2008-11-09",
+                    "total_mm": 43.199999999999996
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-10-11",
+                    "end": "2009-11-09",
+                    "total_mm": 44.7
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-10-11",
+                    "end": "2010-11-09",
+                    "total_mm": 66.0
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-10-11",
+                    "end": "2011-11-09",
+                    "total_mm": 36.0
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-10-11",
+                    "end": "2012-11-09",
+                    "total_mm": 131.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-10-11",
+                    "end": "2013-11-09",
+                    "total_mm": 57.4
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-10-11",
+                    "end": "2014-11-09",
+                    "total_mm": 156.7
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-10-11",
+                    "end": "2015-11-09",
+                    "total_mm": 46.6
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-10-11",
+                    "end": "2016-11-09",
+                    "total_mm": 203.0
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-10-11",
+                    "end": "2017-11-09",
+                    "total_mm": 40.0
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-10-11",
+                    "end": "2018-11-09",
+                    "total_mm": 30.900000000000002
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-10-11",
+                    "end": "2019-11-09",
+                    "total_mm": 10.8
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-10-11",
+                    "end": "2020-11-09",
+                    "total_mm": 58.1
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-10-11",
+                    "end": "2021-11-09",
+                    "total_mm": 48.1
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-10-11",
+                    "end": "2022-11-09",
+                    "total_mm": 86.7
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-10-11",
+                    "end": "2023-11-09",
+                    "total_mm": 53.8
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-10-11",
+                    "end": "2024-11-09",
+                    "total_mm": 106.8
+                  }
+                ],
+                "start": "2026-10-11",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  86.95652173913044,
+                  91.30434782608695
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              },
+              {
+                "days": 90,
+                "total_mm": 169.2,
+                "percentile": 54.166666666666664,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  123.8,
+                  86.9,
+                  159.6,
+                  203.4,
+                  218.2,
+                  120.10000000000001,
+                  233.29999999999998,
+                  264.2,
+                  88.1,
+                  172.9,
+                  166.6,
+                  248.4,
+                  129.2,
+                  222.79999999999998,
+                  96.6,
+                  273.4,
+                  228.8,
+                  85.7,
+                  172.1,
+                  126.0,
+                  107.2,
+                  180.6,
+                  150.7,
+                  168.3
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-08-12",
+                    "end": "2001-11-09",
+                    "total_mm": 123.8
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-08-12",
+                    "end": "2002-11-09",
+                    "total_mm": 86.9
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-08-12",
+                    "end": "2003-11-09",
+                    "total_mm": 159.6
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-08-12",
+                    "end": "2004-11-09",
+                    "total_mm": 203.4
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-08-12",
+                    "end": "2005-11-09",
+                    "total_mm": 218.2
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-08-12",
+                    "end": "2006-11-09",
+                    "total_mm": 120.10000000000001
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-08-12",
+                    "end": "2007-11-09",
+                    "total_mm": 233.29999999999998
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-08-12",
+                    "end": "2008-11-09",
+                    "total_mm": 264.2
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-08-12",
+                    "end": "2009-11-09",
+                    "total_mm": 88.1
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-08-12",
+                    "end": "2010-11-09",
+                    "total_mm": 172.9
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-08-12",
+                    "end": "2011-11-09",
+                    "total_mm": 166.6
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-08-12",
+                    "end": "2012-11-09",
+                    "total_mm": 248.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-08-12",
+                    "end": "2013-11-09",
+                    "total_mm": 129.2
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-08-12",
+                    "end": "2014-11-09",
+                    "total_mm": 222.79999999999998
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-08-12",
+                    "end": "2015-11-09",
+                    "total_mm": 96.6
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-08-12",
+                    "end": "2016-11-09",
+                    "total_mm": 273.4
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-08-12",
+                    "end": "2017-11-09",
+                    "total_mm": 228.8
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-08-12",
+                    "end": "2018-11-09",
+                    "total_mm": 85.7
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-08-12",
+                    "end": "2019-11-09",
+                    "total_mm": 172.1
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-08-12",
+                    "end": "2020-11-09",
+                    "total_mm": 126.0
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-08-12",
+                    "end": "2021-11-09",
+                    "total_mm": 107.2
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-08-12",
+                    "end": "2022-11-09",
+                    "total_mm": 180.6
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-08-12",
+                    "end": "2023-11-09",
+                    "total_mm": 150.7
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-08-12",
+                    "end": "2024-11-09",
+                    "total_mm": 168.3
+                  }
+                ],
+                "start": "2026-08-12",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  52.17391304347826,
+                  56.52173913043478
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              }
+            ],
+            "record_id": "monte-cristi:ERA5:2026-11-15T16:34:13.380898Z",
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ERA5"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "GFS"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "ERA5"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": true,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "GFS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        }
+      ]
+    },
+    "sin_gfs": {
+      "decision_at": "2026-11-15T17:19:11.359Z",
+      "disabled_sources": [
+        "GFS"
+      ],
+      "cases": [
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "bonao",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "bonao:ECMWF:2026-11-15T16:34:09.362199Z",
+                "coordinates": [
+                  19.0,
+                  -70.5
+                ],
+                "requested_coordinates": [
+                  18.937,
+                  -70.409
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 16.5
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 18.6
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 18.6
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-15T18:00:00.000Z",
+              "end": "2026-11-17T18:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "not_below_p20",
+            "metrics": [
+              {
+                "days": 30,
+                "total_mm": 150.1,
+                "percentile": 79.16666666666667,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  80.6,
+                  44.0,
+                  229.1,
+                  137.4,
+                  113.0,
+                  91.0,
+                  245.9,
+                  83.6,
+                  42.1,
+                  90.7,
+                  97.9,
+                  181.4,
+                  130.0,
+                  203.9,
+                  110.4,
+                  315.6,
+                  149.6,
+                  73.5,
+                  21.3,
+                  113.5,
+                  133.0,
+                  135.7,
+                  98.3,
+                  142.9
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-10-11",
+                    "end": "2001-11-09",
+                    "total_mm": 80.6
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-10-11",
+                    "end": "2002-11-09",
+                    "total_mm": 44.0
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-10-11",
+                    "end": "2003-11-09",
+                    "total_mm": 229.1
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-10-11",
+                    "end": "2004-11-09",
+                    "total_mm": 137.4
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-10-11",
+                    "end": "2005-11-09",
+                    "total_mm": 113.0
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-10-11",
+                    "end": "2006-11-09",
+                    "total_mm": 91.0
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-10-11",
+                    "end": "2007-11-09",
+                    "total_mm": 245.9
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-10-11",
+                    "end": "2008-11-09",
+                    "total_mm": 83.6
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-10-11",
+                    "end": "2009-11-09",
+                    "total_mm": 42.1
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-10-11",
+                    "end": "2010-11-09",
+                    "total_mm": 90.7
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-10-11",
+                    "end": "2011-11-09",
+                    "total_mm": 97.9
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-10-11",
+                    "end": "2012-11-09",
+                    "total_mm": 181.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-10-11",
+                    "end": "2013-11-09",
+                    "total_mm": 130.0
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-10-11",
+                    "end": "2014-11-09",
+                    "total_mm": 203.9
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-10-11",
+                    "end": "2015-11-09",
+                    "total_mm": 110.4
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-10-11",
+                    "end": "2016-11-09",
+                    "total_mm": 315.6
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-10-11",
+                    "end": "2017-11-09",
+                    "total_mm": 149.6
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-10-11",
+                    "end": "2018-11-09",
+                    "total_mm": 73.5
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-10-11",
+                    "end": "2019-11-09",
+                    "total_mm": 21.3
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-10-11",
+                    "end": "2020-11-09",
+                    "total_mm": 113.5
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-10-11",
+                    "end": "2021-11-09",
+                    "total_mm": 133.0
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-10-11",
+                    "end": "2022-11-09",
+                    "total_mm": 135.7
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-10-11",
+                    "end": "2023-11-09",
+                    "total_mm": 98.3
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-10-11",
+                    "end": "2024-11-09",
+                    "total_mm": 142.9
+                  }
+                ],
+                "start": "2026-10-11",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  78.26086956521739,
+                  82.6086956521739
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              },
+              {
+                "days": 90,
+                "total_mm": 358.6,
+                "percentile": 25.0,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  263.8,
+                  302.0,
+                  478.3,
+                  398.9,
+                  537.4,
+                  322.2,
+                  552.8,
+                  419.3,
+                  274.2,
+                  481.3,
+                  451.5,
+                  551.3,
+                  388.3,
+                  399.1,
+                  351.3,
+                  550.0,
+                  481.9,
+                  418.0,
+                  318.7,
+                  433.6,
+                  373.7,
+                  412.1,
+                  450.1,
+                  366.4
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-08-12",
+                    "end": "2001-11-09",
+                    "total_mm": 263.8
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-08-12",
+                    "end": "2002-11-09",
+                    "total_mm": 302.0
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-08-12",
+                    "end": "2003-11-09",
+                    "total_mm": 478.3
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-08-12",
+                    "end": "2004-11-09",
+                    "total_mm": 398.9
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-08-12",
+                    "end": "2005-11-09",
+                    "total_mm": 537.4
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-08-12",
+                    "end": "2006-11-09",
+                    "total_mm": 322.2
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-08-12",
+                    "end": "2007-11-09",
+                    "total_mm": 552.8
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-08-12",
+                    "end": "2008-11-09",
+                    "total_mm": 419.3
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-08-12",
+                    "end": "2009-11-09",
+                    "total_mm": 274.2
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-08-12",
+                    "end": "2010-11-09",
+                    "total_mm": 481.3
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-08-12",
+                    "end": "2011-11-09",
+                    "total_mm": 451.5
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-08-12",
+                    "end": "2012-11-09",
+                    "total_mm": 551.3
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-08-12",
+                    "end": "2013-11-09",
+                    "total_mm": 388.3
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-08-12",
+                    "end": "2014-11-09",
+                    "total_mm": 399.1
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-08-12",
+                    "end": "2015-11-09",
+                    "total_mm": 351.3
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-08-12",
+                    "end": "2016-11-09",
+                    "total_mm": 550.0
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-08-12",
+                    "end": "2017-11-09",
+                    "total_mm": 481.9
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-08-12",
+                    "end": "2018-11-09",
+                    "total_mm": 418.0
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-08-12",
+                    "end": "2019-11-09",
+                    "total_mm": 318.7
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-08-12",
+                    "end": "2020-11-09",
+                    "total_mm": 433.6
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-08-12",
+                    "end": "2021-11-09",
+                    "total_mm": 373.7
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-08-12",
+                    "end": "2022-11-09",
+                    "total_mm": 412.1
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-08-12",
+                    "end": "2023-11-09",
+                    "total_mm": 450.1
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-08-12",
+                    "end": "2024-11-09",
+                    "total_mm": 366.4
+                  }
+                ],
+                "start": "2026-08-12",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  21.73913043478261,
+                  26.08695652173913
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              }
+            ],
+            "record_id": "bonao:ERA5:2026-11-15T16:34:11.353053Z",
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "GFS",
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ERA5"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "ERA5"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": true,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "bonao:GFS:2026-11-15T16:34:09.698930Z",
+              "source": "GFS",
+              "reason": "removed_by_user"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "cotui",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "cotui:ECMWF:2026-11-15T16:34:09.371125Z",
+                "coordinates": [
+                  19.0,
+                  -70.25
+                ],
+                "requested_coordinates": [
+                  19.053,
+                  -70.149
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 15.0
+                },
+                "max48": {
+                  "start": "2026-11-17T06:00:00.000Z",
+                  "end": "2026-11-19T06:00:00.000Z",
+                  "mm": 19.2
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 19.2
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-17T06:00:00.000Z",
+              "end": "2026-11-19T06:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "not_below_p20",
+            "metrics": [
+              {
+                "days": 30,
+                "total_mm": 104.1,
+                "percentile": 62.5,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  90.5,
+                  25.099999999999998,
+                  152.6,
+                  139.7,
+                  109.5,
+                  48.0,
+                  215.9,
+                  63.6,
+                  28.8,
+                  69.9,
+                  82.7,
+                  176.5,
+                  54.9,
+                  113.2,
+                  62.5,
+                  222.1,
+                  84.6,
+                  55.5,
+                  26.0,
+                  75.3,
+                  101.0,
+                  111.6,
+                  40.1,
+                  115.9
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-10-11",
+                    "end": "2001-11-09",
+                    "total_mm": 90.5
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-10-11",
+                    "end": "2002-11-09",
+                    "total_mm": 25.099999999999998
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-10-11",
+                    "end": "2003-11-09",
+                    "total_mm": 152.6
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-10-11",
+                    "end": "2004-11-09",
+                    "total_mm": 139.7
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-10-11",
+                    "end": "2005-11-09",
+                    "total_mm": 109.5
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-10-11",
+                    "end": "2006-11-09",
+                    "total_mm": 48.0
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-10-11",
+                    "end": "2007-11-09",
+                    "total_mm": 215.9
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-10-11",
+                    "end": "2008-11-09",
+                    "total_mm": 63.6
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-10-11",
+                    "end": "2009-11-09",
+                    "total_mm": 28.8
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-10-11",
+                    "end": "2010-11-09",
+                    "total_mm": 69.9
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-10-11",
+                    "end": "2011-11-09",
+                    "total_mm": 82.7
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-10-11",
+                    "end": "2012-11-09",
+                    "total_mm": 176.5
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-10-11",
+                    "end": "2013-11-09",
+                    "total_mm": 54.9
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-10-11",
+                    "end": "2014-11-09",
+                    "total_mm": 113.2
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-10-11",
+                    "end": "2015-11-09",
+                    "total_mm": 62.5
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-10-11",
+                    "end": "2016-11-09",
+                    "total_mm": 222.1
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-10-11",
+                    "end": "2017-11-09",
+                    "total_mm": 84.6
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-10-11",
+                    "end": "2018-11-09",
+                    "total_mm": 55.5
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-10-11",
+                    "end": "2019-11-09",
+                    "total_mm": 26.0
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-10-11",
+                    "end": "2020-11-09",
+                    "total_mm": 75.3
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-10-11",
+                    "end": "2021-11-09",
+                    "total_mm": 101.0
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-10-11",
+                    "end": "2022-11-09",
+                    "total_mm": 111.6
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-10-11",
+                    "end": "2023-11-09",
+                    "total_mm": 40.1
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-10-11",
+                    "end": "2024-11-09",
+                    "total_mm": 115.9
+                  }
+                ],
+                "start": "2026-10-11",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  60.869565217391305,
+                  65.21739130434783
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              },
+              {
+                "days": 90,
+                "total_mm": 208.2,
+                "percentile": 25.0,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  216.7,
+                  200.0,
+                  316.4,
+                  397.4,
+                  373.2,
+                  154.8,
+                  452.3,
+                  342.2,
+                  175.3,
+                  339.3,
+                  267.9,
+                  405.4,
+                  196.3,
+                  235.7,
+                  188.5,
+                  386.1,
+                  278.9,
+                  265.0,
+                  185.4,
+                  310.9,
+                  269.6,
+                  315.1,
+                  306.5,
+                  262.5
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-08-12",
+                    "end": "2001-11-09",
+                    "total_mm": 216.7
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-08-12",
+                    "end": "2002-11-09",
+                    "total_mm": 200.0
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-08-12",
+                    "end": "2003-11-09",
+                    "total_mm": 316.4
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-08-12",
+                    "end": "2004-11-09",
+                    "total_mm": 397.4
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-08-12",
+                    "end": "2005-11-09",
+                    "total_mm": 373.2
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-08-12",
+                    "end": "2006-11-09",
+                    "total_mm": 154.8
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-08-12",
+                    "end": "2007-11-09",
+                    "total_mm": 452.3
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-08-12",
+                    "end": "2008-11-09",
+                    "total_mm": 342.2
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-08-12",
+                    "end": "2009-11-09",
+                    "total_mm": 175.3
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-08-12",
+                    "end": "2010-11-09",
+                    "total_mm": 339.3
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-08-12",
+                    "end": "2011-11-09",
+                    "total_mm": 267.9
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-08-12",
+                    "end": "2012-11-09",
+                    "total_mm": 405.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-08-12",
+                    "end": "2013-11-09",
+                    "total_mm": 196.3
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-08-12",
+                    "end": "2014-11-09",
+                    "total_mm": 235.7
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-08-12",
+                    "end": "2015-11-09",
+                    "total_mm": 188.5
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-08-12",
+                    "end": "2016-11-09",
+                    "total_mm": 386.1
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-08-12",
+                    "end": "2017-11-09",
+                    "total_mm": 278.9
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-08-12",
+                    "end": "2018-11-09",
+                    "total_mm": 265.0
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-08-12",
+                    "end": "2019-11-09",
+                    "total_mm": 185.4
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-08-12",
+                    "end": "2020-11-09",
+                    "total_mm": 310.9
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-08-12",
+                    "end": "2021-11-09",
+                    "total_mm": 269.6
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-08-12",
+                    "end": "2022-11-09",
+                    "total_mm": 315.1
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-08-12",
+                    "end": "2023-11-09",
+                    "total_mm": 306.5
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-08-12",
+                    "end": "2024-11-09",
+                    "total_mm": 262.5
+                  }
+                ],
+                "start": "2026-08-12",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  21.73913043478261,
+                  26.08695652173913
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              }
+            ],
+            "record_id": "cotui:ERA5:2026-11-15T16:34:11.472989Z",
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "GFS",
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ERA5"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "ERA5"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": true,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "cotui:GFS:2026-11-15T16:34:09.689396Z",
+              "source": "GFS",
+              "reason": "removed_by_user"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "villa-riva",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "villa-riva:ECMWF:2026-11-15T16:34:11.628862Z",
+                "coordinates": [
+                  19.25,
+                  -70.0
+                ],
+                "requested_coordinates": [
+                  19.176,
+                  -69.908
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 15.0
+                },
+                "max48": {
+                  "start": "2026-11-17T09:00:00.000Z",
+                  "end": "2026-11-19T09:00:00.000Z",
+                  "mm": 19.2
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 19.2
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-17T09:00:00.000Z",
+              "end": "2026-11-19T09:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "deficit",
+            "metrics": [
+              {
+                "days": 30,
+                "total_mm": 87.3,
+                "percentile": 25.0,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  133.8,
+                  73.3,
+                  143.6,
+                  79.9,
+                  113.4,
+                  103.9,
+                  162.2,
+                  112.7,
+                  58.7,
+                  101.7,
+                  83.8,
+                  183.8,
+                  89.4,
+                  150.8,
+                  125.6,
+                  183.6,
+                  114.4,
+                  97.2,
+                  54.5,
+                  150.4,
+                  103.7,
+                  141.6,
+                  77.1,
+                  161.6
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-10-11",
+                    "end": "2001-11-09",
+                    "total_mm": 133.8
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-10-11",
+                    "end": "2002-11-09",
+                    "total_mm": 73.3
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-10-11",
+                    "end": "2003-11-09",
+                    "total_mm": 143.6
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-10-11",
+                    "end": "2004-11-09",
+                    "total_mm": 79.9
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-10-11",
+                    "end": "2005-11-09",
+                    "total_mm": 113.4
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-10-11",
+                    "end": "2006-11-09",
+                    "total_mm": 103.9
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-10-11",
+                    "end": "2007-11-09",
+                    "total_mm": 162.2
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-10-11",
+                    "end": "2008-11-09",
+                    "total_mm": 112.7
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-10-11",
+                    "end": "2009-11-09",
+                    "total_mm": 58.7
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-10-11",
+                    "end": "2010-11-09",
+                    "total_mm": 101.7
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-10-11",
+                    "end": "2011-11-09",
+                    "total_mm": 83.8
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-10-11",
+                    "end": "2012-11-09",
+                    "total_mm": 183.8
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-10-11",
+                    "end": "2013-11-09",
+                    "total_mm": 89.4
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-10-11",
+                    "end": "2014-11-09",
+                    "total_mm": 150.8
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-10-11",
+                    "end": "2015-11-09",
+                    "total_mm": 125.6
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-10-11",
+                    "end": "2016-11-09",
+                    "total_mm": 183.6
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-10-11",
+                    "end": "2017-11-09",
+                    "total_mm": 114.4
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-10-11",
+                    "end": "2018-11-09",
+                    "total_mm": 97.2
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-10-11",
+                    "end": "2019-11-09",
+                    "total_mm": 54.5
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-10-11",
+                    "end": "2020-11-09",
+                    "total_mm": 150.4
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-10-11",
+                    "end": "2021-11-09",
+                    "total_mm": 103.7
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-10-11",
+                    "end": "2022-11-09",
+                    "total_mm": 141.6
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-10-11",
+                    "end": "2023-11-09",
+                    "total_mm": 77.1
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-10-11",
+                    "end": "2024-11-09",
+                    "total_mm": 161.6
+                  }
+                ],
+                "start": "2026-10-11",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  21.73913043478261,
+                  26.08695652173913
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              },
+              {
+                "days": 90,
+                "total_mm": 300.6,
+                "percentile": 4.166666666666667,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  396.5,
+                  366.8,
+                  406.7,
+                  468.7,
+                  452.0,
+                  368.1,
+                  406.0,
+                  449.6,
+                  306.5,
+                  413.0,
+                  366.8,
+                  460.4,
+                  386.4,
+                  395.8,
+                  324.2,
+                  421.7,
+                  510.2,
+                  462.1,
+                  249.1,
+                  443.3,
+                  354.90000000000003,
+                  413.5,
+                  354.8,
+                  369.3
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-08-12",
+                    "end": "2001-11-09",
+                    "total_mm": 396.5
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-08-12",
+                    "end": "2002-11-09",
+                    "total_mm": 366.8
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-08-12",
+                    "end": "2003-11-09",
+                    "total_mm": 406.7
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-08-12",
+                    "end": "2004-11-09",
+                    "total_mm": 468.7
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-08-12",
+                    "end": "2005-11-09",
+                    "total_mm": 452.0
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-08-12",
+                    "end": "2006-11-09",
+                    "total_mm": 368.1
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-08-12",
+                    "end": "2007-11-09",
+                    "total_mm": 406.0
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-08-12",
+                    "end": "2008-11-09",
+                    "total_mm": 449.6
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-08-12",
+                    "end": "2009-11-09",
+                    "total_mm": 306.5
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-08-12",
+                    "end": "2010-11-09",
+                    "total_mm": 413.0
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-08-12",
+                    "end": "2011-11-09",
+                    "total_mm": 366.8
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-08-12",
+                    "end": "2012-11-09",
+                    "total_mm": 460.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-08-12",
+                    "end": "2013-11-09",
+                    "total_mm": 386.4
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-08-12",
+                    "end": "2014-11-09",
+                    "total_mm": 395.8
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-08-12",
+                    "end": "2015-11-09",
+                    "total_mm": 324.2
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-08-12",
+                    "end": "2016-11-09",
+                    "total_mm": 421.7
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-08-12",
+                    "end": "2017-11-09",
+                    "total_mm": 510.2
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-08-12",
+                    "end": "2018-11-09",
+                    "total_mm": 462.1
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-08-12",
+                    "end": "2019-11-09",
+                    "total_mm": 249.1
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-08-12",
+                    "end": "2020-11-09",
+                    "total_mm": 443.3
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-08-12",
+                    "end": "2021-11-09",
+                    "total_mm": 354.90000000000003
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-08-12",
+                    "end": "2022-11-09",
+                    "total_mm": 413.5
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-08-12",
+                    "end": "2023-11-09",
+                    "total_mm": 354.8
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-08-12",
+                    "end": "2024-11-09",
+                    "total_mm": 369.3
+                  }
+                ],
+                "start": "2026-08-12",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  0.0,
+                  4.3478260869565215
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              }
+            ],
+            "record_id": "villa-riva:ERA5:2026-11-15T16:34:13.243960Z",
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "GFS",
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ERA5"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "ERA5"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": true,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "villa-riva:GFS:2026-11-15T16:34:11.877457Z",
+              "source": "GFS",
+              "reason": "removed_by_user"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "water_availability",
+              "reason": "rainfall_deficit_is_not_measured_impact"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "monte-cristi",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "monte-cristi:ECMWF:2026-11-15T16:34:11.744543Z",
+                "coordinates": [
+                  19.75,
+                  -71.5
+                ],
+                "requested_coordinates": [
+                  19.85,
+                  -71.65
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-16T00:00:00.000Z",
+                  "end": "2026-11-17T00:00:00.000Z",
+                  "mm": 22.8
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 33.0
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 33.0
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-15T18:00:00.000Z",
+              "end": "2026-11-17T18:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "not_below_p20",
+            "metrics": [
+              {
+                "days": 30,
+                "total_mm": 118.1,
+                "percentile": 87.5,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  70.1,
+                  11.2,
+                  91.2,
+                  43.199999999999996,
+                  70.3,
+                  71.9,
+                  81.89999999999999,
+                  43.199999999999996,
+                  44.7,
+                  66.0,
+                  36.0,
+                  131.4,
+                  57.4,
+                  156.7,
+                  46.6,
+                  203.0,
+                  40.0,
+                  30.900000000000002,
+                  10.8,
+                  58.1,
+                  48.1,
+                  86.7,
+                  53.8,
+                  106.8
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-10-11",
+                    "end": "2001-11-09",
+                    "total_mm": 70.1
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-10-11",
+                    "end": "2002-11-09",
+                    "total_mm": 11.2
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-10-11",
+                    "end": "2003-11-09",
+                    "total_mm": 91.2
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-10-11",
+                    "end": "2004-11-09",
+                    "total_mm": 43.199999999999996
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-10-11",
+                    "end": "2005-11-09",
+                    "total_mm": 70.3
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-10-11",
+                    "end": "2006-11-09",
+                    "total_mm": 71.9
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-10-11",
+                    "end": "2007-11-09",
+                    "total_mm": 81.89999999999999
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-10-11",
+                    "end": "2008-11-09",
+                    "total_mm": 43.199999999999996
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-10-11",
+                    "end": "2009-11-09",
+                    "total_mm": 44.7
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-10-11",
+                    "end": "2010-11-09",
+                    "total_mm": 66.0
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-10-11",
+                    "end": "2011-11-09",
+                    "total_mm": 36.0
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-10-11",
+                    "end": "2012-11-09",
+                    "total_mm": 131.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-10-11",
+                    "end": "2013-11-09",
+                    "total_mm": 57.4
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-10-11",
+                    "end": "2014-11-09",
+                    "total_mm": 156.7
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-10-11",
+                    "end": "2015-11-09",
+                    "total_mm": 46.6
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-10-11",
+                    "end": "2016-11-09",
+                    "total_mm": 203.0
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-10-11",
+                    "end": "2017-11-09",
+                    "total_mm": 40.0
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-10-11",
+                    "end": "2018-11-09",
+                    "total_mm": 30.900000000000002
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-10-11",
+                    "end": "2019-11-09",
+                    "total_mm": 10.8
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-10-11",
+                    "end": "2020-11-09",
+                    "total_mm": 58.1
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-10-11",
+                    "end": "2021-11-09",
+                    "total_mm": 48.1
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-10-11",
+                    "end": "2022-11-09",
+                    "total_mm": 86.7
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-10-11",
+                    "end": "2023-11-09",
+                    "total_mm": 53.8
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-10-11",
+                    "end": "2024-11-09",
+                    "total_mm": 106.8
+                  }
+                ],
+                "start": "2026-10-11",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  86.95652173913044,
+                  91.30434782608695
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              },
+              {
+                "days": 90,
+                "total_mm": 169.2,
+                "percentile": 54.166666666666664,
+                "reference_n": 24,
+                "reference_totals_mm": [
+                  123.8,
+                  86.9,
+                  159.6,
+                  203.4,
+                  218.2,
+                  120.10000000000001,
+                  233.29999999999998,
+                  264.2,
+                  88.1,
+                  172.9,
+                  166.6,
+                  248.4,
+                  129.2,
+                  222.79999999999998,
+                  96.6,
+                  273.4,
+                  228.8,
+                  85.7,
+                  172.1,
+                  126.0,
+                  107.2,
+                  180.6,
+                  150.7,
+                  168.3
+                ],
+                "reference_windows": [
+                  {
+                    "year": 2001,
+                    "start": "2001-08-12",
+                    "end": "2001-11-09",
+                    "total_mm": 123.8
+                  },
+                  {
+                    "year": 2002,
+                    "start": "2002-08-12",
+                    "end": "2002-11-09",
+                    "total_mm": 86.9
+                  },
+                  {
+                    "year": 2003,
+                    "start": "2003-08-12",
+                    "end": "2003-11-09",
+                    "total_mm": 159.6
+                  },
+                  {
+                    "year": 2004,
+                    "start": "2004-08-12",
+                    "end": "2004-11-09",
+                    "total_mm": 203.4
+                  },
+                  {
+                    "year": 2005,
+                    "start": "2005-08-12",
+                    "end": "2005-11-09",
+                    "total_mm": 218.2
+                  },
+                  {
+                    "year": 2006,
+                    "start": "2006-08-12",
+                    "end": "2006-11-09",
+                    "total_mm": 120.10000000000001
+                  },
+                  {
+                    "year": 2007,
+                    "start": "2007-08-12",
+                    "end": "2007-11-09",
+                    "total_mm": 233.29999999999998
+                  },
+                  {
+                    "year": 2008,
+                    "start": "2008-08-12",
+                    "end": "2008-11-09",
+                    "total_mm": 264.2
+                  },
+                  {
+                    "year": 2009,
+                    "start": "2009-08-12",
+                    "end": "2009-11-09",
+                    "total_mm": 88.1
+                  },
+                  {
+                    "year": 2010,
+                    "start": "2010-08-12",
+                    "end": "2010-11-09",
+                    "total_mm": 172.9
+                  },
+                  {
+                    "year": 2011,
+                    "start": "2011-08-12",
+                    "end": "2011-11-09",
+                    "total_mm": 166.6
+                  },
+                  {
+                    "year": 2012,
+                    "start": "2012-08-12",
+                    "end": "2012-11-09",
+                    "total_mm": 248.4
+                  },
+                  {
+                    "year": 2013,
+                    "start": "2013-08-12",
+                    "end": "2013-11-09",
+                    "total_mm": 129.2
+                  },
+                  {
+                    "year": 2014,
+                    "start": "2014-08-12",
+                    "end": "2014-11-09",
+                    "total_mm": 222.79999999999998
+                  },
+                  {
+                    "year": 2015,
+                    "start": "2015-08-12",
+                    "end": "2015-11-09",
+                    "total_mm": 96.6
+                  },
+                  {
+                    "year": 2016,
+                    "start": "2016-08-12",
+                    "end": "2016-11-09",
+                    "total_mm": 273.4
+                  },
+                  {
+                    "year": 2017,
+                    "start": "2017-08-12",
+                    "end": "2017-11-09",
+                    "total_mm": 228.8
+                  },
+                  {
+                    "year": 2018,
+                    "start": "2018-08-12",
+                    "end": "2018-11-09",
+                    "total_mm": 85.7
+                  },
+                  {
+                    "year": 2019,
+                    "start": "2019-08-12",
+                    "end": "2019-11-09",
+                    "total_mm": 172.1
+                  },
+                  {
+                    "year": 2020,
+                    "start": "2020-08-12",
+                    "end": "2020-11-09",
+                    "total_mm": 126.0
+                  },
+                  {
+                    "year": 2021,
+                    "start": "2021-08-12",
+                    "end": "2021-11-09",
+                    "total_mm": 107.2
+                  },
+                  {
+                    "year": 2022,
+                    "start": "2022-08-12",
+                    "end": "2022-11-09",
+                    "total_mm": 180.6
+                  },
+                  {
+                    "year": 2023,
+                    "start": "2023-08-12",
+                    "end": "2023-11-09",
+                    "total_mm": 150.7
+                  },
+                  {
+                    "year": 2024,
+                    "start": "2024-08-12",
+                    "end": "2024-11-09",
+                    "total_mm": 168.3
+                  }
+                ],
+                "start": "2026-08-12",
+                "end": "2026-11-09",
+                "rank_resolution_pct": 4.166666666666667,
+                "calendar_reference_verified": true,
+                "leave_one_year_out_range": [
+                  52.17391304347826,
+                  56.52173913043478
+                ],
+                "deficit_class_stable_to_one_year": true,
+                "sensitivity_is_confidence_interval": false
+              }
+            ],
+            "record_id": "monte-cristi:ERA5:2026-11-15T16:34:13.380898Z",
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "GFS",
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ERA5"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "ERA5"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ERA5",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": true,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "monte-cristi:GFS:2026-11-15T16:34:11.995478Z",
+              "source": "GFS",
+              "reason": "removed_by_user"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        }
+      ]
+    },
+    "sin_era5": {
+      "decision_at": "2026-11-15T17:19:11.359Z",
+      "disabled_sources": [
+        "ERA5"
+      ],
+      "cases": [
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "bonao",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "bonao:ECMWF:2026-11-15T16:34:09.362199Z",
+                "coordinates": [
+                  19.0,
+                  -70.5
+                ],
+                "requested_coordinates": [
+                  18.937,
+                  -70.409
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 16.5
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 18.6
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 18.6
+              },
+              {
+                "source": "GFS",
+                "record_id": "bonao:GFS:2026-11-15T16:34:09.698930Z",
+                "coordinates": [
+                  18.919624,
+                  -70.42969
+                ],
+                "requested_coordinates": [
+                  18.937,
+                  -70.409
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 11.4
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 11.6
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 11.6
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-15T18:00:00.000Z",
+              "end": "2026-11-17T18:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "insufficient",
+            "metrics": [],
+            "record_id": null,
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "ERA5_reference",
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "GFS"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "GFS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "bonao:ERA5:2026-11-15T16:34:11.353053Z",
+              "source": "ERA5",
+              "reason": "removed_by_user"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "cotui",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "cotui:ECMWF:2026-11-15T16:34:09.371125Z",
+                "coordinates": [
+                  19.0,
+                  -70.25
+                ],
+                "requested_coordinates": [
+                  19.053,
+                  -70.149
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 15.0
+                },
+                "max48": {
+                  "start": "2026-11-17T06:00:00.000Z",
+                  "end": "2026-11-19T06:00:00.000Z",
+                  "mm": 19.2
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 19.2
+              },
+              {
+                "source": "GFS",
+                "record_id": "cotui:GFS:2026-11-15T16:34:09.689396Z",
+                "coordinates": [
+                  19.036774,
+                  -70.19531
+                ],
+                "requested_coordinates": [
+                  19.053,
+                  -70.149
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-17T05:00:00.000Z",
+                  "end": "2026-11-18T05:00:00.000Z",
+                  "mm": 4.0
+                },
+                "max48": {
+                  "start": "2026-11-16T23:00:00.000Z",
+                  "end": "2026-11-18T23:00:00.000Z",
+                  "mm": 4.1
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 4.1
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-17T06:00:00.000Z",
+              "end": "2026-11-19T06:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "insufficient",
+            "metrics": [],
+            "record_id": null,
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "ERA5_reference",
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "GFS"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "GFS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "cotui:ERA5:2026-11-15T16:34:11.472989Z",
+              "source": "ERA5",
+              "reason": "removed_by_user"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "villa-riva",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "villa-riva:ECMWF:2026-11-15T16:34:11.628862Z",
+                "coordinates": [
+                  19.25,
+                  -70.0
+                ],
+                "requested_coordinates": [
+                  19.176,
+                  -69.908
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-16T18:00:00.000Z",
+                  "mm": 15.0
+                },
+                "max48": {
+                  "start": "2026-11-17T09:00:00.000Z",
+                  "end": "2026-11-19T09:00:00.000Z",
+                  "mm": 19.2
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 19.2
+              },
+              {
+                "source": "GFS",
+                "record_id": "villa-riva:GFS:2026-11-15T16:34:11.877457Z",
+                "coordinates": [
+                  19.153923,
+                  -69.96094
+                ],
+                "requested_coordinates": [
+                  19.176,
+                  -69.908
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-17T07:00:00.000Z",
+                  "end": "2026-11-18T07:00:00.000Z",
+                  "mm": 6.5
+                },
+                "max48": {
+                  "start": "2026-11-16T22:00:00.000Z",
+                  "end": "2026-11-18T22:00:00.000Z",
+                  "mm": 6.9
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 6.9
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-17T09:00:00.000Z",
+              "end": "2026-11-19T09:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "insufficient",
+            "metrics": [],
+            "record_id": null,
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "ERA5_reference",
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "GFS"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "GFS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "villa-riva:ERA5:2026-11-15T16:34:13.243960Z",
+              "source": "ERA5",
+              "reason": "removed_by_user"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "monte-cristi",
+          "decision_at": "2026-11-15T17:19:11.359Z",
+          "rain": {
+            "state": "below_rule",
+            "agreement": "below_exploratory_rule",
+            "models": [
+              {
+                "source": "ECMWF",
+                "record_id": "monte-cristi:ECMWF:2026-11-15T16:34:11.744543Z",
+                "coordinates": [
+                  19.75,
+                  -71.5
+                ],
+                "requested_coordinates": [
+                  19.85,
+                  -71.65
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-16T00:00:00.000Z",
+                  "end": "2026-11-17T00:00:00.000Z",
+                  "mm": 22.8
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 33.0
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 33.0
+              },
+              {
+                "source": "GFS",
+                "record_id": "monte-cristi:GFS:2026-11-15T16:34:11.995478Z",
+                "coordinates": [
+                  19.73967,
+                  -71.60156
+                ],
+                "requested_coordinates": [
+                  19.85,
+                  -71.65
+                ],
+                "spatial_scope": "representative_model_cell_not_municipal_coverage",
+                "max24": {
+                  "start": "2026-11-16T00:00:00.000Z",
+                  "end": "2026-11-17T00:00:00.000Z",
+                  "mm": 6.6000000000000005
+                },
+                "max48": {
+                  "start": "2026-11-15T18:00:00.000Z",
+                  "end": "2026-11-17T18:00:00.000Z",
+                  "mm": 10.3
+                },
+                "complete_windows_24h": 126,
+                "complete_windows_48h": 102,
+                "same_window_mm": 10.3
+              }
+            ],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": {
+              "start": "2026-11-15T18:00:00.000Z",
+              "end": "2026-11-17T18:00:00.000Z"
+            }
+          },
+          "drought": {
+            "state": "insufficient",
+            "metrics": [],
+            "record_id": null,
+            "metric_errors": []
+          },
+          "historical_context_sources": [
+            "CHIRPS",
+            "IMERG"
+          ],
+          "local": [],
+          "missing": [
+            "ERA5_reference",
+            "local_measurement"
+          ],
+          "dependencies": {
+            "pairs": [
+              {
+                "sources": [
+                  "CHIRPS",
+                  "ECMWF"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "GFS"
+                ],
+                "shared_input_families": [],
+                "upstream_relationship": false,
+                "corroboration": "independence_not_established"
+              },
+              {
+                "sources": [
+                  "CHIRPS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "GTS"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "GFS"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "ECMWF",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              },
+              {
+                "sources": [
+                  "GFS",
+                  "IMERG"
+                ],
+                "shared_input_families": [
+                  "SATELLITES"
+                ],
+                "upstream_relationship": false,
+                "corroboration": "partially_dependent"
+              }
+            ],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [
+            {
+              "claim": "provincial_historical_context",
+              "sources": [
+                "CHIRPS",
+                "IMERG"
+              ]
+            }
+          ],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "monte-cristi:ERA5:2026-11-15T16:34:13.380898Z",
+              "source": "ERA5",
+              "reason": "removed_by_user"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        }
+      ]
+    },
+    "antes_captura": {
+      "decision_at": "2026-11-15T16:34:08.362Z",
+      "disabled_sources": [],
+      "cases": [
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "bonao",
+          "decision_at": "2026-11-15T16:34:08.362Z",
+          "rain": {
+            "state": "insufficient",
+            "agreement": "no_complete_window",
+            "models": [],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": null
+          },
+          "drought": {
+            "state": "insufficient",
+            "metrics": [],
+            "record_id": null,
+            "metric_errors": []
+          },
+          "historical_context_sources": [],
+          "local": [],
+          "missing": [
+            "ECMWF",
+            "GFS",
+            "ERA5_reference",
+            "local_measurement",
+            "NASA_planning_context"
+          ],
+          "dependencies": {
+            "pairs": [],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "bonao:ECMWF:2026-11-15T16:34:09.362199Z",
+              "source": "ECMWF",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "bonao:GFS:2026-11-15T16:34:09.698930Z",
+              "source": "GFS",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "bonao:ERA5:2026-11-15T16:34:11.353053Z",
+              "source": "ERA5",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "bonao:IMERG:history",
+              "source": "IMERG",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "bonao:CHIRPS:history",
+              "source": "CHIRPS",
+              "reason": "not_available_at_decision"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "historical_context",
+              "reason": "no_eligible_historical_sources"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "cotui",
+          "decision_at": "2026-11-15T16:34:08.362Z",
+          "rain": {
+            "state": "insufficient",
+            "agreement": "no_complete_window",
+            "models": [],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": null
+          },
+          "drought": {
+            "state": "insufficient",
+            "metrics": [],
+            "record_id": null,
+            "metric_errors": []
+          },
+          "historical_context_sources": [],
+          "local": [],
+          "missing": [
+            "ECMWF",
+            "GFS",
+            "ERA5_reference",
+            "local_measurement",
+            "NASA_planning_context"
+          ],
+          "dependencies": {
+            "pairs": [],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "cotui:ECMWF:2026-11-15T16:34:09.371125Z",
+              "source": "ECMWF",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "cotui:GFS:2026-11-15T16:34:09.689396Z",
+              "source": "GFS",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "cotui:ERA5:2026-11-15T16:34:11.472989Z",
+              "source": "ERA5",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "cotui:IMERG:history",
+              "source": "IMERG",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "cotui:CHIRPS:history",
+              "source": "CHIRPS",
+              "reason": "not_available_at_decision"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "historical_context",
+              "reason": "no_eligible_historical_sources"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "villa-riva",
+          "decision_at": "2026-11-15T16:34:08.362Z",
+          "rain": {
+            "state": "insufficient",
+            "agreement": "no_complete_window",
+            "models": [],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": null
+          },
+          "drought": {
+            "state": "insufficient",
+            "metrics": [],
+            "record_id": null,
+            "metric_errors": []
+          },
+          "historical_context_sources": [],
+          "local": [],
+          "missing": [
+            "ECMWF",
+            "GFS",
+            "ERA5_reference",
+            "local_measurement",
+            "NASA_planning_context"
+          ],
+          "dependencies": {
+            "pairs": [],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "villa-riva:ECMWF:2026-11-15T16:34:11.628862Z",
+              "source": "ECMWF",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "villa-riva:GFS:2026-11-15T16:34:11.877457Z",
+              "source": "GFS",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "villa-riva:ERA5:2026-11-15T16:34:13.243960Z",
+              "source": "ERA5",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "villa-riva:IMERG:history",
+              "source": "IMERG",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "villa-riva:CHIRPS:history",
+              "source": "CHIRPS",
+              "reason": "not_available_at_decision"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "historical_context",
+              "reason": "no_eligible_historical_sources"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        },
+        {
+          "rule_version": "municipal-evidence-1.0",
+          "site_id": "monte-cristi",
+          "decision_at": "2026-11-15T16:34:08.362Z",
+          "rain": {
+            "state": "insufficient",
+            "agreement": "no_complete_window",
+            "models": [],
+            "selection_rule": "largest_model_48h_total_then_earliest_end_not_maximum_agreement",
+            "window": null
+          },
+          "drought": {
+            "state": "insufficient",
+            "metrics": [],
+            "record_id": null,
+            "metric_errors": []
+          },
+          "historical_context_sources": [],
+          "local": [],
+          "missing": [
+            "ECMWF",
+            "GFS",
+            "ERA5_reference",
+            "local_measurement",
+            "NASA_planning_context"
+          ],
+          "dependencies": {
+            "pairs": [],
+            "probability_estimated": false,
+            "limit": "Non-exhaustive input-family graph; shared station identities and error correlations are not established"
+          },
+          "supporting": [],
+          "contradictions": [],
+          "excluded": [
+            {
+              "id": "monte-cristi:ECMWF:2026-11-15T16:34:11.744543Z",
+              "source": "ECMWF",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "monte-cristi:GFS:2026-11-15T16:34:11.995478Z",
+              "source": "GFS",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "monte-cristi:ERA5:2026-11-15T16:34:13.380898Z",
+              "source": "ERA5",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "monte-cristi:IMERG:history",
+              "source": "IMERG",
+              "reason": "not_available_at_decision"
+            },
+            {
+              "id": "monte-cristi:CHIRPS:history",
+              "source": "CHIRPS",
+              "reason": "not_available_at_decision"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "official_bulletin",
+              "reason": "decision_requires_official_context"
+            },
+            {
+              "id": "historical_context",
+              "reason": "no_eligible_historical_sources"
+            },
+            {
+              "id": "obtain_local_measurement",
+              "reason": "missing_independent_measurement"
+            }
+          ],
+          "limits": [
+            "Prototype, not an official warning",
+            "Agreement is not independent votes or probability",
+            "Reference percentiles are descriptive, not impact predictions",
+            "No damage reduction validation"
+          ]
+        }
+      ]
+    }
+  },
+  "summary": [
+    {
+      "site": "bonao",
+      "rain": "below_rule",
+      "drought": "not_below_p20",
+      "metrics": [
+        {
+          "days": 30,
+          "total_mm": 150.1,
+          "percentile": 79.16666666666667,
+          "reference_n": 24,
+          "leave_one_year_out_range": [
+            78.26086956521739,
+            82.6086956521739
+          ],
+          "deficit_class_stable_to_one_year": true
+        },
+        {
+          "days": 90,
+          "total_mm": 358.6,
+          "percentile": 25.0,
+          "reference_n": 24,
+          "leave_one_year_out_range": [
+            21.73913043478261,
+            26.08695652173913
+          ],
+          "deficit_class_stable_to_one_year": true
+        }
+      ]
+    },
+    {
+      "site": "cotui",
+      "rain": "below_rule",
+      "drought": "not_below_p20",
+      "metrics": [
+        {
+          "days": 30,
+          "total_mm": 104.1,
+          "percentile": 62.5,
+          "reference_n": 24,
+          "leave_one_year_out_range": [
+            60.869565217391305,
+            65.21739130434783
+          ],
+          "deficit_class_stable_to_one_year": true
+        },
+        {
+          "days": 90,
+          "total_mm": 208.2,
+          "percentile": 25.0,
+          "reference_n": 24,
+          "leave_one_year_out_range": [
+            21.73913043478261,
+            26.08695652173913
+          ],
+          "deficit_class_stable_to_one_year": true
+        }
+      ]
+    },
+    {
+      "site": "villa-riva",
+      "rain": "below_rule",
+      "drought": "deficit",
+      "metrics": [
+        {
+          "days": 30,
+          "total_mm": 87.3,
+          "percentile": 25.0,
+          "reference_n": 24,
+          "leave_one_year_out_range": [
+            21.73913043478261,
+            26.08695652173913
+          ],
+          "deficit_class_stable_to_one_year": true
+        },
+        {
+          "days": 90,
+          "total_mm": 300.6,
+          "percentile": 4.166666666666667,
+          "reference_n": 24,
+          "leave_one_year_out_range": [
+            0.0,
+            4.3478260869565215
+          ],
+          "deficit_class_stable_to_one_year": true
+        }
+      ]
+    },
+    {
+      "site": "monte-cristi",
+      "rain": "below_rule",
+      "drought": "not_below_p20",
+      "metrics": [
+        {
+          "days": 30,
+          "total_mm": 118.1,
+          "percentile": 87.5,
+          "reference_n": 24,
+          "leave_one_year_out_range": [
+            86.95652173913044,
+            91.30434782608695
+          ],
+          "deficit_class_stable_to_one_year": true
+        },
+        {
+          "days": 90,
+          "total_mm": 169.2,
+          "percentile": 54.166666666666664,
+          "reference_n": 24,
+          "leave_one_year_out_range": [
+            52.17391304347826,
+            56.52173913043478
+          ],
+          "deficit_class_stable_to_one_year": true
+        }
+      ]
+    }
+  ]
+}
