@@ -924,7 +924,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
         const cand = [0.2, 0.35, 0.5, 0.65, 0.8].map((f) => part[Math.floor(part.length * f)]);
         const far = (q: number[]) => Math.min(...used.map((u) => Math.hypot(q[0] - u[0], q[1] - u[1])));
         const [lo, la] = cand.reduce((a, b) => (far(b) > far(a) ? b : a));
-        used.push([lo, la]); pin(r.name, lo, la, "rio");
+        used.push([lo, la]); pin(LL(r.name, r.name.replace(/^R[ií]o /, "") + " River"), lo, la, "rio");
       }
       pin("Villa Riva", -69.908, 19.176, "pueblo");
       if (d.rel?.hatillo) pin(LL("Presa de Hatillo", "Hatillo dam"), d.rel.hatillo.lon, d.rel.hatillo.lat, "presa");
