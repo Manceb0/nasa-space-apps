@@ -155,8 +155,10 @@ docker compose run --rm --entrypoint uv tropical run --frozen --no-sync python -
 The Earthdata token is read only from `.secrets/earthdata_token`, which is git-ignored.
 
 ## Use of AI
-We used AI assistants (Anthropic's Claude) to help write code, run the analyses and draft text. Every number in this
-repository comes from a script and a result file here, and the predictions were registered before computing.
+AI-assisted tools were used for software development support, research exploration, documentation, writing, and
+review. Scientific results were generated through reproducible computational workflows, with methods, data sources,
+limitations, and validation procedures documented by the team. AI-assisted content was reviewed before inclusion. Any
+AI-generated visual or audio assets are identified in the relevant materials.
 
 ---
 Stellar Horizons, Dominican Republic, 2026.
