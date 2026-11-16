@@ -1,0 +1,620 @@
+{
+  "resumen": {
+    "pruebas": 12,
+    "predicciones": 43,
+    "se_cumplen": 20,
+    "no_se_cumplen": 16,
+    "otras": 7,
+    "generado_utc": "2026-11-16T00:13:05.565961+00:00"
+  },
+  "pruebas": [
+    {
+      "prueba": "primera_tanda",
+      "pregunta": "¿Las contradicciones entre productos de lluvia siguen la física de una isla tropical?",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "CHIRPS",
+        "IBTrACS",
+        "pluviómetros GHCN-D"
+      ],
+      "script": "earthmemory/tropical/run.py",
+      "script_sha256": "81f982947ac773921ef239deada255fc94e5ccfa94b565ff0be302dad17eb6b5",
+      "predicciones_archivo": "results/tropical/predicciones_registradas.json",
+      "predicciones_sha256": "2c732113c48eb6fbb71d50fc6f1effc92903101007f4476a340d2fcec1fd7e92",
+      "registradas": "2026-11-15",
+      "resultado_archivo": "results/tropical/resumen.json",
+      "resultado_sha256": "d0a0bf332515712da201f6fcceefd7409ba8199fff095194cf0ad7a7a05ef9ad",
+      "resultado_escrito_utc": "2026-11-15T07:05:19.836928+00:00",
+      "registrada_antes_del_resultado": null,
+      "commit_predicciones": {
+        "commit": "1b13fbc",
+        "fecha": "2026-11-15T03:09:17-04:00"
+      },
+      "commit_resultado": {
+        "commit": "1b13fbc",
+        "fecha": "2026-11-15T03:09:17-04:00"
+      },
+      "commit_script": {
+        "commit": "1b13fbc",
+        "fecha": "2026-11-15T03:09:17-04:00"
+      },
+      "filas_estado": "9, 12, 13",
+      "predicciones": [
+        {
+          "id": "P1_ciclones",
+          "texto": "En días con un ciclón tropical a < 500 km, IMERG y CHIRPS coinciden MÁS en lluvia fuerte (CSI ≥ 50 mm mayor) y el disparador > 100 mm/48 h queda MENOS veces sin confirmar que en días sin ciclón de la misma temporada (ago-nov).",
+          "veredicto": "ver fila 12 (se sostiene con límites)"
+        },
+        {
+          "id": "P1b_extremos",
+          "texto": "La fracción de máximos anuales de lluvia diaria (Rx1day) que cae en días de ciclón es mucho mayor que la fracción de días con ciclón.",
+          "veredicto": "ver fila 12 (se sostiene con límites)"
+        },
+        {
+          "id": "P2_barlovento",
+          "texto": "En las laderas que miran al alisio (ascenso forzado > 0), CHIRPS da más lluvia media que IMERG (IMERG subestima la lluvia orográfica cálida) y el acuerdo diario es menor.",
+          "veredicto": "ver fila 13 (asociación, se sostiene con límites)"
+        },
+        {
+          "id": "P2b_lluvia_debil",
+          "texto": "Las celdas con SDII en disputa son las que más difieren en frecuencia de días húmedos (≥ 1 mm) entre productos.",
+          "veredicto": "ver fila 3"
+        },
+        {
+          "id": "P3_sin_explicar",
+          "texto": "Los 28 episodios sin explicar se concentran en retornos de la estación seca (dic-abr) con lluvia de retorno modesta, más que el resto de los 96.",
+          "veredicto": "no se cumple (p de permutación 0,62)"
+        },
+        {
+          "id": "P4_instrumento",
+          "texto": "La diferencia mensual IMERG − CHIRPS en frecuencia de días húmedos tiene un punto de cambio cerca de 2014-2015 (paso de TRMM a GPM).",
+          "veredicto": "punto de cambio hallado en 2013-10, conclusión retirada después (fila 9)"
+        }
+      ]
+    },
+    {
+      "prueba": "era5",
+      "pregunta": "¿Un tercer testigo (ERA5) ve el mismo escalón de IMERG?",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "CHIRPS",
+        "ERA5"
+      ],
+      "script": "earthmemory/tropical/era5_testigo.py",
+      "script_sha256": "f81e1721b647be005d33834f743b5cc25c14334d4ee682e9ae705eaa5a895f72",
+      "predicciones_archivo": "results/tropical/era5/predicciones_registradas.json",
+      "predicciones_sha256": "9a544950741c3a8425a141e45768e94898e5a3d26a6898cc1dfde1ef2d81236f",
+      "registradas": "2026-11-15T13:17:40.654221+00:00",
+      "resultado_archivo": "results/tropical/era5/resumen.json",
+      "resultado_sha256": "a87dda1e01715da94cd790fc0f84e1bc570fd2a8fa983fb7db7bbec81d1a8f16",
+      "resultado_escrito_utc": "2026-11-15T13:54:26.388628+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "acc26d6",
+        "fecha": "2026-11-15T09:27:22-04:00"
+      },
+      "commit_resultado": {
+        "commit": "acc26d6",
+        "fecha": "2026-11-15T09:27:22-04:00"
+      },
+      "commit_script": {
+        "commit": "acc26d6",
+        "fecha": "2026-11-15T09:27:22-04:00"
+      },
+      "filas_estado": "4, 9",
+      "predicciones": [
+        {
+          "id": "E1",
+          "texto": "La serie mensual desestacionalizada de frecuencia de días húmedos IMERG − ERA5 tiene un punto de cambio entre 2012-10 y 2014-12 con p < 0,05 (permutación de bloques de 12 meses).",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "E2",
+          "texto": "En ERA5 la frecuencia de días húmedos después − antes de 2013-10 cambia menos de 2 pp (media de puntos), mientras IMERG baja al menos 4 pp en los mismos puntos.",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "E3",
+          "texto": "CHIRPS − ERA5 no tiene un punto de cambio significativo (p ≥ 0,05) entre 2012-10 y 2014-12.",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "E4",
+          "texto": "En la CANTIDAD de lluvia (log IMERG/ERA5) no hay un salto significativo en esa ventana.",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "forma",
+      "pregunta": "¿El cambio IMERG − CHIRPS es tendencia, escalón, ambos o nada?",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "CHIRPS"
+      ],
+      "script": "earthmemory/tropical/forma_cambio.py",
+      "script_sha256": "68ab5be66ca03fa1fe76f026bad76d0c88ace747583733ae214399d3da27341d",
+      "predicciones_archivo": "results/tropical/forma/predicciones_registradas.json",
+      "predicciones_sha256": "250d8054596337e65e8b7e29fcd3a447b8a27362a4e2b9c5c04170fc8cf96dfc",
+      "registradas": "2026-11-15T14:08:19.963005+00:00",
+      "resultado_archivo": "results/tropical/forma/resumen.json",
+      "resultado_sha256": "03664a58f73e68eda595091c10d60f724e880f80a9814b2946cb357dd1dd616d",
+      "resultado_escrito_utc": "2026-11-15T14:09:24.167555+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "d7dfdfc",
+        "fecha": "2026-11-15T10:11:56-04:00"
+      },
+      "commit_resultado": {
+        "commit": "d7dfdfc",
+        "fecha": "2026-11-15T10:11:56-04:00"
+      },
+      "commit_script": {
+        "commit": "d7dfdfc",
+        "fecha": "2026-11-15T10:11:56-04:00"
+      },
+      "filas_estado": "6, 7",
+      "predicciones": [
+        {
+          "id": "F1",
+          "texto": "Validación: con ruido como el de una celda y un cambio total de 4,5 pp, el procedimiento acierta la forma (tendencia / escalón / ambos) en al menos el 60 % de las series sintéticas con cambio. Si no, la forma por celda se declara no identificable con estos datos.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "F2",
+          "texto": "Serie nacional: el escalón NO gana con claridad (ΔBIC ≥ 2) a la tendencia; el resultado será tendencia, tendencia + escalón o indistinguibles.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "F3",
+          "texto": "Entre las celdas donde gana un modelo con escalón, ninguna ventana de 12 meses reúne más del 40 % de las fechas de escalón (no hay una fecha común).",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "gpm_fuentes",
+      "pregunta": "¿El cambio de IMERG viene de su parte infrarroja (GOES-16)?",
+      "datos": [
+        "IMERG V07 contadores de microondas (NASA GPM)",
+        "CHIRPS",
+        "ERA5"
+      ],
+      "script": "earthmemory/tropical/gpm_fuentes.py",
+      "script_sha256": "62961303462121763553c2357477e8ae39b811a684b012972cf953f7bd071533",
+      "predicciones_archivo": "results/tropical/gpm_fuentes/predicciones_registradas.json",
+      "predicciones_sha256": "af8fedfda8b79828d72d5e07be155600ccec46a028bdb8ce07ac54e8d6899b75",
+      "registradas": "2026-11-15T14:41:09.093424+00:00",
+      "resultado_archivo": "results/tropical/gpm_fuentes/resumen.json",
+      "resultado_sha256": "1a10c7284ca532f8863e148e9dc1fc6f74f0203ab35ed37f964dd6fd21595a4c",
+      "resultado_escrito_utc": "2026-11-15T14:48:47.515668+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "8980a09",
+        "fecha": "2026-11-15T10:50:01-04:00"
+      },
+      "commit_resultado": {
+        "commit": "8980a09",
+        "fecha": "2026-11-15T10:50:01-04:00"
+      },
+      "commit_script": {
+        "commit": "8980a09",
+        "fecha": "2026-11-15T10:50:01-04:00"
+      },
+      "filas_estado": "8",
+      "predicciones": [
+        {
+          "id": "H1",
+          "texto": "Control: en esta ventana, la diferencia de días ≥ 1 mm IMERG − CHIRPS baja después frente a antes.",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "H2",
+          "texto": "Si la vía infrarroja contribuye: el cambio (después − antes, sin ciclo estacional) de la fracción de medias horas con lluvia SIN microondas (f_ir) es más negativo que el de las medias horas CON microondas (f_mw), y el IC 95 % de (Δf_ir − Δf_mw) queda por debajo de 0.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "H3",
+          "texto": "Confusor: la cobertura de microondas (cob) cambia menos de un 10 % relativo; si cambia más, la prueba es ambigua.",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "alerta_acuerdo",
+      "pregunta": "¿Una alerta que pide testigo funciona mejor que una que cree a un solo producto? (versión retrospectiva)",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "CHIRPS",
+        "catálogo de inundaciones del Yuna"
+      ],
+      "script": "earthmemory/tropical/alerta_acuerdo.py",
+      "script_sha256": "e15131126a45d06f420ea40f1604f5f4110327358c7b6c30f4109a7e53181bc7",
+      "predicciones_archivo": "results/tropical/alerta_acuerdo/predicciones_registradas.json",
+      "predicciones_sha256": "d2e2c17643102915f8aba515835b3cc5b08ec4b64e3a6e8d560f2526fd47b149",
+      "registradas": "2026-11-15T15:23:48.543067+00:00",
+      "resultado_archivo": "results/tropical/alerta_acuerdo/resumen.json",
+      "resultado_sha256": "3b81e883abbaf2096b9fd2d309a46abec536f78941cb5c0874ef1a0088fb75c0",
+      "resultado_escrito_utc": "2026-11-15T15:23:58.951754+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "336318f",
+        "fecha": "2026-11-15T11:25:21-04:00"
+      },
+      "commit_resultado": {
+        "commit": "336318f",
+        "fecha": "2026-11-15T11:25:21-04:00"
+      },
+      "commit_script": {
+        "commit": "336318f",
+        "fecha": "2026-11-15T11:25:21-04:00"
+      },
+      "filas_estado": "22, 23",
+      "predicciones": [
+        {
+          "id": "K1",
+          "texto": "En la prueba 2016-2024, exigir acuerdo (A∧C) conserva al menos 6 de los 8 eventos y reduce las falsas alarmas de A al menos a la mitad (de 39 a ≤ 20).",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "K2",
+          "texto": "A∨C no mejora el CSI de A en la prueba (añade más falsas alarmas que aciertos).",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "alerta_causal",
+      "pregunta": "La misma alerta, solo con información disponible al emitir",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "CHIRPS",
+        "catálogo de inundaciones del Yuna"
+      ],
+      "script": "earthmemory/tropical/alerta_causal.py",
+      "script_sha256": "b0717f82001a78ed7332c78a1b543fcf4df07b8481602383f3c89b5be2912ac2",
+      "predicciones_archivo": "results/tropical/alerta_causal/predicciones_registradas.json",
+      "predicciones_sha256": "f946746abd1c59208e13751c60fd997915fa9ccc2b01d5e87a926030acecdf7e",
+      "registradas": "2026-11-15T15:29:54.818469+00:00",
+      "resultado_archivo": "results/tropical/alerta_causal/resumen.json",
+      "resultado_sha256": "57f17730372888e4cd663dda9b1c7318e79656da026e27916263a84892339fd3",
+      "resultado_escrito_utc": "2026-11-15T15:29:58.068290+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "b430634",
+        "fecha": "2026-11-15T11:31:51-04:00"
+      },
+      "commit_resultado": {
+        "commit": "b430634",
+        "fecha": "2026-11-15T11:31:51-04:00"
+      },
+      "commit_script": {
+        "commit": "b430634",
+        "fecha": "2026-11-15T11:31:51-04:00"
+      },
+      "filas_estado": "22, 24",
+      "predicciones": [
+        {
+          "id": "M1",
+          "texto": "Prueba 2016-2024, versión causal: exigir confirmación de CHIRPS del mismo día o del anterior conserva al menos 6 de 8 eventos y deja las falsas alarmas en ≤ 60 % de las de IMERG solo.",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "M2",
+          "texto": "La confirmación retrasa el primer disparo al menos 1 día en la mitad o más de los eventos que detectan ambas reglas.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "M3",
+          "texto": "Con IMERG solo, menos de la mitad de los eventos de prueba tienen un disparo anticipado (antes del inicio o el mismo día de inicio).",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "merra2",
+      "pregunta": "¿IMERG pierde días frente a un testigo en todo el país?",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "CHIRPS",
+        "MERRA-2 por NASA POWER"
+      ],
+      "script": "earthmemory/tropical/merra2_testigo.py",
+      "script_sha256": "729571a3fdabb0342c134dc815c9542dea0e57c1609beac7e7a3a3e7cb6057f6",
+      "predicciones_archivo": "results/tropical/merra2/predicciones_registradas.json",
+      "predicciones_sha256": "ebe6cfe46ef54c037154e04664075cb1987af7da9607c50a13d9205447f078fa",
+      "registradas": "2026-11-15T17:22:43.864881+00:00",
+      "resultado_archivo": "results/tropical/merra2/resumen.json",
+      "resultado_sha256": "4563cfd03ee5f8d9db87950f463132dbedd6436e413b5b8dff3166143879d30b",
+      "resultado_escrito_utc": "2026-11-15T17:22:49.683725+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "3dc5b09",
+        "fecha": "2026-11-15T13:23:31-04:00"
+      },
+      "commit_resultado": {
+        "commit": "3dc5b09",
+        "fecha": "2026-11-15T13:23:31-04:00"
+      },
+      "commit_script": {
+        "commit": "3dc5b09",
+        "fecha": "2026-11-15T13:23:31-04:00"
+      },
+      "filas_estado": "7b",
+      "predicciones": [
+        {
+          "id": "N1",
+          "texto": "En al menos 10 de las 15 celdas MERRA-2, la frecuencia de dias >= 1 mm de IMERG cae mas que la de MERRA-2 (despues - antes de 2018-02).",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "N2",
+          "texto": "Mediana de las 15 celdas: IMERG cae al menos 4 pp y MERRA-2 cambia menos de 2 pp en valor absoluto.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "N3",
+          "texto": "La diferencia mensual desestacionalizada IMERG - MERRA-2 (media nacional) tiene un punto de cambio entre 2016-01 y 2019-12 con p < 0,05 (permutacion de bloques de 12 meses).",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "N4",
+          "texto": "Control del testigo: MERRA-2 solo NO tiene un punto de cambio significativo entre 2016-01 y 2019-12. Si lo tiene, el testigo esta comprometido y N1-N3 no pueden atribuirse a IMERG.",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "puerto_rico",
+      "pregunta": "¿IMERG pierde días también en Puerto Rico, frente a pluviómetros densos?",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "pluviómetros GHCN-D (NOAA)"
+      ],
+      "script": "earthmemory/tropical/puerto_rico.py",
+      "script_sha256": "30a46923a983cf46cb86a040c138abcc7ed4b4ff793bc27210ede831cf1497e0",
+      "predicciones_archivo": "results/tropical/puerto_rico/predicciones_registradas.json",
+      "predicciones_sha256": "fe411164405d62f2f6c59a81d61e10fdbffa855f13bfad87e78985e0a2af584a",
+      "registradas": "2026-11-15T19:13:45.507545+00:00",
+      "resultado_archivo": "results/tropical/puerto_rico/resumen.json",
+      "resultado_sha256": "97b9eb5432524b94623602d57cb82931f5853872fa60afb2d8cc44ae4cf4c407",
+      "resultado_escrito_utc": "2026-11-15T19:51:40.691961+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "4b89e78",
+        "fecha": "2026-11-15T15:52:09-04:00"
+      },
+      "commit_resultado": {
+        "commit": "4b89e78",
+        "fecha": "2026-11-15T15:52:09-04:00"
+      },
+      "commit_script": {
+        "commit": "4b89e78",
+        "fecha": "2026-11-15T15:52:09-04:00"
+      },
+      "filas_estado": "4d",
+      "predicciones": [
+        {
+          "id": "PR1",
+          "texto": "En al menos 2 de cada 3 pluviómetros de PR con registro completo, la frecuencia de días >= 1 mm de IMERG (celda que contiene la estación) cae más que la del pluviómetro (después - antes de 2018-02).",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "PR2",
+          "texto": "Mediana de (cambio IMERG - cambio pluviómetro) <= -3 pp.",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "PR3",
+          "texto": "Los pluviómetros cambian poco: mediana de su cambio entre -2 y +2 pp.",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "hawaii",
+      "pregunta": "¿Pierde días también en Hawái, bajo GOES-West? (separa GOES-16 de las microondas de NOAA-20)",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "pluviómetros GHCN-D (NOAA)"
+      ],
+      "script": "earthmemory/tropical/hawaii.py",
+      "script_sha256": "792aff7ff1652419ae55a778c632230bdd3a7685313cbdea96216b9bb067bc38",
+      "predicciones_archivo": "results/tropical/hawaii/predicciones_registradas.json",
+      "predicciones_sha256": "82068193ec33b3428d7233d2adf243dbd84315be8b1d1f5a554b1b6d4bf7c22e",
+      "registradas": "2026-11-15T23:36:33.979478+00:00",
+      "resultado_archivo": "results/tropical/hawaii/resumen.json",
+      "resultado_sha256": "0ded6536300b7c0a6ca097692a32b06499e827b09e59dc7ba3cf7fd4aef4627b",
+      "resultado_escrito_utc": "2026-11-16T00:12:36.700185+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "fcbf1da",
+        "fecha": "2026-11-15T20:12:57-04:00"
+      },
+      "commit_resultado": {
+        "commit": "fcbf1da",
+        "fecha": "2026-11-15T20:12:57-04:00"
+      },
+      "commit_script": {
+        "commit": "fcbf1da",
+        "fecha": "2026-11-15T20:12:57-04:00"
+      },
+      "filas_estado": "8b",
+      "predicciones": [
+        {
+          "id": "HI_global",
+          "texto": "Si la causa es global (ATMS de NOAA-20 u otro cambio de la constelación de microondas), en Hawái IMERG también pierde días frente a los pluviómetros con el corte 2018-02: mediana de (cambio IMERG - cambio pluviómetro) a 1 mm <= -3 pp, y IMERG cae más en al menos 2 de cada 3 estaciones.",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "HI_goes_east",
+          "texto": "Si la causa es el GOES-16 (solo GOES-East), en Hawái esa mediana queda entre -1,5 y +1,5 pp.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "HI_zona_gris",
+          "texto": "Entre -3 y -1,5 pp, o fuera de +1,5: no concluyente; se dice así.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "HI_momento",
+          "texto": "Punto de cambio (Pettitt) de la serie mensual de la mediana (IMERG - pluviómetro) a 1 mm en Hawái: con causa global, entre 2017-06 y 2018-12; si cae entre 2019-01 y 2019-12, apunta al GOES-17.",
+          "veredicto": "2014-04: fuera de ambas ventanas"
+        },
+        {
+          "id": "PR_momento",
+          "texto": "Control: en Puerto Rico ese punto de cambio cae entre 2017-06 y 2018-12 (ambas causas lo predicen).",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "pluviometros_hawaii",
+          "texto": "Los pluviómetros de Hawái cambian poco: mediana de su cambio a 1 mm entre -2 y +2 pp. Si no, el corte no aísla al instrumento y se dice.",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "era_gpm",
+      "pregunta": "¿El salto de IMERG es de 2018 o del paso de la era TRMM a la era GPM (2014)?",
+      "datos": [
+        "IMERG V07 (NASA GPM)",
+        "pluviómetros GHCN-D (NOAA)",
+        "CHIRPS"
+      ],
+      "script": "earthmemory/tropical/era_gpm.py",
+      "script_sha256": "baeee39118110c17b5ef00be772c2a8558d45ae9f261525fafad151125f30460",
+      "predicciones_archivo": "results/tropical/era_gpm/predicciones_registradas.json",
+      "predicciones_sha256": "0ad8af307efd965963b9ff96d6aab171f99c52f746ed14614c54fd4795f59a1a",
+      "registradas": "2026-11-16T00:03:53.791687+00:00",
+      "resultado_archivo": "results/tropical/era_gpm/resumen.json",
+      "resultado_sha256": "eab7df7e92b3926ac560d32b6b0403f1b76d05a9dc15c48ebed7af8bc8e1ccac",
+      "resultado_escrito_utc": "2026-11-16T00:03:53.824284+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "fcbf1da",
+        "fecha": "2026-11-15T20:12:57-04:00"
+      },
+      "commit_resultado": {
+        "commit": "fcbf1da",
+        "fecha": "2026-11-15T20:12:57-04:00"
+      },
+      "commit_script": {
+        "commit": "fcbf1da",
+        "fecha": "2026-11-15T20:12:57-04:00"
+      },
+      "filas_estado": "8b, 9",
+      "predicciones": [
+        {
+          "id": "G1",
+          "texto": "En Hawái y en Puerto Rico, la media de (IMERG - pluviómetro) en 2015-01..2017-11 queda al menos 3 pp por debajo de la de 2001-01..2013-12.",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "G2",
+          "texto": "En Hawái y en Puerto Rico, la media de 2018-02..2024-12 difiere de la de 2015-01..2017-11 en 1,5 pp o menos (no hay un segundo escalón grande en 2018).",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "G3",
+          "texto": "En la RD (IMERG - CHIRPS), la caída de 2001-2013 a 2015-2017 es al menos la mitad de la caída total de 2001-2013 a 2018-2024.",
+          "veredicto": "no se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "ciclones",
+      "pregunta": "¿Cuántas inundaciones del Yuna vinieron de un ciclón y con cuánta antelación las anunció el NHC?",
+      "datos": [
+        "IBTrACS",
+        "pronósticos oficiales NHC (ATCF)",
+        "catálogo de inundaciones del Yuna"
+      ],
+      "script": "earthmemory/tropical/ciclones_anticipacion.py",
+      "script_sha256": "a360b109a15eb2876800bb570e15ebf9f524ec5b504ef08f86620b21ceabf465",
+      "predicciones_archivo": "results/tropical/ciclones/predicciones_registradas.json",
+      "predicciones_sha256": "6abe58f18426614fbb4bb30fce434bb3bad34e4fe5ac3a97cb0c5e9cbf544f99",
+      "registradas": "2026-11-15T17:57:35.626361+00:00",
+      "resultado_archivo": "results/tropical/ciclones/resumen.json",
+      "resultado_sha256": "a8d1b2738a11f56910f3960466e4dc6c4761c5886b568fe86da1a845fe2ede49",
+      "resultado_escrito_utc": "2026-11-15T18:00:44.865332+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "3ac628d",
+        "fecha": "2026-11-15T14:01:09-04:00"
+      },
+      "commit_resultado": {
+        "commit": "3ac628d",
+        "fecha": "2026-11-15T14:01:09-04:00"
+      },
+      "commit_script": {
+        "commit": "3ac628d",
+        "fecha": "2026-11-15T14:01:09-04:00"
+      },
+      "filas_estado": "25",
+      "predicciones": [
+        {
+          "id": "C1",
+          "texto": "Al menos la mitad de las 14 inundaciones del catálogo 2001-2024 coinciden con un ciclón tropical a menos de 500 km de la cuenca (IBTrACS) entre 3 días antes y 1 día después del inicio.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "C2",
+          "texto": "En al menos 2 de cada 3 inundaciones con ciclón, el primer aviso oficial del NHC que pone el centro a menos de 200 km de la cuenca se emitió 48 h o más antes del inicio.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "C3",
+          "texto": "Más de la mitad de las tormentas cuyo pronóstico oficial pasó a menos de 200 km no tienen inundación del Yuna en el catálogo (la pre-alerta de ciclón tiene muchas falsas alarmas).",
+          "veredicto": "se cumple"
+        }
+      ]
+    },
+    {
+      "prueba": "ciclones_sequia",
+      "pregunta": "¿Después de los ciclones queda sequía, o llega cuando no hay ciclones?",
+      "datos": [
+        "CHIRPS",
+        "IBTrACS"
+      ],
+      "script": "earthmemory/tropical/ciclones_sequia.py",
+      "script_sha256": "bb7455018c0ef218ab231c474b7391b4e7b8fd3aefa431b31aea5d7c43856510",
+      "predicciones_archivo": "results/tropical/ciclones_sequia/predicciones_registradas.json",
+      "predicciones_sha256": "1da3589a70290b1cfb577147f5781604cc12c6d460a49e8b426f3b340019ed39",
+      "registradas": "2026-11-15T18:05:44.418892+00:00",
+      "resultado_archivo": "results/tropical/ciclones_sequia/resumen.json",
+      "resultado_sha256": "1682f55c5eccd5ccc496573e92ad0431fbd6bac3356eb2408dc02ec22d691bb1",
+      "resultado_escrito_utc": "2026-11-15T18:05:53.354665+00:00",
+      "registrada_antes_del_resultado": true,
+      "commit_predicciones": {
+        "commit": "3c683d8",
+        "fecha": "2026-11-15T14:06:12-04:00"
+      },
+      "commit_resultado": {
+        "commit": "3c683d8",
+        "fecha": "2026-11-15T14:06:12-04:00"
+      },
+      "commit_script": {
+        "commit": "3c683d8",
+        "fecha": "2026-11-15T14:06:12-04:00"
+      },
+      "filas_estado": "26",
+      "predicciones": [
+        {
+          "id": "S1",
+          "texto": "Los días con ciclón a < 500 km aportan al menos el 10 % de la lluvia de junio-noviembre (media 2001-2024).",
+          "veredicto": "se cumple"
+        },
+        {
+          "id": "S2",
+          "texto": "Las 8 temporadas con MENOS lluvia de ciclón tienen más meses de sequía en diciembre-mayo siguiente que las 8 con MÁS lluvia de ciclón.",
+          "veredicto": "no se cumple"
+        },
+        {
+          "id": "S3",
+          "texto": "Versión literal de la idea («después del ciclón queda sequía»): en los 90 días tras el paso de un ciclón la sequía es MENOS frecuente que en el resto de días de la misma época. Si fuera más frecuente, la idea literal se sostiene.",
+          "veredicto": "se cumple"
+        }
+      ]
+    }
+  ]
+}
