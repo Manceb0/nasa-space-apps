@@ -1,0 +1,68 @@
+{
+  "consultado_utc": "2026-11-15T23:39:47.334381+00:00",
+  "fuente": "OpenAlex",
+  "desde": "2018-01-01",
+  "nota": "Menciones en título o resumen. Cota del público expuesto, no de estudios afectados.",
+  "busquedas": [
+    {
+      "busqueda": "IMERG",
+      "trabajos": 2853,
+      "articulos": 1839,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG trend",
+      "trabajos": 206,
+      "articulos": 144,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+trend%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG drought",
+      "trabajos": 204,
+      "articulos": 135,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+drought%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG frequency",
+      "trabajos": 383,
+      "articulos": 264,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+frequency%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG wet days",
+      "trabajos": 51,
+      "articulos": 36,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+wet+days%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG extreme",
+      "trabajos": 767,
+      "articulos": 512,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+extreme%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG Caribbean",
+      "trabajos": 7,
+      "articulos": 3,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+Caribbean%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG Dominican",
+      "trabajos": 1,
+      "articulos": 0,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+Dominican%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG Puerto Rico",
+      "trabajos": 2,
+      "articulos": 1,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+Puerto+Rico%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    },
+    {
+      "busqueda": "IMERG Hawaii",
+      "trabajos": 1,
+      "articulos": 0,
+      "url": "https://api.openalex.org/works?filter=title_and_abstract.search%3AIMERG+Hawaii%2Cfrom_publication_date%3A2018-01-01&per-page=1"
+    }
+  ]
+}

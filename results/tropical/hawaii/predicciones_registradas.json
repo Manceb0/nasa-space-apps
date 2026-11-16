@@ -1,0 +1,10 @@
+{
+  "registradas_utc": "2026-11-15T23:36:33.979478+00:00",
+  "corte": "2018-02-01",
+  "HI_global": "Si la causa es global (ATMS de NOAA-20 u otro cambio de la constelación de microondas), en Hawái IMERG también pierde días frente a los pluviómetros con el corte 2018-02: mediana de (cambio IMERG - cambio pluviómetro) a 1 mm <= -3 pp, y IMERG cae más en al menos 2 de cada 3 estaciones.",
+  "HI_goes_east": "Si la causa es el GOES-16 (solo GOES-East), en Hawái esa mediana queda entre -1,5 y +1,5 pp.",
+  "HI_zona_gris": "Entre -3 y -1,5 pp, o fuera de +1,5: no concluyente; se dice así.",
+  "HI_momento": "Punto de cambio (Pettitt) de la serie mensual de la mediana (IMERG - pluviómetro) a 1 mm en Hawái: con causa global, entre 2017-06 y 2018-12; si cae entre 2019-01 y 2019-12, apunta al GOES-17.",
+  "PR_momento": "Control: en Puerto Rico ese punto de cambio cae entre 2017-06 y 2018-12 (ambas causas lo predicen).",
+  "pluviometros_hawaii": "Los pluviómetros de Hawái cambian poco: mediana de su cambio a 1 mm entre -2 y +2 pp. Si no, el corte no aísla al instrumento y se dice."
+}

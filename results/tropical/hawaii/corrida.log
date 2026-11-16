@@ -1,0 +1,210 @@
+ Container nasa-space-apps-tropical-run-71ef90459d10 Creating 
+ Container nasa-space-apps-tropical-run-71ef90459d10 Created 
+hawaii estaciones candidatas: 101
+{'pedidos': 8766, 'descargados_ahora': 0, 'ya_en_cache': 8766, 'errores': 0}
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+puerto_rico estaciones candidatas: 36
+{'pedidos': 8766, 'descargados_ahora': 0, 'ya_en_cache': 8766, 'errores': 0}
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m, 6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (4: m) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+/app/earthmemory/tropical/hawaii.py:86: DtypeWarning: Columns (6: s) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(io.BytesIO(gzip.decompress(f.read_bytes())), header=None,
+       estacion    lat     lon  dias_antes  dias_despues  cambio_pluvio_pp_0.1  cambio_imerg_pp_0.1  cambio_pluvio_pp_1.0  cambio_imerg_pp_1.0  cambio_pluvio_pp_5.0  cambio_imerg_pp_5.0
+0   USC00510123  21.39 -157.91        6013          2524                  5.07                -9.15                  2.07                -7.23                  0.20                -2.06
+1   USC00510211  21.31 -157.85        5698          2465                 -0.80               -10.52                 -2.06                -9.44                  0.46                -0.15
+2   USC00512595  19.86 -155.16        5764          2227                  7.62                -4.10                  0.37                -0.51                  2.43                 0.25
+3   USC00512802  19.75 -155.14        6229          1938                  4.66                -2.09                  2.66                 1.16                  1.21                 1.34
+4   USC00512960  21.38 -157.82        6042          2243                  0.82               -10.43                  0.22                -8.89                 -1.10                 0.12
+5   USC00513376  19.14 -155.85        6109          1873                 13.44                -1.13                 12.09                -0.21                  8.16                 1.07
+6   USC00514500  21.68 -157.95        6121          2403                 -2.85               -13.70                  5.80               -12.00                  0.94                -0.15
+7   USC00514758  22.19 -159.38        5503          2316                 -3.18               -13.20                  1.57               -14.01                  5.53                 1.31
+8   USC00515000  20.76 -156.32        6209          1861                 -0.49                -3.02                  2.27                -1.63                  0.84                -0.29
+9   USC00515004  20.70 -156.36        5956          2179                  5.45                -2.46                  3.07                -0.02                  1.05                 0.46
+10  USC00515715  20.96 -156.65        4850          2095                 -0.43               -13.72                 -2.60                -6.61                 -3.35                -0.05
+11  USC00516128  21.33 -157.80        5814          2460                 -1.19               -11.21                  3.95                -9.86                  2.22                -0.23
+12  USC00516270  20.10 -155.83        5612          2098                 -0.20                -4.23                 -0.20                -5.08                  0.15                -1.39
+13  USC00516304  19.21 -155.88        5973          2090                 12.24                 6.72                 11.03                10.45                  5.74                 3.43
+14  USC00516395  21.35 -157.89        6227          2337                 -5.51               -11.14                 -2.67                -9.27                 -0.38                -0.06
+15  USC00516588  19.06 -155.58        4768          2355                  1.61                -5.76                  1.96                 1.03                  2.09                 1.24
+16  USC00516928  21.35 -157.81        5997          2179                  3.91                -9.87                  2.15                -9.25                  1.80                -0.06
+17  USC00516933  21.34 -157.84        5104          2344                 -0.42               -11.12                 -2.20                -9.43                 -2.43                -0.12
+18  USC00517312  20.04 -155.37        6201          2312                 -4.41                -7.49                 -3.22                -1.94                 -3.16                 0.21
+19  USC00517664  21.32 -157.77        5737          2218                 -2.26               -13.39                 -2.40               -11.52                 -4.25                 0.43
+20  USC00517724  19.79 -155.11        6167          2121                  4.83                -2.08                  2.98                 1.33                  0.04                 1.21
+21  USC00517810  21.34 -157.81        5970          2073                 -4.92               -10.32                 -3.57                -8.85                 -2.21                 0.23
+22  USC00518101  20.15 -155.81        5237          2007                 -3.11                -5.00                 -3.46                -5.83                 -2.70                -1.90
+23  USC00518165  22.22 -159.48        5665          2484                 -1.89               -11.15                  4.06                -9.20                  3.81                 1.33
+24  USC00518407  20.93 -156.67        5835          2363                 -0.52               -14.24                 -2.36                -6.81                 -0.64                 0.01
+25  USC00518652  19.08 -155.75        6020          2265                 -7.09                -6.91                  0.83                -1.60                  2.46                 1.24
+26  USC00518815  21.30 -157.82        5274          2276                  4.74                -4.34                  2.28                -3.74                  0.95                 0.00
+27  USC00519144  19.91 -155.88        6174          2249                  2.63                -1.93                  2.35                 0.95                  0.75                 0.82
+28  USC00519185  21.27 -157.78        6154          1998                  2.83               -11.05                  0.32                -3.44                  1.69                 0.83
+29  USC00519281  21.45 -157.85        6217          2511                  3.41               -14.16                  1.97               -13.35                  0.99                -4.80
+30  USC00519603  21.64 -158.05        5859          1986                  4.33               -11.66                  1.14                -9.91                  0.73                 0.74
+31  USC00519980  21.30 -157.79        5829          2191                 -0.66               -12.44                 -0.59                -5.71                 -0.17                 0.09
+32  USW00021504  19.72 -155.05        6240          2496                  5.63                -8.42                  4.31                -2.12                  0.95                 0.71
+33  USW00021510  19.74 -156.05        6212          2478                  6.05               -10.42                  3.04                -0.92                  1.14                 0.49
+34  USW00021514  19.54 -155.58        4500          2524                  3.73                -3.97                  3.45                -7.05                  1.80                -3.56
+35  USW00021515  19.64 -155.08        4485          2449                 -7.21                -5.57                 -5.93                -0.58                 -2.40                 0.82
+36  USW00022516  20.89 -156.43        6200          2489                 -2.76                -8.27                 -0.72                -5.99                 -0.15                -0.38
+37  USW00022521  21.32 -157.94        6240          2526                 -0.72                -9.66                 -1.77                -7.68                 -0.56                -2.19
+38  USW00022534  21.15 -157.10        6228          2485                 -6.15                -3.48                 -4.52                -7.83                 -0.16                -3.41
+39  USW00022536  21.98 -159.34        6240          2497                  4.97               -13.25                  3.26                -9.07                  1.79                 1.06
+40  USW00022551  21.31 -158.07        6203          2164                 -0.73                -9.25                 -0.66                -6.66                  0.01                -1.91
+{
+ "estaciones": 41,
+ "corte": "2018-02-01",
+ "imerg_cae_mas": 39,
+ "mediana_cambio_pp": {
+  "cambio_pluvio_pp_0.1": -0.4151197748938129,
+  "cambio_imerg_pp_0.1": -9.249407671381949,
+  "cambio_pluvio_pp_1.0": 1.13931158663641,
+  "cambio_imerg_pp_1.0": -6.6148168196245365,
+  "cambio_pluvio_pp_5.0": 0.7547536154354603,
+  "cambio_imerg_pp_5.0": 0.12230481148235231
+ },
+ "mediana_diferencia_1mm_pp": -5.284696516834036,
+ "punto_cambio": {
+  "ultimo_mes_antes": "2014-03",
+  "primer_mes_despues": "2014-04",
+  "K": 10513.0,
+  "p_aprox": 1.934281804140807e-12,
+  "meses": 288,
+  "media_antes_pp": -2.4459135191548955,
+  "media_despues_pp": -12.559191934766337
+ },
+ "veredicto": {
+  "HI_global": true,
+  "HI_goes_east": false,
+  "HI_zona_gris": false,
+  "HI_momento": "2014-04: fuera de ambas ventanas",
+  "PR_momento": false,
+  "pluviometros_hawaii": true
+ },
+ "puerto_rico_punto_cambio": {
+  "ultimo_mes_antes": "2013-10",
+  "primer_mes_despues": "2013-11",
+  "K": 7065.0,
+  "p_aprox": 7.5000455223298e-06,
+  "meses": 288,
+  "media_antes_pp": 2.4514837754080614,
+  "media_despues_pp": -6.201115919652595
+ }
+}

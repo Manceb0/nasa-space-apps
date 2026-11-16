@@ -1,0 +1,40 @@
+{
+  "estaciones": 41,
+  "corte": "2018-02-01",
+  "imerg_cae_mas": 39,
+  "mediana_cambio_pp": {
+    "cambio_pluvio_pp_0.1": -0.4151197748938129,
+    "cambio_imerg_pp_0.1": -9.249407671381949,
+    "cambio_pluvio_pp_1.0": 1.13931158663641,
+    "cambio_imerg_pp_1.0": -6.6148168196245365,
+    "cambio_pluvio_pp_5.0": 0.7547536154354603,
+    "cambio_imerg_pp_5.0": 0.12230481148235231
+  },
+  "mediana_diferencia_1mm_pp": -5.284696516834036,
+  "punto_cambio": {
+    "ultimo_mes_antes": "2014-03",
+    "primer_mes_despues": "2014-04",
+    "K": 10513.0,
+    "p_aprox": 1.934281804140807e-12,
+    "meses": 288,
+    "media_antes_pp": -2.4459135191548955,
+    "media_despues_pp": -12.559191934766337
+  },
+  "veredicto": {
+    "HI_global": true,
+    "HI_goes_east": false,
+    "HI_momento_global": false,
+    "HI_momento_goes17": false,
+    "PR_momento": false,
+    "pluviometros_hawaii": true
+  },
+  "puerto_rico_punto_cambio": {
+    "ultimo_mes_antes": "2013-10",
+    "primer_mes_despues": "2013-11",
+    "K": 7065.0,
+    "p_aprox": 7.5000455223298e-06,
+    "meses": 288,
+    "media_antes_pp": 2.4514837754080614,
+    "media_despues_pp": -6.201115919652595
+  }
+}
