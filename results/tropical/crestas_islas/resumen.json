@@ -1,0 +1,22 @@
+{
+  "puerto_rico": {
+    "celdas_tierra": 89,
+    "mediana_cambio_imerg_celdas_tierra_pp": -7.863907667945674,
+    "celdas_tierra_que_bajan": 89,
+    "pluviometros": 19,
+    "figuras": [
+      "figures/tropical/crestas_puerto_rico_es.png",
+      "figures/tropical/crestas_puerto_rico_en.png"
+    ]
+  },
+  "hawaii": {
+    "celdas_tierra": 172,
+    "mediana_cambio_imerg_celdas_tierra_pp": -3.1047300383701835,
+    "celdas_tierra_que_bajan": 121,
+    "pluviometros": 41,
+    "figuras": [
+      "figures/tropical/crestas_hawaii_es.png",
+      "figures/tropical/crestas_hawaii_en.png"
+    ]
+  }
+}
