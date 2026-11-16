@@ -157,4 +157,4 @@ We used AI assistants (Anthropic's Claude) to help write code, run the analyses 
 repository comes from a script and a result file here, and the predictions were registered before computing.
 
 ---
-Team guide in Spanish: [`GUIA_EQUIPO.md`](GUIA_EQUIPO.md). Stellar Horizons, Dominican Republic, 2026.
+Stellar Horizons, Dominican Republic, 2026.
