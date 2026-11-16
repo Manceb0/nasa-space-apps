@@ -108,7 +108,7 @@ Pendiente:
 - [ ] Actualizar la página del equipo en Space Apps y pulsar **«Submit for Judging»** antes de las 23:59.
 - [ ] Hacer público este repositorio antes del cierre (Space Apps exige un enlace público).
 - [x] Pruebas tropicales corridas (`reports_nacional/PRUEBAS_TROPICALES.md`). Con una revisión independiente
-      (`REVISION_JANE.md`) y un tercer testigo (ERA5), la conclusión que se sostiene es esta: IMERG cuenta cada vez
+      (revisión adversarial, nota interna) y un tercer testigo (ERA5), la conclusión que se sostiene es esta: IMERG cuenta cada vez
       menos días de lluvia que los pluviómetros, CHIRPS y ERA5, así que sus tendencias de intensidad y de rachas secas
       no se pueden confirmar. **No** está demostrado un «escalón en octubre de 2013», y el «82 %» del recálculo es
       una sensibilidad a un ajuste, no un mecanismo.

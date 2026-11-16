@@ -33,7 +33,7 @@ Veredicto en una línea: **ninguna de las dos parejas 'misma lluvia, distinta re
 | HA · Cordillera Central (bosque, ~2400 m) | 1 | 0.36 | 0.00 / 0.00 | 10.1 | 1.00 | 1.00 | 0.00 |
 | HB · La Vega (valle del Cibao) | 1 | 0.34 | 0.00 / 0.00 | 7.7 | 1.00 | 1.00 | 0.00 |
 
-**Lectura (Mentalist):** la banda L 've' el suelo a través de la vegetación solo si hay poca agua en el dosel. En el bosque de la Cordillera Central y en el valle agrícola-boscoso de Bonao y La Vega el radiómetro mide sobre todo vegetación; en Santiago, ciudad. El algoritmo devuelve un número, pero lo marca como no recomendado. Forzar la prueba con esos números sería disfrazar de observación una cifra fuera de especificación. Además, la rejilla es de 9 km pero la huella real de la banda L es de ~40 km (el producto 'Enhanced' interpola con Backus-Gilbert): píxeles vecinos no son independientes. Figura `t1_smap_l3_calidad`.
+**Lectura (revisión adversarial):** la banda L 've' el suelo a través de la vegetación solo si hay poca agua en el dosel. En el bosque de la Cordillera Central y en el valle agrícola-boscoso de Bonao y La Vega el radiómetro mide sobre todo vegetación; en Santiago, ciudad. El algoritmo devuelve un número, pero lo marca como no recomendado. Forzar la prueba con esos números sería disfrazar de observación una cifra fuera de especificación. Además, la rejilla es de 9 km pero la huella real de la banda L es de ~40 km (el producto 'Enhanced' interpola con Backus-Gilbert): píxeles vecinos no son independientes. Figura `t1_smap_l3_calidad`.
 
 ## 2 · Los dos pares frente al testigo
 

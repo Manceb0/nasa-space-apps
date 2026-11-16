@@ -2,7 +2,7 @@
 
 No es una corrección: es la variante A_frec de results/tropical/recalculo/ (mismo motor P0), que resta a IMERG su
 diferencia con CHIRPS desde 2014 en los índices de frecuencia e intensidad. La revisión independiente
-(reports_nacional/REVISION_JANE.md) mostró que ese ajuste quita buena parte de una tendencia sintética sin salto y que
+(revisión adversarial, nota interna) mostró que ese ajuste quita buena parte de una tendencia sintética sin salto y que
 produce valores imposibles; ERA5 sitúa el cambio de IMERG en una deriva gradual, no en un escalón de 2013-10.
 El archivo conserva su nombre para no romper la carga. Comprueba con assert:
   · que la celda→índice es la misma que la de rejilla.json (los índices sin corregir dan la misma clase y la misma q),

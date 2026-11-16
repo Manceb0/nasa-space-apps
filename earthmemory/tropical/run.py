@@ -1,4 +1,4 @@
-"""Pruebas tropicales (método Jane): ¿las contradicciones entre productos de lluvia siguen la física de una isla
+"""Pruebas tropicales (revisión adversarial): ¿las contradicciones entre productos de lluvia siguen la física de una isla
 tropical?
 
 Predicciones REGISTRADAS ANTES de correr (2026-11-15; ver PREDICCIONES): si la tabla de resultados las contradice,

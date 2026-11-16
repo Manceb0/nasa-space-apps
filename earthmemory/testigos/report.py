@@ -174,7 +174,7 @@ def write() -> None:
           f"{f(p['frac_recomendado_pm'], 2)} | {f(p['vwc_mediana_am'], 1)} | {f(p['frac_vwc_mayor_5_am'], 2)} | "
           f"{f(p['bandera_vegetacion_densa_am'], 2)} | {f(p['bandera_urbano_am'], 2)} |")
     w("")
-    w("**Lectura (Mentalist):** la banda L 've' el suelo a través de la vegetación solo si hay poca agua en el dosel. En el "
+    w("**Lectura (revisión adversarial):** la banda L 've' el suelo a través de la vegetación solo si hay poca agua en el dosel. En el "
       "bosque de la Cordillera Central y en el valle agrícola-boscoso de Bonao y La Vega el radiómetro mide sobre todo "
       "vegetación; en Santiago, ciudad. El algoritmo devuelve un número, pero lo marca como no recomendado. Forzar la "
       "prueba con esos números sería disfrazar de observación una cifra fuera de especificación. Además, la rejilla es de "

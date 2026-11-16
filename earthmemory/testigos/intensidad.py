@@ -6,7 +6,7 @@ caída en días por encima del percentil 95 de los días con lluvia (≥ 1 mm) d
 de conglomerados de año) y, para comparar manzanas con manzanas, el factor IMERG se recalcula sobre los MISMOS
 episodios.
 
-Ojo (Mentalist): el CHIRPS v2 diario no es una observación diaria independiente: el total de cada péntada (anclado
+Ojo (revisión adversarial): el CHIRPS v2 diario no es una observación diaria independiente: el total de cada péntada (anclado
 a estaciones) se reparte entre sus días con un modelo (README-CHIRPS2-Daily). Por eso se repite con PÉNTADAS
 (fracción de la lluvia en péntadas por encima del p95 de las péntadas con lluvia; máximo en 5 días), que es la
 escala que CHIRPS sí ancla.

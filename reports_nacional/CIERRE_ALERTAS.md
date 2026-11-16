@@ -1,6 +1,6 @@
 # Cierre de la comparación de alertas del Yuna
 
-15-nov-2026. Sustituye el alcance preventivo atribuido a la prueba de JANE_PREVENCION.md.
+15-nov-2026. Sustituye el alcance preventivo atribuido a la prueba de la revisión adversarial de la alerta (nota interna).
 
 ## Resultado para la entrega
 
@@ -9,7 +9,7 @@ No se ha demostrado anticipación.** No es una alerta operativa, ni una evaluaci
 
 Se conserva el umbral >100 mm, el catálogo, los periodos, el agrupamiento y la puntuación del análisis anterior.
 Se separa el efecto de quitar fechas futuras del efecto de corregir el acumulado espacial de CHIRPS. La versión
-de cierre es la de misma celda de `JANE_PREVENCION_CAUSAL.md`; las otras filas son controles históricos.
+de cierre es la de misma celda de la revisión adversarial de la alerta (nota interna); las otras filas son controles históricos.
 No se optimiza un nuevo umbral. La alternativa del mismo día es exploratoria, no una nueva predicción acertada.
 
 | Regla, prueba 2016–2024 | Eventos detectados | Episodios sin evento catalogado | Episodios totales | Primera señal anterior al inicio catalogado | Primera señal durante el evento |

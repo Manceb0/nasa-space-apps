@@ -1,4 +1,4 @@
-"""Revisión independiente del argumento Jane. No altera los motores ni sus salidas.
+"""Revisión independiente del argumento de las pruebas tropicales. No altera los motores ni sus salidas.
 
 Diagnósticos exploratorios, no validación causal. Ejecutar en Docker.
 """

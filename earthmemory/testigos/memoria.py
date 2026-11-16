@@ -3,7 +3,7 @@
 Afirmación puesta a prueba: "el estado antecedente del suelo (z de la zona de raíces de GLDAS el mes anterior al
 inicio de la sequía) es el único factor significativo de la respuesta tras la sequía (β 0.46)".
 
-Sospecha (Mentalist): GLDAS es un modelo forzado por lluvia. Su z antecedente puede ser solo la lluvia de los
+Sospecha (revisión adversarial): GLDAS es un modelo forzado por lluvia. Su z antecedente puede ser solo la lluvia de los
 meses previos 'filtrada' por el modelo. Si un índice de lluvia antecedente (API) explica lo mismo, la memoria es
 de la lluvia y el suelo del modelo no añade nada.
 

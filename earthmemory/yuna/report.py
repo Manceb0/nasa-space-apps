@@ -204,7 +204,7 @@ Stellar Horizons · NASA Space Apps 2026 («Be An Earth System Trend Detective!�
 **Hipótesis de investigación (no causalidad demostrada):** lluvia y estado antecedente del Alto Yuna
 (IMERG · SMAP L4 · GLDAS) → escorrentía y respuesta del río (relieve · cobertura · caudal) → presa de Hatillo
 (almacenamiento · entradas · salidas) → inundación de arrozales del Bajo Yuna (eventos observados y registrados).
-**Giro «Mentalist»:** la operación del embalse podría cambiar la correlación entre la humedad de cabecera y las
+**Giro posible:** la operación del embalse podría cambiar la correlación entre la humedad de cabecera y las
 inundaciones de abajo. Un resultado así es válido, no un fracaso.
 
 Clases de variables (se repiten en cada figura): **OBSERVACIÓN** (JRC GSW, Landsat) · **RECUPERACIÓN SATELITAL**
@@ -413,7 +413,7 @@ la relación lluvia de arriba → agua abajo es {rh[embalse_alto_alto_hatillo]} 
 ({rh[embalse_alto_camu]} frente a {rh[embalse_bajo_camu]}). Si la presa fuese la causa, el patrón tendría que
 aparecer solo arriba. Que aparezca en las dos zonas apunta a algo común a ambas (la estación, las nubes que limitan
 lo que GSW ve), no a la operación; esa explicación tampoco está probada. **Con estos datos no se puede afirmar ni descartar el giro
-«Mentalist».** Lo que sí queda probado es que la pregunta está bien planteada: el {pct_no_reg:.0f} % de la cuenca (Camú + resto)
+del embalse.** Lo que sí queda probado es que la pregunta está bien planteada: el {pct_no_reg:.0f} % de la cuenca (Camú + resto)
 llega al Bajo Yuna sin pasar por Hatillo.
 
 ## Lo que sabemos

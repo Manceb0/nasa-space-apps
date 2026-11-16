@@ -34,7 +34,7 @@ CELLS = [
     md("# 08 · Caso Yuna: lluvia y memoria arriba → presa de Hatillo → inundación abajo\n\n"
        "Hipótesis de investigación (no causalidad demostrada): la lluvia y el estado antecedente del Alto Yuna "
        "(IMERG · SMAP L4 · GLDAS) → escorrentía y respuesta del río → operación de Hatillo → inundación en el Bajo Yuna. "
-       "Giro «Mentalist»: la correlación entre la humedad de cabecera y las inundaciones de abajo podría cambiar por la "
+       "Giro posible: la correlación entre la humedad de cabecera y las inundaciones de abajo podría cambiar por la "
        "operación del embalse. Encontrar eso es un resultado válido.\n\n"
        "Cada variable lleva su clase: **OBSERVACIÓN** (JRC GSW), **RECUPERACIÓN SATELITAL** (IMERG, CHIRPS), "
        "**MODELO CON ASIMILACIÓN** (SMAP L4), **MODELO FORZADO** (GLDAS), **SIMULACIÓN HIDROLÓGICA** (GEOGLOWS v2)."),

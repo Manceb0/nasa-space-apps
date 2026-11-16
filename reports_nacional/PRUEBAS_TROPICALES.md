@@ -1,4 +1,4 @@
-# Pruebas tropicales · método Jane (República Dominicana, 2001-2024)
+# Pruebas tropicales · revisión adversarial (República Dominicana, 2001-2024)
 
 *Stellar Horizons · NASA Space Apps 2026. Código: `earthmemory/tropical/run.py` y `figuras.py`
 (`docker compose run --rm tropical`). Resultados: `results/tropical/`. Figura: `figures/tropical/07_the_step_in_2013_{dark,light}.png`.
@@ -7,7 +7,7 @@ Es un registro local: el código y el resultado entran en el mismo commit, así 
 desde fuera. No es un pre-registro externo.*
 
 > **Aviso (15-nov, tarde).** Este informe conserva el razonamiento tal como se hizo, con correcciones en línea. Hubo
-> una revisión independiente (`REVISION_JANE.md`) y un tercer testigo (ERA5). Antes de citar nada, lee el
+> una revisión independiente (revisión adversarial, nota interna) y un tercer testigo (ERA5). Antes de citar nada, lee el
 > **veredicto actual** al final. En corto: IMERG cuenta cada vez menos días de lluvia que sus testigos (eso se
 > sostiene), pero no está demostrado que sea un escalón en octubre de 2013. El 82 % mide la sensibilidad a un
 > ajuste, no un mecanismo.
@@ -104,7 +104,7 @@ la primera mitad ya tiene una prueba; la segunda (territorio) sigue abierta.
 - ~~Para el jurado, una frase: «La lluvia no cambió en 2013; cambió la forma en que un satélite cuenta los días de
   lluvia…»~~ **Retirada:** afirma una fecha y una causa que no están demostradas.
 
-## Lentes del método Jane usadas
+## Lentes de la revisión adversarial usadas
 
 - `thinking-map-territory`: los productos son el mapa y los pluviómetros el territorio. De ahí salió P5 (quién cambió).
 - `system-operator` (9 pantallas): el supersistema (la constelación de satélites) cambia en el tiempo. De ahí la
@@ -219,7 +219,7 @@ atribuir ni al relieve, ni al clima, ni al algoritmo.
 
 ## Veredicto actual de la hipótesis (tras ERA5 y la revisión independiente)
 
-En paralelo, otra sesión escribió una revisión independiente (`reports_nacional/REVISION_JANE.md`, no es de este
+En paralelo, otra sesión escribió una revisión independiente (revisión adversarial, nota interna, no es de este
 chat). Llega por otro camino a lo mismo que ERA5:
 - Con una serie sintética que sube en línea recta y no tiene ningún salto, el ajuste A_frec quita el 74,6 % de la
   pendiente y Pettitt da p 0,0003. Es decir, ni la corrección ni Pettitt distinguen un escalón de una deriva gradual.
