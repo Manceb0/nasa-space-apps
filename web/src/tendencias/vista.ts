@@ -839,6 +839,31 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   if (d.rel) {
     rg = ridges(wx.querySelector<HTMLElement>(".wx-mapcol")!, d.rel, d.R, {
       rivers: () => rios,
+      // La historia en el mapa: de dónde viene el agua (el alisio, la cordillera), por dónde baja (el Yuna, Hatillo),
+      // a quién llega (los pilotos) y quién la mide (los 4 pluviómetros públicos de GHCN-D, todos en aeropuertos).
+      historia: {
+        viento: { de: [-69.2, 20.24], a: [-69.62, 19.9], texto: LL("Alisio del nordeste: trae la lluvia", "North-east trade wind brings the rain") },
+        lugares: [
+          { tipo: "pico", lon: d.rel.pico.lon, lat: d.rel.pico.lat, nombre: LL("Pico Duarte · 3.098 m", "Pico Duarte · 3,098 m"), nota: LL("de esta cordillera bajan el Yuna, los Yaque y el Nizao", "the Yuna, both Yaques and the Nizao rise in these mountains"), dx: -8, dy: -26 },
+          { tipo: "pueblo", lon: -69.908, lat: 19.176, nombre: "Villa Riva", nota: LL("llega la crecida · 14 inundaciones del Yuna (2001-24)", "the flood arrives · 14 Yuna floods (2001-24)"), dx: 10, dy: -2 },
+          { tipo: "pueblo", lon: -70.409, lat: 18.942, nombre: "Bonao", nota: LL("río arriba", "upstream"), dx: -48, dy: 14 },
+          { tipo: "pueblo", lon: -70.152, lat: 19.053, nombre: "Cotuí", dx: 10, dy: -13 },
+          { tipo: "pueblo", lon: -71.645, lat: 19.85, nombre: "Monte Cristi", nota: LL("el noroeste seco", "the dry north-west"), dy: -14 },
+          { tipo: "pluvio", lon: -70.55, lat: 19.75, nombre: "Puerto Plata" },
+          { tipo: "pluvio", lon: -68.363, lat: 18.567, nombre: "Punta Cana", dx: -70, dy: 14 },
+          { tipo: "pluvio", lon: -71.12, lat: 18.251, nombre: "Barahona" },
+          { tipo: "pluvio", lon: -69.883, lat: 18.433, nombre: "Santo Domingo", dy: 12 },
+          { tipo: "sierra", lon: -70.45, lat: 18.72, nombre: "Cordillera Central" },
+          { tipo: "sierra", lon: -70.8, lat: 19.66, nombre: "Cordillera Septentrional" },
+          { tipo: "sierra", lon: -69.15, lat: 18.82, nombre: "Cordillera Oriental" },
+          { tipo: "sierra", lon: -71.45, lat: 18.1, nombre: "Sierra de Bahoruco" },
+          { tipo: "sierra", lon: -70.95, lat: 19.42, nombre: LL("Valle del Cibao", "Cibao Valley") },
+          { tipo: "mar", lon: -71.0, lat: 20.14, nombre: LL("Océano Atlántico", "Atlantic Ocean") },
+          { tipo: "mar", lon: -70.9, lat: 17.7, nombre: LL("Mar Caribe", "Caribbean Sea") },
+          { tipo: "mar", lon: -71.92, lat: 19.25, nombre: LL("Haití", "Haiti") },
+        ],
+        nota: { lon: -70.05, lat: 17.62, lineas: [LL("Solo 4 pluviómetros públicos en todo el país (GHCN-D)", "Only 4 public rain gauges in the whole country (GHCN-D)"), LL("todos en aeropuertos de la costa; en la cordillera, ninguno", "all at coastal airports; none in the mountains")] },
+      },
       color: (k) => ridgeColor(k),
       dim: (k) => (sel.reg === "DO" ? null : cellProv[k] !== sel.reg),
       pad: () => (layout === "phone" ? { top: 62, bottom: PEEK + 110, left: 10, right: 10 } : { ...fitPad(), top: 70 }),

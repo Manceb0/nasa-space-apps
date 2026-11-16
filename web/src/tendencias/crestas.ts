@@ -15,6 +15,12 @@ export interface Relieve {
 /** Color de una celda: [r, g, b, alfa] o null (fuera del dominio). */
 export type RGBA = [number, number, number, number];
 export interface Rio { name: string; len_deg: number; parts: [number, number][][] }
+/** La historia del mapa: de dónde viene el agua, por dónde baja, a quién llega y quién la mide. */
+export interface Historia {
+  lugares: { lon: number; lat: number; nombre: string; nota?: string; tipo: "pico" | "pueblo" | "pluvio" | "mar" | "sierra" | "boca"; dx?: number; dy?: number }[];
+  viento?: { de: [number, number]; a: [number, number]; texto: string };
+  nota?: { lon: number; lat: number; lineas: string[] };
+}
 type Pad = { top: number; bottom: number; left: number; right: number };
 
 const K = 1e-4; // grados de latitud por metro: exageración vertical ≈ ×11, igual que la figura del informe
@@ -57,6 +63,8 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
   proj: () => ((lon: number, lat: number) => { x: number; y: number }) | null;
   /** Ríos (OpenStreetMap): se dibujan sobre el relieve, a la altura de cada punto. */
   rivers?: () => Rio[] | null;
+  /** Rótulos de la historia (solo en pantallas de 520 px o más). */
+  historia?: Historia;
 }) {
   // altura del relieve en un punto: entre las dos filas de perfil que lo rodean, en la columna más cercana
   const zAt = (lon: number, lat: number) => {
@@ -123,6 +131,73 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
   const mix = (a: RGBA, b: RGBA, t: number): RGBA => (t >= 1 ? b : t <= 0 ? a : [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, a[3] + (b[3] - a[3]) * t]);
   const css = (c: RGBA) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${c[3].toFixed(3)})`;
 
+  type Box = [number, number, number, number];
+  /** Texto con halo del color del fondo (como en un mapa impreso), sin cajas. Devuelve su ancho. */
+  const halo = (txt: string, x: number, y: number, col: string, ground: string, font: string) => {
+    g.font = font; g.textBaseline = "middle";
+    g.lineWidth = 3.5; g.lineJoin = "round"; g.strokeStyle = ground; g.strokeText(txt, x, y);
+    g.fillStyle = col; g.fillText(txt, x, y);
+    return g.measureText(txt).width;
+  };
+  /** La capa de la historia: el orden es la prioridad (lo primero nunca se tapa). */
+  const story = (h: Historia, used: Box[], free: (x: number, y: number, w: number, hh?: number) => boolean, ground: string, ink: string, muted: string) => {
+    const F = "Inter, system-ui, sans-serif";
+    // el viento: una flecha que entra desde el mar
+    if (h.viento) {
+      const [a, b] = [h.viento.de, h.viento.a], x0 = X(a[0]), y0 = Y(a[1]), x1 = X(b[0]), y1 = Y(b[1]);
+      const ang = Math.atan2(y1 - y0, x1 - x0);
+      g.strokeStyle = "rgba(220,226,235,.75)"; g.lineWidth = 2; g.lineCap = "round";
+      g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1, y1); g.stroke();
+      g.beginPath(); g.moveTo(x1, y1);
+      g.lineTo(x1 - 10 * Math.cos(ang - 0.45), y1 - 10 * Math.sin(ang - 0.45));
+      g.moveTo(x1, y1); g.lineTo(x1 - 10 * Math.cos(ang + 0.45), y1 - 10 * Math.sin(ang + 0.45)); g.stroke();
+      // el texto va hacia el interior del mapa, al lado de donde empieza la flecha
+      g.font = `italic 500 12.5px ${F}`; const tw = g.measureText(h.viento.texto).width;
+      const tx = Math.cos(ang) < 0 ? x0 - tw - 10 : x0 + 10;
+      halo(h.viento.texto, tx, y0 - 4, "rgba(220,226,235,.9)", ground, `italic 500 12.5px ${F}`);
+      used.push([tx, y0 - 13, tw, 18]);
+    }
+    for (const p of h.lugares) {
+      const onLand = p.tipo !== "mar" && p.tipo !== "sierra";
+      const px = X(p.lon), py = Y(p.lat + (onLand ? zAt(p.lon, p.lat) * K : 0));
+      const tx = px + (p.dx ?? 9), ty = py + (p.dy ?? 0);
+      if (p.tipo === "mar" || p.tipo === "sierra") {
+        const font = p.tipo === "mar" ? `italic 400 15px ${F}` : `italic 500 12.5px ${F}`;
+        g.font = font; const w = g.measureText(p.nombre).width;
+        const x = px - w / 2;
+        if (!free(x, py, w)) continue;
+        halo(p.nombre, x, py, p.tipo === "mar" ? "rgba(120,160,195,.85)" : muted, ground, font);
+        used.push([x, py - 9, w, 18]);
+        continue;
+      }
+      // el símbolo
+      g.lineWidth = 2; g.strokeStyle = ground;
+      if (p.tipo === "pico") {
+        g.fillStyle = ink; g.beginPath(); g.moveTo(px, py - 9); g.lineTo(px + 6, py + 1); g.lineTo(px - 6, py + 1); g.closePath(); g.stroke(); g.fill();
+      } else if (p.tipo === "pluvio") {
+        g.strokeStyle = ground; g.lineWidth = 4; g.beginPath(); g.arc(px, py, 5, 0, Math.PI * 2); g.stroke();
+        g.strokeStyle = "#8fd3ff"; g.lineWidth = 2; g.beginPath(); g.arc(px, py, 5, 0, Math.PI * 2); g.stroke();
+      } else {
+        g.fillStyle = ink; g.beginPath(); g.arc(px, py, p.tipo === "boca" ? 3 : 4, 0, Math.PI * 2); g.stroke(); g.fill();
+      }
+      // el nombre y, debajo, lo que pasa ahí
+      const nf = p.tipo === "pluvio" ? `500 11.5px ${F}` : `600 13px ${F}`;
+      g.font = nf; const wn = g.measureText(p.nombre).width;
+      g.font = `400 11.5px ${F}`; const wt = p.nota ? g.measureText(p.nota).width : 0;
+      const w = Math.max(wn, wt), hh = p.nota ? 32 : 16, cy = ty + (p.nota ? 7 : 0);
+      if (p.tipo !== "pueblo" && p.tipo !== "pico" && !free(tx, cy, w, hh)) continue;
+      halo(p.nombre, tx, ty, p.tipo === "pluvio" ? "#8fd3ff" : ink, ground, nf);
+      if (p.nota) halo(p.nota, tx, ty + 15, muted, ground, `400 11.5px ${F}`);
+      used.push([tx, cy - hh / 2, w, hh]);
+    }
+    if (h.nota) {
+      g.font = `600 12.5px ${F}`;
+      const wmax = Math.max(...h.nota.lineas.map((t) => g.measureText(t).width));
+      const x = Math.min(X(h.nota.lon), W - o.pad().right - wmax - 8), y = Y(h.nota.lat);
+      h.nota.lineas.forEach((t, i) => halo(t, x, y + i * 16, i ? muted : "#8fd3ff", ground, i ? `400 12px ${F}` : `600 12.5px ${F}`));
+    }
+  };
+
   const paint = (now: number) => {
     const ground = getComputedStyle(host).getPropertyValue("--ground").trim() || "#0c0d0f";
     // fondo transparente: debajo se ve el mapa (con la zona fuera del país oscurecida y su contorno)
@@ -186,10 +261,13 @@ export function ridges(host: HTMLElement, rel: Relieve, R: Rej, o: {
     if (W >= 520) {
       label(o.labels.yuna, X(east[0]) + 10, Y(east[1] + east[2] * K) - 14, ink);
       label(o.labels.hatillo, hx + 10, hy + 12, "#E69F00");
+      const used: [number, number, number, number][] = [[hx, hy - 4, 160, 20], [X(east[0]) + 10, Y(east[1] + east[2] * K) - 24, 130, 20]];
+      const free = (x: number, y: number, w: number, h = 18) => !used.some(([a, b, c, d2]) => x < a + c && x + w > a && y - h / 2 < b + d2 && y + h / 2 > b);
+      // la historia solo cuando la isla tiene sitio para contarla (≥ 600 px de ancho); si no, el mapa queda limpio
+      if (o.historia && X(LON[1]) - X(LON[0]) >= 600) story(o.historia, used, free, ground, ink, muted);
+      g.font = "500 13px Inter, system-ui, sans-serif"; g.textBaseline = "middle";
       // nombres de los ríos más largos: cada uno busca un tramo donde no pise otra etiqueta
       if (rios) {
-        const used: [number, number, number, number][] = [[hx, hy - 4, 160, 20], [X(east[0]) + 10, Y(east[1] + east[2] * K) - 24, 130, 20]];
-        const free = (x: number, y: number, w: number) => !used.some(([a, b, c, d2]) => x < a + c && x + w > a && y - 9 < b + d2 && y + 9 > b);
         for (const r of rios.slice(0, 6)) {
           const name = r.name.replace(/^R[ií]o /, ""), w = g.measureText(name).width + 8;
           const part = r.parts.reduce((m, p) => (p.length > m.length ? p : m), r.parts[0]);
