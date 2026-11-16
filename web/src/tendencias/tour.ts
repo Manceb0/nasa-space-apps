@@ -97,7 +97,7 @@ function scenes(): Scene[] {
     // 3:15 · el avance: ponemos a prueba nuestras propias hipótesis
     { dur: 15000, text: LL("¿Y si IMERG contara bien los días de lluvia?", "What if IMERG counted rain days right?"),
       run: async (_a, c) => { await prepClose(c); await sdii(c); if (!vis("#s13-h.on")) await c.tap("#s13-h"); await c.wait(900); c.look(".adj-res", 1); } },
-    { dur: 15000, text: LL("34 predicciones, escritas antes de calcular", "34 predictions, written before computing"),
+    { dur: 15000, text: LL("43 predicciones escritas antes de calcular. 16 fallaron", "43 predictions written before computing. 16 failed"),
       run: async (_a, c) => { c.look("", 1); if (vis("#s13-h.on")) await c.tap("#s13-h"); await c.go("#respuesta", ".rs-preds"); await c.wait(500); c.look(".rs-preds", 1); } },
     // 3:45 · el cierre, sobre el país
     { dur: 32000, text: LL("Investigar el agua para preparar a nuestra gente", "Investigating water to prepare our people"),

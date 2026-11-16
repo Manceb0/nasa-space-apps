@@ -27,6 +27,9 @@ export async function viewAnswer(view: HTMLElement) {
   const tI = d.tr(s, "IMERG")!, tC = d.tr(s, "CHIRPS")!;
   const pct = (v: number) => `${v > 0 ? "+" : ""}${num(v, 0)} %`;
   const pv = (p: number) => (p < 0.001 ? "p < 0,001" : `p = ${num(p, 3)}`);
+  const seen: Record<string, number> = {};
+  const tags = new Map(h.predicciones.map((p) => { const a = p.id.split("_")[0]; if (/\d/.test(a)) return [p.id, a]; const k = (p as { estudio?: string }).estudio === "hawaii" ? "HI" : a.slice(0, 2).toUpperCase(); seen[k] = (seen[k] ?? 0) + 1; return [p.id, `${k}${seen[k]}`]; }));
+  const tag = (p: Pred) => tags.get(p.id) ?? p.id;
   const ok = h.predicciones.filter((p) => p.cumplida === true).length, ko = h.predicciones.filter((p) => p.cumplida === false).length, na = h.predicciones.length - ok - ko;
   const byG = GRADOS.map((g) => ({ g, rows: h.conclusiones.filter((c) => grado(c.grado) === g) }));
   const retir = h.conclusiones.filter((c) => grado(c.grado)[1] === "no");
@@ -75,14 +78,14 @@ export async function viewAnswer(view: HTMLElement) {
         <svg viewBox="0 0 40 16" aria-hidden="true"><path d="M2 8h32m-6-5 6 5-6 5" fill="none" stroke="#949494" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <p><span>${esc(LL("Alerta confirmada", "Confirmed alert"))}</span><b>${esc(LL("cuando dos satélites coinciden", "when two satellites agree"))}</b>${esc(LL("Para lo caro: movilizar. Falsas alarmas de 39 a 16; detecta 6 de 8 inundaciones en vez de 7.", "For costly actions: mobilise. False alarms from 39 to 16; detects 6 of 8 floods instead of 7."))}</p>
       </div>
-      <p class="rs-reach"><b>${esc(LL("Sirve en cualquier país que use IMERG.", "It works in any country that uses IMERG."))}</b> ${esc(LL(`Puerto Rico ya lo demuestra: IMERG pierde días frente a ${h.pr.resumen.imerg_cae_mas} de ${h.pr.resumen.estaciones} pluviómetros que no cambian.`, `Puerto Rico already shows it: IMERG loses days against ${h.pr.resumen.imerg_cae_mas} of ${h.pr.resumen.estaciones} rain gauges that do not change.`))}</p>
+      <p class="rs-reach"><b>${esc(LL("Sirve en cualquier país que use IMERG.", "It works in any country that uses IMERG."))}</b> ${esc(h.hi ? LL(`No es una rareza dominicana: en Puerto Rico y en Hawái, dos océanos, IMERG pierde días frente a ${h.pr.resumen.imerg_cae_mas + h.hi.resumen.imerg_cae_mas} de ${h.pr.resumen.estaciones + h.hi.resumen.estaciones} pluviómetros.`, `Not a Dominican quirk: in Puerto Rico and Hawaii, two oceans, IMERG loses days against ${h.pr.resumen.imerg_cae_mas + h.hi.resumen.imerg_cae_mas} of ${h.pr.resumen.estaciones + h.hi.resumen.estaciones} rain gauges.`) : LL(`Puerto Rico ya lo demuestra: IMERG pierde días frente a ${h.pr.resumen.imerg_cae_mas} de ${h.pr.resumen.estaciones} pluviómetros que no cambian.`, `Puerto Rico already shows it: IMERG loses days against ${h.pr.resumen.imerg_cae_mas} of ${h.pr.resumen.estaciones} rain gauges that do not change.`))}</p>
       <a class="rs-go" href="#tendencias">${esc(LL("Verlo en el mapa", "See it on the map"))}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 3l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </section>
 
     <section class="rs-act" aria-labelledby="rs-a4">
       <h2 id="rs-a4"><span>${esc(LL("Cómo lo sabemos: ", "How we know: "))}</span>${esc(LL(`${h.predicciones.length} predicciones escritas antes de calcular`, `${h.predicciones.length} predictions written before computing`))}</h2>
       <p class="rs-sub"><b class="ok">${ok} ${esc(LL("se cumplieron", "held"))}</b> · <b class="ko">${ko} ${esc(LL("fallaron", "failed"))}</b> · ${na} ${esc(LL("con el veredicto en el informe", "with the verdict in the report"))}. ${esc(LL("Las fallidas se publican igual. Pasa el cursor o toca cada cuadro para leerla.", "Failed ones are published too. Hover or tap each square to read it."))}</p>
-      <div class="rs-preds">${h.predicciones.map((p) => `<button class="rs-p ${p.cumplida === true ? "ok" : p.cumplida === false ? "ko" : "na"}" title="${esc(`${p.id} · ${p.cumplida === true ? LL("se cumplió", "held") : p.cumplida === false ? LL("falló", "failed") : LL("ver informe", "see report")} · ${p.texto}`)}" data-pred="${esc(p.id)}"><b>${esc(p.id.split("_")[0])}</b></button>`).join("")}</div>
+      <div class="rs-preds">${h.predicciones.map((p) => `<button class="rs-p ${p.cumplida === true ? "ok" : p.cumplida === false ? "ko" : "na"}" title="${esc(`${p.id} · ${p.cumplida === true ? LL("se cumplió", "held") : p.cumplida === false ? LL("falló", "failed") : LL("ver informe", "see report")} · ${p.texto}`)}" data-pred="${esc(p.id)}"><b>${esc(tag(p))}</b></button>`).join("")}</div>
       <p class="rs-pred-t" id="rs-pred-t" aria-live="polite"></p>
 
       <h3 class="rs-h3">${esc(LL("Con qué certeza afirmamos cada cosa", "How certain each claim is"))}</h3>

@@ -351,7 +351,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const vv = vm(), unitY = vv.unidad.includes("/") ? vv.unidad : `${vv.unidad} ${sel.per === "anual" ? LL("por año", "per year") : LL("por temporada", "per season")}`;
     const tI = d.tr(sel, "IMERG"), tC = d.tr(sel, "CHIRPS");
     const reads = d.stepped(sel.ind) && tI && tC && Math.sign(tI.pendiente_decada) !== Math.sign(tC.pendiente_decada)
-      ? `<p class="tr-read">${esc(LL("IMERG cuenta menos días de llovizna desde 2018; por eso este índice puede cambiar en IMERG sin que cambie la lluvia. CHIRPS no lo confirma.", "IMERG has counted fewer drizzle days since 2018, so this index can change in IMERG without the rain changing. CHIRPS does not confirm it."))}</p>` : "";
+      ? `<p class="tr-read">${esc(LL("IMERG cuenta menos días de llovizna, sobre todo desde 2018; por eso este índice puede cambiar en IMERG sin que cambie la lluvia. CHIRPS no lo confirma.", "IMERG counts fewer drizzle days, above all since 2018, so this index can change in IMERG without the rain changing. CHIRPS does not confirm it."))}</p>` : "";
     el.innerHTML = `<p class="tr-what"><b>${esc(d.lab(vv))}</b> ${esc(vv.descripcion)} <span>${esc(LL(`Eje vertical: ${unitY}. Pendiente: ${vv.unidad_tendencia}.`, `Vertical axis: ${unitY}. Slope: ${vv.unidad_tendencia}.`))}</span></p>`
       + seriesChart(d, sel, plotW(el), ui.year === null ? null : years()[ui.year], layout === "wide" ? 190 : 170) + reads;
     el.title = LL("Toca un año para verlo en el mapa", "Tap a year to see it on the map");

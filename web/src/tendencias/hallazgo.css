@@ -35,3 +35,8 @@
 .s13-more summary { padding: 14px 0; cursor: pointer; font-weight: 600; font-size: 14px; }
 .s13-more[open] { padding-bottom: 14px; }
 .s13-lb .hz-b { justify-items: start; }
+
+/* bloques de alturas distintas en la misma fila: el contenido arriba, el hueco abajo */
+.hz-b { align-content: start; }
+.hz-key { flex-wrap: wrap; row-gap: 4px; }
+.hz { align-items: start; }
