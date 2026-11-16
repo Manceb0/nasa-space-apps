@@ -27,7 +27,7 @@ type Style = "calor" | "crestas" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { trail: [] as { label: string; color: string; short: string }[], land: "" as LandQ, landVar: "modis_ndvi", landSite: "", d3: false, style: "calor" as Style, year: null as number | null, show: "" as string, left: true, right: true };
+const ui = { trail: [] as { label: string; color: string; short: string }[], land: "" as LandQ, landVar: "modis_ndvi", landSite: "", d3: false, style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -81,7 +81,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     ${sect("s", "")}
     ${sect("r", esc(LL("Dónde poner atención", "Where to look")))}
     <p class="fine">${esc(LL("NASA GPM IMERG V07 y CHC CHIRPS v2.0, 2001–2024. Theil-Sen con Mann-Kendall de Hamed y Rao; FDR de Benjamini-Hochberg. Describe; no atribuye causas.", "NASA GPM IMERG V07 and CHC CHIRPS v2.0, 2001–2024. Theil-Sen with Hamed & Rao Mann-Kendall; Benjamini-Hochberg FDR. Describes; does not attribute causes."))}</p>`;
-  const styles: [Style, string][] = [["calor", LL("Calor", "Heat")], ...(d.rel ? [["crestas", LL("Crestas", "Ridges")] as [Style, string]] : []), ["oscuro", LL("Mapa oscuro", "Dark map")], ["plano", LL("Satélite", "Satellite")]];
+  const styles: [Style, string][] = [...(d.rel ? [["crestas", LL("Crestas", "Ridges")] as [Style, string]] : []), ["calor", LL("Calor", "Heat")], ["oscuro", LL("Mapa oscuro", "Dark map")], ["plano", LL("Satélite", "Satellite")]];
   const fold = (side: "left" | "right") => layout === "phone" || (side === "right" && layout !== "wide") ? "" : `<button class="fold" data-fold="${side}" aria-controls="wx-${side}">${side === "left" ? PANEL_L : PANEL_R}</button>`;
 
   const r15 = d.s13?.recuentos.RACHAS15 ?? {};
