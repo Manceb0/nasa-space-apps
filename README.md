@@ -2,6 +2,8 @@
 
 **NASA Space Apps Challenge 2026 · "Be An Earth System Trend Detective!" · Dominican Republic**
 
+**Live tool: [earth-system-detective.vercel.app](https://earth-system-detective.vercel.app/?lang=en)** (English) · [Español](https://earth-system-detective.vercel.app/?lang=es)
+
 > **Before you trust a rain trend, ask who measured it.**
 
 ![The Dominican Republic as ridgelines: Copernicus relief, coloured by whether two rain products agree](figures/galeria/dark/03_ridgeline_relief.png)
