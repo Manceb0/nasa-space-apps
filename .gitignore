@@ -30,3 +30,13 @@ data/preparacion/
 .build-preparacion/
 data/tropical/*
 !data/tropical/MANIFEST.json
+
+# Vídeo de la demo: carpeta aparte, fuera del repositorio (tomas, render y MP4)
+video/
+# Notas internas del método de revisión (Jane / Mentalist): no se publican
+*JANE*
+*Jane*
+*jane*
+*MENTALIST*
+*Mentalist*
+*mentalist*
