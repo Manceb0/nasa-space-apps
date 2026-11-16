@@ -9,7 +9,7 @@ import { terrain3d } from "../terrain3d";
 import { esc, LL, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
 import { cellAt, classField, colorOf, heatCss, heatField, rampCss, scaleMax, stipple, trendField } from "./campo";
 import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verdeAnswer, type Land, type LandQ } from "./tierra";
-import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart } from "./graficas";
+import { capsule, dosIslas, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart } from "./graficas";
 import { cellProvinces, ridges, type RGBA, type Rio } from "./crestas";
 import { load } from "../data";
 import { bottomSheet, PEEK } from "./hoja";
@@ -367,13 +367,21 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     showYear(ui.year);
   };
   const renderRank = () => {
-    const el = $("r-plot"), f = forest(d, sel, plotW(el));
+    const el = $("r-plot"), f = d.fc ? dosIslas(d, sel, plotW(el)) : { ...forest(d, sel, plotW(el)), disputa: [] as { id: string; nombre: string }[] };
     const c = f.counts, n = (k: string) => c[k] ?? 0;
     $("r-meta").textContent = d.both
       ? ([["robusta", "robustas", "robust"], ["consistente", "consistentes", "consistent"], ["en disputa", "en disputa", "disputed"]] as const).filter(([k]) => n(k)).map(([k, es, en]) => `${n(k)} ${LL(es, en)}`).join(" · ") || LL("ninguna con señal", "none with a signal")
       : LL(`${n("un solo producto")} con una fuente`, `${n("un solo producto")} with one source`);
     if (!isOpen("r")) return;
-    el.innerHTML = `<p class="tr-what"><b>${esc(d.lab(vm()))}</b> ${esc(LL(`Posición: cambio por década, en ${vm().unidad_tendencia}. A la izquierda del 0, baja; a la derecha, sube.`, `Position: change per decade, in ${vm().unidad_tendencia}. Left of 0 it falls; right of 0 it rises.`))}</p><p class="hint">${esc(LL("Punto lleno: cambio claro · línea: intervalo del 95 % · toca una provincia", "Filled dot: clear change · line: 95 % interval · tap a province"))}</p>${f.svg}`;
+    if (!d.fc) {
+      el.innerHTML = `<p class="tr-what"><b>${esc(d.lab(vm()))}</b> ${esc(LL(`Posición: cambio por década, en ${vm().unidad_tendencia}. A la izquierda del 0, baja; a la derecha, sube.`, `Position: change per decade, in ${vm().unidad_tendencia}. Left of 0 it falls; right of 0 it rises.`))}</p><p class="hint">${esc(LL("Punto lleno: cambio claro · línea: intervalo del 95 % · toca una provincia", "Filled dot: clear change · line: 95 % interval · tap a province"))}</p>${f.svg}`;
+      return;
+    }
+    // El mismo país, dos veces: donde los dos mapas no se parecen es donde hay que poner atención
+    const dis = f.disputa;
+    el.innerHTML = `<p class="tr-what"><b>${esc(d.lab(vm()))}</b> ${esc(LL("El mismo país visto por dos fuentes. Color lleno: cambio claro; tenue: puede ser azar.", "The same country seen by two sources. Solid colour: clear change; faint: could be chance."))}</p>
+      <p class="hint">${dis.length ? `${esc(LL("Con borde, donde no coinciden", "Outlined where they disagree"))} (${dis.length}). ` : ""}${esc(LL("Toca una provincia.", "Tap a province."))}</p>${f.svg}
+      ${dis.length > 10 ? `<p class="di-list">${esc(LL(`No coinciden en ${dis.length} de ${d.provs.length} provincias: casi todo el país.`, `They disagree in ${dis.length} of ${d.provs.length} provinces: almost the whole country.`))}</p>` : dis.length ? `<p class="di-list">${esc(LL("No coinciden en", "They disagree in"))} ${dis.map((r) => `<span class="fr di-n ${r.id === sel.reg ? "on" : ""}" data-reg="${r.id}" role="button" tabindex="0">${esc(r.nombre)}</span>`).join(", ")}.</p>` : ""}`;
   };
   (["s", "r"] as const).forEach((id) => document.getElementById(`${id}-sec`)?.addEventListener("toggle", () => (id === "s" ? renderSeries() : renderRank())));
 

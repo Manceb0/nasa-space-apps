@@ -109,6 +109,63 @@ export function forest(d: TrendData, s: Sel, width: number) {
   return { svg, counts };
 }
 
+/** «Dónde poner atención» como dos mapas del mismo país: arriba lo que ve IMERG, abajo lo que ve CHIRPS. Cada provincia
+ *  lleva el color de su tendencia (lleno si el cambio es claro, tenue si puede ser azar); las provincias donde las dos
+ *  fuentes no coinciden llevan borde del color «en disputa». Cada provincia es un `.fr[data-reg]`: el clic y el teclado
+ *  son los mismos que tenía la lista. */
+export function dosIslas(d: TrendData, s: Sel, width: number) {
+  const counts: Record<string, number> = {};
+  d.provs.forEach((r) => { const c = d.row(s, r.id)?.clase ?? ""; if (d.prods.some((p) => d.tr(s, p, r.id))) counts[c] = (counts[c] ?? 0) + 1; });
+  const fc = d.fc;
+  if (!fc) return { svg: "", counts, disputa: [] as { id: string; nombre: string }[] };
+  const v = d.vm(s.ind), dry = v.tipo === "seco";
+  const DRY = "#ff9f0a", WET = "#28a0f0", POS = dry ? DRY : WET, NEG = dry ? WET : DRY;
+  const disp = d.V.clases["en disputa"]?.color ?? "#ff9f0a";
+  const ext = Math.max(...d.provs.flatMap((r) => d.prods.map((p) => Math.abs(d.tr(s, p, r.id)?.pendiente_decada ?? 0)))) || 1;
+  const [L0, L1, B0, B1] = [-72.03, -68.32, 17.47, 19.95], kx = Math.cos((18.7 * Math.PI) / 180);
+  const W = width, mw = W, mh = Math.round((mw * (B1 - B0)) / ((L1 - L0) * kx)), gap = 34;
+  const px = (lon: number) => ((lon - L0) / (L1 - L0)) * mw, py = (lat: number) => ((B1 - lat) / (B1 - B0)) * mh;
+  // contornos proyectados una vez por llamada (aligerados: un punto cada ~1,5 px)
+  const shapes = fc.features.map((f) => {
+    const g = f.geometry, polys: number[][][] = g.type === "Polygon" ? [g.coordinates[0]] : g.coordinates.map((p: number[][][]) => p[0]);
+    const dpath = polys.map((ring) => {
+      let out = "", lx = -9, ly = -9;
+      ring.forEach(([x, y], i) => { const X = px(x), Y = py(y); if (i && Math.hypot(X - lx, Y - ly) < 1.5 && i < ring.length - 1) return; out += `${i ? "L" : "M"}${X.toFixed(1)} ${Y.toFixed(1)}`; lx = X; ly = Y; });
+      return out + "Z";
+    }).join("");
+    return { iso: String(f.properties.shapeISO), d: dpath };
+  });
+  const nombre = (iso: string) => d.provs.find((r) => r.id === iso)?.nombre ?? iso;
+  const disputa = d.provs.filter((r) => d.row(s, r.id)?.clase === "en disputa");
+  const isDisp = new Set(disputa.map((r) => r.id));
+  const mapa = (p: string, oy: number) => {
+    let up = 0, down = 0;
+    const body = shapes.map(({ iso, d: path }) => {
+      const t = d.tr(s, p, iso);
+      let fill = "#26292e", op = 1;
+      if (t) {
+        const sig = d.isSig(t, iso), m = Math.min(1, Math.abs(t.pendiente_decada) / ext);
+        fill = t.pendiente_decada >= 0 ? POS : NEG; op = sig ? 0.45 + 0.55 * m : 0.12 + 0.18 * m;
+        if (sig) (t.pendiente_decada >= 0 ? up++ : down++);
+      }
+      const on = iso === s.reg, dd = isDisp.has(iso);
+      const label = `${nombre(iso)} · ${p} ${t ? `${sgn(t.pendiente_decada)} ${v.unidad_tendencia}` : LL("sin dato", "no data")}${dd ? ` · ${LL("en disputa", "disputed")}` : ""}`;
+      return `<g class="fr ${on ? "on" : ""}" data-reg="${iso}" role="listitem" tabindex="0" aria-label="${esc(label)}"><title>${esc(label)}</title><path d="${path}" fill="${fill}" fill-opacity="${op.toFixed(2)}" stroke="${on ? "#fff" : dd ? disp : "#0c0d0f"}" stroke-width="${on ? 2 : dd ? 1.1 : 0.6}" stroke-linejoin="round"/></g>`;
+    });
+    // las provincias en disputa encima, para que su borde no lo tape la vecina
+    const order = body.map((b, i) => ({ b, k: (shapes[i].iso === s.reg ? 2 : isDisp.has(shapes[i].iso) ? 1 : 0) })).sort((a, b) => a.k - b.k).map((x) => x.b).join("");
+    const sideUp = dry ? LL("más seco", "drier") : LL("más lluvia", "more rain"), sideDown = dry ? LL("menos seco", "less dry") : LL("menos lluvia", "less rain");
+    return `<text x="0" y="${oy - 10}" class="di-t" fill="${pc(p)}">${esc(p)}</text>
+      <text x="${W}" y="${oy - 10}" class="di-s" text-anchor="end"><tspan fill="${POS}">${up} ${esc(sideUp)}</tspan> · <tspan fill="${NEG}">${down} ${esc(sideDown)}</tspan></text>
+      <g transform="translate(0 ${oy})">${order}</g>`;
+  };
+  const H = 2 * (mh + gap) + 6;
+  const svg = `<svg class="tr-forest tr-islas" viewBox="0 0 ${W} ${H}" width="${W}" role="list">
+    ${mapa(d.prods[0], gap)}${d.prods[1] ? mapa(d.prods[1], mh + 2 * gap) : ""}
+  </svg>`;
+  return { svg, counts, disputa };
+}
+
 /** Serie anual de las dos fuentes, cada una con su recta de Theil-Sen (intercepto = mediana de y − b·x);
  *  la de la fuente elegida lleva el abanico de su IC 95 %. Discontinua si no es significativa. */
 export function seriesChart(d: TrendData, s: Sel, width: number, mark: number | null, height = 180) {
