@@ -1,5 +1,6 @@
 // Datos de la pantalla de tendencias: tipos del contrato 1.0 (results/tendencias/web/CONTRATO.md)
 // y consultas de solo lectura. Aquí no se calcula estadística: todo viene del chat de datos.
+import { bilingue } from "./ingles";
 import { load } from "../data";
 import { getLang } from "../i18n";
 import { fmt } from "../text";
@@ -76,6 +77,9 @@ export class TrendData {
   readonly isoToShape: Record<string, string> = {};
   readonly shapeToIso: Record<string, string> = {};
   constructor(readonly V: Vars, readonly P: Prov, readonly R: Rej, readonly fc: FC | null, readonly rel: Relieve | null = null, readonly s13: Step13 | null = null) {
+    // descripciones, unidades y clases en el idioma de la página (variables.json solo trae el nombre en inglés)
+    V.variables.forEach((v) => bilingue(v, ["unidad", "unidad_tendencia", "descripcion", "por_que_importa", "aumento_significa"]));
+    Object.values(V.clases).forEach((c) => bilingue(c, ["descripcion"]));
     this.prods = Object.keys(V.productos);
     this.provs = P.regiones.filter((r) => !r.es_nacional).sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
     fc?.features.forEach((f) => { this.isoToShape[f.properties.shapeISO] = f.properties.shapeID; this.shapeToIso[f.properties.shapeID] = f.properties.shapeISO; });
