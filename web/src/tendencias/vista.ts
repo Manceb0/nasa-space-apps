@@ -7,7 +7,7 @@ import maplibregl from "maplibre-gl";
 import "./tendencias.css";
 import { terrain3d } from "../terrain3d";
 import { esc, LL, loadTrends, num, sgn, type Sel, type Tr, type TrendData } from "./datos";
-import { cellAt, classField, colorOf, rampCss, scaleMax, stipple, trendField } from "./campo";
+import { cellAt, classField, colorOf, heatCss, heatField, rampCss, scaleMax, stipple, trendField } from "./campo";
 import { LAND_Q, landPeek, loadLand, recuperaAnswer, siteMarks, sitesLayer, verdeAnswer, type Land, type LandQ } from "./tierra";
 import { capsule, DRIFT_EN, DRIFT_ES, forest, PROD_COLOR, seriesChart } from "./graficas";
 import { cellProvinces, ridges, type RGBA, type Rio } from "./crestas";
@@ -16,18 +16,18 @@ import { bottomSheet, PEEK } from "./hoja";
 import { chip, QUESTIONS, questionOf, shortName, verdict } from "./preguntas";
 import { openMenu } from "./menu";
 import { openPop } from "./pop";
-import { hallazgo, type Hallazgos } from "./hallazgo";
+import { hallazgo, hallazgoCorto, type Hallazgos } from "./hallazgo";
 import { startTour, stopTour, tourBusy } from "./tour";
 import { destroyPreparation, viewPreparation } from "../preparacion/vista";
 import { openAuditAt } from "../auditoria/vista";
 import { hurricanes, type CyInfo } from "../preparacion/huracanes";
 import { timeline } from "./tiempo";
 
-type Style = "crestas" | "plano" | "oscuro";
+type Style = "calor" | "crestas" | "plano" | "oscuro";
 type Layout = "wide" | "mid" | "phone";
 const sel: Sel = { ind: "RACHAS15", per: "anual", reg: "DO", src: "IMERG" };
 const pick: Record<string, string> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q.vars[0]]));
-const ui = { trail: [] as { label: string; color: string; short: string }[], land: "" as LandQ, landVar: "modis_ndvi", landSite: "", d3: false, style: "crestas" as Style, year: null as number | null, show: "" as string, left: true, right: true };
+const ui = { trail: [] as { label: string; color: string; short: string }[], land: "" as LandQ, landVar: "modis_ndvi", landSite: "", d3: false, style: "calor" as Style, year: null as number | null, show: "" as string, left: true, right: true };
 let t3: ReturnType<typeof terrain3d> | null = null;
 let cleanup: (() => void)[] = [];
 const RD: [[number, number], [number, number]] = [[-72.05, 17.45], [-68.3, 19.98]];
@@ -81,7 +81,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     ${sect("s", "")}
     ${sect("r", esc(LL("Dónde poner atención", "Where to look")))}
     <p class="fine">${esc(LL("NASA GPM IMERG V07 y CHC CHIRPS v2.0, 2001–2024. Theil-Sen con Mann-Kendall de Hamed y Rao; FDR de Benjamini-Hochberg. Describe; no atribuye causas.", "NASA GPM IMERG V07 and CHC CHIRPS v2.0, 2001–2024. Theil-Sen with Hamed & Rao Mann-Kendall; Benjamini-Hochberg FDR. Describes; does not attribute causes."))}</p>`;
-  const styles: [Style, string][] = [...(d.rel ? [["crestas", LL("Crestas", "Ridges")] as [Style, string]] : []), ["oscuro", LL("Mapa oscuro", "Dark map")], ["plano", LL("Satélite", "Satellite")]];
+  const styles: [Style, string][] = [["calor", LL("Calor", "Heat")], ...(d.rel ? [["crestas", LL("Crestas", "Ridges")] as [Style, string]] : []), ["oscuro", LL("Mapa oscuro", "Dark map")], ["plano", LL("Satélite", "Satellite")]];
   const fold = (side: "left" | "right") => layout === "phone" || (side === "right" && layout !== "wide") ? "" : `<button class="fold" data-fold="${side}" aria-controls="wx-${side}">${side === "left" ? PANEL_L : PANEL_R}</button>`;
 
   const r15 = d.s13?.recuentos.RACHAS15 ?? {};
@@ -140,6 +140,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
           <div class="seg map-cam" role="radiogroup" aria-label="${esc(LL("Cámara", "Camera"))}"><button data-cam="2d" role="radio">2D</button><button data-cam="3d" role="radio" title="${esc(LL("Inclinar: arrastra con el botón derecho o con dos dedos", "Tilt: drag with the right button or two fingers"))}">3D</button></div>
           ${fold("right")}
         </div>
+        <div class="heat-ttl" id="heat-ttl" hidden><h2 id="heat-h"></h2><p id="heat-s"></p></div>
         <div class="wx-time" id="wx-bar" data-mode="trend">
           <button class="wx-play"></button>
           <button class="wx-trendbtn" aria-pressed="true"></button>
@@ -313,6 +314,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     box.innerHTML = `
       <button class="vd" data-vd style="--c:${vv.color}" aria-haspopup="dialog" aria-expanded="false" title="${esc(LL("Ver por qué y compararlo en la Auditoría", "See why and compare it in the Audit"))}"><b>${esc(vv.short)}</b>${tierIdx >= 0 ? `<span>${esc(LL(TIERS[tierIdx][1], TIERS[tierIdx][2]))}</span>` : ""}<em>${esc(LL("Por qué", "Why"))}${CHEV}</em></button>
       ${capsule(d, sel)}
+      ${hallazgoCorto(hzData) ? `${hallazgoCorto(hzData)}<button class="pop-go alt hzc-go" data-fig13><span>${esc(LL("Ver el hallazgo completo: Hawái y los dos escalones", "See the full finding: Hawaii and the two steps"))}</span>${CHEV}</button>` : ""}
       ${levers}
       ${trail}
       <ul class="claims">
@@ -322,7 +324,6 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       </ul>
       <div class="ans-go">
         <button class="pop-go" data-act-audit><span>${esc(LL(`¿Coinciden los 4 productos en la sequía? Ver ${sel.reg === "DO" ? "el país" : d.regName(sel.reg)} en la Auditoría`, `Do the 4 products agree on drought? See ${sel.reg === "DO" ? "the country" : d.regName(sel.reg)} in the Audit`))}</span>${CHEV}</button>
-        <button class="pop-go alt" data-fig13><span>${esc(LL("Lo que encontramos sobre IMERG", "What we found about IMERG"))}</span>${CHEV}</button>
       </div>
       <details class="ans-more">
       <summary>${esc(LL("Estadística y notas", "Statistics and notes"))}${CHEV}</summary>
@@ -400,6 +401,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
   let ridgeColor: (k: number) => RGBA | null = () => null;
   const renderMap = (anim = true) => {
     wx.dataset.land = ui.land ? "on" : "off";
+    $("heat-ttl").hidden = !(ui.year === null && ui.style === "calor" && !ui.land);
+    riversOn();
     if (ui.land && land) { renderLandMap(anim); return; }
     sites?.set([]);
     renderMap0(anim);
@@ -427,6 +430,8 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     paintRidge(anim);
     if (!t3) return;
     const map = t3.map;
+    if (ui.year === null && ui.style === "calor") { renderHeat(); return; }
+    shadeOver(false);
     if (ui.year === null && ui.show === "acuerdo") {
       const cl = d.cellClass(sel), codes = d.R.clases_codigo ?? [];
       if (!cl) return;
@@ -482,6 +487,87 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       describeRidge();
     }
   };
+  // ── Calor: el dato de cada celda como un campo suave; con «Veredicto», IMERG menos CHIRPS ──
+  const renderHeat = () => {
+    if (!t3) return;
+    const map = t3.map, v = vm(), ver = ui.show === "acuerdo" && d.both;
+    const lI = d.cells(sel, "IMERG"), lC = d.cells(sel, "CHIRPS"), lay = ver ? null : d.cells(sel);
+    if (ver ? !lI || !lC : !lay) return;
+    const raw = (k: number): number | null => {
+      if (!ver) return lay!.pendiente_decada[k] ?? null;
+      const a = lI!.pendiente_decada[k], b = lC!.pendiente_decada[k];
+      return a === null || a === undefined || b === null || b === undefined ? null : a - b;
+    };
+    const vals = d.R.incluida.map((inc, k) => (inc ? raw(k) : null));
+    const max = scaleMax(vals), dry = d.towardDry(sel.ind, 1) ? 1 : -1, q = d.V.umbral_significancia.q_fdr;
+    const f = heatField(d.R, (k) => { const x = raw(k); return x === null ? null : (dry * x) / max; }, (k) => !ver && (lay!.q[k] ?? 1) > q, d.fc);
+    t3.setCells(f.px, f.w, f.h, f.bounds);
+    t3.setLayer("cells");
+    shadeOver(true);
+    if (map.getLayer("stip")) map.setLayoutProperty("stip", "visibility", "none");
+    const clear: Record<string, string> = {}, zero: Record<string, number> = {};
+    d.provs.forEach((r) => { const id = d.isoToShape[r.id]; if (id) { clear[id] = "rgba(0,0,0,0)"; zero[id] = 0; } });
+    t3.setChoro(clear, zero);
+    map.setLayoutProperty("prov-fill", "visibility", "visible");
+    const ys = years(), span = ys.length ? `${ys[0]}–${ys[ys.length - 1]}` : "";
+    const seco = v.tipo === "seco";
+    $("heat-h").textContent = ver ? LL("Dónde se contradicen los dos satélites", "Where the two satellites contradict each other") : LL(`${d.lab(v)}: hacia dónde va según ${sel.src}`, `${d.lab(v)}: where it is heading according to ${sel.src}`);
+    $("heat-s").textContent = ver ? LL(`Tendencia de IMERG menos la de CHIRPS · ${chip(sel.ind)} · ${span}`, `IMERG trend minus CHIRPS trend · ${chip(sel.ind)} · ${span}`)
+      : LL(`Tendencia ${span}, ${v.unidad_tendencia} · pálido: no se distingue del azar`, `Trend ${span}, ${v.unidad_tendencia} · pale: indistinguishable from chance`);
+    const wet = ver ? LL("IMERG, más húmedo", "IMERG wetter") : seco ? LL("menos seco", "less dry") : LL("más lluvia", "more rain");
+    const dryW = ver ? LL("IMERG, más seco", "IMERG drier") : seco ? LL("más seco", "drier") : LL("menos lluvia", "less rain");
+    const mid = ver ? LL("coinciden", "they agree") : LL("sin cambio", "no change");
+    $("wx-legend").innerHTML = `
+      <div class="lg-w lg-heat-w"><span>${esc(wet)}</span><span>${esc(mid)}</span><span>${esc(dryW)}</span></div>
+      <div class="lg-bar" style="background:${heatCss()}"></div>
+      <div class="lg-ax num"><span>${sgn(-dry * max)}</span><span>0 · ${esc(v.unidad_tendencia)}${fixTag()}</span><span>${sgn(dry * max)}</span></div>`;
+    describeRidge();
+  };
+  // El sombreado del relieve pasa encima del calor (solo sombras y luces; lo llano queda transparente): así el campo
+  // de color no aplana el relieve, sobre todo en 3D. Fuera del calor vuelve a su sitio, debajo de los datos.
+  let shadeHome = "";
+  const shadeOver = (on: boolean) => {
+    const m = t3?.map; if (!m || !m.getLayer("shade") || !m.getLayer("cells") || !m.getLayer("prov-line")) return;
+    const ids = m.getStyle().layers.map((l) => l.id);
+    if (!shadeHome) shadeHome = ids[ids.indexOf("shade") + 1] ?? "";
+    if (on) { m.moveLayer("shade", "prov-line"); m.setPaintProperty("shade", "hillshade-exaggeration", 0.5); }
+    else if (shadeHome && shadeHome !== "shade" && m.getLayer(shadeHome) && ids.indexOf("shade") > ids.indexOf("cells")) m.moveLayer("shade", shadeHome);
+  };
+  // ── Ríos: con halo azul encima del calor; el Yuna y el Camú, más marcados y con su nombre ──
+  const MAIN_RIOS = ["Río Yuna", "Río Camú"];
+  let rioPins: maplibregl.Marker[] = [];
+  const riversOn = () => {
+    const m = t3?.map; if (!m || !rios) return;
+    const on = ui.style === "calor" && !ui.land;
+    if (!m.getSource("rios-c")) {
+      if (!on) return;
+      const feat = (r: Rio) => ({ type: "Feature" as const, properties: { main: MAIN_RIOS.includes(r.name) ? 1 : 0, big: r.len_deg > 0.8 ? 1 : 0 }, geometry: { type: "MultiLineString" as const, coordinates: r.parts } });
+      m.addSource("rios-c", { type: "geojson", data: { type: "FeatureCollection", features: rios.map(feat) } });
+      const isMain = ["==", ["get", "main"], 1], isBig = ["==", ["get", "big"], 1];
+      // el zoom va fuera: MapLibre solo admite una interpolación por zoom en la raíz de la expresión
+      const z = (main: [number, number], big: [number, number], rest: [number, number]) => ["interpolate", ["linear"], ["zoom"], 7, ["case", isMain, main[0], isBig, big[0], rest[0]], 10, ["case", isMain, main[1], isBig, big[1], rest[1]]];
+      const P = (o: Record<string, unknown>) => o as never;
+      const lay = { type: "line" as const, source: "rios-c", layout: { "line-join": "round" as const, "line-cap": "round" as const } };
+      m.addLayer({ ...lay, id: "rios-c-glow", paint: P({ "line-color": "#2f9bff", "line-blur": ["case", isMain, 7, 3], "line-width": z([14, 22], [5, 8], [5, 8]), "line-opacity": ["case", isMain, 0.7, 0.4] }) });
+      m.addLayer({ ...lay, id: "rios-c-case", paint: P({ "line-color": "#04101c", "line-width": z([4.6, 7], [2.6, 4], [2, 3]), "line-opacity": 0.75 }) });
+      m.addLayer({ ...lay, id: "rios-c", paint: P({ "line-color": ["case", isMain, "#f2fbff", "#a9dcff"], "line-width": z([2.4, 4], [1.2, 2], [0.8, 1.4]), "line-opacity": 0.95 }) });
+    }
+    for (const id of ["rios-c-glow", "rios-c-case", "rios-c"]) if (m.getLayer(id)) m.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+    // con el calor, los límites de provincia se apagan para que mande el color (la elegida sigue entera)
+    if (m.getLayer("prov-line")) m.setPaintProperty("prov-line", "line-opacity", on ? ["case", ["boolean", ["feature-state", "sel"], false], 1, 0.4] as never : 1);
+    if (m.getLayer("borde")) m.setPaintProperty("borde", "line-opacity", on ? 0.16 : 0.5);
+    rioPins.forEach((p) => p.remove()); rioPins = [];
+    if (!on) return;
+    for (const r of rios.filter((x) => MAIN_RIOS.includes(x.name))) {
+      const part = r.parts.reduce((a, b) => (b.length > a.length ? b : a), r.parts[0]);
+      // el Yuna se rotula debajo de su cauce y el Camú encima, para que no se pisen
+      const yuna = r.name === "Río Yuna", [lo, la] = part[Math.floor(part.length * (yuna ? 0.6 : 0.45))];
+      const el = document.createElement("div"); el.className = "rio-lbl";
+      el.textContent = LL(r.name, `${r.name.replace(/^Río /, "")} River`);
+      rioPins.push(new maplibregl.Marker({ element: el, anchor: yuna ? "top" : "bottom", offset: [0, yuna ? 6 : -6] }).setLngLat([lo, la]).addTo(m));
+    }
+  };
+  cleanup.push(() => { rioPins.forEach((p) => p.remove()); rioPins = []; });
   const cellProv = d.rel ? cellProvinces(d.R, d.fc) : [];
   let rg: ReturnType<typeof ridges> | null = null;
   const colorFor = (): ((k: number) => RGBA | null) => {
@@ -538,14 +624,15 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     for (const id of ["ridge3d", "yuna3d", "rios3d"]) if (m.getLayer(id)) m.setLayoutProperty(id, "visibility", on ? "visible" : "none");
     t3.refresh3d();
   };
-  const base = (): "none" | "dark" | "sat" => (ui.style === "plano" ? "sat" : "dark");
+  const base = (): "none" | "dark" | "sat" => (ui.style === "plano" ? "sat" : ui.style === "calor" ? "none" : "dark");
+  const exag = () => (ui.style === "crestas" ? 4 : ui.style === "calor" ? 2.2 : 1.8);
   // Fondo y cámara: crestas en 2D se dibujan en su lienzo; todo lo demás lo dibuja el mapa
   const applyView = (fly: boolean) => {
     const flatRidges = ui.style === "crestas" && !ui.d3;
     rg?.show(flatRidges);
     if (!flatRidges) tip.hidden = true;
     if (!t3) return;
-    t3.setView(base(), ui.d3, ui.style === "crestas" ? 4 : 1.8);
+    t3.setView(base(), ui.d3, exag());
     lockCam();
     renderMap(false);
     frame(fly);
@@ -641,6 +728,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     const sb = el.closest<HTMLElement>("#sty-btn");
     if (sb) {
       const hint: Record<Style, string> = {
+        calor: LL("Campo de color suave: el color es el cambio", "Smooth colour field: the colour is the change"),
         crestas: LL("Relieve en perfiles; el color es el dato", "Relief in profiles; the colour is the data"),
         oscuro: LL("Mapa oscuro con las celdas de color", "Dark map with coloured cells"),
         plano: LL("Imagen de satélite con las celdas de color", "Satellite image with coloured cells"),
@@ -816,7 +904,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
     if (t3 !== mine) return;
     if (autoTour.on) { autoTour.on = false; setTimeout(tour, 1200); }
     mine.setFitPadding(fitPad());
-    mine.setView(base(), ui.d3, ui.style === "crestas" ? 4 : 1.8);
+    mine.setView(base(), ui.d3, exag());
     renderMap(false);
     if (sel.reg !== "DO") mine.selectProvince(d.isoToShape[sel.reg] ?? null);
     if (ui.land) frameSites(); else frame(true);
@@ -827,7 +915,7 @@ function render(view: HTMLElement, d: TrendData, land: Land | null) {
       map.addSource("medido", { type: "geojson", data: { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [[[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]], ...holes] } } });
       map.addLayer({ id: "fuera", type: "fill", source: "medido", paint: { "fill-color": "#050607", "fill-opacity": 0.66 } });
       map.addSource("borde", { type: "geojson", data: { type: "FeatureCollection", features: holes.map((r) => ({ type: "Feature" as const, properties: {}, geometry: { type: "LineString" as const, coordinates: r } })) } });
-      map.addLayer({ id: "borde", type: "line", source: "borde", paint: { "line-color": "#ffffff", "line-opacity": 0.5, "line-width": 1.3 } });
+      map.addLayer({ id: "borde", type: "line", source: "borde", paint: { "line-color": "#ffffff", "line-opacity": ui.style === "calor" && !ui.land ? 0.16 : 0.5, "line-width": 1.3 } });
     }
     lockCam();
     map.on("move", () => { rg?.reframe(); sites?.place(); });

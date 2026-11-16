@@ -157,3 +157,31 @@ ${h?.era_gpm ? `
     <p class="hz-open"><b>${esc(LL("Lo que no sabemos:", "What we do not know:"))}</b> ${esc(LL("la causa exacta. Hawái descarta que sea solo el GOES-16; el escalón caribeño de 2018 es compatible con él, sin probar. El propio equipo de IMERG (Joyce, Huffman y otros, EGU 2026) reconoce sesgos sistemáticos e inhomogeneidades en las entradas de microondas de la versión 7 y los corrige en la 8: es compatible con lo que vemos, no lo confirma. Tampoco afirmamos que la lluvia real de la RD haya cambiado: allí faltan pluviómetros densos.", "the exact cause. Hawaii rules out GOES-16 alone; the Caribbean 2018 step is compatible with it, unproven. The IMERG team itself (Joyce, Huffman et al., EGU 2026) acknowledges systematic biases and inhomogeneities in version 7 microwave inputs and fixes them in version 8: compatible with what we see, not a confirmation. Nor do we claim the DR's real rain changed: it lacks dense rain gauges there."))}</p>
   </section>`;
 }
+
+/** El hallazgo en corto, para el panel de la respuesta (se ve sin clics): cuántos pluviómetros de Puerto Rico y Hawái
+ *  ven a IMERG perder más días de lluvia que ellos, y cada pluviómetro como un punto. Todo sale del JSON. */
+export function hallazgoCorto(h: Hallazgos | null) {
+  if (!h?.hi || !h.pr) return "";
+  const rows: [string, Est][] = [["Puerto Rico", h.pr], [LL("Hawái", "Hawaii"), h.hi]];
+  const n = rows.reduce((a, [, e]) => a + e.resumen.imerg_cae_mas, 0), tot = rows.reduce((a, [, e]) => a + e.resumen.estaciones, 0);
+  const diffs = rows.map(([, e]) => e.estaciones.map((s) => (s["cambio_imerg_pp_1.0"] as number) - (s["cambio_pluvio_pp_1.0"] as number)));
+  const all = diffs.flat(), lo = Math.min(-5, Math.floor(Math.min(...all) / 5) * 5), hi = Math.max(5, Math.ceil(Math.max(...all) / 5) * 5);
+  const W = 340, L = 100, R = 12, rh = 36, T = 4, H = T + rows.length * rh + 34;
+  const x = (v: number) => L + ((v - lo) / (hi - lo)) * (W - L - R), x0 = x(0);
+  let out = `<line x1="${x0}" x2="${x0}" y1="${T}" y2="${T + rows.length * rh}" stroke="#5b6066" stroke-width="1.5"/>`;
+  rows.forEach(([name, e], r) => {
+    const yc = T + r * rh + rh / 2;
+    out += `<text x="0" y="${yc - 2}" fill="#fff" font-size="13.5" font-weight="600">${esc(name)}</text>
+      <text x="0" y="${yc + 14}" fill="#ff8a5c" font-size="13" font-weight="700">${e.resumen.imerg_cae_mas} ${esc(LL("de", "of"))} ${e.resumen.estaciones}</text>`;
+    out += diffs[r].map((v, k) => `<circle cx="${x(v).toFixed(1)}" cy="${(yc + ((k % 3) - 1) * 6).toFixed(1)}" r="3.6" fill="${v < 0 ? "#ff6b35" : "#9aa0a6"}" fill-opacity=".9"><title>${esc(`${e.estaciones[k].id}: ${fmt(v)} pp`)}</title></circle>`).join("");
+  });
+  const ay = T + rows.length * rh + 14;
+  out += [lo, 0, hi].map((t) => `<text x="${x(t)}" y="${ay}" text-anchor="${t === lo ? "start" : t === hi ? "end" : "middle"}" fill="#949494" font-size="12">${t > 0 ? "+" : ""}${t}</text>`).join("");
+  out += `<text x="${x0 - 6}" y="${ay + 16}" text-anchor="end" fill="#ff8a5c" font-size="12.5">${esc(LL("IMERG pierde más que el pluviómetro", "IMERG loses more than the gauge"))}</text>`;
+  return `<section class="hzc" aria-labelledby="hzc-h">
+    <h3 id="hzc-h">${esc(LL("IMERG pierde días de lluvia en dos océanos", "IMERG loses rain days in two oceans"))}</h3>
+    <p class="hzc-big"><b class="num">${n} ${esc(LL("de", "of"))} ${tot}</b> ${esc(LL("pluviómetros de Puerto Rico y Hawái ven a IMERG perder más días de lluvia que ellos.", "rain gauges in Puerto Rico and Hawaii see IMERG lose more rain days than they do."))}</p>
+    <svg class="hzc-c" viewBox="0 0 ${W} ${H + 18}" role="img" aria-label="${esc(LL(`Cada punto es un pluviómetro: Puerto Rico ${h.pr.resumen.imerg_cae_mas} de ${h.pr.resumen.estaciones}, Hawái ${h.hi.resumen.imerg_cae_mas} de ${h.hi.resumen.estaciones}`, `Each dot is a rain gauge: Puerto Rico ${h.pr.resumen.imerg_cae_mas} of ${h.pr.resumen.estaciones}, Hawaii ${h.hi.resumen.imerg_cae_mas} of ${h.hi.resumen.estaciones}`))}">${out}</svg>
+    <p class="hzc-n">${esc(LL("Cada punto, un pluviómetro: cambio de IMERG menos el del pluviómetro en días con 1 mm o más, después de 2018-02 menos antes, en pp.", "Each dot, one rain gauge: IMERG change minus gauge change in days with 1 mm or more, after 2018-02 minus before, in pp."))}</p>
+  </section>`;
+}

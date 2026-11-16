@@ -128,3 +128,61 @@ export function classField(R: Rej, clase: (number | null)[], colors: string[], l
   if (land) clipToLand(px, W, H, land, (lon) => ((lon - lon0) / (lon1 - lon0)) * W, (lat) => ((lat1 - lat) / (lat1 - lat0)) * H);
   return { px, w: W, h: H, bounds: [lon0, lat0, lon1, lat1] as [number, number, number, number] };
 }
+
+// ── Calor: el mismo dato como un campo de color suave, saturado y con un brillo leve ──
+// Escala divergente con la esencia de los mapas de calor: violeta y azul hacia lo húmedo, verde en el cero,
+// amarillo, naranja y rojo hacia lo seco. El color es el dato; el brillo crece con la magnitud.
+const HEAT: [number, RGB][] = [[0, [112, 44, 232]], [0.17, [44, 96, 255]], [0.33, [0, 196, 255]], [0.5, [52, 214, 128]], [0.67, [255, 226, 46]], [0.83, [255, 134, 24]], [1, [244, 36, 56]]];
+/** Color de un valor normalizado en [-1, 1] (positivo = hacia lo seco). */
+export const heatOf = (s: number): RGB => ramp(HEAT, (Math.max(-1, Math.min(1, s)) + 1) / 2);
+/** La rampa del calor en CSS, para la leyenda. */
+export const heatCss = () => `linear-gradient(90deg, ${HEAT.map(([t, c]) => `rgb(${c.join(",")}) ${Math.round(t * 100)}%`).join(", ")})`; // taste-skill-ignore: escala de color de los datos
+
+/** Campo de calor: interpolación bilineal entre centros de celda, desenfoque y brillo en el lienzo, y recorte
+ *  a las celdas con dato (las nulas quedan sin color) y a la costa. `s(k)` da el valor normalizado de la celda k
+ *  en [-1, 1] o null; `weak(k)` atenúa las celdas cuyo cambio no se distingue del azar. */
+export function heatField(R: Rej, s: (k: number) => number | null, weak: (k: number) => boolean, land: FC | null, S = 16) {
+  const W = R.nx * S, H = R.ny * S;
+  const lon0 = R.lon_bordes[0], lon1 = R.lon_bordes[R.nx], lat0 = R.lat_bordes[0], lat1 = R.lat_bordes[R.ny];
+  const res = R.lon[1] - R.lon[0];
+  const val = (i: number, j: number) => (i < 0 || j < 0 || i >= R.ny || j >= R.nx || !R.incluida[i * R.nx + j] ? null : s(i * R.nx + j));
+  const base = new Uint8ClampedArray(W * H * 4), mask = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    const lat = lat1 - ((y + 0.5) / H) * (lat1 - lat0), fi = (lat - R.lat[0]) / res;
+    for (let x = 0; x < W; x++) {
+      const lon = lon0 + ((x + 0.5) / W) * (lon1 - lon0), fj = (lon - R.lon[0]) / res;
+      const o = 4 * (y * W + x);
+      // la máscara: la celda que contiene el píxel tiene dato
+      if (val(Math.round(fi), Math.round(fj)) !== null) mask[o + 3] = 255;
+      const i0 = Math.floor(fi), j0 = Math.floor(fj), ty = fi - i0, tx = fj - j0;
+      let sw = 0, sv = 0, sk = 0;
+      for (const [di, dj, w] of [[0, 0, (1 - ty) * (1 - tx)], [0, 1, (1 - ty) * tx], [1, 0, ty * (1 - tx)], [1, 1, ty * tx]] as const) {
+        const v = val(i0 + di, j0 + dj);
+        if (v === null || w === 0) continue;
+        sw += w; sv += w * v; sk += w * (weak((i0 + di) * R.nx + j0 + dj) ? 1 : 0);
+      }
+      if (sw === 0) { const v = val(Math.round(fi), Math.round(fj)); if (v === null) continue; sw = 1; sv = v; sk = weak(Math.round(fi) * R.nx + Math.round(fj)) ? 1 : 0; }
+      const v = sv / sw, m = Math.min(1, Math.abs(v)), c = heatOf(v);
+      base[o] = c[0]; base[o + 1] = c[1]; base[o + 2] = c[2];
+      base[o + 3] = Math.round(255 * (0.5 + 0.5 * m) * (1 - 0.4 * (sk / sw)));
+    }
+  }
+  const cv = (px: Uint8ClampedArray) => { const c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d")!; const im = x.createImageData(W, H); im.data.set(px); x.putImageData(im, 0, 0); return c; };
+  const src = cv(base), out = document.createElement("canvas");
+  out.width = W; out.height = H;
+  const ctx = out.getContext("2d")!;
+  // desenfoque suave y un poco más de saturación; encima, el mismo campo muy desenfocado en «screen» como brillo
+  ctx.filter = `blur(${Math.round(S * 0.75)}px) saturate(1.25)`;
+  ctx.drawImage(src, 0, 0);
+  ctx.globalCompositeOperation = "screen"; ctx.globalAlpha = 0.4;
+  ctx.filter = `blur(${Math.round(S * 1.8)}px)`;
+  ctx.drawImage(src, 0, 0);
+  // recorte a las celdas con dato (borde algo suave) y a la costa
+  ctx.globalAlpha = 1; ctx.globalCompositeOperation = "destination-in";
+  ctx.filter = `blur(${Math.round(S * 0.3)}px)`;
+  ctx.drawImage(cv(mask), 0, 0);
+  ctx.filter = "none"; ctx.globalCompositeOperation = "source-over";
+  const px = new Uint8ClampedArray(ctx.getImageData(0, 0, W, H).data);
+  if (land) clipToLand(px, W, H, land, (lon) => ((lon - lon0) / (lon1 - lon0)) * W, (lat) => ((lat1 - lat) / (lat1 - lat0)) * H);
+  return { px, w: W, h: H, bounds: [lon0, lat0, lon1, lat1] as [number, number, number, number] };
+}

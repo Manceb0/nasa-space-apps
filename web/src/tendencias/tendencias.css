@@ -631,3 +631,17 @@ dl.cy-facts dd span { display: block; margin-top: 2px; font-size: 12.5px; color:
 .cy-list .hxl-h, .cy-list .hxl-sub { padding: 0 10px; }
 .cy-over .hx-cats { display: none; }
 .prep-over * { scroll-margin-top: 96px; scroll-margin-bottom: 120px; }
+
+/* ── Calor: el título dice qué se ve; los ríos llevan su nombre ── */
+.heat-ttl { position: absolute; z-index: 3; top: 60px; left: 14px; right: 14px; max-width: 520px; pointer-events: none; }
+.heat-ttl h2 { margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: #fff; text-wrap: balance; }
+.heat-ttl p { margin: 4px 0 0; font-size: 13px; line-height: 1.35; color: #d6d6d6; }
+@media (min-width: 760px) {
+  #wx .heat-ttl { left: calc(var(--lw) + 28px); top: 64px; transition: left .4s var(--ease); }
+  #wx .heat-ttl h2 { font-size: 24px; }
+}
+@media (max-width: 759px) { .heat-ttl { top: 54px; left: 16px; right: 16px; } .heat-ttl h2 { font-size: 17px; } .heat-ttl p { font-size: 12px; } }
+.wx[data-cy="on"] .heat-ttl { display: none; }
+.lg-heat-w span:nth-child(2) { color: var(--muted); }
+.rio-lbl { padding: 3px 9px; border-radius: 999px; background: #e6f6ff; color: #04223a; font-size: 12.5px; font-weight: 700; white-space: nowrap; box-shadow: 0 0 14px rgba(47, 155, 255, .7); pointer-events: none; }
+body.touring .rio-lbl { display: none; }
